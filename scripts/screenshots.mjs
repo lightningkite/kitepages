@@ -5,9 +5,10 @@ import { join, basename } from 'path';
 import { execSync } from 'child_process';
 import { tmpdir } from 'os';
 
-const SITES_DIR = join(import.meta.dirname, '..', 'sites');
-const SCREENSHOTS_DIR = join(import.meta.dirname, '..', 'screenshots');
-const RENDERER = join(import.meta.dirname, '..', 'prototype', 'renderer.html');
+const PROJECT_ROOT = join(import.meta.dirname, '..');
+const SITES_DIR = join(PROJECT_ROOT, 'sites');
+const SCREENSHOTS_DIR = join(PROJECT_ROOT, 'screenshots');
+const RENDERER = join(PROJECT_ROOT, 'prototype', 'renderer.html');
 
 const VIEWPORTS = [
   { name: 'desktop', width: 1440, height: 900 },
@@ -45,8 +46,8 @@ async function main() {
   const { extname } = await import('path');
 
   const MIME = { '.html': 'text/html', '.smd': 'text/plain', '.json': 'application/json',
-                 '.js': 'text/javascript', '.css': 'text/css', '.jpg': 'image/jpeg',
-                 '.png': 'image/png', '.svg': 'image/svg+xml' };
+                 '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css',
+                 '.jpg': 'image/jpeg', '.png': 'image/png', '.svg': 'image/svg+xml' };
 
   let currentSiteDir = '';
 
@@ -56,6 +57,8 @@ async function main() {
 
     if (url.pathname === '/renderer.html') {
       filePath = RENDERER;
+    } else if (url.pathname.startsWith('/src/')) {
+      filePath = join(PROJECT_ROOT, url.pathname.slice(1));
     } else {
       filePath = join(currentSiteDir, url.pathname.slice(1));
     }
