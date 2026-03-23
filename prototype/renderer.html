@@ -1,0 +1,2106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SuperMarkdown Renderer</title>
+<style>
+/* ===== Reset & Base ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --primary: #3d6b42;
+  --primary-dark: #2c5530;
+  --primary-light: #e8f0e9;
+  --accent: #c9a84c;
+  --text: #2d2d2d;
+  --text-muted: #6b6b6b;
+  --text-light: #999;
+  --bg: #faf9f6;
+  --surface: #ffffff;
+  --surface-warm: #f5f3ee;
+  --border: #e5e2db;
+  --border-light: #f0ede6;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.1), 0 4px 8px rgba(0,0,0,0.04);
+  --radius: 10px;
+  --radius-lg: 16px;
+  --max-width: 1100px;
+  --transition: 0.2s ease;
+  --font-heading: 'Georgia', serif;
+  --font-body: 'Georgia', serif;
+  --section-padding: 72px;
+  --nav-height: 64px;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.75;
+  font-size: 17px;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ===== Navigation ===== */
+.smd-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  transition: background 0.4s, box-shadow 0.4s, backdrop-filter 0.4s;
+}
+.smd-nav-brand {
+  font-family: var(--font-heading);
+  font-size: 1.2em;
+  font-weight: 700;
+  text-decoration: none !important;
+  white-space: nowrap;
+}
+.smd-nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+}
+.smd-nav-links a {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.85em;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-decoration: none !important;
+  transition: color 0.2s, opacity 0.2s;
+  opacity: 0.85;
+}
+.smd-nav-links a:hover { opacity: 1; }
+
+/* Nav: transparent (floats over hero, white text) */
+.smd-nav[data-style="transparent"] {
+  background: transparent;
+  color: white;
+}
+.smd-nav[data-style="transparent"] .smd-nav-brand,
+.smd-nav[data-style="transparent"] .smd-nav-links a { color: white; }
+.smd-nav[data-style="transparent"].scrolled {
+  background: var(--bg);
+  color: var(--text);
+  box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+}
+.smd-nav[data-style="transparent"].scrolled .smd-nav-brand,
+.smd-nav[data-style="transparent"].scrolled .smd-nav-links a { color: var(--text); }
+
+/* Nav: solid (colored bar) */
+.smd-nav[data-style="solid"] {
+  background: var(--primary);
+  color: white;
+}
+.smd-nav[data-style="solid"] .smd-nav-brand,
+.smd-nav[data-style="solid"] .smd-nav-links a { color: white; }
+.smd-nav[data-style="solid"].scrolled { box-shadow: 0 2px 12px rgba(0,0,0,0.15); }
+
+/* Nav: minimal (clean line, bg-colored) */
+.smd-nav[data-style="minimal"] {
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.smd-nav[data-style="minimal"] .smd-nav-brand { color: var(--text); }
+.smd-nav[data-style="minimal"] .smd-nav-links a { color: var(--text-muted); }
+.smd-nav[data-style="minimal"] .smd-nav-links a:hover { color: var(--text); }
+
+/* Nav: centered (brand centered, links below or inline) */
+.smd-nav[data-style="centered"] {
+  flex-direction: column;
+  height: auto;
+  padding: 20px 40px 12px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  gap: 8px;
+}
+.smd-nav[data-style="centered"] .smd-nav-brand {
+  color: var(--text);
+  font-size: 1.5em;
+  font-weight: 400;
+}
+.smd-nav[data-style="centered"] .smd-nav-links a {
+  color: var(--text-muted);
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.smd-nav[data-style="centered"].scrolled {
+  flex-direction: row;
+  height: var(--nav-height);
+  padding: 0 40px;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+}
+.smd-nav[data-style="centered"].scrolled .smd-nav-brand { font-size: 1.1em; }
+
+/* Mobile hamburger */
+.smd-nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 32px;
+  height: 24px;
+  position: relative;
+}
+.smd-nav-toggle span,
+.smd-nav-toggle span::before,
+.smd-nav-toggle span::after {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  position: absolute;
+  transition: transform 0.3s, opacity 0.3s;
+}
+.smd-nav-toggle span { top: 50%; transform: translateY(-50%); }
+.smd-nav-toggle span::before { content: ''; top: -8px; }
+.smd-nav-toggle span::after { content: ''; top: 8px; }
+
+@media (max-width: 768px) {
+  .smd-nav-toggle { display: block; }
+  .smd-nav-links {
+    position: fixed;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    background: var(--bg);
+    flex-direction: column;
+    padding: 24px 40px;
+    gap: 20px;
+    border-bottom: 1px solid var(--border);
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.3s, opacity 0.3s;
+  }
+  .smd-nav-links.open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .smd-nav-links a { font-size: 1em; opacity: 1; color: var(--text) !important; }
+  .smd-nav[data-style="transparent"] .smd-nav-toggle { color: white; }
+  .smd-nav[data-style="transparent"].scrolled .smd-nav-toggle { color: var(--text); }
+  .smd-nav[data-style="centered"] { flex-direction: row; height: var(--nav-height); padding: 0 24px; }
+  .smd-nav[data-style="centered"] .smd-nav-brand { font-size: 1.1em; }
+}
+
+/* ===== Page Structure ===== */
+.smd-page {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 32px 64px;
+}
+body:has(.smd-nav) .smd-page { padding-top: 0; }
+/* Full-bleed hero carousel/bg-section so transparent nav has dark background behind it */
+.smd-page > .smd-carousel:first-child,
+.smd-page > .smd-bg-section:first-child {
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  border-radius: 0;
+}
+.smd-page > .smd-carousel:first-child { box-shadow: none; }
+
+/* ===== Hero Section ===== */
+.smd-hero {
+  text-align: center;
+  padding: 72px 20px 48px;
+}
+body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100px; }
+.smd-hero h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(2em, 5vw, 3.5em);
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  margin-bottom: 20px;
+  line-height: 1.15;
+}
+.smd-hero .smd-subtitle {
+  font-size: 1.15em;
+  color: var(--text-muted);
+  max-width: 540px;
+  margin: 0 auto;
+  line-height: 1.8;
+}
+
+/* ===== Scroll Animations ===== */
+.smd-animate {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.smd-animate.smd-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* Expressive: more dramatic slide + stagger */
+[data-animation="expressive"] .smd-animate {
+  transform: translateY(48px);
+  transition-duration: 0.9s;
+}
+/* Stagger children */
+.smd-animate-stagger > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.smd-animate-stagger.smd-visible > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+.smd-animate-stagger.smd-visible > *:nth-child(1) { transition-delay: 0s; }
+.smd-animate-stagger.smd-visible > *:nth-child(2) { transition-delay: 0.1s; }
+.smd-animate-stagger.smd-visible > *:nth-child(3) { transition-delay: 0.2s; }
+.smd-animate-stagger.smd-visible > *:nth-child(4) { transition-delay: 0.3s; }
+.smd-animate-stagger.smd-visible > *:nth-child(5) { transition-delay: 0.4s; }
+[data-animation="none"] .smd-animate,
+[data-animation="none"] .smd-animate-stagger > * {
+  opacity: 1; transform: none; transition: none;
+}
+
+/* ===== Sections ===== */
+.smd-section {
+  padding: var(--section-padding) 0;
+  border-top: 1px solid var(--border);
+}
+/* Section styles: alternating */
+[data-sections="alternating"] .smd-section-alt {
+  background: var(--surface-warm);
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  padding-left: calc(50vw - 50% + 32px);
+  padding-right: calc(50vw - 50% + 32px);
+}
+/* Section styles: bold (full-bleed primary-colored alternating) */
+[data-sections="bold"] .smd-section-alt {
+  background: var(--primary);
+  color: white;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  padding-left: calc(50vw - 50% + 32px);
+  padding-right: calc(50vw - 50% + 32px);
+  border-top-color: transparent;
+}
+[data-sections="bold"] .smd-section-alt h2,
+[data-sections="bold"] .smd-section-alt h3 { color: white; }
+[data-sections="bold"] .smd-section-alt .smd-section-rule { background: rgba(255,255,255,0.4); }
+[data-sections="bold"] .smd-section-alt p { color: rgba(255,255,255,0.9); }
+[data-sections="bold"] .smd-section-alt .smd-block {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.2);
+  color: white;
+}
+[data-sections="bold"] .smd-section-alt .smd-large { color: white; }
+[data-sections="bold"] .smd-section-alt .smd-large { color: white; }
+[data-sections="bold"] .smd-section-alt .smd-stat-label { color: rgba(255,255,255,0.8); }
+[data-sections="bold"] .smd-section-alt .smd-column h3 { color: rgba(255,255,255,0.9); }
+[data-sections="bold"] .smd-section-alt li { color: rgba(255,255,255,0.9); border-bottom-color: rgba(255,255,255,0.15); }
+/* Section styles: clean (no alternation) */
+[data-sections="clean"] .smd-section-alt { background: transparent; }
+
+.smd-section > h2 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.5em, 3vw, 2.2em);
+  font-weight: 400;
+  text-align: center;
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+.smd-section > .smd-section-rule {
+  width: 40px;
+  height: 2px;
+  background: var(--accent);
+  margin: 0 auto 24px;
+  border: none;
+}
+
+/* ===== Columns ===== */
+.smd-columns {
+  display: grid;
+  gap: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  align-items: stretch;
+}
+.smd-column {
+  display: flex;
+  flex-direction: column;
+}
+.smd-column > .smd-block:first-child {
+  margin-top: 0;
+}
+.smd-column > .smd-block:last-child {
+  flex: 1;
+  margin-bottom: 0;
+}
+.smd-column h3 {
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--primary-dark);
+  text-transform: uppercase;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.85em;
+  letter-spacing: 0.08em;
+}
+
+/* ===== Compact ===== */
+.smd-compact {
+  display: grid;
+  gap: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+.smd-compact h3 {
+  font-size: 0.85em;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--primary-dark);
+  text-transform: uppercase;
+  font-family: system-ui, -apple-system, sans-serif;
+  letter-spacing: 0.08em;
+}
+
+/* ===== Image Gallery ===== */
+.smd-gallery {
+  display: grid;
+  gap: 16px;
+  margin: 40px 0;
+}
+.smd-gallery.count-1 { grid-template-columns: 1fr; }
+.smd-gallery.count-2 { grid-template-columns: 1fr 1fr; }
+.smd-gallery.count-3 { grid-template-columns: 1fr 1fr 1fr; }
+.smd-gallery.count-4 { grid-template-columns: 1fr 1fr; }
+.smd-gallery img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.smd-gallery img:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ===== Lists ===== */
+.smd-column ul, .smd-section > ul {
+  list-style: none;
+  padding: 0;
+}
+.smd-column li, .smd-section > ul > li {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.smd-column li:last-child, .smd-section > ul > li:last-child {
+  border-bottom: none;
+}
+
+/* ===== Card Styles (applied to .smd-block-card via theme) ===== */
+[data-cards="elevated"] .smd-block-card {
+  box-shadow: var(--shadow-md);
+  border: none;
+}
+[data-cards="elevated"] .smd-block-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+}
+[data-cards="flat"] .smd-block-card {
+  box-shadow: none;
+  border: 1px solid var(--border);
+}
+[data-cards="bordered"] .smd-block-card {
+  box-shadow: none;
+  border: 2px solid var(--text);
+  border-radius: 0;
+}
+[data-cards="glass"] .smd-block-card {
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.3);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+[data-cards="glass"] .smd-block-card:hover {
+  background: rgba(255,255,255,0.8);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+
+/* ===== Forms ===== */
+.smd-form {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  max-width: 640px;
+  margin: 0 auto;
+  box-shadow: var(--shadow-sm);
+}
+[data-cards="bordered"] .smd-form { border: 2px solid var(--text); border-radius: 0; box-shadow: none; }
+[data-cards="glass"] .smd-form { background: rgba(255,255,255,0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3); }
+.smd-form-group {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.smd-field {
+  flex: 1;
+  min-width: 180px;
+}
+.smd-field label {
+  display: block;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.82em;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.smd-field input,
+.smd-field textarea,
+.smd-field select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-family: inherit;
+  font-size: 1em;
+  background: var(--bg);
+  color: var(--text);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+[data-cards="bordered"] .smd-field input,
+[data-cards="bordered"] .smd-field textarea,
+[data-cards="bordered"] .smd-field select { border-radius: 0; border-width: 2px; }
+.smd-field input:focus,
+.smd-field textarea:focus,
+.smd-field select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(61,107,66,0.1);
+}
+.smd-field textarea { min-height: 100px; resize: vertical; }
+.smd-form button {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 14px 40px;
+  border-radius: var(--radius);
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.95em;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background var(--transition), transform var(--transition);
+}
+[data-cards="bordered"] .smd-form button { border-radius: 0; }
+.smd-form button:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+
+/* ===== Paragraphs ===== */
+.smd-section p, .smd-column p, .smd-compact p {
+  margin-bottom: 8px;
+  color: var(--text);
+}
+.smd-section > p {
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ===== CTA Button Row ===== */
+.smd-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin: 24px auto 8px;
+  max-width: 680px;
+}
+.smd-cta-row a {
+  display: inline-block;
+  padding: 12px 28px;
+  border-radius: 999px;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.92em;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: none !important;
+  transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+[data-cards="bordered"] .smd-cta-row a { border-radius: 0; }
+.smd-cta-row a:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+.smd-cta-row a.smd-cta-primary {
+  background: var(--primary);
+  color: white;
+}
+.smd-cta-row a.smd-cta-primary:hover { background: var(--primary-dark); }
+.smd-cta-row a.smd-cta-secondary {
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+}
+.smd-cta-row a.smd-cta-secondary:hover { background: var(--primary-light); }
+
+/* ===== Fenced Blocks (::: name) ===== */
+.smd-block {
+  border-radius: var(--radius-lg);
+  padding: 28px 32px;
+  margin: 24px 0;
+}
+/* Note / Info / Tip */
+.smd-block-note, .smd-block-info, .smd-block-tip {
+  background: #e8f4fd;
+  border-left: 4px solid #2196f3;
+  color: #1a3a4a;
+}
+.smd-block-note::before, .smd-block-info::before { content: 'Note'; }
+.smd-block-tip::before { content: 'Tip'; }
+/* Warning */
+.smd-block-warning, .smd-block-caution {
+  background: #fff8e1;
+  border-left: 4px solid #f59e0b;
+  color: #4a3a0a;
+}
+.smd-block-warning::before { content: 'Warning'; }
+.smd-block-caution::before { content: 'Caution'; }
+/* Error / Danger */
+.smd-block-error, .smd-block-danger {
+  background: #fde8e8;
+  border-left: 4px solid #e53e3e;
+  color: #4a1a1a;
+}
+.smd-block-error::before { content: 'Error'; }
+.smd-block-danger::before { content: 'Danger'; }
+/* Success */
+.smd-block-success {
+  background: #e8f8e8;
+  border-left: 4px solid #38a169;
+  color: #1a3a1a;
+}
+.smd-block-success::before { content: 'Success'; }
+/* Shared label style for typed blocks */
+.smd-block-note::before, .smd-block-info::before, .smd-block-tip::before,
+.smd-block-warning::before, .smd-block-caution::before,
+.smd-block-error::before, .smd-block-danger::before,
+.smd-block-success::before {
+  display: block;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.8em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+  opacity: 0.7;
+}
+/* Card - generic styled container */
+.smd-block-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+/* Quote / Testimonial */
+.smd-block-quote, .smd-block-testimonial {
+  background: var(--surface);
+  border-left: 3px solid var(--accent);
+  box-shadow: var(--shadow-sm);
+  font-style: italic;
+  position: relative;
+}
+.smd-block-quote::before, .smd-block-testimonial::before {
+  content: '\201C';
+  position: absolute;
+  top: 12px;
+  right: 24px;
+  font-size: 3em;
+  color: var(--border);
+  font-family: Georgia, serif;
+  line-height: 1;
+  font-style: normal;
+}
+/* Hero - large centered text block */
+.smd-block-hero {
+  text-align: center;
+  padding: 64px 32px;
+  background: var(--primary);
+  color: white;
+}
+.smd-block-hero h1, .smd-block-hero h2, .smd-block-hero h3 {
+  color: white;
+  font-family: var(--font-heading);
+}
+.smd-block-hero p { color: rgba(255,255,255,0.9); }
+/* Highlight - accent-colored callout */
+.smd-block-highlight {
+  background: var(--primary-light);
+  border: none;
+  text-align: center;
+  padding: 40px 32px;
+}
+/* Unstyled fallback - just a generic container with class */
+.smd-block:not([class*="smd-block-note"]):not([class*="smd-block-info"]):not([class*="smd-block-tip"]):not([class*="smd-block-warning"]):not([class*="smd-block-caution"]):not([class*="smd-block-error"]):not([class*="smd-block-danger"]):not([class*="smd-block-success"]):not([class*="smd-block-card"]):not([class*="smd-block-quote"]):not([class*="smd-block-testimonial"]):not([class*="smd-block-hero"]):not([class*="smd-block-highlight"]) {
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+/* ===== Large Text (__x__) ===== */
+.smd-large {
+  display: block;
+  font-size: 2.8em;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.1;
+  margin-bottom: 8px;
+  font-family: var(--font-heading);
+}
+
+/* ===== Star Ratings ===== */
+.smd-stars { color: #d4a017; font-size: 1.15em; letter-spacing: 0.05em; }
+
+
+/* ===== Links in paragraphs ===== */
+.smd-section p a, .smd-column p a, .smd-compact p a {
+  text-decoration: underline;
+  text-decoration-color: rgba(61,107,66,0.3);
+  text-underline-offset: 2px;
+  transition: text-decoration-color var(--transition);
+}
+.smd-section p a:hover, .smd-column p a:hover, .smd-compact p a:hover {
+  text-decoration-color: var(--primary);
+}
+
+/* ===== Carousel ===== */
+.smd-carousel {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  margin-bottom: 8px;
+}
+[data-cards="bordered"] .smd-carousel { border-radius: 0; }
+.smd-carousel-track {
+  display: flex;
+  width: 100%;
+  transition: transform 0.5s ease;
+}
+.smd-carousel-slide {
+  flex-shrink: 0;
+  width: 100%;
+}
+.smd-carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(4px);
+  color: white;
+  border: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  font-size: 1.6em;
+  cursor: pointer;
+  transition: background var(--transition);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.smd-carousel-btn:hover { background: rgba(255,255,255,0.35); }
+.smd-carousel-prev { left: 16px; }
+.smd-carousel-next { right: 16px; }
+.smd-carousel-dots {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 2;
+}
+.smd-carousel-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.7);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: background var(--transition);
+}
+.smd-carousel-dot.active { background: white; }
+
+/* ===== Background Section ===== */
+.smd-bg-section {
+  min-height: 420px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+body:has(.smd-nav[data-style="transparent"]) .smd-page > .smd-carousel:first-child,
+body:has(.smd-nav[data-style="transparent"]) .smd-page > .smd-bg-section:first-child {
+  margin-top: calc(-1 * var(--nav-height));
+}
+body:has(.smd-nav[data-style="transparent"]) .smd-page > .smd-carousel:first-child .smd-bg-section {
+  min-height: calc(420px + var(--nav-height));
+  padding-top: var(--nav-height);
+}
+.smd-bg-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0.55));
+}
+.smd-bg-overlay {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  color: white;
+  padding: 48px 32px;
+  max-width: 700px;
+}
+.smd-bg-overlay h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.8em, 4.5vw, 3em);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+.smd-bg-overlay p {
+  font-size: 1.15em;
+  color: rgba(255,255,255,0.9);
+  line-height: 1.7;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.3);
+}
+
+/* ===== Footer ===== */
+.smd-footer {
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.88em;
+  margin-top: 32px;
+}
+/* Footer: minimal */
+.smd-footer[data-style="minimal"] {
+  text-align: center;
+  padding: 32px 0 24px;
+}
+.smd-footer[data-style="minimal"] .smd-footer-title {
+  font-family: var(--font-heading);
+  font-size: 1.1em;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+/* Footer: centered (decorative) */
+.smd-footer[data-style="centered"] {
+  text-align: center;
+  padding: 48px 0 32px;
+}
+.smd-footer[data-style="centered"] .smd-footer-title {
+  font-family: var(--font-heading);
+  font-size: 1.6em;
+  color: var(--text);
+  margin-bottom: 16px;
+  font-weight: 400;
+}
+.smd-footer[data-style="centered"] .smd-footer-links {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.smd-footer[data-style="centered"] .smd-footer-links a {
+  color: var(--text-muted);
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.9em;
+  text-decoration: none;
+  letter-spacing: 0.03em;
+}
+.smd-footer[data-style="centered"] .smd-footer-links a:hover { color: var(--text); }
+.smd-footer[data-style="centered"] .smd-footer-rule {
+  width: 40px;
+  height: 2px;
+  background: var(--accent);
+  margin: 0 auto 20px;
+}
+/* Footer: columns (nav links in grid) */
+.smd-footer[data-style="columns"] {
+  padding: 48px 0 24px;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 48px;
+}
+.smd-footer[data-style="columns"] .smd-footer-brand {
+  font-family: var(--font-heading);
+  font-size: 1.3em;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.smd-footer[data-style="columns"] .smd-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 40px;
+}
+.smd-footer[data-style="columns"] .smd-footer-links a {
+  color: var(--text-muted);
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.9em;
+  text-decoration: none;
+}
+.smd-footer[data-style="columns"] .smd-footer-links a:hover { color: var(--text); }
+.smd-footer .smd-footer-copy {
+  font-size: 0.85em;
+  color: var(--text-light);
+}
+@media (max-width: 768px) {
+  .smd-footer[data-style="columns"] { grid-template-columns: 1fr; gap: 24px; }
+}
+
+/* ===== Page Transitions ===== */
+.smd-page-old {
+  overflow: hidden;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.smd-page-old.push-out {
+  opacity: 0;
+  transform: translateX(-8%);
+}
+.smd-page-old.pop-out {
+  opacity: 0;
+  transform: translateX(8%);
+}
+.smd-page {
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.smd-page.push-in {
+  opacity: 0;
+  transform: translateX(4%);
+}
+.smd-page.pop-in {
+  opacity: 0;
+  transform: translateX(-4%);
+}
+
+/* ===== Live Editor ===== */
+.smd-editor-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 200;
+  background: rgba(0,0,0,0.8);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: system-ui, sans-serif;
+  transition: background 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.smd-editor-toggle:hover { background: rgba(0,0,0,0.95); }
+.smd-editor-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 45%;
+  min-width: 360px;
+  max-width: 600px;
+  z-index: 150;
+  background: #1e1e1e;
+  color: #d4d4d4;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  box-shadow: 4px 0 24px rgba(0,0,0,0.3);
+}
+.smd-editor-panel.open {
+  transform: translateX(0);
+}
+.smd-editor-panel.open ~ .smd-page,
+.smd-editor-panel.open ~ #output {
+  margin-left: 45%;
+}
+body:has(.smd-editor-panel.open) .smd-page {
+  margin-left: auto;
+  margin-right: 0;
+  max-width: 55vw;
+  transition: max-width 0.3s ease;
+}
+body:has(.smd-editor-panel.open) .smd-nav {
+  left: min(45%, 600px);
+  transition: left 0.3s ease;
+}
+body:has(.smd-editor-panel.open) .smd-editor-toggle {
+  left: calc(min(45%, 600px) + 12px);
+  right: auto;
+}
+.smd-editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 16px;
+  border-bottom: 1px solid #333;
+  font: 12px/1.4 system-ui, sans-serif;
+  color: #888;
+  flex-shrink: 0;
+}
+.smd-editor-header strong { color: #ccc; font-size: 13px; }
+.smd-editor-panel textarea {
+  flex: 1;
+  background: #1e1e1e;
+  color: #d4d4d4;
+  border: none;
+  padding: 16px;
+  font: 14px/1.6 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  resize: none;
+  outline: none;
+  tab-size: 2;
+  white-space: pre;
+  overflow: auto;
+}
+.smd-editor-panel textarea::selection {
+  background: #264f78;
+}
+
+/* ===== Spacing ===== */
+[data-spacing="compact"] { --section-padding: 48px; }
+[data-spacing="spacious"] { --section-padding: 96px; --max-width: 1200px; }
+
+/* ===== Responsive ===== */
+@media (max-width: 700px) {
+  .smd-page { padding: 0 20px 48px; }
+  .smd-hero { padding: 48px 12px 32px; }
+  .smd-section { padding: 48px 0; }
+  [data-sections="alternating"] .smd-section-alt,
+  [data-sections="bold"] .smd-section-alt {
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    padding-left: calc(50vw - 50% + 20px);
+    padding-right: calc(50vw - 50% + 20px);
+  }
+  .smd-columns { grid-template-columns: 1fr; gap: 28px; }
+  .smd-compact { grid-template-columns: 1fr; gap: 28px; }
+  .smd-gallery { gap: 10px; }
+  .smd-gallery.count-2,
+  .smd-gallery.count-3 { grid-template-columns: 1fr; }
+  .smd-gallery img { height: 220px; }
+  .smd-bg-section { min-height: 300px; }
+  .smd-bg-overlay { padding: 32px 20px; }
+  .smd-carousel-btn { width: 36px; height: 36px; font-size: 1.2em; }
+  .smd-carousel-prev { left: 8px; }
+  .smd-carousel-next { right: 8px; }
+  .smd-form { padding: 24px; }
+  .smd-form-group { flex-direction: column; gap: 16px; }
+  .smd-field { min-width: 100%; }
+  .smd-large { font-size: 2em; }
+  .smd-nav { padding: 0 20px; }
+}
+@media (min-width: 701px) and (max-width: 900px) {
+  .smd-gallery.count-3 { grid-template-columns: 1fr 1fr; }
+  .smd-gallery.count-3 img:last-child { grid-column: span 2; }
+}
+</style>
+</head>
+<body>
+
+<div id="smd-nav-mount"></div>
+<div id="output" class="smd-page"></div>
+
+<script>
+// ===== SuperMarkdown Prototype Renderer =====
+
+let currentTheme = {};
+let currentSmdFile = null;
+
+async function loadAndRender(url) {
+  currentSmdFile = url;
+  const resp = await fetch(url);
+  const src = await resp.text();
+  const parsed = parse(src);
+  const output = document.getElementById('output');
+  output.innerHTML = render(parsed);
+  if (parsed.frontmatter.title) document.title = parsed.frontmatter.title;
+  if (parsed.frontmatter.description) {
+    let meta = document.querySelector('meta[name="description"]');
+    if (!meta) { meta = document.createElement('meta'); meta.name = 'description'; document.head.appendChild(meta); }
+    meta.content = parsed.frontmatter.description;
+  }
+  // Load header/footer from .smd files (consistent across pages)
+  await loadHeader();
+  await loadFooter();
+  // Init scroll animations
+  initScrollAnimations();
+  // Intercept .smd links for smooth page transitions
+  interceptSmdLinks();
+}
+
+// ===== Page Transitions =====
+
+function isSmdLink(href) {
+  if (!href) return false;
+  if (href.startsWith('#')) return false;
+  if (/^https?:\/\//i.test(href)) return false;
+  return href.endsWith('.smd');
+}
+
+function interceptSmdLinks() {
+  // Use a single delegated listener on the output container.
+  // Remove first to avoid stacking listeners on re-render.
+  const output = document.getElementById('output');
+  output.removeEventListener('click', handleSmdLinkClick);
+  output.addEventListener('click', handleSmdLinkClick);
+}
+
+function handleSmdLinkClick(e) {
+  const anchor = e.target.closest('a');
+  if (!anchor) return;
+  const href = anchor.getAttribute('href');
+  if (!isSmdLink(href)) return;
+  e.preventDefault();
+  navigateToSmd(href, true);
+}
+
+function resolveSmdPath(href) {
+  // Resolve href relative to the directory of the currently loaded .smd file
+  if (!currentSmdFile) return href;
+  const dir = currentSmdFile.substring(0, currentSmdFile.lastIndexOf('/') + 1);
+  return dir + href;
+}
+
+async function navigateToSmd(smdFile, pushState, direction) {
+  const resolvedFile = smdFile.includes('/') ? smdFile : resolveSmdPath(smdFile);
+  const output = document.getElementById('output');
+  const dir = direction || (pushState ? 'push' : 'pop');
+
+  // 1. Snapshot: clone the entire output element as a fixed overlay
+  const scrollY = window.scrollY;
+  const snapshot = output.cloneNode(true);
+  snapshot.id = '';
+  snapshot.className = 'smd-page smd-page-old';
+  snapshot.style.position = 'fixed';
+  snapshot.style.top = -scrollY + 'px';
+  snapshot.style.left = '0';
+  snapshot.style.right = '0';
+  snapshot.style.width = '100%';
+  snapshot.style.zIndex = '50';
+  snapshot.style.pointerEvents = 'none';
+  document.body.appendChild(snapshot);
+
+  // 2. Hide new content, load it, scroll to top
+  output.classList.add(dir === 'push' ? 'push-in' : 'pop-in');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+  document.getElementById('smd-nav-mount').innerHTML = '';
+  await loadAndRender(resolvedFile);
+
+  // 3. Update URL
+  if (pushState) {
+    const url = new URL(location.href);
+    url.searchParams.set('file', resolvedFile);
+    history.pushState({ smdFile: resolvedFile }, '', url.toString());
+  }
+
+  // 4. Animate: old slides out, new slides in simultaneously
+  await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+  snapshot.classList.add(dir === 'push' ? 'push-out' : 'pop-out');
+  output.classList.remove('push-in', 'pop-in');
+
+  // 5. Clean up snapshot after transition
+  snapshot.addEventListener('transitionend', () => snapshot.remove(), { once: true });
+  // Fallback cleanup
+  setTimeout(() => snapshot.remove(), 500);
+}
+
+// Handle browser back/forward navigation
+window.addEventListener('popstate', (e) => {
+  const smdFile = e.state?.smdFile || (new URLSearchParams(location.search).get('file')) || 'example.smd';
+  navigateToSmd(smdFile, false, 'pop');
+});
+
+// ===== Parser =====
+
+function parse(source) {
+  let frontmatter = {};
+  let body = source;
+  const fmMatch = source.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+  if (fmMatch) {
+    frontmatter = parseYamlSimple(fmMatch[1]);
+    body = fmMatch[2];
+  }
+  return { frontmatter, blocks: parseBlocks(body) };
+}
+
+function parseYamlSimple(yaml) {
+  const result = {};
+  for (const line of yaml.split('\n')) {
+    const m = line.match(/^(\w+):\s*(.+)$/);
+    if (m) result[m[1]] = m[2];
+  }
+  return result;
+}
+
+function parseBlocks(text) {
+  const lines = text.split('\n');
+  const blocks = [];
+  let i = 0;
+
+  while (i < lines.length) {
+    const line = lines[i];
+    if (line.trim() === '') { i++; continue; }
+
+    const headingMatch = line.match(/^(#{1,6})\s+(.+)$/);
+    if (headingMatch) {
+      blocks.push({ type: 'heading', level: headingMatch[1].length, text: headingMatch[2] });
+      i++; continue;
+    }
+
+    const imgMatch = line.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
+    if (imgMatch) {
+      blocks.push({ type: 'image', alt: imgMatch[1], src: imgMatch[2] });
+      i++; continue;
+    }
+
+    // Column controls: |||> starts, ||| separates, |||< ends
+    if (line.match(/^\|\|\|[><]?\s*$/)) {
+      const ch = line.trim();
+      if (ch === '|||>') blocks.push({ type: 'columns-start' });
+      else if (ch === '|||<') blocks.push({ type: 'columns-end' });
+      else blocks.push({ type: 'column-break' });
+      i++; continue;
+    }
+
+    if (line.match(/^>>>\s*$/)) {
+      const slides = [];
+      let currentSlide = [];
+      i++;
+      while (i < lines.length) {
+        if (lines[i].match(/^>>>\s*$/)) {
+          if (currentSlide.length > 0) {
+            slides.push(parseBlocks(currentSlide.join('\n')));
+            currentSlide = [];
+          }
+          i++;
+          let peek = i;
+          while (peek < lines.length && lines[peek].trim() === '') peek++;
+          if (peek >= lines.length || !lines[peek].match(/^:::/)) break;
+          continue;
+        }
+        currentSlide.push(lines[i]);
+        i++;
+      }
+      if (currentSlide.length > 0) slides.push(parseBlocks(currentSlide.join('\n')));
+      if (slides.length > 0) blocks.push({ type: 'carousel', slides });
+      continue;
+    }
+
+    // Bare ::: (closing fence or incomplete opening) - skip it
+    if (line.match(/^:::\s*$/) || (line.match(/^:::/) && !line.match(/^:::\s+\w/))) {
+      i++; continue;
+    }
+
+    if (line.match(/^:::\s+\w/)) {
+      const sectionType = line.replace(/^:::\s+/, '').trim();
+      const contentLines = [];
+      const fenceStart = i;
+      i++;
+      let closed = false;
+      while (i < lines.length && !lines[i].match(/^:::\s*$/)) {
+        contentLines.push(lines[i]);
+        i++;
+      }
+      if (i < lines.length) { closed = true; i++; } // skip closing :::
+      if (!closed) {
+        // Unclosed fence - treat the opening ::: as a paragraph and reparse from after it
+        blocks.push({ type: 'paragraph', text: line });
+        i = fenceStart + 1;
+        continue;
+      }
+      if (sectionType === 'form') {
+        blocks.push({ type: 'form', content: parseFormFields(contentLines) });
+      } else if (sectionType.startsWith('bg ')) {
+        const bgImage = sectionType.replace('bg ', '').trim();
+        const innerBlocks = parseBlocks(contentLines.join('\n'));
+        blocks.push({ type: 'bg-section', bgImage, blocks: innerBlocks });
+      } else {
+        blocks.push({ type: 'fenced', sectionType, rawLines: contentLines });
+      }
+      continue;
+    }
+
+    if (line.match(/^---+$/)) {
+      blocks.push({ type: 'hr' }); i++; continue;
+    }
+
+    if (line.match(/^[-*]\s+/)) {
+      const items = [];
+      while (i < lines.length && lines[i].match(/^[-*]\s+/)) {
+        items.push(lines[i].replace(/^[-*]\s+/, ''));
+        i++;
+      }
+      blocks.push({ type: 'list', items });
+      continue;
+    }
+
+    {
+      const pLines = [];
+      while (i < lines.length && lines[i].trim() !== '' &&
+             !lines[i].match(/^#{1,6}\s/) && !lines[i].match(/^!\[/) &&
+             !lines[i].match(/^:::/) && !lines[i].match(/^>>>/) &&
+             !lines[i].match(/^\|\|\|[><]?\s*$/) &&
+             !lines[i].match(/^---/) && !lines[i].match(/^[-*]\s+/)) {
+        pLines.push(lines[i]); i++;
+      }
+      if (pLines.length > 0) {
+        blocks.push({ type: 'paragraph', text: pLines.join('<br>') });
+      }
+    }
+  }
+  return blocks;
+}
+
+function parseFormFields(lines) {
+  const groups = [[]];
+  let action = null;
+  for (const line of lines) {
+    if (line.trim() === '') {
+      if (groups[groups.length - 1].length > 0) groups.push([]);
+      continue;
+    }
+    const btnMatch = line.match(/^\[([^\]]+)\]\((\w+)\s+([^)]+)\)/);
+    if (btnMatch) { action = { label: btnMatch[1], method: btnMatch[2], url: btnMatch[3] }; continue; }
+
+    const selectMatch = line.match(/^([^:]+?)(\*?):\s*<([^>]+\/[^>]+)>$/);
+    if (selectMatch) {
+      const options = selectMatch[3].split('/').map(o => o.trim());
+      groups[groups.length - 1].push({
+        label: selectMatch[1].trim(), required: selectMatch[2] === '*',
+        fieldType: 'select', options, placeholder: '',
+      });
+      continue;
+    }
+
+    const fieldMatch = line.match(/^([^:]+?)(\*?):\s*<(\w+)(?:\s+([^>]*))?>$/);
+    if (fieldMatch) {
+      groups[groups.length - 1].push({
+        label: fieldMatch[1].trim(), required: fieldMatch[2] === '*',
+        fieldType: fieldMatch[3], placeholder: fieldMatch[4] || '',
+      });
+    }
+  }
+  return { groups: groups.filter(g => g.length > 0), action };
+}
+
+// ===== Renderer =====
+
+function render(doc) {
+  const blocks = doc.blocks;
+  let html = '';
+  let i = 0;
+  let sectionIndex = 0;
+  const anim = currentTheme.animation || 'subtle';
+
+  while (i < blocks.length) {
+    const block = blocks[i];
+
+    if (block.type === 'heading' && block.level === 1) {
+      html += `<header class="smd-hero ${anim !== 'none' ? 'smd-animate' : ''}">`;
+      html += `<h1>${inl(block.text)}</h1>`;
+      i++;
+      if (i < blocks.length && blocks[i].type === 'paragraph') {
+        html += `<p class="smd-subtitle">${inl(blocks[i].text)}</p>`;
+        i++;
+      }
+      html += '</header>';
+      continue;
+    }
+
+    if (block.type === 'heading' && block.level === 2) {
+      const altClass = sectionIndex % 2 === 1 ? ' smd-section-alt' : '';
+      const animClass = anim !== 'none' ? ' smd-animate' : '';
+      html += `<section class="smd-section${altClass}${animClass}" id="section-${sectionIndex}">`;
+      html += `<h2>${inl(block.text)}</h2>`;
+      html += `<hr class="smd-section-rule">`;
+      i++;
+      html += renderSectionContent(blocks, i, anim);
+      i = findNextH2(blocks, i);
+      html += '</section>';
+      sectionIndex++;
+      continue;
+    }
+
+    if (block.type === 'carousel') {
+      html += renderCarousel(block);
+      i++; continue;
+    }
+
+    if (block.type === 'bg-section') {
+      html += renderBgSection(block);
+      i++; continue;
+    }
+
+    if (block.type === 'image') {
+      const images = collectRun(blocks, i, 'image');
+      html += renderGallery(images);
+      i += images.length;
+      continue;
+    }
+
+    html += renderBlock(block);
+    i++;
+  }
+
+  return html;
+}
+
+function renderSectionContent(blocks, startIdx, anim) {
+  let html = '';
+  const sectionBlocks = [];
+  let i = startIdx;
+  while (i < blocks.length && !(blocks[i].type === 'heading' && blocks[i].level <= 2)) {
+    sectionBlocks.push(blocks[i]); i++;
+  }
+
+  html += renderBlockList(sectionBlocks, anim);
+  return html;
+}
+
+// Render a list of blocks, handling |||> / ||| / |||< column regions
+function renderBlockList(blocks, anim) {
+  let html = '';
+  let j = 0;
+  while (j < blocks.length) {
+    const b = blocks[j];
+    // |||> starts a column region
+    if (b.type === 'columns-start') {
+      j++;
+      const columns = [[]];
+      while (j < blocks.length && blocks[j].type !== 'columns-end') {
+        if (blocks[j].type === 'column-break') {
+          columns.push([]);
+        } else {
+          columns[columns.length - 1].push(blocks[j]);
+        }
+        j++;
+      }
+      if (j < blocks.length) j++; // skip |||<
+      const nonEmpty = columns.filter(c => c.length > 0);
+      if (nonEmpty.length > 0) {
+        html += renderColumnsGroup(nonEmpty, anim);
+      }
+      continue;
+    }
+    // Skip stray column markers outside a region
+    if (b.type === 'column-break' || b.type === 'columns-end') { j++; continue; }
+    // Regular blocks
+    if (b.type === 'image') {
+      const imgs = collectRunFrom(blocks, j, 'image');
+      html += renderGallery(imgs); j += imgs.length; continue;
+    }
+    html += renderBlock(b);
+    j++;
+  }
+  return html;
+}
+
+// Render column groups as side-by-side
+function renderColumnsGroup(columns, anim) {
+  if (columns.length === 1) {
+    let html = '';
+    for (const b of columns[0]) html += renderBlock(b, 'column');
+    return html;
+  }
+  let html = '<div class="smd-columns">';
+  for (const col of columns) {
+    html += '<div class="smd-column">';
+    for (const b of col) {
+      html += renderBlock(b, 'column');
+    }
+    html += '</div>';
+  }
+  html += '</div>';
+  return html;
+}
+
+function collectRun(blocks, idx, type) {
+  const r = []; while (idx < blocks.length && blocks[idx].type === type) r.push(blocks[idx++]); return r;
+}
+function collectRunFrom(arr, idx, type) {
+  const r = []; while (idx < arr.length && arr[idx].type === type) r.push(arr[idx++]); return r;
+}
+function findNextH2(blocks, idx) {
+  while (idx < blocks.length && !(blocks[idx].type === 'heading' && blocks[idx].level <= 2)) idx++;
+  return idx;
+}
+
+function renderCarousel(block) {
+  const id = 'carousel-' + Math.random().toString(36).slice(2, 8);
+  let html = `<div class="smd-carousel" id="${id}">`;
+  html += '<div class="smd-carousel-track">';
+  block.slides.forEach((slideBlocks) => {
+    html += '<div class="smd-carousel-slide">';
+    for (const b of slideBlocks) {
+      if (b.type === 'bg-section') html += renderBgSection(b);
+      else html += renderBlock(b);
+    }
+    html += '</div>';
+  });
+  html += '</div>';
+  if (block.slides.length > 1) {
+    html += `<button class="smd-carousel-btn smd-carousel-prev" onclick="carouselNav('${id}',-1)" aria-label="Previous">&lsaquo;</button>`;
+    html += `<button class="smd-carousel-btn smd-carousel-next" onclick="carouselNav('${id}',1)" aria-label="Next">&rsaquo;</button>`;
+    html += '<div class="smd-carousel-dots">';
+    block.slides.forEach((_, idx) => {
+      html += `<button class="smd-carousel-dot${idx === 0 ? ' active' : ''}" onclick="carouselGo('${id}',${idx})" aria-label="Slide ${idx+1}"></button>`;
+    });
+    html += '</div>';
+  }
+  html += '</div>';
+  return html;
+}
+
+function renderBgSection(block) {
+  let html = `<div class="smd-bg-section" style="background-image:url('${block.bgImage}')">`;
+  html += '<div class="smd-bg-overlay">';
+  for (const b of block.blocks) {
+    if (b.type === 'heading' && b.level === 1) {
+      html += `<h1>${inl(b.text)}</h1>`;
+    } else if (b.type === 'heading') {
+      html += `<h${b.level}>${inl(b.text)}</h${b.level}>`;
+    } else {
+      html += renderBlock(b);
+    }
+  }
+  html += '</div></div>';
+  return html;
+}
+
+function renderGallery(images) {
+  const n = images.length;
+  let html = `<figure class="smd-gallery count-${Math.min(n, 4)}">`;
+  for (const img of images) html += `<img src="${img.src}" alt="${img.alt}" loading="lazy">`;
+  html += '</figure>';
+  return html;
+}
+
+function isLinkOnlyParagraph(text) {
+  const stripped = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '').replace(/[\s—\-|,]+/g, '');
+  return stripped.length === 0 && /\[([^\]]+)\]\(([^)]+)\)/.test(text);
+}
+
+function renderCtaRow(text) {
+  const linkPattern = /\[([^\]]+)\]\(([^)]+)\)/g;
+  let match;
+  let links = [];
+  while ((match = linkPattern.exec(text)) !== null) {
+    links.push({ label: match[1], href: match[2] });
+  }
+  let html = '<div class="smd-cta-row">';
+  links.forEach((link, idx) => {
+    const cls = idx === 0 ? 'smd-cta-primary' : 'smd-cta-secondary';
+    html += `<a href="${link.href}" class="${cls}">${link.label}</a>`;
+  });
+  html += '</div>';
+  return html;
+}
+
+function renderBlock(block, context) {
+  switch (block.type) {
+    case 'heading':
+      return `<h${block.level}>${inl(block.text)}</h${block.level}>`;
+    case 'paragraph':
+      if (isLinkOnlyParagraph(block.text)) return renderCtaRow(block.text);
+      return `<p>${inl(block.text)}</p>`;
+    case 'list': return '<ul>' + block.items.map(item => {
+      const dotLeaderMatch = item.match(/^(.+?)\s*\.{3,}\s*(.+)$/);
+      if (dotLeaderMatch) return `<li><span>${inl(dotLeaderMatch[1])}</span><span style="color:var(--text-muted);white-space:nowrap">${inl(dotLeaderMatch[2])}</span></li>`;
+      return `<li>${inl(item)}</li>`;
+    }).join('') + '</ul>';
+    case 'hr': return '<hr style="border:none;border-top:1px solid var(--border);margin:32px 0;">';
+    case 'form': return renderForm(block.content);
+    case 'image': return `<img src="${block.src}" alt="${block.alt}" style="max-width:100%;border-radius:var(--radius);">`;
+    case 'fenced': return renderFenced(block);
+    default: return '';
+  }
+}
+
+function renderForm(form) {
+  const method = form.action?.method || 'POST';
+  const url = form.action?.url || '#';
+  let html = `<form class="smd-form" method="${method}" action="${url}">`;
+  for (const group of form.groups) {
+    html += '<div class="smd-form-group">';
+    for (const field of group) {
+      const id = field.label.toLowerCase().replace(/\s+/g, '-');
+      const req = field.required ? ' required' : '';
+      const ph = field.placeholder ? ` placeholder="${field.placeholder}"` : '';
+      html += '<div class="smd-field">';
+      html += `<label for="${id}">${field.label}${field.required ? ' *' : ''}</label>`;
+      if (field.fieldType === 'paragraph') {
+        html += `<textarea id="${id}" name="${id}"${ph}${req}></textarea>`;
+      } else if (field.fieldType === 'select') {
+        html += `<select id="${id}" name="${id}"${req}>`;
+        html += `<option value="" disabled selected>Select...</option>`;
+        for (const opt of field.options) html += `<option value="${opt}">${opt}</option>`;
+        html += '</select>';
+      } else {
+        html += `<input type="${field.fieldType}" id="${id}" name="${id}"${ph}${req}>`;
+      }
+      html += '</div>';
+    }
+    html += '</div>';
+  }
+  if (form.action) html += `<button type="submit">${form.action.label}</button>`;
+  html += '</form>';
+  return html;
+}
+
+function renderFenced(block) {
+  const type = block.sectionType.toLowerCase().replace(/\s+/g, '-');
+  const innerBlocks = parseBlocks(block.rawLines.join('\n'));
+  let html = `<div class="smd-block smd-block-${type}">`;
+  for (const b of innerBlocks) html += renderBlock(b);
+  html += '</div>';
+  return html;
+}
+
+function inl(text) {
+  if (!text) return '';
+  return text
+    .replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>')
+    .replace(/__(.+?)__/g, '<span class="smd-large">$1</span>')
+    .replace(/_(.+?)_/g, '<u>$1</u>')
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
+    .replace(/([★☆⭐]{2,})/g, '<span class="smd-stars">$1</span>');
+}
+
+// ===== Navigation =====
+
+// ===== Header (from header.smd) =====
+
+let _headerCache = null; // Cache parsed header so we don't re-fetch on every page transition
+let _headerFetched = false;
+
+async function loadHeader() {
+  const mount = document.getElementById('smd-nav-mount');
+  mount.innerHTML = '';
+
+  // Fetch header.smd from the site directory (same dir as the current .smd file)
+  if (!_headerFetched) {
+    _headerFetched = true;
+    const dir = currentSmdFile ? currentSmdFile.substring(0, currentSmdFile.lastIndexOf('/') + 1) : '';
+    try {
+      const resp = await fetch(dir + 'header.smd');
+      if (resp.ok) {
+        const src = await resp.text();
+        _headerCache = parse(src);
+      }
+    } catch {}
+  }
+
+  if (!_headerCache) return; // No header.smd = no nav
+
+  const navStyle = currentTheme.nav || 'transparent';
+  const blocks = _headerCache.blocks;
+
+  const nav = document.createElement('nav');
+  nav.className = 'smd-nav';
+  nav.setAttribute('data-style', navStyle);
+
+  // H1 = brand
+  const h1 = blocks.find(b => b.type === 'heading' && b.level === 1);
+  if (h1) {
+    const brand = document.createElement('a');
+    brand.className = 'smd-nav-brand';
+    brand.href = 'index.smd';
+    brand.textContent = h1.text;
+    brand.addEventListener('click', (e) => {
+      if (isSmdLink('index.smd')) {
+        e.preventDefault();
+        navigateToSmd('index.smd', true, 'pop');
+      }
+    });
+    nav.appendChild(brand);
+  }
+
+  // List items = nav links
+  const list = blocks.find(b => b.type === 'list');
+  const ul = document.createElement('ul');
+  ul.className = 'smd-nav-links';
+  if (list) {
+    for (const item of list.items) {
+      const li = document.createElement('li');
+      // Parse the link from the list item text
+      const linkMatch = item.match(/\[([^\]]+)\]\(([^)]+)\)/);
+      if (linkMatch) {
+        const a = document.createElement('a');
+        a.textContent = linkMatch[1];
+        a.href = linkMatch[2];
+        a.addEventListener('click', (e) => {
+          const href = a.getAttribute('href');
+          // Handle anchor links on current page
+          if (href.includes('#') && !href.endsWith('.smd')) {
+            const parts = href.split('#');
+            const file = parts[0];
+            const anchor = parts[1];
+            if (!file || file === currentSmdFile?.split('/').pop()) {
+              e.preventDefault();
+              document.getElementById(anchor)?.scrollIntoView({ behavior: 'smooth' });
+              ul.classList.remove('open');
+              return;
+            }
+          }
+          if (isSmdLink(href)) {
+            e.preventDefault();
+            ul.classList.remove('open');
+            navigateToSmd(href, true, 'push');
+          }
+        });
+        li.appendChild(a);
+      } else {
+        li.textContent = item;
+      }
+      ul.appendChild(li);
+    }
+  }
+  nav.appendChild(ul);
+
+  // Hamburger
+  const toggle = document.createElement('button');
+  toggle.className = 'smd-nav-toggle';
+  toggle.setAttribute('aria-label', 'Menu');
+  toggle.innerHTML = '<span></span>';
+  toggle.addEventListener('click', () => ul.classList.toggle('open'));
+  nav.appendChild(toggle);
+
+  mount.appendChild(nav);
+
+  // Scroll behavior
+  let scrolled = false;
+  const scrollHandler = () => {
+    const isScrolled = window.scrollY > 80;
+    if (isScrolled !== scrolled) {
+      scrolled = isScrolled;
+      nav.classList.toggle('scrolled', scrolled);
+    }
+  };
+  window.removeEventListener('scroll', _navScrollHandler);
+  _navScrollHandler = scrollHandler;
+  window.addEventListener('scroll', scrollHandler, { passive: true });
+  scrollHandler(); // Set initial state
+}
+let _navScrollHandler = () => {};
+
+// ===== Footer (from footer.smd) =====
+
+let _footerCache = null;
+let _footerFetched = false;
+
+async function loadFooter() {
+  if (!_footerFetched) {
+    _footerFetched = true;
+    const dir = currentSmdFile ? currentSmdFile.substring(0, currentSmdFile.lastIndexOf('/') + 1) : '';
+    try {
+      const resp = await fetch(dir + 'footer.smd');
+      if (resp.ok) {
+        const src = await resp.text();
+        _footerCache = parse(src);
+      }
+    } catch {}
+  }
+
+  if (!_footerCache) return; // No footer.smd = no footer
+
+  const output = document.getElementById('output');
+  const footerStyle = currentTheme.footer || 'minimal';
+  const blocks = _footerCache.blocks;
+
+  const footer = document.createElement('footer');
+  footer.className = 'smd-footer';
+  footer.setAttribute('data-style', footerStyle);
+
+  // Render footer content from the parsed blocks
+  let html = '';
+  for (const block of blocks) {
+    if (block.type === 'heading' && block.level === 1) {
+      html += `<div class="smd-footer-title">${inl(block.text)}</div>`;
+    } else if (block.type === 'list') {
+      html += '<div class="smd-footer-links">';
+      for (const item of block.items) {
+        html += inl(item) + ' ';
+      }
+      html += '</div>';
+    } else if (block.type === 'paragraph') {
+      html += `<div class="smd-footer-copy">${inl(block.text)}</div>`;
+    }
+  }
+  footer.innerHTML = html;
+
+  output.appendChild(footer);
+}
+
+// ===== Scroll Animations =====
+
+function initScrollAnimations() {
+  if (currentTheme.animation === 'none') {
+    // Remove animation classes entirely
+    document.querySelectorAll('.smd-animate').forEach(el => {
+      el.classList.remove('smd-animate');
+      el.classList.add('smd-visible');
+    });
+    return;
+  }
+  // Immediately reveal above-the-fold content
+  document.querySelectorAll('.smd-hero.smd-animate').forEach(el => {
+    setTimeout(() => el.classList.add('smd-visible'), 100);
+  });
+  // Reveal first section immediately too (it's usually visible)
+  const firstSection = document.querySelector('.smd-section.smd-animate');
+  if (firstSection) setTimeout(() => firstSection.classList.add('smd-visible'), 200);
+
+  // Use IntersectionObserver for remaining sections
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('smd-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.05, rootMargin: '0px 0px 50px 0px' });
+
+  document.querySelectorAll('.smd-animate:not(.smd-hero):not(.smd-visible)').forEach(el => observer.observe(el));
+}
+
+// ===== Carousel =====
+
+// Per-carousel state: pause timestamp and current target index
+const _carouselPauseUntil = {};
+const _carouselTargetIdx = {};
+
+function _carouselGoTo(id, idx) {
+  const el = document.getElementById(id);
+  const track = el.querySelector('.smd-carousel-track');
+  _carouselTargetIdx[id] = idx;
+  track.style.transform = `translateX(-${idx * 100}%)`;
+  el.querySelectorAll('.smd-carousel-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+}
+
+function carouselNav(id, dir) {
+  const el = document.getElementById(id);
+  const count = el.querySelectorAll('.smd-carousel-slide').length;
+  const current = _carouselTargetIdx[id] || 0;
+  const next = (current + dir + count) % count;
+  _carouselGoTo(id, next);
+  _carouselPauseUntil[id] = Date.now() + 10000;
+}
+
+function carouselGo(id, idx) {
+  _carouselGoTo(id, idx);
+  _carouselPauseUntil[id] = Date.now() + 10000;
+}
+
+// Auto-advance every 5s, pausing for 10s after manual interaction
+setInterval(() => {
+  document.querySelectorAll('.smd-carousel').forEach(el => {
+    const count = el.querySelectorAll('.smd-carousel-slide').length;
+    if (count <= 1) return;
+    if (_carouselPauseUntil[el.id] && Date.now() < _carouselPauseUntil[el.id]) return;
+    const current = _carouselTargetIdx[el.id] || 0;
+    const next = (current + 1) % count;
+    _carouselGoTo(el.id, next);
+  });
+}, 5000);
+
+// ===== Theme =====
+
+function applyTheme(theme) {
+  currentTheme = theme;
+  const root = document.documentElement;
+
+  // Data attributes for CSS selectors
+  root.setAttribute('data-sections', theme.sections || 'alternating');
+  root.setAttribute('data-cards', theme.cards || 'elevated');
+  root.setAttribute('data-animation', theme.animation || 'subtle');
+  root.setAttribute('data-spacing', theme.spacing || 'normal');
+
+  if (theme.colors) {
+    const c = theme.colors;
+    if (c.primary) root.style.setProperty('--primary', c.primary);
+    if (c.primaryDark) root.style.setProperty('--primary-dark', c.primaryDark);
+    if (c.primaryLight) root.style.setProperty('--primary-light', c.primaryLight);
+    if (c.accent) root.style.setProperty('--accent', c.accent);
+    if (c.background) root.style.setProperty('--bg', c.background);
+    if (c.surface) root.style.setProperty('--surface', c.surface);
+    if (c.surfaceWarm) root.style.setProperty('--surface-warm', c.surfaceWarm);
+    if (c.text) root.style.setProperty('--text', c.text);
+    if (c.textMuted) root.style.setProperty('--text-muted', c.textMuted);
+    if (c.border) root.style.setProperty('--border', c.border);
+    if (c.borderLight) root.style.setProperty('--border-light', c.borderLight);
+  }
+  if (theme.fonts) {
+    const families = [];
+    if (theme.fonts.heading) families.push(theme.fonts.heading);
+    if (theme.fonts.body) families.push(theme.fonts.body);
+    if (theme.fonts.accent) families.push(theme.fonts.accent);
+    // Load Google Fonts
+    const unique = [...new Set(families)];
+    if (unique.length > 0) {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = `https://fonts.googleapis.com/css2?${unique.map(f => `family=${encodeURIComponent(f)}:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400`).join('&')}&display=swap`;
+      document.head.appendChild(link);
+    }
+    if (theme.fonts.body) root.style.setProperty('--font-body', `'${theme.fonts.body}', Georgia, serif`);
+    if (theme.fonts.heading) root.style.setProperty('--font-heading', `'${theme.fonts.heading}', Georgia, serif`);
+  }
+  if (theme.radius !== undefined) root.style.setProperty('--radius', theme.radius + 'px');
+  if (theme.radiusLg !== undefined) root.style.setProperty('--radius-lg', theme.radiusLg + 'px');
+
+  if (theme.mode === 'dark') {
+    root.style.setProperty('--bg', theme.colors?.background || '#0f0f0f');
+    root.style.setProperty('--surface', theme.colors?.surface || '#1a1a1a');
+    root.style.setProperty('--surface-warm', theme.colors?.surfaceWarm || '#151515');
+    root.style.setProperty('--text', theme.colors?.text || '#e8e8e8');
+    root.style.setProperty('--text-muted', theme.colors?.textMuted || '#999');
+    root.style.setProperty('--text-light', theme.colors?.textLight || '#666');
+    root.style.setProperty('--border', theme.colors?.border || '#2a2a2a');
+    root.style.setProperty('--border-light', theme.colors?.borderLight || '#222');
+  }
+}
+
+// ===== Boot =====
+
+const params = new URLSearchParams(location.search);
+const smdFile = params.get('file') || 'example.smd';
+const themeFile = params.get('theme');
+
+async function boot() {
+  if (themeFile) {
+    try {
+      const resp = await fetch(themeFile);
+      const theme = await resp.json();
+      applyTheme(theme);
+    } catch (e) { console.warn('Theme not found, using defaults'); }
+  }
+  await loadAndRender(smdFile);
+  // Store the initial page in history state so popstate works on first back
+  history.replaceState({ smdFile }, '', location.href);
+}
+
+boot();
+
+// ===== Live Editor (dev tool) =====
+// Toggle with 'e' key or the button
+
+let _editorOpen = false;
+let _editorSource = '';
+
+function initEditor() {
+  // Toggle button
+  const btn = document.createElement('button');
+  btn.className = 'smd-editor-toggle';
+  btn.innerHTML = '&lt;/&gt;';
+  btn.title = 'Toggle editor (E)';
+  btn.addEventListener('click', toggleEditor);
+  document.body.appendChild(btn);
+
+  // Panel
+  const panel = document.createElement('div');
+  panel.className = 'smd-editor-panel';
+  panel.id = 'smd-editor-panel';
+  panel.innerHTML = `
+    <div class="smd-editor-header">
+      <strong id="smd-editor-filename">editor</strong>
+      <span>Live preview &middot; Press E to toggle</span>
+    </div>
+    <textarea id="smd-editor-textarea" spellcheck="false"></textarea>
+  `;
+  document.body.insertBefore(panel, document.getElementById('smd-nav-mount'));
+
+  const textarea = document.getElementById('smd-editor-textarea');
+  let debounceTimer = null;
+  let rendering = false;
+  textarea.addEventListener('input', () => {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => {
+      if (rendering) return;
+      rendering = true;
+      requestAnimationFrame(() => {
+        renderFromSource(textarea.value);
+        rendering = false;
+      });
+    }, 400);
+  });
+
+  // Handle tab key for indentation
+  textarea.addEventListener('keydown', (e) => {
+    if (e.key === 'Tab') {
+      e.preventDefault();
+      const start = textarea.selectionStart;
+      const end = textarea.selectionEnd;
+      textarea.value = textarea.value.substring(0, start) + '  ' + textarea.value.substring(end);
+      textarea.selectionStart = textarea.selectionEnd = start + 2;
+      textarea.dispatchEvent(new Event('input'));
+    }
+  });
+}
+
+function toggleEditor() {
+  const panel = document.getElementById('smd-editor-panel');
+  _editorOpen = !_editorOpen;
+  panel.classList.toggle('open', _editorOpen);
+  if (_editorOpen) {
+    // Load current source into editor
+    loadSourceIntoEditor();
+  }
+}
+
+async function loadSourceIntoEditor() {
+  if (!currentSmdFile) return;
+  try {
+    const resp = await fetch(currentSmdFile);
+    _editorSource = await resp.text();
+    document.getElementById('smd-editor-textarea').value = _editorSource;
+    document.getElementById('smd-editor-filename').textContent = currentSmdFile.split('/').pop();
+  } catch {}
+}
+
+let _renderingFromEditor = false;
+
+function renderFromSource(source) {
+  if (_renderingFromEditor) return; // guard against re-entrant calls
+  _renderingFromEditor = true;
+  try {
+    const parsed = parse(source);
+    const output = document.getElementById('output');
+    output.innerHTML = render(parsed);
+    if (parsed.frontmatter.title) document.title = parsed.frontmatter.title;
+    // Make everything visible immediately (no scroll animations during live editing)
+    output.querySelectorAll('.smd-animate').forEach(el => el.classList.add('smd-visible'));
+    interceptSmdLinks();
+  } catch (e) {
+    // Parse/render errors during live editing are expected while user is mid-typing - ignore silently
+    console.debug('SMD render error (expected during editing):', e.message);
+  } finally {
+    _renderingFromEditor = false;
+  }
+}
+
+// Listen for 'e' key to toggle
+document.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
+  if (e.key === 'e' || e.key === 'E') {
+    e.preventDefault();
+    toggleEditor();
+  }
+});
+
+initEditor();
+
+// Hook into loadAndRender to update editor when navigating pages
+const _origLoadAndRender = loadAndRender;
+loadAndRender = async function(url) {
+  await _origLoadAndRender.call(this, url);
+  if (_editorOpen) loadSourceIntoEditor();
+};
+
+// ===== Site Switcher (dev tool) =====
+// Press [ and ] to cycle through demo sites, or number keys 1-5
+const DEMO_SITES = [
+  { name: 'giuseppe', label: 'Giuseppe (Restaurant)' },
+  { name: 'nonprofit', label: 'River Valley (Nonprofit)' },
+  { name: 'portfolio', label: 'Sarah Chen (Portfolio)' },
+  { name: 'salon', label: 'Bloom Studio (Salon)' },
+  { name: 'wedding', label: 'Emma & James (Wedding)' },
+];
+
+function getCurrentSiteIndex() {
+  const file = params.get('file') || '';
+  return DEMO_SITES.findIndex(s => file.includes(s.name));
+}
+
+function goToSite(index) {
+  const site = DEMO_SITES[index];
+  if (!site) return;
+  // Detect the sites base path from the current file param
+  const curFile = params.get('file') || '';
+  let base;
+  const sitesMatch = curFile.match(/^(.*\/sites\/)[^/]+\//);
+  if (sitesMatch) {
+    base = sitesMatch[1]; // e.g. "../sites/"
+  } else {
+    base = '../sites/'; // fallback
+  }
+  const newUrl = `${location.pathname}?file=${base}${site.name}/index.smd&theme=${base}${site.name}/theme.json&_t=${Date.now()}`;
+  location.href = newUrl;
+}
+
+// Show current site indicator
+function showSiteIndicator(siteName) {
+  let el = document.getElementById('smd-site-indicator');
+  if (!el) {
+    el = document.createElement('div');
+    el.id = 'smd-site-indicator';
+    el.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.8);color:white;padding:8px 20px;border-radius:8px;font:13px/1.5 system-ui,sans-serif;z-index:9999;transition:opacity 0.3s;pointer-events:none;';
+    document.body.appendChild(el);
+  }
+  el.textContent = `${siteName}  ·  [ ] to cycle  ·  1-5 to jump`;
+  el.style.opacity = '1';
+  clearTimeout(el._timer);
+  el._timer = setTimeout(() => { el.style.opacity = '0'; }, 2500);
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
+  const cur = getCurrentSiteIndex();
+  if (e.key === ']' || e.key === 'ArrowRight' && e.altKey) {
+    e.preventDefault();
+    goToSite((cur + 1) % DEMO_SITES.length);
+  } else if (e.key === '[' || e.key === 'ArrowLeft' && e.altKey) {
+    e.preventDefault();
+    goToSite((cur - 1 + DEMO_SITES.length) % DEMO_SITES.length);
+  } else if (e.key >= '1' && e.key <= '5') {
+    e.preventDefault();
+    goToSite(parseInt(e.key) - 1);
+  }
+});
+
+// Show indicator on load
+const curIdx = getCurrentSiteIndex();
+if (curIdx >= 0) setTimeout(() => showSiteIndicator(DEMO_SITES[curIdx].label), 500);
+</script>
+</body>
+</html>

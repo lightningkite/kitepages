@@ -1,0 +1,93 @@
+---
+title: Giuseppe's Italian Restaurant
+description: Authentic Italian cuisine in downtown Portland since 1985
+image: storefront.jpg
+---
+
+>>>
+::: bg https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&q=80
+# Giuseppe's Italian Restaurant
+Authentic Italian cuisine in downtown Portland. Family owned since 1985.
+:::
+>>>
+::: bg https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&q=80
+# A Warm Welcome Awaits
+Our dining room seats 80 guests in an intimate, candlelit atmosphere.
+:::
+>>>
+::: bg https://images.unsplash.com/photo-1600891964092-4316c288032e?w=1200&q=80
+# The Garden Patio
+Dine under the stars on our award-winning patio, open May through October.
+:::
+>>>
+
+## Our Menu
+
+### Appetizers
+
+- Bruschetta — $8
+- Calamari Fritti — $12
+- Caprese Salad — $10
+- Arancini — $9
+
+### Entrees
+
+- Margherita Pizza — $14
+- Linguine alle Vongole — $18
+- Osso Buco — $24
+- Eggplant Parmigiana — $16
+
+### Desserts
+
+- Tiramisu — $9
+- Panna Cotta — $8
+- Cannoli — $7
+- Affogato — $6
+
+## What Our Guests Say
+
+:: Maria S.
+   ★★★★★
+   The best Italian food outside of Italy. The osso buco melts in your mouth. We've been coming here for years and it never disappoints.
+
+:: James R.
+   ★★★★☆
+   Great atmosphere and food. The wine list is exceptional. A bit pricey but absolutely worth it for special occasions.
+
+:: Linda K.
+   ★★★★★
+   We come here every anniversary. The garden patio is magical in the summer. The staff always makes us feel like family.
+
+## Hours & Location
+
+### Hours
+
+Monday–Friday: 11am–10pm
+Saturday: 10am–11pm
+Sunday: 10am–9pm
+
+### Find Us
+
+123 Main Street
+Portland, OR 97201
+(503) 555-0142
+
+### Reservations
+
+Book online or call us.
+Walk-ins welcome.
+
+## Make a Reservation
+
+::: form
+Name*: <text>
+Email*: <email>
+Phone: <text>
+
+Date*: <date>
+Party size*: <1 / 2 / 3-4 / 5-6 / 7+>
+
+Special requests: <paragraph>
+
+[Reserve a Table](POST /reservations)
+:::

@@ -1,0 +1,28 @@
+{
+  "colors": {
+    "primary": "#7d6b5d",
+    "primaryDark": "#5c4f44",
+    "primaryLight": "#e8ddd4",
+    "accent": "#b08968",
+    "background": "#faf8f5",
+    "surface": "#ffffff",
+    "surfaceWarm": "#f3ede6",
+    "text": "#3d3530",
+    "textMuted": "#8a7e76",
+    "border": "#e0d8cf",
+    "borderLight": "#ede8e2"
+  },
+  "fonts": {
+    "heading": "Cormorant Garamond",
+    "body": "Lora"
+  },
+  "radius": 4,
+  "radiusLg": 8,
+  "mode": "light",
+  "nav": "transparent",
+  "sections": "clean",
+  "cards": "elevated",
+  "animation": "subtle",
+  "footer": "centered",
+  "spacing": "spacious"
+}
