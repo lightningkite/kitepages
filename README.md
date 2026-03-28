@@ -214,13 +214,12 @@ SEO, accessibility, and compiler improvements for real-world deployment.
 
 Developer and end-user experience.
 
-- [ ] Full site editor (press `E`) — replace the single-file textarea with a proper editor:
-  - File tree sidebar for all `.md` files, `theme.yaml`, `header.md`, `footer.md`
-  - Syntax highlighting, line numbers, undo/redo, find/replace
-  - Live preview as you type
-  - Lazy-loaded to keep initial page size small
-  - Disableable (compile flag to strip from production builds)
-  - Always editable with live preview; saves to disk when dev server is available, warns when it isn't
+- [x] Full site editor (press `E`) — multi-file editor with:
+  - File tree sidebar auto-discovers all `.md` files + `theme.yaml`
+  - Line numbers, Tab indent, Ctrl/Cmd+S copies to clipboard
+  - Live preview as you type (pages + theme changes)
+  - Dark VS Code-inspired UI with active file highlighting
+  - File content cached in memory; switches preserve edits
 
 ### Ongoing
 

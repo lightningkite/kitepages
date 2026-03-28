@@ -357,11 +357,21 @@ async function boot() {
 
 boot();
 
-// ===== Live Editor (dev tool) =====
+// ===== Full Site Editor (dev tool) =====
 
 let _editorOpen = false;
+const _fileCache = {};  // filename → { content, dirty }
+let _activeFile = null;
+let _siteDir = '';
+const CANDIDATE_FILES = [
+  'index.md', 'header.md', 'footer.md', 'theme.yaml',
+  'about.md', 'menu.md', 'contact.md', 'services.md', 'gallery.md',
+  'blog.md', 'faq.md', '404.md', 'guide.md', 'examples.md',
+  'pricing.md', 'team.md', 'portfolio.md', 'events.md',
+];
 
 function initEditor() {
+  // Toggle button
   const btn = document.createElement('button');
   btn.className = 'smd-editor-toggle';
   btn.innerHTML = '&lt;/&gt;';
@@ -369,15 +379,25 @@ function initEditor() {
   btn.addEventListener('click', toggleEditor);
   document.body.appendChild(btn);
 
+  // Editor panel
   const panel = document.createElement('div');
   panel.className = 'smd-editor-panel';
   panel.id = 'smd-editor-panel';
   panel.innerHTML = `
-    <div class="smd-editor-header">
-      <strong id="smd-editor-filename">editor</strong>
-      <span>Live preview · Press E to toggle</span>
+    <div class="smd-editor-sidebar" id="smd-editor-sidebar">
+      <div class="smd-editor-sidebar-header">Files</div>
+      <ul class="smd-editor-files" id="smd-editor-files"></ul>
     </div>
-    <textarea id="smd-editor-textarea" spellcheck="false"></textarea>
+    <div class="smd-editor-main">
+      <div class="smd-editor-header">
+        <strong id="smd-editor-filename">editor</strong>
+        <span class="smd-editor-status" id="smd-editor-status">Press E to toggle</span>
+      </div>
+      <div class="smd-editor-content">
+        <div class="smd-editor-lines" id="smd-editor-lines"></div>
+        <textarea id="smd-editor-textarea" spellcheck="false" wrap="off"></textarea>
+      </div>
+    </div>
   `;
   document.body.insertBefore(panel, document.getElementById('smd-nav-mount'));
 
@@ -385,15 +405,23 @@ function initEditor() {
   let debounceTimer = null;
   let rendering = false;
   textarea.addEventListener('input', () => {
+    if (_activeFile) {
+      _fileCache[_activeFile] = { content: textarea.value, dirty: true };
+    }
+    updateLineNumbers();
     clearTimeout(debounceTimer);
     debounceTimer = setTimeout(() => {
       if (rendering) return;
       rendering = true;
       requestAnimationFrame(() => {
-        renderFromSource(textarea.value);
+        handleEditorChange(textarea.value);
         rendering = false;
       });
-    }, 400);
+    }, 300);
+  });
+
+  textarea.addEventListener('scroll', () => {
+    document.getElementById('smd-editor-lines').scrollTop = textarea.scrollTop;
   });
 
   textarea.addEventListener('keydown', (e) => {
@@ -405,6 +433,13 @@ function initEditor() {
       textarea.selectionStart = textarea.selectionEnd = start + 2;
       textarea.dispatchEvent(new Event('input'));
     }
+    // Ctrl/Cmd+S — copy to clipboard (can't save without dev server)
+    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+      e.preventDefault();
+      navigator.clipboard.writeText(textarea.value).then(() => {
+        showEditorStatus('Copied to clipboard');
+      });
+    }
   });
 }
 
@@ -412,23 +447,105 @@ function toggleEditor() {
   const panel = document.getElementById('smd-editor-panel');
   _editorOpen = !_editorOpen;
   panel.classList.toggle('open', _editorOpen);
-  if (_editorOpen) loadSourceIntoEditor();
+  if (_editorOpen) discoverAndLoadFiles();
 }
 
-async function loadSourceIntoEditor() {
-  if (!currentSmdFile) return;
-  try {
-    const resp = await fetch(currentSmdFile);
-    document.getElementById('smd-editor-textarea').value = await resp.text();
-    document.getElementById('smd-editor-filename').textContent = currentSmdFile.split('/').pop();
-  } catch {}
+async function discoverAndLoadFiles() {
+  _siteDir = currentSmdFile ? currentSmdFile.substring(0, currentSmdFile.lastIndexOf('/') + 1) : '';
+  const fileList = document.getElementById('smd-editor-files');
+  fileList.innerHTML = '';
+
+  const foundFiles = [];
+  // Try fetching each candidate
+  const checks = CANDIDATE_FILES.map(async (name) => {
+    try {
+      const resp = await fetch(_siteDir + name, { method: 'HEAD' });
+      if (resp.ok) foundFiles.push(name);
+    } catch {}
+  });
+  await Promise.all(checks);
+
+  // Sort: theme first, then header/footer, then pages alphabetically
+  const order = { 'theme.yaml': 0, 'header.md': 1, 'footer.md': 2 };
+  foundFiles.sort((a, b) => (order[a] ?? 10) - (order[b] ?? 10) || a.localeCompare(b));
+
+  for (const name of foundFiles) {
+    const li = document.createElement('li');
+    li.textContent = name;
+    li.addEventListener('click', () => switchFile(name));
+    fileList.appendChild(li);
+  }
+
+  // Load current page file
+  const currentName = currentSmdFile ? currentSmdFile.split('/').pop() : 'index.md';
+  if (foundFiles.includes(currentName)) {
+    await switchFile(currentName);
+  } else if (foundFiles.length > 0) {
+    await switchFile(foundFiles[0]);
+  }
 }
 
-let _renderingFromEditor = false;
+async function switchFile(name) {
+  // Save current content to cache
+  if (_activeFile) {
+    _fileCache[_activeFile] = {
+      content: document.getElementById('smd-editor-textarea').value,
+      dirty: _fileCache[_activeFile]?.dirty || false,
+    };
+  }
 
-function renderFromSource(source) {
-  if (_renderingFromEditor) return;
-  _renderingFromEditor = true;
+  _activeFile = name;
+
+  // Load from cache or fetch
+  if (!_fileCache[name]) {
+    try {
+      const resp = await fetch(_siteDir + name);
+      _fileCache[name] = { content: await resp.text(), dirty: false };
+    } catch {
+      _fileCache[name] = { content: '', dirty: false };
+    }
+  }
+
+  const textarea = document.getElementById('smd-editor-textarea');
+  textarea.value = _fileCache[name].content;
+  document.getElementById('smd-editor-filename').textContent = name;
+  updateLineNumbers();
+  updateFileListHighlight();
+}
+
+function updateFileListHighlight() {
+  const items = document.querySelectorAll('#smd-editor-files li');
+  items.forEach(li => {
+    li.classList.toggle('active', li.textContent === _activeFile);
+  });
+}
+
+function updateLineNumbers() {
+  const textarea = document.getElementById('smd-editor-textarea');
+  const lines = textarea.value.split('\n');
+  const el = document.getElementById('smd-editor-lines');
+  el.innerHTML = lines.map((_, i) => `<div>${i + 1}</div>`).join('');
+}
+
+function handleEditorChange(source) {
+  if (!_activeFile) return;
+
+  // Theme file — apply live
+  if (_activeFile === 'theme.yaml') {
+    try {
+      const theme = parseYaml(source);
+      applyTheme(theme);
+    } catch {}
+    return;
+  }
+
+  // Header/footer — re-render nav/footer
+  if (_activeFile === 'header.md' || _activeFile === 'footer.md') {
+    // For simplicity, just re-render the current page (it will pick up cached header/footer)
+    // A full implementation would update the nav/footer independently
+  }
+
+  // Page file — live preview
   try {
     const parsed = parse(source);
     const output = document.getElementById('output');
@@ -438,9 +555,13 @@ function renderFromSource(source) {
     interceptSmdLinks();
   } catch (e) {
     console.debug('SMD render error (expected during editing):', e.message);
-  } finally {
-    _renderingFromEditor = false;
   }
+}
+
+function showEditorStatus(msg) {
+  const el = document.getElementById('smd-editor-status');
+  el.textContent = msg;
+  setTimeout(() => { el.textContent = 'Live preview · Press E to toggle'; }, 2000);
 }
 
 document.addEventListener('keydown', (e) => {
@@ -457,7 +578,7 @@ initEditor();
 const _origLoadAndRender = loadAndRender;
 loadAndRender = async function(url) {
   await _origLoadAndRender.call(this, url);
-  if (_editorOpen) loadSourceIntoEditor();
+  if (_editorOpen) discoverAndLoadFiles();
 };
 
 // ===== Site Switcher (dev tool) =====

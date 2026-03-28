@@ -929,22 +929,18 @@ body:has(.smd-nav[data-style="transparent"]) .smd-page > .smd-carousel:first-chi
   bottom: 0;
   width: 45%;
   min-width: 360px;
-  max-width: 600px;
+  max-width: 640px;
   z-index: 150;
   background: #1e1e1e;
   color: #d4d4d4;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   transform: translateX(-100%);
   transition: transform 0.3s ease;
   box-shadow: 4px 0 24px rgba(0,0,0,0.3);
 }
 .smd-editor-panel.open {
   transform: translateX(0);
-}
-.smd-editor-panel.open ~ .smd-page,
-.smd-editor-panel.open ~ #output {
-  margin-left: 45%;
 }
 body:has(.smd-editor-panel.open) .smd-page {
   margin-left: auto;
@@ -953,24 +949,91 @@ body:has(.smd-editor-panel.open) .smd-page {
   transition: max-width 0.3s ease;
 }
 body:has(.smd-editor-panel.open) .smd-nav {
-  left: min(45%, 600px);
+  left: min(45%, 640px);
   transition: left 0.3s ease;
 }
 body:has(.smd-editor-panel.open) .smd-editor-toggle {
-  left: calc(min(45%, 600px) + 12px);
+  left: calc(min(45%, 640px) + 12px);
   right: auto;
+}
+
+/* Editor sidebar — file tree */
+.smd-editor-sidebar {
+  width: 160px;
+  flex-shrink: 0;
+  background: #181818;
+  border-right: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+.smd-editor-sidebar-header {
+  padding: 10px 12px;
+  font: 11px/1.4 system-ui, sans-serif;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-bottom: 1px solid #2a2a2a;
+}
+.smd-editor-files {
+  list-style: none;
+  padding: 4px 0;
+}
+.smd-editor-files li {
+  padding: 5px 12px;
+  font: 13px/1.4 system-ui, sans-serif;
+  color: #aaa;
+  cursor: pointer;
+  border-left: 2px solid transparent;
+}
+.smd-editor-files li:hover { background: #252525; color: #ddd; }
+.smd-editor-files li.active {
+  background: #1e1e1e;
+  color: #fff;
+  border-left-color: #569cd6;
+}
+
+/* Editor main area */
+.smd-editor-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 .smd-editor-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 16px;
+  padding: 8px 16px;
   border-bottom: 1px solid #333;
   font: 12px/1.4 system-ui, sans-serif;
   color: #888;
   flex-shrink: 0;
+  gap: 8px;
 }
 .smd-editor-header strong { color: #ccc; font-size: 13px; }
+.smd-editor-status { flex: 1; text-align: right; }
+
+/* Editor content — line numbers + textarea */
+.smd-editor-content {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+.smd-editor-lines {
+  width: 40px;
+  flex-shrink: 0;
+  background: #1a1a1a;
+  padding: 16px 0;
+  overflow: hidden;
+  text-align: right;
+  user-select: none;
+}
+.smd-editor-lines div {
+  font: 14px/1.6 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  padding-right: 8px;
+  color: #555;
+}
 .smd-editor-panel textarea {
   flex: 1;
   background: #1e1e1e;
@@ -983,6 +1046,7 @@ body:has(.smd-editor-panel.open) .smd-editor-toggle {
   tab-size: 2;
   white-space: pre;
   overflow: auto;
+  min-width: 0;
 }
 .smd-editor-panel textarea::selection {
   background: #264f78;
