@@ -267,6 +267,25 @@ describe('parseBlocks', () => {
     assert.equal(blocks[0].type, 'alert');
     assert.equal(blocks[0].alertType, 'tip');
   });
+
+  it('parses directives', () => {
+    const blocks = parseBlocks('{:toc}'.split('\n'));
+    assert.equal(blocks[0].type, 'directive');
+    assert.equal(blocks[0].name, 'toc');
+  });
+
+  it('parses image with sizing', () => {
+    const blocks = parseBlocks('![Photo](img.jpg =300x200)'.split('\n'));
+    assert.equal(blocks[0].type, 'image');
+    assert.equal(blocks[0].width, 300);
+    assert.equal(blocks[0].height, 200);
+  });
+
+  it('parses image with width only', () => {
+    const blocks = parseBlocks('![Photo](img.jpg =400x)'.split('\n'));
+    assert.equal(blocks[0].width, 400);
+    assert.equal(blocks[0].height, null);
+  });
 });
 
 describe('parseFormFields', () => {

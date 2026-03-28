@@ -159,6 +159,9 @@ export function render(doc, theme = {}) {
   let sectionIndex = 0;
   const anim = theme.animation || 'subtle';
 
+  // Collect all headings for {:toc} directive
+  _docHeadings = collectHeadings(blocks);
+
   while (i < blocks.length) {
     const block = blocks[i];
 
@@ -244,9 +247,16 @@ export function renderBlock(block, context) {
       const idAttr = block.id ? ` id="${block.id}"` : '';
       return `<h${block.level}${idAttr}>${inl(block.text)}</h${block.level}>`;
     }
-    case 'paragraph':
+    case 'paragraph': {
+      // Check for standalone embed URL
+      const trimmed = block.text.trim();
+      if (/^https?:\/\//.test(trimmed) && !/\s/.test(trimmed)) {
+        const embed = getEmbed(trimmed);
+        if (embed) return renderEmbed(embed);
+      }
       if (isLinkOnlyParagraph(block.text)) return renderCtaRow(block.text);
       return `<p>${inl(block.text)}</p>`;
+    }
     case 'list':
       return renderList(block);
     case 'hr':
@@ -255,8 +265,11 @@ export function renderBlock(block, context) {
       return renderCode(block);
     case 'form':
       return renderForm(block.content);
-    case 'image':
-      return `<img src="${block.src}" alt="${block.alt}" loading="lazy" style="max-width:100%;border-radius:var(--radius);">`;
+    case 'image': {
+      const w = block.width ? ` width="${block.width}"` : '';
+      const h = block.height ? ` height="${block.height}"` : '';
+      return `<img src="${block.src}" alt="${block.alt}"${w}${h} loading="lazy" style="max-width:100%;border-radius:var(--radius);">`;
+    }
     case 'columns':
       return renderColumns(block);
     case 'carousel':
@@ -277,6 +290,8 @@ export function renderBlock(block, context) {
       return renderRecord(block);
     case 'expandable':
       return renderExpandable(block);
+    case 'directive':
+      return renderDirective(block);
     case 'html':
       return block.content;
     case 'fenced':
@@ -351,7 +366,11 @@ function renderBgSection(block) {
 function renderGallery(images) {
   const n = images.length;
   let html = `<figure class="smd-gallery count-${Math.min(n, 4)}">`;
-  for (const img of images) html += `<img src="${img.src}" alt="${img.alt}" loading="lazy">`;
+  for (const img of images) {
+    const w = img.width ? ` width="${img.width}"` : '';
+    const h = img.height ? ` height="${img.height}"` : '';
+    html += `<img src="${img.src}" alt="${img.alt}"${w}${h} loading="lazy">`;
+  }
   html += '</figure>';
   return html;
 }
@@ -460,6 +479,66 @@ function renderList(block) {
 
     return `<li>${inl(item)}</li>`;
   }).join('') + `</${tag}>`;
+}
+
+// ============================================================
+// Heading collection for {:toc} directive
+// ============================================================
+
+let _docHeadings = [];
+
+function collectHeadings(blocks) {
+  const result = [];
+  for (const b of blocks) {
+    if (b.type === 'heading' && b.level >= 2) result.push(b);
+    if (b.blocks) result.push(...collectHeadings(b.blocks));
+    if (b.columns) for (const col of b.columns) result.push(...collectHeadings(col));
+    if (b.slides) for (const slide of b.slides) result.push(...collectHeadings(slide));
+  }
+  return result;
+}
+
+function renderDirective(block) {
+  if (block.name === 'toc') return renderToc();
+  if (block.name === 'nav') return ''; // Future: auto-generated page nav
+  return '';
+}
+
+function renderToc() {
+  if (_docHeadings.length === 0) return '';
+  let html = '<nav class="smd-toc" aria-label="Table of contents"><ul>';
+  for (const h of _docHeadings) {
+    const indent = h.level > 2 ? ` class="smd-toc-indent"` : '';
+    html += `<li${indent}><a href="#${h.id}">${h.text}</a></li>`;
+  }
+  html += '</ul></nav>';
+  return html;
+}
+
+// ============================================================
+// Embed detection & rendering
+// ============================================================
+
+function getEmbed(url) {
+  let m;
+  // YouTube
+  m = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]+)/);
+  if (m) return { type: 'youtube', id: m[1] };
+  // Vimeo
+  m = url.match(/vimeo\.com\/(\d+)/);
+  if (m) return { type: 'vimeo', id: m[1] };
+  return null;
+}
+
+function renderEmbed(embed) {
+  const wrapper = '<div class="smd-embed">';
+  if (embed.type === 'youtube') {
+    return `${wrapper}<iframe src="https://www.youtube.com/embed/${embed.id}" frameborder="0" allowfullscreen loading="lazy" title="YouTube video"></iframe></div>`;
+  }
+  if (embed.type === 'vimeo') {
+    return `${wrapper}<iframe src="https://player.vimeo.com/video/${embed.id}" frameborder="0" allowfullscreen loading="lazy" title="Vimeo video"></iframe></div>`;
+  }
+  return '';
 }
 
 function renderFencedGeneric(block) {

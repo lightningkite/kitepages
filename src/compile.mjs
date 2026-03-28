@@ -6,6 +6,7 @@ import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from 
 import { join, basename, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import yaml from 'js-yaml';
+import hljs from 'highlight.js/lib/common';
 import { parse } from './parser.mjs';
 import { render, renderNav, renderFooter, getThemeVars, getGoogleFontsUrl, getThemeDataAttrs } from './renderer.mjs';
 
@@ -149,6 +150,15 @@ ${footerHtml}
 </script>
 </body>
 </html>`;
+
+    // Syntax highlighting in code blocks
+    html = html.replace(/<pre><code class="language-([\w.-]+)">([\s\S]*?)<\/code><\/pre>/g, (match, lang, code) => {
+      try {
+        const decoded = code.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"');
+        const result = hljs.highlight(decoded, { language: lang, ignoreIllegals: true });
+        return `<pre><code class="language-${lang} hljs">${result.value}</code></pre>`;
+      } catch { return match; }
+    });
 
     // Rewrite .md and .smd links to .html
     html = html.replace(/href="([^"]*?)\.md(#[^"]*)?"/g, 'href="$1.html$2"');

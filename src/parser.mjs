@@ -168,6 +168,7 @@ export function parseBlocks(lines, start = 0, end = null) {
     if ((result = tryTable(lines, i, end))) { blocks.push(result.block); i = result.next; continue; }
     if ((result = tryPrefixColumns(lines, i, end))) { blocks.push(result.block); i = result.next; continue; }
     if ((result = tryRecord(lines, i, end))) { blocks.push(result.block); i = result.next; continue; }
+    if ((result = tryDirective(lines, i))) { blocks.push(result.block); i = result.next; continue; }
     if ((result = tryHtmlBlock(lines, i, end))) { blocks.push(result.block); i = result.next; continue; }
 
     result = parseParagraph(lines, i, end);
@@ -329,11 +330,16 @@ function tryHeading(lines, i) {
 
 function tryImage(lines, i) {
   if (!lines[i].match(/^!\[/)) return null;
-  const match = lines[i].match(/^!\[([^\]]*)\]\(([^)]+)\)\s*$/);
+  // Support optional sizing: ![alt](url =WIDTHxHEIGHT)
+  const match = lines[i].match(/^!\[([^\]]*)\]\(([^)\s]+)(?:\s+=(\d*)x(\d*))?\)\s*$/);
   if (!match) return null;
 
   return {
-    block: { type: 'image', alt: match[1], src: match[2] },
+    block: {
+      type: 'image', alt: match[1], src: match[2],
+      width: match[3] ? parseInt(match[3]) : null,
+      height: match[4] ? parseInt(match[4]) : null,
+    },
     next: i + 1
   };
 }
@@ -508,6 +514,12 @@ function tryRecord(lines, i, end) {
     block: { type: 'record', name, fields, body: bodyLines.join('\n') },
     next: i
   };
+}
+
+function tryDirective(lines, i) {
+  const match = lines[i].match(/^\{:(\w+)\}\s*$/);
+  if (!match) return null;
+  return { block: { type: 'directive', name: match[1] }, next: i + 1 };
 }
 
 const BLOCK_HTML_TAGS = new Set([

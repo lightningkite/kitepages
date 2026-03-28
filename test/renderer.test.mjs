@@ -246,6 +246,28 @@ describe('render', () => {
     assert.ok(html.includes('type="checkbox"'));
   });
 
+  it('renders YouTube embeds from standalone URLs', () => {
+    const doc = parse('## Video\nhttps://www.youtube.com/watch?v=dQw4w9WgXcQ');
+    const html = render(doc);
+    assert.ok(html.includes('smd-embed'));
+    assert.ok(html.includes('youtube.com/embed/dQw4w9WgXcQ'));
+  });
+
+  it('renders {:toc} directive', () => {
+    const doc = parse('{:toc}\n## First\nText\n## Second\nMore text');
+    const html = render(doc);
+    assert.ok(html.includes('smd-toc'));
+    assert.ok(html.includes('href="#first"'));
+    assert.ok(html.includes('href="#second"'));
+  });
+
+  it('renders images with sizing', () => {
+    const doc = parse('## Gallery\n![Photo](img.jpg =300x200)');
+    const html = render(doc);
+    assert.ok(html.includes('width="300"'));
+    assert.ok(html.includes('height="200"'));
+  });
+
   it('renders each demo site without errors', () => {
     for (const site of ['giuseppe', 'nonprofit', 'portfolio', 'salon', 'wedding']) {
       const src = readSiteSource(site, 'index.smd');

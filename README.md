@@ -191,11 +191,11 @@ Block-level features for more expressive sites.
 
 - [x] Standard Markdown tables — `| col | col |` syntax with alignment (`:---:`, `---:`)
 - [x] GFM alert syntax as alias — `> [!NOTE]`, `> [!WARNING]`, `> [!TIP]`, `> [!IMPORTANT]`, `> [!CAUTION]`
-- [ ] External embeds — YouTube, Google Maps, iframes (syntax TBD)
-- [ ] Image sizing control
+- [x] External embeds — YouTube and Vimeo URLs auto-detected as standalone paragraphs, rendered as responsive iframes
+- [x] Image sizing control — `![alt](url =WIDTHxHEIGHT)` syntax
 - [ ] Math formulas — `\( inline \)` and `\[ block \]` (LaTeX delimiters, not `$`); lazy-load KaTeX
-- [ ] Syntax highlighting in code blocks — lazy-load Prism or Shiki
-- [ ] Directive syntax — `{:toc}` for table of contents, `{:nav}` for auto-generated navigation. Extensible.
+- [x] Syntax highlighting in code blocks — highlight.js in compiler, theme-aware CSS colors
+- [x] Directive syntax — `{:toc}` for table of contents. Extensible.
 - [ ] Side navigation layout — persistent sidebar nav as an alternative to top nav
 
 ### Phase 4 — Production Readiness
