@@ -149,7 +149,11 @@ npm test
 
 ## Status
 
-Working prototype with a modular architecture. The parser and renderer are pure functions usable from both Node.js (static compilation) and the browser (dynamic rendering). Handles heroes, columns, carousels, background sections, testimonials, forms, cards, record blocks, multi-page navigation, page transitions, scroll animations, and theming. Six complete example sites across different verticals.
+Phases 1–4 complete. Standard `.md` files with `theme.yaml` theming. The parser and renderer are pure functions usable from both Node.js (static compilation) and the browser (dynamic rendering).
+
+Supports: heroes, columns (fenced + prefix), carousels, background sections, testimonials, forms, cards, record blocks, expandable sections, code blocks, blockquotes, tables, alerts (both `:::` and GFM `> [!NOTE]` syntax), task lists, multi-page navigation, page transitions, scroll animations, and theming. Inline formatting includes bold, italic, underline, large text, strikethrough, highlight, superscript, subscript, code spans, autolinks, emoji shortcodes, and smart typography. Production features: Open Graph meta tags, sitemap.xml, skip-nav, ARIA attributes, print stylesheet.
+
+Six complete example sites across different verticals. 98 tests covering parser, renderer, and compiler.
 
 ## Roadmap
 
@@ -221,5 +225,5 @@ Developer and end-user experience.
 ### Ongoing
 
 - [ ] Document layout heuristics in detail (column detection, gallery inference, CTA detection, dot-leader lists, section alternation)
-- [ ] Build the supermarkdown project site (`sites/supermarkdown/`)
+- [x] Build the supermarkdown project site (`sites/supermarkdown/`) — index, guide, examples pages with updated syntax docs
 - [ ] More site variety — continuously expand the range of styles, layouts, and industries supported
