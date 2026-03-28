@@ -196,7 +196,7 @@ Block-level features for more expressive sites.
 - [ ] Math formulas — `\( inline \)` and `\[ block \]` (LaTeX delimiters, not `$`); lazy-load KaTeX
 - [x] Syntax highlighting in code blocks — highlight.js in compiler, theme-aware CSS colors
 - [x] Directive syntax — `{:toc}` for table of contents. Extensible.
-- [ ] Side navigation layout — persistent sidebar nav as an alternative to top nav
+- [x] Side navigation layout — `nav: side` in theme.yaml for persistent sidebar; responsive (collapses to hamburger on mobile)
 
 ### Phase 4 — Production Readiness
 
@@ -205,7 +205,7 @@ SEO, accessibility, and compiler improvements for real-world deployment.
 - [x] Open Graph / social sharing meta tags from frontmatter (`og:title`, `og:description`, `og:image`, `og:type`)
 - [x] Accessibility pass — ARIA on carousels (`role="region"`, `aria-roledescription`), skip-nav link, `<main>` landmark, `aria-label` on nav
 - [x] Sitemap.xml generation — auto-generated during compilation
-- [ ] Link/image validation at compile time
+- [x] Link/image validation at compile time — warns about broken internal links and missing images
 - [x] Draft pages — `draft: true` in frontmatter excludes from compilation
 - [x] 404.md convention — compile to `404.html` (works automatically)
 - [x] Print stylesheet — `@media print` hides nav/carousel controls, shows URLs after links, single carousel slide, clean layout

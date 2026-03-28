@@ -178,6 +178,36 @@ ${footerHtml}
     }
   }
 
+  // Validate links and images
+  const warnings = [];
+  for (const file of pageFiles) {
+    const src = readFileSync(join(siteDir, file), 'utf-8');
+    // Check internal links
+    const linkPattern = /\[([^\]]*)\]\(([^)]+)\)/g;
+    let m;
+    while ((m = linkPattern.exec(src)) !== null) {
+      const href = m[2].split('#')[0]; // Strip anchor
+      if (!href || /^https?:\/\//.test(href) || /^mailto:/.test(href) || /^(POST|GET|PUT|DELETE)\s/.test(href)) continue;
+      const target = join(siteDir, href);
+      if (!existsSync(target)) {
+        warnings.push(`${file}: broken link → ${href}`);
+      }
+    }
+    // Check image sources
+    const imgPattern = /!\[[^\]]*\]\(([^)\s]+)/g;
+    while ((m = imgPattern.exec(src)) !== null) {
+      const imgSrc = m[1];
+      if (/^https?:\/\//.test(imgSrc) || /^data:/.test(imgSrc)) continue;
+      if (!existsSync(join(siteDir, imgSrc))) {
+        warnings.push(`${file}: missing image → ${imgSrc}`);
+      }
+    }
+  }
+  if (warnings.length > 0) {
+    console.warn(`\n⚠ ${warnings.length} warning(s):`);
+    for (const w of warnings) console.warn(`  ${w}`);
+  }
+
   // Generate sitemap.xml
   const compiledPages = pageFiles
     .filter(f => { const d = parse(readFileSync(join(siteDir, f), 'utf-8')); return !d.frontmatter.draft; })
