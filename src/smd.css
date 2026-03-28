@@ -325,6 +325,10 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   gap: 40px;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   align-items: stretch;
+  margin-bottom: 2rem;
+}
+.smd-columns:last-child {
+  margin-bottom: 0;
 }
 .smd-column {
   display: flex;
