@@ -1,0 +1,24 @@
+colors:
+  primary: "#1b4332"
+  primaryDark: "#0d2818"
+  primaryLight: "#b7e4c7"
+  accent: "#d4a843"
+  background: "#f0f4ec"
+  surface: "#ffffff"
+  surfaceWarm: "#e3ebd9"
+  text: "#1a2e1a"
+  textMuted: "#4a6248"
+  border: "#c8d5bf"
+  borderLight: "#dce5d5"
+fonts:
+  heading: Fraunces
+  body: Commissioner
+radius: 8
+radiusLg: 12
+mode: light
+nav: solid
+sections: bold
+cards: flat
+animation: expressive
+footer: columns
+spacing: normal

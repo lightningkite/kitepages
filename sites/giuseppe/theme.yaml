@@ -1,0 +1,24 @@
+mode: light
+radius: 12
+radiusLg: 20
+nav: transparent
+sections: alternating
+cards: elevated
+animation: expressive
+footer: centered
+spacing: spacious
+colors:
+  primary: "#1a3a1a"
+  primaryDark: "#0d2b0d"
+  primaryLight: "#d4e8d4"
+  accent: "#c9a84c"
+  background: "#f7f5f0"
+  surface: "#ffffff"
+  surfaceWarm: "#efe9de"
+  text: "#2a2a25"
+  textMuted: "#6b6b60"
+  border: "#e0ddd4"
+  borderLight: "#edebe4"
+fonts:
+  heading: Playfair Display
+  body: Source Sans 3

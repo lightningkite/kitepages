@@ -1,0 +1,24 @@
+colors:
+  primary: "#8b5e6b"
+  primaryDark: "#6d4555"
+  primaryLight: "#f0dfe3"
+  accent: "#c4956a"
+  background: "#fdf8f5"
+  surface: "#ffffff"
+  surfaceWarm: "#f8ede8"
+  text: "#3a2f33"
+  textMuted: "#8a7d81"
+  border: "#e8ddd8"
+  borderLight: "#f2ebe7"
+fonts:
+  heading: Cormorant Garamond
+  body: Nunito
+radius: 20
+radiusLg: 28
+mode: light
+nav: centered
+sections: alternating
+cards: glass
+animation: subtle
+footer: centered
+spacing: normal

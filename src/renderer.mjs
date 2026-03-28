@@ -1,22 +1,46 @@
 // SuperMarkdown Renderer — pure functions, no DOM dependencies.
 // render(doc, theme) → HTML string
 
-import { parseBlocks } from './parser.mjs';
-
+// ============================================================
 // Inline formatting
+// ============================================================
+
 export function inl(text) {
   if (!text) return '';
-  return text
-    .replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>')
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/\*(.+?)\*/g, '<em>$1</em>')
-    .replace(/__(.+?)__/g, '<span class="smd-large">$1</span>')
-    .replace(/_(.+?)_/g, '<u>$1</u>')
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>')
-    .replace(/([★☆⭐]{2,})/g, '<span class="smd-stars">$1</span>');
+  let s = text;
+  // Newlines → <br>
+  s = s.replace(/\n/g, '<br>');
+  // Code spans (highest precedence — nothing parsed inside)
+  s = s.replace(/`([^`]+)`/g, '<code>$1</code>');
+  // Bold italic
+  s = s.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
+  // Bold
+  s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+  // Italic
+  s = s.replace(/\*(.+?)\*/g, '<em>$1</em>');
+  // Large text (++text++)
+  s = s.replace(/\+\+(.+?)\+\+/g, '<span class="smd-large">$1</span>');
+  // Underline
+  s = s.replace(/_(.+?)_/g, '<u>$1</u>');
+  // Links
+  s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+  // Star ratings
+  s = s.replace(/([★☆⭐]{2,})/g, '<span class="smd-stars">$1</span>');
+  return s;
 }
 
+// ============================================================
+// HTML escaping
+// ============================================================
+
+function escapeHtml(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// ============================================================
 // Main render: document AST + theme → HTML body string
+// ============================================================
+
 export function render(doc, theme = {}) {
   const blocks = doc.blocks;
   let html = '';
@@ -27,8 +51,10 @@ export function render(doc, theme = {}) {
   while (i < blocks.length) {
     const block = blocks[i];
 
+    // H1 → hero
     if (block.type === 'heading' && block.level === 1) {
-      html += `<header class="smd-hero ${anim !== 'none' ? 'smd-animate' : ''}">`;
+      const animClass = anim !== 'none' ? ' smd-animate' : '';
+      html += `<header class="smd-hero${animClass}">`;
       html += `<h1>${inl(block.text)}</h1>`;
       i++;
       if (i < blocks.length && blocks[i].type === 'paragraph') {
@@ -39,110 +65,132 @@ export function render(doc, theme = {}) {
       continue;
     }
 
+    // H2 → section wrapper
     if (block.type === 'heading' && block.level === 2) {
       const altClass = sectionIndex % 2 === 1 ? ' smd-section-alt' : '';
       const animClass = anim !== 'none' ? ' smd-animate' : '';
-      html += `<section class="smd-section${altClass}${animClass}" id="section-${sectionIndex}">`;
+      const sectionId = block.id || `section-${sectionIndex}`;
+      html += `<section class="smd-section${altClass}${animClass}" id="${sectionId}">`;
       html += `<h2>${inl(block.text)}</h2>`;
       html += `<hr class="smd-section-rule">`;
       i++;
-      html += renderSectionContent(blocks, i, anim);
-      i = findNextH2(blocks, i);
+      while (i < blocks.length && !(blocks[i].type === 'heading' && blocks[i].level <= 2)) {
+        if (blocks[i].type === 'image') {
+          const images = [];
+          while (i < blocks.length && blocks[i].type === 'image') {
+            images.push(blocks[i]);
+            i++;
+          }
+          html += renderGallery(images);
+        } else {
+          html += renderBlock(blocks[i]);
+          i++;
+        }
+      }
       html += '</section>';
       sectionIndex++;
       continue;
     }
 
+    // Top-level carousel
     if (block.type === 'carousel') {
       html += renderCarousel(block);
       i++; continue;
     }
 
+    // Top-level bg-section
     if (block.type === 'bg-section') {
       html += renderBgSection(block);
       i++; continue;
     }
 
+    // Top-level image gallery
     if (block.type === 'image') {
-      const images = collectRun(blocks, i, 'image');
+      const images = [];
+      while (i < blocks.length && blocks[i].type === 'image') {
+        images.push(blocks[i]);
+        i++;
+      }
       html += renderGallery(images);
-      i += images.length;
       continue;
     }
 
-    html += renderBlock(block);
+    // Everything else at top level
+    html += renderBlock(blocks[i]);
     i++;
   }
 
   return html;
 }
 
-function renderSectionContent(blocks, startIdx, anim) {
-  const sectionBlocks = [];
-  let i = startIdx;
-  while (i < blocks.length && !(blocks[i].type === 'heading' && blocks[i].level <= 2)) {
-    sectionBlocks.push(blocks[i]); i++;
+// ============================================================
+// Block rendering
+// ============================================================
+
+export function renderBlock(block, context) {
+  switch (block.type) {
+    case 'heading': {
+      const idAttr = block.id ? ` id="${block.id}"` : '';
+      return `<h${block.level}${idAttr}>${inl(block.text)}</h${block.level}>`;
+    }
+    case 'paragraph':
+      if (isLinkOnlyParagraph(block.text)) return renderCtaRow(block.text);
+      return `<p>${inl(block.text)}</p>`;
+    case 'list':
+      return renderList(block);
+    case 'hr':
+      return '<hr>';
+    case 'code':
+      return renderCode(block);
+    case 'form':
+      return renderForm(block.content);
+    case 'image':
+      return `<img src="${block.src}" alt="${block.alt}" loading="lazy" style="max-width:100%;border-radius:var(--radius);">`;
+    case 'columns':
+      return renderColumns(block);
+    case 'carousel':
+      return renderCarousel(block);
+    case 'bg-section':
+      return renderBgSection(block);
+    case 'card':
+      return renderCard(block);
+    case 'quote-block':
+      return renderQuoteBlock(block);
+    case 'alert':
+      return renderAlert(block);
+    case 'blockquote':
+      return renderBlockquote(block);
+    case 'record':
+      return renderRecord(block);
+    case 'expandable':
+      return renderExpandable(block);
+    case 'html':
+      return block.content;
+    case 'fenced':
+      return renderFencedGeneric(block);
+    default:
+      return '';
   }
-  return renderBlockList(sectionBlocks, anim);
 }
 
-function renderBlockList(blocks, anim) {
-  let html = '';
-  let j = 0;
-  while (j < blocks.length) {
-    const b = blocks[j];
-    if (b.type === 'columns-start') {
-      j++;
-      const columns = [[]];
-      while (j < blocks.length && blocks[j].type !== 'columns-end') {
-        if (blocks[j].type === 'column-break') {
-          columns.push([]);
-        } else {
-          columns[columns.length - 1].push(blocks[j]);
-        }
-        j++;
-      }
-      if (j < blocks.length) j++;
-      const nonEmpty = columns.filter(c => c.length > 0);
-      if (nonEmpty.length > 0) html += renderColumnsGroup(nonEmpty, anim);
-      continue;
-    }
-    if (b.type === 'column-break' || b.type === 'columns-end') { j++; continue; }
-    if (b.type === 'image') {
-      const imgs = collectRunFrom(blocks, j, 'image');
-      html += renderGallery(imgs); j += imgs.length; continue;
-    }
-    html += renderBlock(b);
-    j++;
-  }
-  return html;
-}
+// ============================================================
+// Component renderers
+// ============================================================
 
-function renderColumnsGroup(columns, anim) {
-  if (columns.length === 1) {
+function renderColumns(block) {
+  if (block.columns.length === 1) {
     let html = '';
-    for (const b of columns[0]) html += renderBlock(b, 'column');
+    for (const b of block.columns[0]) html += renderBlock(b, 'column');
     return html;
   }
   let html = '<div class="smd-columns">';
-  for (const col of columns) {
+  for (const col of block.columns) {
     html += '<div class="smd-column">';
     for (const b of col) html += renderBlock(b, 'column');
     html += '</div>';
   }
   html += '</div>';
   return html;
-}
-
-function collectRun(blocks, idx, type) {
-  const r = []; while (idx < blocks.length && blocks[idx].type === type) r.push(blocks[idx++]); return r;
-}
-function collectRunFrom(arr, idx, type) {
-  const r = []; while (idx < arr.length && arr[idx].type === type) r.push(arr[idx++]); return r;
-}
-function findNextH2(blocks, idx) {
-  while (idx < blocks.length && !(blocks[idx].type === 'heading' && blocks[idx].level <= 2)) idx++;
-  return idx;
 }
 
 export function renderCarousel(block) {
@@ -195,8 +243,88 @@ function renderGallery(images) {
   return html;
 }
 
+function renderCard(block) {
+  let html = '<div class="smd-block smd-block-card">';
+  for (const b of block.blocks) html += renderBlock(b);
+  html += '</div>';
+  return html;
+}
+
+function renderQuoteBlock(block) {
+  let html = '<div class="smd-block smd-block-quote">';
+  for (const b of block.blocks) html += renderBlock(b);
+  html += '</div>';
+  return html;
+}
+
+function renderAlert(block) {
+  let html = `<div class="smd-block smd-block-${block.alertType}">`;
+  for (const b of block.blocks) html += renderBlock(b);
+  html += '</div>';
+  return html;
+}
+
+function renderBlockquote(block) {
+  let html = '<blockquote>';
+  for (const b of block.blocks) html += renderBlock(b);
+  html += '</blockquote>';
+  return html;
+}
+
+function renderCode(block) {
+  const langClass = block.lang ? ` class="language-${block.lang}"` : '';
+  return `<pre><code${langClass}>${escapeHtml(block.content)}</code></pre>`;
+}
+
+function renderRecord(block) {
+  let html = '<div class="smd-record">';
+  html += `<div class="smd-record-name">${inl(block.name)}</div>`;
+  if (block.fields.length > 0) {
+    html += '<dl class="smd-record-fields">';
+    for (const f of block.fields) {
+      html += `<dt>${inl(f.key)}</dt><dd>${inl(f.value)}</dd>`;
+    }
+    html += '</dl>';
+  }
+  if (block.body) html += `<p>${inl(block.body)}</p>`;
+  html += '</div>';
+  return html;
+}
+
+function renderExpandable(block) {
+  let html = '<details class="smd-expandable">';
+  html += `<summary>${inl(block.summary)}</summary>`;
+  html += '<div class="smd-expandable-content">';
+  for (const b of block.blocks) html += renderBlock(b);
+  html += '</div></details>';
+  return html;
+}
+
+function renderList(block) {
+  const tag = block.ordered ? 'ol' : 'ul';
+  return `<${tag}>` + block.items.map(item => {
+    const dotLeaderMatch = item.match(/^(.+?)\s*\.{3,}\s*(.+)$/);
+    if (dotLeaderMatch) {
+      return `<li><span>${inl(dotLeaderMatch[1])}</span><span style="color:var(--text-muted);white-space:nowrap">${inl(dotLeaderMatch[2])}</span></li>`;
+    }
+    return `<li>${inl(item)}</li>`;
+  }).join('') + `</${tag}>`;
+}
+
+function renderFencedGeneric(block) {
+  const type = block.sectionType.toLowerCase().replace(/\s+/g, '-');
+  let html = `<div class="smd-block smd-block-${type}">`;
+  for (const b of block.blocks) html += renderBlock(b);
+  html += '</div>';
+  return html;
+}
+
+// ============================================================
+// CTA detection — paragraphs containing only links → button row
+// ============================================================
+
 function isLinkOnlyParagraph(text) {
-  const stripped = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '').replace(/[\s—\-|,]+/g, '');
+  const stripped = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '').replace(/[\s—\-|,\n]+/g, '');
   return stripped.length === 0 && /\[([^\]]+)\]\(([^)]+)\)/.test(text);
 }
 
@@ -216,25 +344,9 @@ function renderCtaRow(text) {
   return html;
 }
 
-export function renderBlock(block, context) {
-  switch (block.type) {
-    case 'heading':
-      return `<h${block.level}>${inl(block.text)}</h${block.level}>`;
-    case 'paragraph':
-      if (isLinkOnlyParagraph(block.text)) return renderCtaRow(block.text);
-      return `<p>${inl(block.text)}</p>`;
-    case 'list': return '<ul>' + block.items.map(item => {
-      const dotLeaderMatch = item.match(/^(.+?)\s*\.{3,}\s*(.+)$/);
-      if (dotLeaderMatch) return `<li><span>${inl(dotLeaderMatch[1])}</span><span style="color:var(--text-muted);white-space:nowrap">${inl(dotLeaderMatch[2])}</span></li>`;
-      return `<li>${inl(item)}</li>`;
-    }).join('') + '</ul>';
-    case 'hr': return '<hr style="border:none;border-top:1px solid var(--border);margin:32px 0;">';
-    case 'form': return renderForm(block.content);
-    case 'image': return `<img src="${block.src}" alt="${block.alt}" style="max-width:100%;border-radius:var(--radius);">`;
-    case 'fenced': return renderFenced(block);
-    default: return '';
-  }
-}
+// ============================================================
+// Form rendering
+// ============================================================
 
 function renderForm(form) {
   const method = form.action?.method || 'POST';
@@ -252,7 +364,7 @@ function renderForm(form) {
         html += `<textarea id="${id}" name="${id}"${ph}${req}></textarea>`;
       } else if (field.fieldType === 'select') {
         html += `<select id="${id}" name="${id}"${req}>`;
-        html += `<option value="" disabled selected>Select...</option>`;
+        html += '<option value="" disabled selected>Select...</option>';
         for (const opt of field.options) html += `<option value="${opt}">${opt}</option>`;
         html += '</select>';
       } else {
@@ -267,16 +379,10 @@ function renderForm(form) {
   return html;
 }
 
-function renderFenced(block) {
-  const type = block.sectionType.toLowerCase().replace(/\s+/g, '-');
-  const innerBlocks = parseBlocks(block.rawLines.join('\n'));
-  let html = `<div class="smd-block smd-block-${type}">`;
-  for (const b of innerBlocks) html += renderBlock(b);
-  html += '</div>';
-  return html;
-}
+// ============================================================
+// Nav & Footer rendering
+// ============================================================
 
-// Render header.smd AST into nav HTML string
 export function renderNav(headerDoc, theme = {}) {
   if (!headerDoc) return '';
   const navStyle = theme.nav || 'transparent';
@@ -286,7 +392,7 @@ export function renderNav(headerDoc, theme = {}) {
 
   let html = `<nav class="smd-nav" data-style="${navStyle}">`;
   if (h1) {
-    html += `<a class="smd-nav-brand" href="index.smd">${h1.text}</a>`;
+    html += `<a class="smd-nav-brand" href="index.md">${h1.text}</a>`;
   }
   html += '<ul class="smd-nav-links">';
   if (list) {
@@ -300,7 +406,6 @@ export function renderNav(headerDoc, theme = {}) {
   return html;
 }
 
-// Render footer.smd AST into footer HTML string
 export function renderFooter(footerDoc, theme = {}) {
   if (!footerDoc) return '';
   const footerStyle = theme.footer || 'minimal';
@@ -322,7 +427,10 @@ export function renderFooter(footerDoc, theme = {}) {
   return html;
 }
 
-// Generate CSS custom property overrides from theme config
+// ============================================================
+// Theme utilities
+// ============================================================
+
 export function getThemeVars(theme = {}) {
   const lines = [];
   if (theme.colors) {
@@ -361,7 +469,6 @@ export function getThemeVars(theme = {}) {
   return `:root {\n  ${lines.join('\n  ')}\n}`;
 }
 
-// Generate Google Fonts <link> URL from theme
 export function getGoogleFontsUrl(theme = {}) {
   if (!theme.fonts) return null;
   const families = [];
@@ -373,7 +480,6 @@ export function getGoogleFontsUrl(theme = {}) {
   return `https://fonts.googleapis.com/css2?${unique.map(f => `family=${encodeURIComponent(f)}:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400`).join('&')}&display=swap`;
 }
 
-// Data attributes to set on <html> for CSS selectors
 export function getThemeDataAttrs(theme = {}) {
   return {
     'data-sections': theme.sections || 'alternating',

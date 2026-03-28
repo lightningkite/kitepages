@@ -72,7 +72,7 @@ Seasonal dishes crafted from the freshest local ingredients and time-honored Ita
 
 ## Wine List
 
-|||>
+|||
 
 ### Reds
 
@@ -83,7 +83,7 @@ Seasonal dishes crafted from the freshest local ingredients and time-honored Ita
 - Amarone della Valpolicella, Allegrini ... $20 / $80
 - Super Tuscan, Tignanello ... $22 / $88
 
-|||
+---
 
 ### Whites
 
@@ -93,7 +93,7 @@ Seasonal dishes crafted from the freshest local ingredients and time-honored Ita
 - Fiano di Avellino, Mastroberardino ... $11 / $44
 - Soave Classico, Pieropan ... $10 / $40
 
-|||
+---
 
 ### Sparkling
 
@@ -101,6 +101,6 @@ Seasonal dishes crafted from the freshest local ingredients and time-honored Ita
 - Franciacorta Brut, Bellavista ... $14 / $56
 - Lambrusco Rosato, Cleto Chiarli ... $9 / $36
 
-|||<
+|||
 
-[About Us](about.smd) — [Back to Home](index.smd)
+[About Us](about.md) — [Back to Home](index.md)

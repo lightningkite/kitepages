@@ -1,0 +1,26 @@
+colors:
+  primary: "#1a1a2e"
+  primaryDark: "#0f0f1a"
+  primaryLight: "#e0e0f0"
+  accent: "#e94560"
+  background: "#fafafa"
+  surface: "#ffffff"
+  surfaceWarm: "#f0f0f5"
+  text: "#1a1a2e"
+  textMuted: "#5a5a7a"
+  border: "#e0e0ea"
+  borderLight: "#ebebf0"
+
+fonts:
+  heading: DM Sans
+  body: DM Sans
+
+radius: 14
+radiusLg: 20
+mode: light
+nav: minimal
+sections: alternating
+cards: elevated
+animation: subtle
+footer: centered
+spacing: spacious

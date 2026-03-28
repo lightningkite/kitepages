@@ -25,53 +25,53 @@ Elena spent five years apprenticing in Florence and Bologna before returning hom
 
 ## Our Philosophy
 
-|||>
+|||
 
 ### Farm to Table
 
 We source produce from local Oregon farms within 50 miles of our kitchen. Every morning, our team selects the freshest seasonal ingredients at the Portland Farmers Market.
 
-|||
+---
 
 ### Handmade Pasta
 
 Our pasta is made fresh daily using traditional techniques. From tagliatelle to ravioli, every strand and shape is crafted by hand in our open kitchen.
 
-|||
+---
 
 ### Slow-Simmered Sauces
 
 Our signature Bolognese simmers for eight hours. Our marinara uses San Marzano tomatoes imported directly from a family farm near Naples.
 
-|||<
+|||
 
 ## By the Numbers
 
-|||>
+|||
 
 ### Tradition
-__40+__
+++40+++
 years of family tradition
 
-|||
+---
 
 ### Local Farms
-__12__
+++12++
 local farms we partner with
 
-|||
+---
 
 ### Generations
-__3__
+++3++
 generations of Rossis in the kitchen
 
-|||
+---
 
 ### Recipes
-__200+__
+++200+++
 recipes in our collection
 
-|||<
+|||
 
 ## Gallery
 
@@ -79,4 +79,4 @@ recipes in our collection
 ![Fresh handmade pasta](https://images.unsplash.com/photo-1556761223-4c4282c73f77?w=600&q=80)
 ![Our garden herb selection](https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=600&q=80)
 
-[View Full Menu](menu.smd) — [Back to Home](index.smd)
+[View Full Menu](menu.md) — [Back to Home](index.md)

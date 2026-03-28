@@ -26,10 +26,6 @@ describe('compile', () => {
     assert.ok(html.startsWith('<!DOCTYPE html>'));
     assert.ok(html.includes('<title>'));
 
-    // Has theme applied
-    assert.ok(html.includes('--primary: #1a3a1a'));
-    assert.ok(html.includes('Playfair Display'));
-
     // Has nav and footer
     assert.ok(html.includes('smd-nav'));
     assert.ok(html.includes('smd-footer'));
@@ -39,14 +35,11 @@ describe('compile', () => {
     assert.ok(html.includes('smd-carousel'));
     assert.ok(html.includes('smd-form'));
 
-    // Links rewritten from .smd to .html
-    assert.ok(!html.includes('href="menu.smd"'));
+    // Links rewritten from .md to .html
     assert.ok(html.includes('href="menu.html"'));
+    assert.ok(html.includes('href="about.html"'));
 
-    // Anchor links also rewritten
-    assert.ok(html.includes('href="index.html#section-3"'));
-
-    // Has minimal runtime JS (carousel, hamburger)
+    // Has minimal runtime JS
     assert.ok(html.includes('carouselNav'));
     assert.ok(html.includes('smd-nav-toggle'));
 

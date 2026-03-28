@@ -10,7 +10,7 @@ Currently at Figma. Previously Stripe, Airbnb.
 
 ## Selected Work
 
-|||>
+|||
 
 ::: card
 ### Figma Community Hub
@@ -18,7 +18,7 @@ Currently at Figma. Previously Stripe, Airbnb.
 Redesigned the community browsing experience, increasing engagement by 34%. Led a team of 3 designers through research, prototyping, and launch.
 :::
 
-|||
+---
 
 ::: card
 ### Stripe Checkout Flow
@@ -26,7 +26,7 @@ Redesigned the community browsing experience, increasing engagement by 34%. Led 
 Simplified the merchant onboarding experience from 12 steps to 4. Reduced drop-off by 28%.
 :::
 
-|||
+---
 
 ::: card
 ### Airbnb Experiences
@@ -34,7 +34,7 @@ Simplified the merchant onboarding experience from 12 steps to 4. Reduced drop-o
 Designed the booking flow for Airbnb's Experiences platform. Handled complex scheduling across timezones.
 :::
 
-|||
+---
 
 ::: card
 ### Personal — Readwise Concept
@@ -42,7 +42,7 @@ Designed the booking flow for Airbnb's Experiences platform. Handled complex sch
 A concept redesign of Readwise's highlight review system, focusing on spaced repetition and delight.
 :::
 
-|||<
+|||
 
 ## About
 
@@ -54,25 +54,25 @@ When I'm not designing, I'm probably hiking, reading sci-fi, or experimenting wi
 
 ## Experience
 
-|||>
+|||
 
 ### Figma
 Senior Product Designer
 2023–Present
 
-|||
+---
 
 ### Stripe
 Product Designer
 2021–2023
 
-|||
+---
 
 ### Airbnb
 Junior Designer
 2019–2021
 
-|||<
+|||
 
 ## Get In Touch
 

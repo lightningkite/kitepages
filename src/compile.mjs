@@ -5,6 +5,7 @@
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from 'fs';
 import { join, basename, dirname } from 'path';
 import { fileURLToPath } from 'url';
+import yaml from 'js-yaml';
 import { parse } from './parser.mjs';
 import { render, renderNav, renderFooter, getThemeVars, getGoogleFontsUrl, getThemeDataAttrs } from './renderer.mjs';
 
@@ -14,17 +15,26 @@ function readOptional(path) {
   try { return readFileSync(path, 'utf-8'); } catch { return null; }
 }
 
+function loadTheme(siteDir) {
+  // Try theme.yaml first, fall back to theme.json for backward compat
+  const yamlSrc = readOptional(join(siteDir, 'theme.yaml'));
+  if (yamlSrc) return yaml.load(yamlSrc) || {};
+
+  const jsonSrc = readOptional(join(siteDir, 'theme.json'));
+  if (jsonSrc) return JSON.parse(jsonSrc);
+
+  return {};
+}
+
 function compile(siteDir, outDir) {
-  // Load theme
-  const themeJson = readOptional(join(siteDir, 'theme.json'));
-  const theme = themeJson ? JSON.parse(themeJson) : {};
+  const theme = loadTheme(siteDir);
 
   // For static output, disable animations (no JS to trigger them)
   const staticTheme = { ...theme, animation: 'none' };
 
-  // Load header/footer
-  const headerSrc = readOptional(join(siteDir, 'header.smd'));
-  const footerSrc = readOptional(join(siteDir, 'footer.smd'));
+  // Load header/footer (.md first, fall back to .smd)
+  const headerSrc = readOptional(join(siteDir, 'header.md')) || readOptional(join(siteDir, 'header.smd'));
+  const footerSrc = readOptional(join(siteDir, 'footer.md')) || readOptional(join(siteDir, 'footer.smd'));
   const headerDoc = headerSrc ? parse(headerSrc) : null;
   const footerDoc = footerSrc ? parse(footerSrc) : null;
 
@@ -35,23 +45,29 @@ function compile(siteDir, outDir) {
   const dataAttrs = getThemeDataAttrs(theme);
   const dataAttrStr = Object.entries(dataAttrs).map(([k, v]) => `${k}="${v}"`).join(' ');
 
-  // Find all .smd page files
-  const smdFiles = readdirSync(siteDir)
-    .filter(f => f.endsWith('.smd') && f !== 'header.smd' && f !== 'footer.smd');
+  // Find all page files (.md first, fall back to .smd)
+  const allFiles = readdirSync(siteDir);
+  let pageFiles = allFiles.filter(f => f.endsWith('.md') && f !== 'header.md' && f !== 'footer.md');
+  if (pageFiles.length === 0) {
+    // Backward compat: try .smd files
+    pageFiles = allFiles.filter(f => f.endsWith('.smd') && f !== 'header.smd' && f !== 'footer.smd');
+  }
 
   mkdirSync(outDir, { recursive: true });
 
-  for (const file of smdFiles) {
+  for (const file of pageFiles) {
     const src = readFileSync(join(siteDir, file), 'utf-8');
     const doc = parse(src);
-    const title = doc.frontmatter.title || file.replace('.smd', '');
+    const title = doc.frontmatter.title || file.replace(/\.(md|smd)$/, '');
     const description = doc.frontmatter.description || '';
+
+    // Skip drafts
+    if (doc.frontmatter.draft) continue;
 
     const bodyHtml = render(doc, staticTheme);
     const navHtml = renderNav(headerDoc, theme);
     const footerHtml = renderFooter(footerDoc, theme);
 
-    // Compose full HTML page
     let html = `<!DOCTYPE html>
 <html lang="en" ${dataAttrStr}>
 <head>
@@ -123,24 +139,25 @@ ${footerHtml}
 </body>
 </html>`;
 
-    // Rewrite .smd links to .html
+    // Rewrite .md and .smd links to .html
+    html = html.replace(/href="([^"]*?)\.md(#[^"]*)?"/g, 'href="$1.html$2"');
     html = html.replace(/href="([^"]*?)\.smd(#[^"]*)?"/g, 'href="$1.html$2"');
 
-    const outFile = join(outDir, file.replace('.smd', '.html'));
+    const outFile = join(outDir, file.replace(/\.(md|smd)$/, '.html'));
     writeFileSync(outFile, html);
     console.log(`  ${file} → ${basename(outFile)}`);
   }
 
   // Copy images and other static assets
   const staticExts = ['.jpg', '.jpeg', '.png', '.gif', '.svg', '.webp', '.ico', '.pdf'];
-  for (const file of readdirSync(siteDir)) {
+  for (const file of allFiles) {
     if (staticExts.some(ext => file.toLowerCase().endsWith(ext))) {
       const src = readFileSync(join(siteDir, file));
       writeFileSync(join(outDir, file), src);
     }
   }
 
-  console.log(`\nCompiled ${smdFiles.length} page(s) to ${outDir}`);
+  console.log(`\nCompiled ${pageFiles.length} page(s) to ${outDir}`);
 }
 
 function escapeHtml(s) {

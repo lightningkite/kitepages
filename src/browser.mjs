@@ -1,11 +1,14 @@
 // SuperMarkdown Browser Runtime — DOM interactions, SPA navigation, animations, editor.
 // This is the client-side entry point. Import via <script type="module">.
 
-import { parse } from './parser.mjs';
+import { parse, parseYaml } from './parser.mjs';
 import { render, renderNav, renderFooter, getGoogleFontsUrl } from './renderer.mjs';
 
 let currentTheme = {};
 let currentSmdFile = null;
+
+// File extension: .md (with .smd fallback for transition)
+const PAGE_EXT = '.md';
 
 // ===== Core: Load & Render =====
 
@@ -34,7 +37,7 @@ function isSmdLink(href) {
   if (!href) return false;
   if (href.startsWith('#')) return false;
   if (/^https?:\/\//i.test(href)) return false;
-  return href.endsWith('.smd');
+  return href.endsWith('.md') || href.endsWith('.smd');
 }
 
 function interceptSmdLinks() {
@@ -113,7 +116,9 @@ async function loadHeader() {
     _headerFetched = true;
     const dir = currentSmdFile ? currentSmdFile.substring(0, currentSmdFile.lastIndexOf('/') + 1) : '';
     try {
-      const resp = await fetch(dir + 'header.smd');
+      // Try .md first, fall back to .smd
+    let resp = await fetch(dir + 'header.md');
+    if (!resp.ok) resp = await fetch(dir + 'header.smd');
       if (resp.ok) _headerCache = parse(await resp.text());
     } catch {}
   }
@@ -131,9 +136,9 @@ async function loadHeader() {
   const brand = nav.querySelector('.smd-nav-brand');
   if (brand) {
     brand.addEventListener('click', (e) => {
-      if (isSmdLink('index.smd')) {
+      if (isSmdLink('index.md')) {
         e.preventDefault();
-        navigateToSmd('index.smd', true, 'pop');
+        navigateToSmd('index.md', true, 'pop');
       }
     });
   }
@@ -196,7 +201,8 @@ async function loadFooter() {
     _footerFetched = true;
     const dir = currentSmdFile ? currentSmdFile.substring(0, currentSmdFile.lastIndexOf('/') + 1) : '';
     try {
-      const resp = await fetch(dir + 'footer.smd');
+      let resp = await fetch(dir + 'footer.md');
+    if (!resp.ok) resp = await fetch(dir + 'footer.smd');
       if (resp.ok) _footerCache = parse(await resp.text());
     } catch {}
   }
@@ -330,14 +336,19 @@ function applyTheme(theme) {
 // ===== Boot =====
 
 const params = new URLSearchParams(location.search);
-const smdFile = params.get('file') || 'example.smd';
+const smdFile = params.get('file') || 'example.md';
 const themeFile = params.get('theme');
 
 async function boot() {
   if (themeFile) {
     try {
       const resp = await fetch(themeFile);
-      applyTheme(await resp.json());
+      const text = await resp.text();
+      // Parse as YAML or JSON based on extension
+      const theme = themeFile.endsWith('.yaml') || themeFile.endsWith('.yml')
+        ? parseYaml(text)
+        : JSON.parse(text);
+      applyTheme(theme);
     } catch (e) { console.warn('Theme not found, using defaults'); }
   }
   await loadAndRender(smdFile);
@@ -472,7 +483,7 @@ function goToSite(index) {
   const sitesMatch = curFile.match(/^(.*\/sites\/)[^/]+\//);
   if (sitesMatch) base = sitesMatch[1];
   else base = '../sites/';
-  location.href = `${location.pathname}?file=${base}${site.name}/index.smd&theme=${base}${site.name}/theme.json&_t=${Date.now()}`;
+  location.href = `${location.pathname}?file=${base}${site.name}/index.md&theme=${base}${site.name}/theme.yaml&_t=${Date.now()}`;
 }
 
 function showSiteIndicator(siteName) {

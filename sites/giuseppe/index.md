@@ -4,28 +4,28 @@ description: Authentic Italian cuisine in downtown Portland since 1985
 image: storefront.jpg
 ---
 
->>>
+::: carousel
 ::: bg https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&q=80
 # Giuseppe's Italian Restaurant
 Authentic Italian cuisine in downtown Portland. Family owned since 1985.
 :::
->>>
+---
 ::: bg https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&q=80
 # A Warm Welcome Awaits
 Our dining room seats 80 guests in an intimate, candlelit atmosphere.
 :::
->>>
+---
 ::: bg https://images.unsplash.com/photo-1600891964092-4316c288032e?w=1200&q=80
 # The Garden Patio
 Dine under the stars on our award-winning patio, open May through October.
 :::
->>>
+:::
 
-[About Us](about.smd) — [View Full Menu](menu.smd)
+[About Us](about.md) — [View Full Menu](menu.md)
 
 ## Our Menu
 
-|||>
+|||
 
 ### Appetizers
 
@@ -34,7 +34,7 @@ Dine under the stars on our award-winning patio, open May through October.
 - Caprese Salad ... $10
 - Arancini ... $9
 
-|||
+---
 
 ### Entrees
 
@@ -43,7 +43,7 @@ Dine under the stars on our award-winning patio, open May through October.
 - Osso Buco ... $24
 - Eggplant Parmigiana ... $16
 
-|||
+---
 
 ### Desserts
 
@@ -52,9 +52,9 @@ Dine under the stars on our award-winning patio, open May through October.
 - Cannoli ... $7
 - Affogato ... $6
 
-|||<
+|||
 
-[View Full Menu](menu.smd)
+[View Full Menu](menu.md)
 
 ## What Our Guests Say
 
@@ -78,7 +78,7 @@ We come here every anniversary. The garden patio is magical in the summer. The s
 
 ## Hours & Location
 
-|||>
+|||
 
 ### Hours
 
@@ -86,7 +86,7 @@ Monday–Friday: 11am–10pm
 Saturday: 10am–11pm
 Sunday: 10am–9pm
 
-|||
+---
 
 ### Find Us
 
@@ -94,26 +94,26 @@ Sunday: 10am–9pm
 Portland, OR 97201
 (503) 555-0142
 
-|||
+---
 
 ### Reservations
 
 Book online or call us.
 Walk-ins welcome.
 
-|||<
+|||
 
 ## Make a Reservation
 
 ::: form
-Name*: <text>
-Email*: <email>
-Phone: <text>
+Name*: {text}
+Email*: {email}
+Phone: {text}
 
-Date*: <date>
-Party size*: <1 / 2 / 3-4 / 5-6 / 7+>
+Date*: {date}
+Party size*: {1 / 2 / 3-4 / 5-6 / 7+}
 
-Special requests: <paragraph>
+Special requests: {paragraph}
 
 [Reserve a Table](POST /reservations)
 :::
