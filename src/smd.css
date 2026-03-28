@@ -1122,4 +1122,27 @@ blockquote p { margin: 8px 0; }
 }
 .smd-expandable summary:hover { color: var(--primary); }
 .smd-expandable-content { padding: 0 16px 16px; }
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 0.95em;
+}
+th, td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+th {
+  font-weight: 600;
+  color: var(--primary-dark);
+  border-bottom: 2px solid var(--border);
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.85em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+tr:hover td { background: var(--surface-warm); }
 </style>

@@ -271,6 +271,8 @@ export function renderBlock(block, context) {
       return renderAlert(block);
     case 'blockquote':
       return renderBlockquote(block);
+    case 'table':
+      return renderTable(block);
     case 'record':
       return renderRecord(block);
     case 'expandable':
@@ -385,6 +387,26 @@ function renderBlockquote(block) {
 function renderCode(block) {
   const langClass = block.lang ? ` class="language-${block.lang}"` : '';
   return `<pre><code${langClass}>${escapeHtml(block.content)}</code></pre>`;
+}
+
+function renderTable(block) {
+  let html = '<table>';
+  html += '<thead><tr>';
+  block.headers.forEach((h, i) => {
+    const style = block.align[i] !== 'left' ? ` style="text-align:${block.align[i]}"` : '';
+    html += `<th${style}>${inl(h)}</th>`;
+  });
+  html += '</tr></thead><tbody>';
+  for (const row of block.rows) {
+    html += '<tr>';
+    row.forEach((cell, i) => {
+      const style = block.align[i] !== 'left' ? ` style="text-align:${block.align[i]}"` : '';
+      html += `<td${style}>${inl(cell)}</td>`;
+    });
+    html += '</tr>';
+  }
+  html += '</tbody></table>';
+  return html;
 }
 
 function renderRecord(block) {

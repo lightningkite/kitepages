@@ -221,6 +221,21 @@ describe('render', () => {
     assert.ok(html.includes('smd-block-warning'));
   });
 
+  it('renders tables', () => {
+    const doc = parse('## Data\n| Name | Price |\n|------|-------|\n| Pasta | $14 |');
+    const html = render(doc);
+    assert.ok(html.includes('<table>'));
+    assert.ok(html.includes('<th>'));
+    assert.ok(html.includes('Pasta'));
+    assert.ok(html.includes('$14'));
+  });
+
+  it('renders GFM alerts', () => {
+    const doc = parse('## Info\n> [!NOTE]\n> Important info here.');
+    const html = render(doc);
+    assert.ok(html.includes('smd-block-note'));
+  });
+
   it('renders task lists', () => {
     const doc = parse('## Tasks\n- [ ] Todo\n- [x] Done\n- [-] Partial');
     const html = render(doc);

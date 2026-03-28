@@ -233,6 +233,40 @@ describe('parseBlocks', () => {
     assert.equal(blocks[0].type, 'record');
     assert.equal(blocks[0].name, 'Item');
   });
+
+  // Phase 3
+  it('parses standard Markdown tables', () => {
+    const src = '| Name | Price |\n|------|-------|\n| Pasta | $14 |\n| Fish | $18 |';
+    const blocks = parseBlocks(src.split('\n'));
+    assert.equal(blocks[0].type, 'table');
+    assert.deepEqual(blocks[0].headers, ['Name', 'Price']);
+    assert.equal(blocks[0].rows.length, 2);
+    assert.equal(blocks[0].rows[0][0], 'Pasta');
+  });
+
+  it('parses table alignment', () => {
+    const src = '| Left | Center | Right |\n|:-----|:------:|------:|\n| a | b | c |';
+    const blocks = parseBlocks(src.split('\n'));
+    assert.deepEqual(blocks[0].align, ['left', 'center', 'right']);
+  });
+
+  it('parses GFM alerts', () => {
+    const blocks = parseBlocks('> [!NOTE]\n> This is a note.'.split('\n'));
+    assert.equal(blocks[0].type, 'alert');
+    assert.equal(blocks[0].alertType, 'note');
+  });
+
+  it('parses GFM warning alert', () => {
+    const blocks = parseBlocks('> [!WARNING]\n> Be careful!'.split('\n'));
+    assert.equal(blocks[0].type, 'alert');
+    assert.equal(blocks[0].alertType, 'warning');
+  });
+
+  it('parses GFM tip alert', () => {
+    const blocks = parseBlocks('> [!TIP]\n> Helpful hint.'.split('\n'));
+    assert.equal(blocks[0].type, 'alert');
+    assert.equal(blocks[0].alertType, 'tip');
+  });
 });
 
 describe('parseFormFields', () => {

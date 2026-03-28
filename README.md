@@ -185,8 +185,8 @@ New inline syntax borrowed from GFM/extended Markdown, plus Supermarkdown origin
 
 Block-level features for more expressive sites.
 
-- [ ] Standard Markdown tables — `| col | col |` syntax
-- [ ] GFM alert syntax as alias — `> [!NOTE]`, `> [!WARNING]`, `> [!TIP]` alongside `::: note`/`::: warning`
+- [x] Standard Markdown tables — `| col | col |` syntax with alignment (`:---:`, `---:`)
+- [x] GFM alert syntax as alias — `> [!NOTE]`, `> [!WARNING]`, `> [!TIP]`, `> [!IMPORTANT]`, `> [!CAUTION]`
 - [ ] External embeds — YouTube, Google Maps, iframes (syntax TBD)
 - [ ] Image sizing control
 - [ ] Math formulas — `\( inline \)` and `\[ block \]` (LaTeX delimiters, not `$`); lazy-load KaTeX

@@ -165,6 +165,7 @@ export function parseBlocks(lines, start = 0, end = null) {
     if ((result = tryList(lines, i, end))) { blocks.push(result.block); i = result.next; continue; }
     if ((result = tryExpandable(lines, i, end))) { blocks.push(result.block); i = result.next; continue; }
     if ((result = tryPrefixBlockquote(lines, i, end))) { blocks.push(result.block); i = result.next; continue; }
+    if ((result = tryTable(lines, i, end))) { blocks.push(result.block); i = result.next; continue; }
     if ((result = tryPrefixColumns(lines, i, end))) { blocks.push(result.block); i = result.next; continue; }
     if ((result = tryRecord(lines, i, end))) { blocks.push(result.block); i = result.next; continue; }
     if ((result = tryHtmlBlock(lines, i, end))) { blocks.push(result.block); i = result.next; continue; }
@@ -395,9 +396,56 @@ function tryPrefixBlockquote(lines, i, end) {
     i++;
   }
 
+  // GFM alert syntax: > [!NOTE], > [!WARNING], > [!TIP], etc.
+  if (contentLines.length > 0) {
+    const alertMatch = contentLines[0].match(/^\[!(\w+)\]\s*$/);
+    if (alertMatch) {
+      const gfmType = alertMatch[1].toLowerCase();
+      const typeMap = { note: 'note', tip: 'tip', important: 'info', warning: 'warning', caution: 'error' };
+      const alertType = typeMap[gfmType];
+      if (alertType) {
+        return {
+          block: { type: 'alert', alertType, blocks: parseBlocks(contentLines.slice(1)) },
+          next: i
+        };
+      }
+    }
+  }
+
   return {
     block: { type: 'blockquote', blocks: parseBlocks(contentLines) },
     next: i
+  };
+}
+
+function tryTable(lines, i, end) {
+  // Header row: | cell | cell | (must have | on both sides)
+  if (!lines[i].match(/^\|.+\|$/)) return null;
+  // Separator row: |---|---| (next line)
+  if (i + 1 >= end || !lines[i + 1].match(/^\|[-:\s|]+\|$/)) return null;
+
+  // Parse header cells
+  const headers = lines[i].split('|').slice(1, -1).map(c => c.trim());
+
+  // Parse alignment from separator
+  const sepCells = lines[i + 1].split('|').slice(1, -1).map(c => c.trim());
+  const align = sepCells.map(c => {
+    if (c.startsWith(':') && c.endsWith(':')) return 'center';
+    if (c.endsWith(':')) return 'right';
+    return 'left';
+  });
+
+  // Parse body rows
+  const rows = [];
+  let j = i + 2;
+  while (j < end && lines[j].match(/^\|.+\|$/)) {
+    rows.push(lines[j].split('|').slice(1, -1).map(c => c.trim()));
+    j++;
+  }
+
+  return {
+    block: { type: 'table', headers, align, rows },
+    next: j
   };
 }
 
