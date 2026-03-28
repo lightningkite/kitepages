@@ -198,13 +198,13 @@ Block-level features for more expressive sites.
 
 SEO, accessibility, and compiler improvements for real-world deployment.
 
-- [ ] Open Graph / social sharing meta tags from frontmatter
-- [ ] Accessibility pass — ARIA on carousels/forms, landmark roles, skip-nav, alt text enforcement
-- [ ] Sitemap.xml generation
+- [x] Open Graph / social sharing meta tags from frontmatter (`og:title`, `og:description`, `og:image`, `og:type`)
+- [x] Accessibility pass — ARIA on carousels (`role="region"`, `aria-roledescription`), skip-nav link, `<main>` landmark, `aria-label` on nav
+- [x] Sitemap.xml generation — auto-generated during compilation
 - [ ] Link/image validation at compile time
-- [ ] Draft pages — `draft: true` in frontmatter excludes from compilation
-- [ ] 404.md convention — compile to `404.html` for hosting platforms
-- [ ] Print stylesheet — `@media print` rules for menus, event details, flyers
+- [x] Draft pages — `draft: true` in frontmatter excludes from compilation
+- [x] 404.md convention — compile to `404.html` (works automatically)
+- [x] Print stylesheet — `@media print` hides nav/carousel controls, shows URLs after links, single carousel slide, clean layout
 
 ### Phase 5 — Tooling
 

@@ -68,6 +68,16 @@ function compile(siteDir, outDir) {
     const navHtml = renderNav(headerDoc, theme);
     const footerHtml = renderFooter(footerDoc, theme);
 
+    const image = doc.frontmatter.image || '';
+
+    // Open Graph meta tags
+    const ogTags = [
+      `<meta property="og:title" content="${escapeHtml(title)}">`,
+      `<meta property="og:type" content="website">`,
+      description ? `<meta property="og:description" content="${escapeHtml(description)}">` : '',
+      image ? `<meta property="og:image" content="${escapeHtml(image)}">` : '',
+    ].filter(Boolean).join('\n');
+
     let html = `<!DOCTYPE html>
 <html lang="en" ${dataAttrStr}>
 <head>
@@ -75,6 +85,7 @@ function compile(siteDir, outDir) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${escapeHtml(title)}</title>
 ${description ? `<meta name="description" content="${escapeHtml(description)}">` : ''}
+${ogTags}
 ${fontsUrl ? `<link rel="stylesheet" href="${fontsUrl}">` : ''}
 <style>
 ${css}
@@ -83,10 +94,10 @@ ${themeVars}
 </head>
 <body>
 ${navHtml ? `<div id="smd-nav-mount">${navHtml}</div>` : ''}
-<div id="output" class="smd-page">
+<main id="smd-content" class="smd-page">
 ${bodyHtml}
 ${footerHtml}
-</div>
+</main>
 <script>
 // Minimal runtime: hamburger toggle, carousel, scroll-based nav
 (function() {
@@ -157,7 +168,17 @@ ${footerHtml}
     }
   }
 
-  console.log(`\nCompiled ${pageFiles.length} page(s) to ${outDir}`);
+  // Generate sitemap.xml
+  const compiledPages = pageFiles
+    .filter(f => { const d = parse(readFileSync(join(siteDir, f), 'utf-8')); return !d.frontmatter.draft; })
+    .map(f => f.replace(/\.(md|smd)$/, '.html'));
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${compiledPages.map(p => `  <url><loc>${p}</loc></url>`).join('\n')}
+</urlset>`;
+  writeFileSync(join(outDir, 'sitemap.xml'), sitemap);
+
+  console.log(`\nCompiled ${compiledPages.length} page(s) + sitemap.xml to ${outDir}`);
 }
 
 function escapeHtml(s) {

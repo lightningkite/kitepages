@@ -308,8 +308,8 @@ function renderColumns(block) {
 
 export function renderCarousel(block) {
   const id = 'carousel-' + Math.random().toString(36).slice(2, 8);
-  let html = `<div class="smd-carousel" id="${id}">`;
-  html += '<div class="smd-carousel-track">';
+  let html = `<div class="smd-carousel" id="${id}" role="region" aria-roledescription="carousel" aria-label="Image carousel">`;
+  html += `<div class="smd-carousel-track" aria-live="polite">`;
   block.slides.forEach((slideBlocks) => {
     html += '<div class="smd-carousel-slide">';
     for (const b of slideBlocks) {
@@ -541,7 +541,8 @@ export function renderNav(headerDoc, theme = {}) {
   const h1 = blocks.find(b => b.type === 'heading' && b.level === 1);
   const list = blocks.find(b => b.type === 'list');
 
-  let html = `<nav class="smd-nav" data-style="${navStyle}">`;
+  let html = '<a href="#smd-content" class="smd-skip-nav">Skip to content</a>';
+  html += `<nav class="smd-nav" data-style="${navStyle}" aria-label="Main navigation">`;
   if (h1) {
     html += `<a class="smd-nav-brand" href="index.md">${h1.text}</a>`;
   }
