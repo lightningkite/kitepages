@@ -393,9 +393,35 @@ function initEditor() {
         <strong id="smd-editor-filename">editor</strong>
         <span class="smd-editor-status" id="smd-editor-status">Press E to toggle</span>
       </div>
+      <div class="smd-editor-toolbar" id="smd-editor-toolbar">
+        <button data-action="bold" title="Bold (Ctrl+B)"><b>B</b></button>
+        <button data-action="italic" title="Italic (Ctrl+I)"><i>I</i></button>
+        <button data-action="underline" title="Underline (Ctrl+U)"><u>U</u></button>
+        <button data-action="strike" title="Strikethrough"><s>S</s></button>
+        <span class="smd-toolbar-sep"></span>
+        <button data-action="h1" title="Heading 1">H1</button>
+        <button data-action="h2" title="Heading 2">H2</button>
+        <button data-action="h3" title="Heading 3">H3</button>
+        <span class="smd-toolbar-sep"></span>
+        <button data-action="link" title="Link (Ctrl+K)">&#128279;</button>
+        <button data-action="image" title="Image">&#128247;</button>
+        <button data-action="code" title="Inline code">&#96;&#96;</button>
+        <span class="smd-toolbar-sep"></span>
+        <button data-action="ul" title="Bullet list">&#8226;</button>
+        <button data-action="ol" title="Numbered list">1.</button>
+        <button data-action="task" title="Task list">&#9744;</button>
+        <button data-action="quote" title="Blockquote (Shift+>)">&gt;</button>
+        <span class="smd-toolbar-sep"></span>
+        <button data-action="hr" title="Horizontal rule">&#8213;</button>
+        <button data-action="highlight" title="Highlight">=</button>
+        <button data-action="large" title="Large text">++</button>
+      </div>
       <div class="smd-editor-content">
         <div class="smd-editor-lines" id="smd-editor-lines"></div>
-        <textarea id="smd-editor-textarea" spellcheck="false" wrap="off"></textarea>
+        <div class="smd-editor-code-wrap">
+          <pre class="smd-editor-highlight" id="smd-editor-highlight"></pre>
+          <textarea id="smd-editor-textarea" spellcheck="false" wrap="off"></textarea>
+        </div>
       </div>
     </div>
   `;
@@ -422,24 +448,118 @@ function initEditor() {
 
   textarea.addEventListener('scroll', () => {
     document.getElementById('smd-editor-lines').scrollTop = textarea.scrollTop;
+    document.getElementById('smd-editor-highlight').scrollTop = textarea.scrollTop;
+    document.getElementById('smd-editor-highlight').scrollLeft = textarea.scrollLeft;
   });
 
   textarea.addEventListener('keydown', (e) => {
+    const mod = e.ctrlKey || e.metaKey;
     if (e.key === 'Tab') {
       e.preventDefault();
-      const start = textarea.selectionStart;
-      const end = textarea.selectionEnd;
-      textarea.value = textarea.value.substring(0, start) + '  ' + textarea.value.substring(end);
-      textarea.selectionStart = textarea.selectionEnd = start + 2;
+      if (e.shiftKey) {
+        // Shift+Tab: unindent selected lines
+        editorLineTransform(textarea, line => line.startsWith('  ') ? line.slice(2) : line);
+      } else {
+        // Tab: indent (or insert 2 spaces if no selection)
+        if (textarea.selectionStart === textarea.selectionEnd) {
+          const start = textarea.selectionStart;
+          textarea.value = textarea.value.substring(0, start) + '  ' + textarea.value.substring(start);
+          textarea.selectionStart = textarea.selectionEnd = start + 2;
+        } else {
+          editorLineTransform(textarea, line => '  ' + line);
+        }
+      }
       textarea.dispatchEvent(new Event('input'));
+      return;
     }
-    // Ctrl/Cmd+S — copy to clipboard (can't save without dev server)
-    if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+    if (mod && e.key === 's') { e.preventDefault(); navigator.clipboard.writeText(textarea.value).then(() => showEditorStatus('Copied to clipboard')); return; }
+    if (mod && e.key === 'b') { e.preventDefault(); editorWrapSelection(textarea, '**', '**'); return; }
+    if (mod && e.key === 'i') { e.preventDefault(); editorWrapSelection(textarea, '*', '*'); return; }
+    if (mod && e.key === 'u') { e.preventDefault(); editorWrapSelection(textarea, '_', '_'); return; }
+    if (mod && e.key === 'k') { e.preventDefault(); editorWrapSelection(textarea, '[', '](url)'); return; }
+    // Shift+> on selected lines → blockquote prefix
+    if (e.key === '>' && e.shiftKey && textarea.selectionStart !== textarea.selectionEnd) {
       e.preventDefault();
-      navigator.clipboard.writeText(textarea.value).then(() => {
-        showEditorStatus('Copied to clipboard');
-      });
+      editorLineTransform(textarea, line => '> ' + line);
+      return;
     }
+  });
+
+  // Toolbar button clicks
+  document.getElementById('smd-editor-toolbar').addEventListener('click', (e) => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    const action = btn.dataset.action;
+    textarea.focus();
+    const actions = {
+      bold:      () => editorWrapSelection(textarea, '**', '**'),
+      italic:    () => editorWrapSelection(textarea, '*', '*'),
+      underline: () => editorWrapSelection(textarea, '_', '_'),
+      strike:    () => editorWrapSelection(textarea, '~~', '~~'),
+      highlight: () => editorWrapSelection(textarea, '==', '=='),
+      large:     () => editorWrapSelection(textarea, '++', '++'),
+      code:      () => editorWrapSelection(textarea, '`', '`'),
+      link:      () => editorWrapSelection(textarea, '[', '](url)'),
+      image:     () => editorInsertText(textarea, '![alt](image.jpg)'),
+      h1:        () => editorLinePrefix(textarea, '# '),
+      h2:        () => editorLinePrefix(textarea, '## '),
+      h3:        () => editorLinePrefix(textarea, '### '),
+      ul:        () => editorLineTransform(textarea, line => '- ' + line),
+      ol:        () => { let n = 1; editorLineTransform(textarea, line => `${n++}. ` + line); },
+      task:      () => editorLineTransform(textarea, line => '- [ ] ' + line),
+      quote:     () => editorLineTransform(textarea, line => '> ' + line),
+      hr:        () => editorInsertText(textarea, '\n---\n'),
+    };
+    if (actions[action]) actions[action]();
+  });
+}
+
+// ===== Editor text manipulation helpers =====
+
+// Wrap the current selection with before/after markers (e.g. ** for bold)
+function editorWrapSelection(ta, before, after) {
+  const start = ta.selectionStart;
+  const end = ta.selectionEnd;
+  const selected = ta.value.substring(start, end);
+  const replacement = before + (selected || 'text') + after;
+  ta.value = ta.value.substring(0, start) + replacement + ta.value.substring(end);
+  // Select the inner text (not the markers)
+  ta.selectionStart = start + before.length;
+  ta.selectionEnd = start + before.length + (selected || 'text').length;
+  ta.dispatchEvent(new Event('input'));
+}
+
+// Insert text at cursor
+function editorInsertText(ta, text) {
+  const pos = ta.selectionStart;
+  ta.value = ta.value.substring(0, pos) + text + ta.value.substring(ta.selectionEnd);
+  ta.selectionStart = ta.selectionEnd = pos + text.length;
+  ta.dispatchEvent(new Event('input'));
+}
+
+// Transform each line in the selection (or current line if no selection)
+function editorLineTransform(ta, fn) {
+  const val = ta.value;
+  let start = ta.selectionStart;
+  let end = ta.selectionEnd;
+  // Expand to full lines
+  const lineStart = val.lastIndexOf('\n', start - 1) + 1;
+  let lineEnd = val.indexOf('\n', end);
+  if (lineEnd === -1) lineEnd = val.length;
+  const lines = val.substring(lineStart, lineEnd).split('\n');
+  const transformed = lines.map(fn).join('\n');
+  ta.value = val.substring(0, lineStart) + transformed + val.substring(lineEnd);
+  ta.selectionStart = lineStart;
+  ta.selectionEnd = lineStart + transformed.length;
+  ta.dispatchEvent(new Event('input'));
+}
+
+// Prefix the current line (or each selected line) with a heading marker, replacing any existing one
+function editorLinePrefix(ta, prefix) {
+  editorLineTransform(ta, line => {
+    // Strip existing heading prefix
+    const stripped = line.replace(/^#{1,6}\s+/, '');
+    return prefix + stripped;
   });
 }
 
@@ -523,8 +643,70 @@ function updateFileListHighlight() {
 function updateLineNumbers() {
   const textarea = document.getElementById('smd-editor-textarea');
   const lines = textarea.value.split('\n');
-  const el = document.getElementById('smd-editor-lines');
-  el.innerHTML = lines.map((_, i) => `<div>${i + 1}</div>`).join('');
+  document.getElementById('smd-editor-lines').innerHTML = lines.map((_, i) => `<div>${i + 1}</div>`).join('');
+  updateHighlight(textarea.value);
+}
+
+// Syntax-aware highlighting — renders a styled version behind the transparent textarea
+function updateHighlight(source) {
+  const hl = document.getElementById('smd-editor-highlight');
+  if (!hl) return;
+  // Escape HTML, then apply syntax coloring
+  let html = source
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;');
+
+  // Line-by-line highlighting
+  html = html.split('\n').map(line => {
+    // Frontmatter delimiters
+    if (/^---\s*$/.test(line)) return `<span class="hl-meta">${line}</span>`;
+    // Headings — sized visually
+    if (/^#{1,6}\s/.test(line)) {
+      const level = line.match(/^(#{1,6})/)[1].length;
+      return `<span class="hl-heading hl-h${level}">${line}</span>`;
+    }
+    // Fenced block markers
+    if (/^(:::|\|\|\||&gt;&gt;&gt;)/.test(line)) return `<span class="hl-fence">${line}</span>`;
+    // Horizontal rule / separator
+    if (/^---+\s*$/.test(line)) return `<span class="hl-hr">${line}</span>`;
+    // List items
+    if (/^[-*]\s/.test(line) || /^\d+\.\s/.test(line)) {
+      const m = line.match(/^([-*]|\d+\.)\s/);
+      return `<span class="hl-bullet">${m[0]}</span>${highlightInline(line.slice(m[0].length))}`;
+    }
+    // Blockquote prefix
+    if (/^&gt;\s/.test(line)) return `<span class="hl-quote-prefix">${line}</span>`;
+    // YAML-like key: value (in frontmatter or theme)
+    if (/^\s*[\w-]+:/.test(line)) {
+      return line.replace(/^(\s*)([\w-]+)(:)(.*)$/, '$1<span class="hl-key">$2</span><span class="hl-meta">$3</span><span class="hl-value">$4</span>');
+    }
+    return highlightInline(line);
+  }).join('\n');
+
+  // Trailing newline so the pre height matches
+  hl.innerHTML = html + '\n';
+}
+
+function highlightInline(text) {
+  return text
+    // Bold
+    .replace(/(\*\*\*(.+?)\*\*\*)/g, '<span class="hl-bold hl-italic">$1</span>')
+    .replace(/(\*\*(.+?)\*\*)/g, '<span class="hl-bold">$1</span>')
+    // Italic
+    .replace(/(\*(.+?)\*)/g, '<span class="hl-italic">$1</span>')
+    // Code spans
+    .replace(/(`[^`]+`)/g, '<span class="hl-code">$1</span>')
+    // Links
+    .replace(/(\[[^\]]+\]\([^)]+\))/g, '<span class="hl-link">$1</span>')
+    // Images
+    .replace(/(!\[[^\]]*\]\([^)]+\))/g, '<span class="hl-link">$1</span>')
+    // Large text
+    .replace(/(\+\+.+?\+\+)/g, '<span class="hl-large">$1</span>')
+    // Strikethrough
+    .replace(/(~~.+?~~)/g, '<span class="hl-strike">$1</span>')
+    // Highlight
+    .replace(/(==.+?==)/g, '<span class="hl-mark">$1</span>');
 }
 
 function handleEditorChange(source) {

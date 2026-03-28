@@ -1014,7 +1014,41 @@ body:has(.smd-editor-panel.open) .smd-editor-toggle {
 .smd-editor-header strong { color: #ccc; font-size: 13px; }
 .smd-editor-status { flex: 1; text-align: right; }
 
-/* Editor content — line numbers + textarea */
+/* Editor toolbar */
+.smd-editor-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 8px;
+  background: #252525;
+  border-bottom: 1px solid #333;
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+.smd-editor-toolbar button {
+  background: none;
+  border: 1px solid transparent;
+  color: #bbb;
+  font: 12px/1 system-ui, sans-serif;
+  padding: 4px 7px;
+  border-radius: 4px;
+  cursor: pointer;
+  min-width: 26px;
+  text-align: center;
+}
+.smd-editor-toolbar button:hover {
+  background: #333;
+  color: #fff;
+  border-color: #555;
+}
+.smd-toolbar-sep {
+  width: 1px;
+  height: 18px;
+  background: #333;
+  margin: 0 4px;
+}
+
+/* Editor content — line numbers + syntax highlight overlay + textarea */
 .smd-editor-content {
   flex: 1;
   display: flex;
@@ -1034,10 +1068,33 @@ body:has(.smd-editor-panel.open) .smd-editor-toggle {
   padding-right: 8px;
   color: #555;
 }
-.smd-editor-panel textarea {
+.smd-editor-code-wrap {
   flex: 1;
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+}
+.smd-editor-highlight {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  margin: 0;
+  padding: 16px;
+  font: 14px/1.6 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  white-space: pre;
+  overflow: auto;
+  color: #666;
   background: #1e1e1e;
-  color: #d4d4d4;
+  pointer-events: none;
+  tab-size: 2;
+  word-wrap: normal;
+}
+.smd-editor-panel textarea {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  color: transparent;
+  caret-color: #d4d4d4;
   border: none;
   padding: 16px;
   font: 14px/1.6 'SF Mono', 'Fira Code', 'Consolas', monospace;
@@ -1047,10 +1104,31 @@ body:has(.smd-editor-panel.open) .smd-editor-toggle {
   white-space: pre;
   overflow: auto;
   min-width: 0;
+  z-index: 1;
 }
 .smd-editor-panel textarea::selection {
-  background: #264f78;
+  background: rgba(38, 79, 120, 0.7);
 }
+
+/* Syntax highlight classes */
+.hl-heading { color: #569cd6; }
+.hl-h1 { font-size: 1.4em; font-weight: bold; color: #4ec9b0; }
+.hl-h2 { font-size: 1.2em; font-weight: bold; color: #569cd6; }
+.hl-h3 { font-size: 1.05em; font-weight: bold; color: #9cdcfe; }
+.hl-bold { color: #d4d4d4; font-weight: bold; }
+.hl-italic { color: #d4d4d4; font-style: italic; }
+.hl-code { color: #ce9178; background: rgba(206,145,120,0.1); border-radius: 2px; }
+.hl-link { color: #4ec9b0; }
+.hl-fence { color: #c586c0; }
+.hl-meta { color: #808080; }
+.hl-key { color: #9cdcfe; }
+.hl-value { color: #ce9178; }
+.hl-bullet { color: #d7ba7d; }
+.hl-hr { color: #808080; }
+.hl-quote-prefix { color: #6a9955; font-style: italic; }
+.hl-large { color: #dcdcaa; font-size: 1.1em; }
+.hl-strike { color: #808080; text-decoration: line-through; }
+.hl-mark { color: #d4d4d4; background: rgba(255,220,0,0.15); }
 
 /* ===== Spacing ===== */
 [data-spacing="compact"] { --section-padding: 48px; }
