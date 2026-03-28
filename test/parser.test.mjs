@@ -348,3 +348,99 @@ describe('parseFormFields', () => {
     assert.equal(fields[6].fieldType, 'paragraph');
   });
 });
+
+describe('heading attributes', () => {
+  it('parses {featured} attribute on heading', () => {
+    const blocks = parseBlocks(['### Pro Plan {featured}']);
+    assert.equal(blocks[0].type, 'heading');
+    assert.equal(blocks[0].text, 'Pro Plan');
+    assert.equal(blocks[0].attrs.featured, true);
+  });
+
+  it('parses key=value attributes on heading', () => {
+    const blocks = parseBlocks(['## Section {bg=#e8f0fe}']);
+    assert.equal(blocks[0].text, 'Section');
+    assert.equal(blocks[0].attrs.bg, '#e8f0fe');
+  });
+
+  it('heading without attrs has empty attrs', () => {
+    const blocks = parseBlocks(['## Normal Heading']);
+    assert.deepEqual(blocks[0].attrs, {});
+  });
+});
+
+describe('image attributes', () => {
+  it('parses {showcase} attribute', () => {
+    const blocks = parseBlocks(['![Dashboard](dash.png){showcase}']);
+    assert.equal(blocks[0].type, 'image');
+    assert.equal(blocks[0].src, 'dash.png');
+    assert.equal(blocks[0].attrs.showcase, true);
+  });
+
+  it('parses {frame} attribute', () => {
+    const blocks = parseBlocks(['![App](app.png){frame}']);
+    assert.equal(blocks[0].attrs.frame, true);
+  });
+
+  it('parses {phone} attribute', () => {
+    const blocks = parseBlocks(['![Mobile](mobile.png){phone}']);
+    assert.equal(blocks[0].attrs.phone, true);
+  });
+
+  it('combines sizing and attributes', () => {
+    const blocks = parseBlocks(['![App](app.png =800x600){showcase}']);
+    assert.equal(blocks[0].width, 800);
+    assert.equal(blocks[0].height, 600);
+    assert.equal(blocks[0].attrs.showcase, true);
+  });
+
+  it('image without attrs has empty attrs', () => {
+    const blocks = parseBlocks(['![Alt](img.png)']);
+    assert.deepEqual(blocks[0].attrs, {});
+  });
+});
+
+describe('tabs', () => {
+  it('parses ::: tabs with named tab children', () => {
+    const blocks = parseBlocks([
+      '::: tabs',
+      '::: tab Monthly',
+      '### $12/mo',
+      ':::',
+      '---',
+      '::: tab Annual',
+      '### $8/mo',
+      ':::',
+      ':::'
+    ]);
+    assert.equal(blocks[0].type, 'tabs');
+    assert.equal(blocks[0].tabs.length, 2);
+    assert.equal(blocks[0].tabs[0].name, 'Monthly');
+    assert.equal(blocks[0].tabs[1].name, 'Annual');
+    assert.equal(blocks[0].tabs[0].blocks[0].type, 'heading');
+  });
+});
+
+describe('video backgrounds', () => {
+  it('detects video URLs in bg sections', () => {
+    const blocks = parseBlocks(['::: bg hero.mp4', '# Title', ':::']);
+    assert.equal(blocks[0].type, 'bg-section');
+    assert.equal(blocks[0].bgType, 'video');
+    assert.equal(blocks[0].bgImage, 'hero.mp4');
+  });
+
+  it('detects webm video', () => {
+    const blocks = parseBlocks(['::: bg bg.webm', '# Title', ':::']);
+    assert.equal(blocks[0].bgType, 'video');
+  });
+
+  it('image URLs remain as image type', () => {
+    const blocks = parseBlocks(['::: bg hero.jpg', '# Title', ':::']);
+    assert.equal(blocks[0].bgType, 'image');
+  });
+
+  it('URLs without extension default to image', () => {
+    const blocks = parseBlocks(['::: bg https://example.com/bg', '# Title', ':::']);
+    assert.equal(blocks[0].bgType, 'image');
+  });
+});

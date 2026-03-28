@@ -147,6 +147,14 @@ ${footerHtml}
       goTo(el.id, ((state[el.id] || 0) + 1) % count);
     });
   }, 5000);
+
+  // Tabs
+  window.tabSwitch = function(id, idx) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.querySelectorAll('.smd-tab-btn').forEach(function(b, i) { b.classList.toggle('active', i === idx); });
+    el.querySelectorAll('.smd-tab-panel').forEach(function(p, i) { p.classList.toggle('active', i === idx); });
+  };
 })();
 </script>
 </body>

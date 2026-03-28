@@ -267,4 +267,113 @@ Everything a service business needs, editable by the business owner.
 
 |||
 
+## SaaS Product
+
+A developer tool landing page with dark theme, pricing tabs, keyboard shortcuts, stats bar, testimonial carousel, and multi-column footer.
+
+|||
+
+### Source
+
+```
+# Your shortcut to everything
+
+A powerful productivity launcher.
+
+[Download](dl.md) — [Extensions](#ext)
+
+## Features
+
+|||
+::: card
+### :search: App Launcher
+Launch apps instantly with
+a few keystrokes.
+:::
+---
+::: card
+### :gear: System Commands
+Control your Mac without
+touching the mouse.
+:::
+|||
+
+## AI
+
+Select text, hit [[⌘]] + [[⇧]]
++ [[Space]], run an AI command.
+
+## Stats
+
+|||
+### ++25,000++
+Active users
+---
+### ++50ms++
+Response time
+---
+### ++99.9%++
+Uptime
+|||
+
+## Pricing
+::: tabs
+::: tab Monthly
+|||
+### Free
+- Basic features
+[Download](#)
+---
+### Pro {featured}
+- AI commands
+- Cloud sync
+++$12/mo++
+[Start Trial](#)
+:::
+---
+::: tab Annual
+|||
+### Free
+- Basic features
+[Download](#)
+---
+### Pro {featured}
+- AI commands
+- Cloud sync
+++$8/mo++
+[Start Trial](#)
+:::
+:::
+
+## Testimonials
+::: carousel
+::: quote
+Game changer for productivity.
+— **Alex R.**
+:::
+---
+::: quote
+Best tool I've ever used.
+— **Sam K.**
+:::
+:::
+```
+
+---
+
+### What You Get
+
+- Dark mode with coral accent via `mode: dark` in theme.yaml
+- Keyboard shortcuts rendered as styled key caps
+- Stats bar auto-detected from `++stat++` columns
+- Tabbed pricing with Monthly/Annual toggle
+- Featured "Recommended" column highlight
+- Testimonial carousel with prev/next navigation
+- Multi-column footer with section headers
+- Emoji icons in card headings
+
+All the patterns of a modern SaaS landing page, from a single markdown file.
+
+|||
+
 [Read the Guide](guide.md) — [Back to Home](index.md)

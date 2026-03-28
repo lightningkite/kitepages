@@ -1477,6 +1477,225 @@ body:has(.smd-nav[data-style="side"]) .smd-section-alt {
   overflow-x: auto;
 }
 
+/* ===== Keyboard Shortcuts ===== */
+kbd {
+  display: inline-block;
+  padding: 2px 8px;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.85em;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  box-shadow: 0 2px 0 var(--border);
+  white-space: nowrap;
+  line-height: 1.6;
+  vertical-align: baseline;
+}
+
+/* ===== Tabs ===== */
+.smd-tabs { margin: 1.5rem 0; }
+.smd-tabs-nav {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+}
+.smd-tab-btn {
+  padding: 0.75rem 1.5rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: 500;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+.smd-tab-btn:hover { color: var(--text); }
+.smd-tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  font-weight: 600;
+}
+.smd-tab-panel { display: none; }
+.smd-tab-panel.active { display: block; }
+
+/* ===== Featured Column ===== */
+.smd-column-featured {
+  border: 2px solid var(--primary);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
+}
+.smd-column-featured::before {
+  content: 'Recommended';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--primary);
+  color: white;
+  padding: 2px 16px;
+  border-radius: 12px;
+  font-size: 0.78em;
+  font-weight: 600;
+  font-family: system-ui, -apple-system, sans-serif;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+@media (min-width: 769px) {
+  .smd-columns:has(.smd-column-featured) {
+    align-items: center;
+  }
+  .smd-column-featured {
+    transform: scale(1.04);
+  }
+}
+
+/* ===== Stats Bar ===== */
+.smd-columns-stats {
+  text-align: center;
+  gap: 20px;
+}
+.smd-columns-stats .smd-column {
+  padding: 1.5rem 1rem;
+}
+.smd-columns-stats .smd-column h3 {
+  font-family: var(--font-heading);
+  font-size: 2.8rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  text-transform: none;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.smd-columns-stats .smd-column p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 0;
+}
+
+/* ===== Image Showcase ===== */
+.smd-img-showcase {
+  display: block;
+  margin: 2rem auto;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-lg), 0 0 60px rgba(0,0,0,0.08);
+  max-width: 100%;
+}
+
+/* Browser Frame */
+.smd-browser-frame {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  margin: 2rem 0;
+}
+.smd-browser-dots {
+  display: flex;
+  gap: 7px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.smd-browser-dots span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--border);
+}
+.smd-browser-frame img {
+  display: block;
+  width: 100%;
+}
+
+/* Phone Frame */
+.smd-phone-frame {
+  display: block;
+  text-align: center;
+  margin: 2rem auto;
+}
+.smd-phone-frame img {
+  display: inline-block;
+  border-radius: 32px;
+  max-width: 320px;
+  box-shadow: 0 0 0 10px #111, 0 0 0 12px #333, var(--shadow-lg);
+}
+
+/* ===== Video Background ===== */
+.smd-bg-video {
+  position: relative;
+  overflow: hidden;
+}
+.smd-bg-video-el {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: cover;
+  z-index: 0;
+}
+.smd-bg-video .smd-bg-overlay {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== Column Image Polish ===== */
+.smd-column > img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  object-fit: cover;
+}
+.smd-column > .smd-img-showcase {
+  margin: 0;
+}
+.smd-column > .smd-browser-frame {
+  margin: 0;
+}
+
+/* ===== Footer Columns ===== */
+.smd-footer-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 32px;
+  margin: 20px 0;
+}
+.smd-footer-col-title {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: 600;
+  font-size: 0.9em;
+  color: var(--text);
+  margin-bottom: 12px;
+  letter-spacing: 0.03em;
+}
+.smd-footer-col-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.smd-footer-col-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.9em;
+}
+.smd-footer-col-links a:hover {
+  color: var(--text);
+}
+
 /* ===== Print Stylesheet ===== */
 @media print {
   .smd-nav, .smd-nav-toggle, .smd-skip-nav,

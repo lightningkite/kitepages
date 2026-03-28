@@ -364,3 +364,108 @@ describe('getThemeDataAttrs', () => {
     assert.equal(attrs['data-cards'], 'flat');
   });
 });
+
+describe('keyboard shortcuts', () => {
+  it('renders [[key]] as kbd', () => {
+    assert.ok(inl('Press [[Ctrl]]').includes('<kbd>Ctrl</kbd>'));
+  });
+
+  it('renders multiple kbd in one line', () => {
+    const result = inl('Press [[Cmd]] + [[K]]');
+    assert.ok(result.includes('<kbd>Cmd</kbd>'));
+    assert.ok(result.includes('<kbd>K</kbd>'));
+  });
+
+  it('does not confuse [[kbd]] with [links](url)', () => {
+    const result = inl('[Link](url) and [[Key]]');
+    assert.ok(result.includes('<a href="url">Link</a>'));
+    assert.ok(result.includes('<kbd>Key</kbd>'));
+  });
+});
+
+describe('tabs rendering', () => {
+  it('renders tabs with nav and panels', () => {
+    const doc = parse('::: tabs\n::: tab Monthly\n### $12/mo\n:::\n---\n::: tab Annual\n### $8/mo\n:::\n:::');
+    const html = render(doc);
+    assert.ok(html.includes('smd-tabs'));
+    assert.ok(html.includes('smd-tab-btn'));
+    assert.ok(html.includes('Monthly'));
+    assert.ok(html.includes('Annual'));
+    assert.ok(html.includes('smd-tab-panel'));
+  });
+});
+
+describe('featured columns', () => {
+  it('renders featured column with special class', () => {
+    const doc = parse('## Pricing\n|||\n### Free\nBasic\n---\n### Pro {featured}\nEverything\n---\n### Teams\nAll\n|||');
+    const html = render(doc);
+    assert.ok(html.includes('smd-column-featured'));
+  });
+});
+
+describe('stats bar', () => {
+  it('detects stats columns', () => {
+    const doc = parse('## Stats\n|||\n### ++25,000++\nTeams\n---\n### ++50ms++\nResponse time\n---\n### ++10M++\nIssues\n|||');
+    const html = render(doc);
+    assert.ok(html.includes('smd-columns-stats'));
+  });
+
+  it('does not flag non-stats columns', () => {
+    const doc = parse('## Features\n|||\n### Speed\nFast\n---\n### Scale\nBig\n|||');
+    const html = render(doc);
+    assert.ok(!html.includes('smd-columns-stats'));
+  });
+});
+
+describe('video backgrounds', () => {
+  it('renders video element for video bg', () => {
+    const doc = parse('::: bg hero.mp4\n# Welcome\n:::');
+    const html = render(doc);
+    assert.ok(html.includes('<video'));
+    assert.ok(html.includes('autoplay'));
+    assert.ok(html.includes('muted'));
+    assert.ok(html.includes('loop'));
+    assert.ok(html.includes('hero.mp4'));
+  });
+});
+
+describe('image showcase', () => {
+  it('renders showcase class', () => {
+    const doc = parse('![App](app.png){showcase}');
+    const html = render(doc);
+    assert.ok(html.includes('smd-img-showcase'));
+  });
+
+  it('renders browser frame', () => {
+    const doc = parse('![App](app.png){frame}');
+    const html = render(doc);
+    assert.ok(html.includes('smd-browser-frame'));
+    assert.ok(html.includes('smd-browser-dots'));
+  });
+
+  it('renders phone frame', () => {
+    const doc = parse('![App](app.png){phone}');
+    const html = render(doc);
+    assert.ok(html.includes('smd-phone-frame'));
+  });
+});
+
+describe('footer columns', () => {
+  it('renders columns in footer', () => {
+    const footerDoc = parse('# Brand\n|||\n### Product\n- [Features](#f)\n---\n### Company\n- [About](#a)\n|||');
+    const html = renderFooter(footerDoc);
+    assert.ok(html.includes('smd-footer-columns'));
+    assert.ok(html.includes('smd-footer-col'));
+    assert.ok(html.includes('smd-footer-col-title'));
+    assert.ok(html.includes('smd-footer-col-links'));
+  });
+});
+
+describe('nav inline formatting', () => {
+  it('renders emoji shortcodes in nav brand', () => {
+    const doc = parse('# :rocket: Brand\n- [Home](#)');
+    const html = renderNav(doc);
+    assert.ok(html.includes('\u{1F680}'));
+    assert.ok(!html.includes(':rocket:'));
+  });
+});

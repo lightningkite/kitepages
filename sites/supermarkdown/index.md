@@ -122,6 +122,66 @@ Curly quotes, em dashes, ellipsis, (c), (tm) -- all automatic.
 
 |||
 
+|||
+
+::: card
+### Tabs
+`::: tabs` with named `::: tab` children. Monthly/Annual pricing toggles, code/preview switches.
+:::
+
+---
+
+::: card
+### Keyboard Shortcuts
+`[[⌘]] + [[K]]` renders as styled key caps. Perfect for developer tools and documentation.
+:::
+
+---
+
+::: card
+### Featured Columns
+Mark a pricing column with `{featured}` for a highlighted "Recommended" badge and visual emphasis.
+:::
+
+---
+
+::: card
+### Stats Bar
+Columns with `++stat++` headings auto-detect as large, centered metrics. No extra markup needed.
+:::
+
+|||
+
+|||
+
+::: card
+### Image Showcase
+`{showcase}`, `{frame}`, and `{phone}` attributes wrap images in shadows, browser chrome, or device frames.
+:::
+
+---
+
+::: card
+### Video Backgrounds
+`::: bg hero.mp4` creates full-bleed video backgrounds -- autoplay, muted, looping.
+:::
+
+---
+
+::: card
+### Footer Columns
+Use `|||` columns in `footer.md` for proper multi-column footers with section headers.
+:::
+
+---
+
+::: card
+### Testimonial Carousels
+Wrap `::: quote` blocks in `::: carousel` for a rotating testimonial slider with navigation.
+:::
+
+|||
+
 ## What It Looks Like
 
 |||

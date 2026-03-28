@@ -1,0 +1,24 @@
+mode: light
+colors:
+  primary: "#7047eb"
+  primaryDark: "#5835c7"
+  primaryLight: "#ede5ff"
+  accent: "#ffc233"
+  background: "#ffffff"
+  surface: "#f8f7ff"
+  surfaceWarm: "#f0edff"
+  text: "#1a1633"
+  textMuted: "#6e6b80"
+  border: "#e2dff0"
+  borderLight: "#f0eef8"
+fonts:
+  heading: Plus Jakarta Sans
+  body: Plus Jakarta Sans
+radius: 16
+radiusLg: 24
+nav: solid
+sections: alternating
+cards: elevated
+animation: expressive
+footer: columns
+spacing: spacious

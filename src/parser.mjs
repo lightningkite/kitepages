@@ -224,10 +224,12 @@ function tryFencedSection(lines, i, end) {
   const typeStr = match[1].trim();
   const innerLines = lines.slice(i + 1, closeIdx);
 
-  // Background section
+  // Background section (image or video)
   if (typeStr.startsWith('bg ')) {
+    const bgValue = typeStr.substring(3).trim();
+    const isVideo = /\.(mp4|webm|ogg|mov)(\?|$)/i.test(bgValue);
     return {
-      block: { type: 'bg-section', bgImage: typeStr.substring(3).trim(), blocks: parseBlocks(innerLines) },
+      block: { type: 'bg-section', bgImage: bgValue, bgType: isVideo ? 'video' : 'image', blocks: parseBlocks(innerLines) },
       next: closeIdx + 1
     };
   }
@@ -237,6 +239,25 @@ function tryFencedSection(lines, i, end) {
     const segments = splitAtSeparators(innerLines);
     return {
       block: { type: 'carousel', slides: segments.map(seg => parseBlocks(seg)) },
+      next: closeIdx + 1
+    };
+  }
+
+  // Tabs — split on ---, each segment is a ::: tab Name block
+  if (typeStr === 'tabs') {
+    const segments = splitAtSeparators(innerLines);
+    const tabs = [];
+    for (const seg of segments) {
+      const blocks = parseBlocks(seg);
+      // Look for a ::: tab Name container
+      if (blocks.length === 1 && blocks[0].type === 'fenced' && blocks[0].sectionType.startsWith('tab ')) {
+        tabs.push({ name: blocks[0].sectionType.substring(4).trim(), blocks: blocks[0].blocks });
+      } else {
+        tabs.push({ name: `Tab ${tabs.length + 1}`, blocks });
+      }
+    }
+    return {
+      block: { type: 'tabs', tabs },
       next: closeIdx + 1
     };
   }
@@ -334,23 +355,47 @@ function tryHeading(lines, i) {
   const match = lines[i].match(/^(#{1,6})\s+(.+)$/);
   if (!match) return null;
 
+  let text = match[2];
+  let attrs = {};
+
+  // Parse {attr} or {key=value ...} at end of heading
+  const attrMatch = text.match(/\s*\{([^}]+)\}\s*$/);
+  if (attrMatch) {
+    text = text.substring(0, attrMatch.index).trim();
+    for (const part of attrMatch[1].split(/\s+/)) {
+      const kv = part.match(/^(\w[\w-]*)=(.+)$/);
+      if (kv) attrs[kv[1]] = kv[2];
+      else attrs[part] = true;
+    }
+  }
+
   return {
-    block: { type: 'heading', level: match[1].length, text: match[2], id: slugify(match[2]) },
+    block: { type: 'heading', level: match[1].length, text, id: slugify(text), attrs },
     next: i + 1
   };
 }
 
 function tryImage(lines, i) {
   if (!lines[i].match(/^!\[/)) return null;
-  // Support optional sizing: ![alt](url =WIDTHxHEIGHT)
-  const match = lines[i].match(/^!\[([^\]]*)\]\(([^)\s]+)(?:\s+=(\d*)x(\d*))?\)\s*$/);
+  // Support optional sizing and attributes: ![alt](url =WIDTHxHEIGHT){showcase}
+  const match = lines[i].match(/^!\[([^\]]*)\]\(([^)\s]+)(?:\s+=(\d*)x(\d*))?\)(?:\{([^}]+)\})?\s*$/);
   if (!match) return null;
+
+  let attrs = {};
+  if (match[5]) {
+    for (const part of match[5].split(/\s+/)) {
+      const kv = part.match(/^(\w[\w-]*)=(.+)$/);
+      if (kv) attrs[kv[1]] = kv[2];
+      else attrs[part] = true;
+    }
+  }
 
   return {
     block: {
       type: 'image', alt: match[1], src: match[2],
       width: match[3] ? parseInt(match[3]) : null,
       height: match[4] ? parseInt(match[4]) : null,
+      attrs,
     },
     next: i + 1
   };

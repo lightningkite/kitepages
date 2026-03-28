@@ -25,6 +25,9 @@ export function inl(text) {
     return `\x00M${mathSpans.length - 1}\x00`;
   });
 
+  // Keyboard shortcuts [[key]]
+  s = s.replace(/\[\[([^\]]+)\]\]/g, '<kbd>$1</kbd>');
+
   // Strikethrough (GFM)
   s = s.replace(/~~(.+?)~~/g, '<del>$1</del>');
   // Highlighted (markdown-it-mark)
@@ -196,9 +199,9 @@ export function render(doc, theme = {}) {
       html += `<hr class="smd-section-rule">`;
       i++;
       while (i < blocks.length && !(blocks[i].type === 'heading' && blocks[i].level <= 2)) {
-        if (blocks[i].type === 'image') {
+        if (blocks[i].type === 'image' && !hasImageAttrs(blocks[i])) {
           const images = [];
-          while (i < blocks.length && blocks[i].type === 'image') {
+          while (i < blocks.length && blocks[i].type === 'image' && !hasImageAttrs(blocks[i])) {
             images.push(blocks[i]);
             i++;
           }
@@ -225,10 +228,10 @@ export function render(doc, theme = {}) {
       i++; continue;
     }
 
-    // Top-level image gallery
-    if (block.type === 'image') {
+    // Top-level image gallery (skip images with special attrs like showcase/frame/phone)
+    if (block.type === 'image' && !hasImageAttrs(block)) {
       const images = [];
-      while (i < blocks.length && blocks[i].type === 'image') {
+      while (i < blocks.length && blocks[i].type === 'image' && !hasImageAttrs(blocks[i])) {
         images.push(blocks[i]);
         i++;
       }
@@ -275,7 +278,15 @@ export function renderBlock(block, context) {
     case 'image': {
       const w = block.width ? ` width="${block.width}"` : '';
       const h = block.height ? ` height="${block.height}"` : '';
-      return `<img src="${block.src}" alt="${block.alt}"${w}${h} loading="lazy" style="max-width:100%;border-radius:var(--radius);">`;
+      const a = block.attrs || {};
+      if (a.frame) {
+        return `<div class="smd-browser-frame"><div class="smd-browser-dots"><span></span><span></span><span></span></div><img src="${block.src}" alt="${block.alt}"${w}${h} loading="lazy"></div>`;
+      }
+      if (a.phone) {
+        return `<div class="smd-phone-frame"><img src="${block.src}" alt="${block.alt}"${w}${h} loading="lazy"></div>`;
+      }
+      const cls = a.showcase ? ' class="smd-img-showcase"' : '';
+      return `<img src="${block.src}" alt="${block.alt}"${w}${h} loading="lazy"${cls} style="max-width:100%;border-radius:var(--radius);">`;
     }
     case 'columns':
       return renderColumns(block);
@@ -291,6 +302,8 @@ export function renderBlock(block, context) {
       return renderAlert(block);
     case 'blockquote':
       return renderBlockquote(block);
+    case 'tabs':
+      return renderTabs(block);
     case 'table':
       return renderTable(block);
     case 'record':
@@ -320,9 +333,21 @@ function renderColumns(block) {
     for (const b of block.columns[0]) html += renderBlock(b, 'column');
     return html;
   }
-  let html = '<div class="smd-columns">';
+
+  // Detect stats bar: every column starts with an H3 whose text is only ++stat++
+  const isStats = block.columns.length >= 2 && block.columns.every(col => {
+    const first = col[0];
+    return first && first.type === 'heading' && first.level === 3 && /^\+\+.+\+\+$/.test(first.text.trim());
+  });
+
+  const wrapperClass = isStats ? 'smd-columns smd-columns-stats' : 'smd-columns';
+  let html = `<div class="${wrapperClass}">`;
   for (const col of block.columns) {
-    html += '<div class="smd-column">';
+    // Detect featured column: first heading has {featured} attr
+    const firstHeading = col.find(b => b.type === 'heading');
+    const isFeatured = firstHeading?.attrs?.featured;
+    const colClass = isFeatured ? 'smd-column smd-column-featured' : 'smd-column';
+    html += `<div class="${colClass}">`;
     for (const b of col) html += renderBlock(b, 'column');
     html += '</div>';
   }
@@ -356,7 +381,38 @@ export function renderCarousel(block) {
   return html;
 }
 
+function renderTabs(block) {
+  const id = 'tabs-' + Math.random().toString(36).slice(2, 8);
+  let html = `<div class="smd-tabs" id="${id}">`;
+  html += '<div class="smd-tabs-nav" role="tablist">';
+  block.tabs.forEach((tab, idx) => {
+    const active = idx === 0 ? ' active' : '';
+    html += `<button class="smd-tab-btn${active}" role="tab" onclick="tabSwitch('${id}',${idx})">${tab.name}</button>`;
+  });
+  html += '</div>';
+  block.tabs.forEach((tab, idx) => {
+    const active = idx === 0 ? ' active' : '';
+    html += `<div class="smd-tab-panel${active}" role="tabpanel">`;
+    for (const b of tab.blocks) html += renderBlock(b);
+    html += '</div>';
+  });
+  html += '</div>';
+  return html;
+}
+
 function renderBgSection(block) {
+  if (block.bgType === 'video') {
+    let html = '<div class="smd-bg-section smd-bg-video">';
+    html += `<video class="smd-bg-video-el" autoplay muted loop playsinline><source src="${block.bgImage}"></video>`;
+    html += '<div class="smd-bg-overlay">';
+    for (const b of block.blocks) {
+      if (b.type === 'heading' && b.level === 1) html += `<h1>${inl(b.text)}</h1>`;
+      else if (b.type === 'heading') html += `<h${b.level}>${inl(b.text)}</h${b.level}>`;
+      else html += renderBlock(b);
+    }
+    html += '</div></div>';
+    return html;
+  }
   let html = `<div class="smd-bg-section" style="background-image:url('${block.bgImage}')">`;
   html += '<div class="smd-bg-overlay">';
   for (const b of block.blocks) {
@@ -370,6 +426,11 @@ function renderBgSection(block) {
   }
   html += '</div></div>';
   return html;
+}
+
+function hasImageAttrs(img) {
+  const a = img.attrs;
+  return a && (a.showcase || a.frame || a.phone);
 }
 
 function renderGallery(images) {
@@ -632,7 +693,7 @@ export function renderNav(headerDoc, theme = {}) {
   let html = '<a href="#smd-content" class="smd-skip-nav">Skip to content</a>';
   html += `<nav class="smd-nav" data-style="${navStyle}" aria-label="Main navigation">`;
   if (h1) {
-    html += `<a class="smd-nav-brand" href="index.md">${h1.text}</a>`;
+    html += `<a class="smd-nav-brand" href="index.md">${inl(h1.text)}</a>`;
   }
   html += '<ul class="smd-nav-links">';
   if (list) {
@@ -655,6 +716,23 @@ export function renderFooter(footerDoc, theme = {}) {
   for (const block of blocks) {
     if (block.type === 'heading' && block.level === 1) {
       html += `<div class="smd-footer-title">${inl(block.text)}</div>`;
+    } else if (block.type === 'columns') {
+      html += '<div class="smd-footer-columns">';
+      for (const col of block.columns) {
+        html += '<div class="smd-footer-col">';
+        for (const b of col) {
+          if (b.type === 'heading') html += `<div class="smd-footer-col-title">${inl(b.text)}</div>`;
+          else if (b.type === 'list') {
+            html += '<ul class="smd-footer-col-links">';
+            for (const item of b.items) html += `<li>${inl(item)}</li>`;
+            html += '</ul>';
+          } else if (b.type === 'paragraph') {
+            html += `<p>${inl(b.text)}</p>`;
+          }
+        }
+        html += '</div>';
+      }
+      html += '</div>';
     } else if (block.type === 'list') {
       html += '<div class="smd-footer-links">';
       for (const item of block.items) html += inl(item) + ' ';

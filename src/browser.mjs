@@ -281,6 +281,15 @@ setInterval(() => {
   });
 }, 5000);
 
+// ===== Tabs =====
+
+window.tabSwitch = function(id, idx) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.querySelectorAll('.smd-tab-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+  el.querySelectorAll('.smd-tab-panel').forEach((p, i) => p.classList.toggle('active', i === idx));
+};
+
 // ===== Theme =====
 
 function applyTheme(theme) {

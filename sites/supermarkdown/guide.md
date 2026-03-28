@@ -13,6 +13,8 @@ Supermarkdown supports all standard Markdown inline formatting plus several exte
 
 | Syntax | Result | Type |
 |--------|--------|------|
+| Syntax | Result | Type |
+|--------|--------|------|
 | `**bold**` | **bold** | CommonMark |
 | `*italic*` | *italic* | CommonMark |
 | `_underline_` | _underline_ | Supermarkdown |
@@ -21,6 +23,7 @@ Supermarkdown supports all standard Markdown inline formatting plus several exte
 | `++large text++` | ++large++ | Supermarkdown |
 | `^superscript^` | x^2^ | Pandoc |
 | `~subscript~` | H~2~O | Pandoc |
+| `[[Key]]` | [[Ctrl]] | Supermarkdown |
 
 Inline code: wrap in backticks. Links: `[text](url)`. Images: `![alt](url)`.
 
@@ -227,6 +230,221 @@ Use `::: carousel` with `---` between slides. Each slide is typically a `::: bg`
 :: Tiramisu
    Price: $9
    Traditional Italian dessert with espresso-soaked ladyfingers.
+
+## Keyboard Shortcuts
+
+Use double square brackets to render styled keyboard keys:
+
+Press [[⌘]] + [[K]] to open the launcher.
+
+Use [[Ctrl]] + [[Shift]] + [[P]] for the command palette.
+
+```
+Press [[⌘]] + [[K]] to open the launcher.
+Use [[Ctrl]] + [[Shift]] + [[P]] for the command palette.
+```
+
+## Tabs
+
+Group content into switchable tabs. Each tab is a `::: tab Name` block inside `::: tabs`, separated by `---`:
+
+::: tabs
+::: tab Markdown
+```
+## Hello World
+This is **Supermarkdown**.
+```
+:::
+---
+::: tab HTML Output
+```html
+<section class="smd-section">
+  <h2>Hello World</h2>
+  <p>This is <strong>Supermarkdown</strong>.</p>
+</section>
+```
+:::
+---
+::: tab Theme
+```yaml
+colors:
+  primary: "#3d6b42"
+  accent: "#c9a84c"
+fonts:
+  heading: Playfair Display
+  body: Inter
+```
+:::
+:::
+
+```
+::: tabs
+::: tab Monthly
+### $12/mo
+Features list...
+:::
+---
+::: tab Annual
+### $8/mo (save 33%)
+Features list...
+:::
+:::
+```
+
+## Featured Columns
+
+Add `{featured}` to a heading inside columns to highlight that column as the recommended option. Useful for pricing tables:
+
+|||
+### Basic
+- 5 projects
+- 1 GB storage
+- Email support
+
+[Get Started](#)
+---
+### Pro {featured}
+- Unlimited projects
+- 100 GB storage
+- Priority support
+- Custom domain
+
+++$12/mo++
+
+[Start Free Trial](#)
+---
+### Enterprise
+- Everything in Pro
+- SSO & SAML
+- Dedicated support
+- Custom SLA
+
+[Contact Sales](#)
+|||
+
+```
+|||
+### Basic
+- 5 projects
+- Email support
+
+[Get Started](#)
+---
+### Pro {featured}
+- Unlimited projects
+- Priority support
+
+++$12/mo++
+
+[Start Free Trial](#)
+---
+### Enterprise
+- Everything in Pro
+- Dedicated support
+
+[Contact Sales](#)
+|||
+```
+
+## Stats Bar
+
+When every column starts with a `++stat++` heading, the columns auto-detect as a stats bar with large centered numbers:
+
+|||
+### ++25,000++
+Active users worldwide
+---
+### ++99.9%++
+Uptime guarantee
+---
+### ++4.9/5++
+Average rating
+|||
+
+```
+|||
+### ++25,000++
+Active users worldwide
+---
+### ++99.9%++
+Uptime guarantee
+---
+### ++4.9/5++
+Average rating
+|||
+```
+
+## Image Presentation
+
+Add attributes to images for special display treatments:
+
+### Showcase
+
+`![](app.png){showcase}` -- large shadow and rounded corners, ideal for product screenshots.
+
+### Browser Frame
+
+`![](app.png){frame}` -- wraps the image in a browser window chrome with title bar dots.
+
+### Phone Frame
+
+`![](app.png){phone}` -- wraps the image in a mobile device frame.
+
+```
+![Dashboard](dashboard.png){showcase}
+![Web App](webapp.png){frame}
+![Mobile](mobile.png){phone}
+```
+
+Attributes can combine with sizing: `![App](app.png =800x){showcase}`
+
+## Video Backgrounds
+
+Use a video file instead of an image in `::: bg` for a video background. The video will autoplay, loop, and be muted:
+
+```
+::: bg hero.mp4
+# Welcome to Our Platform
+The future of content creation.
+:::
+```
+
+Supports `.mp4`, `.webm`, `.ogg`, and `.mov` files.
+
+## Heading Attributes
+
+Any heading can have attributes in curly braces at the end:
+
+```
+### Pro Plan {featured}
+## Dashboard {bg=#e8f0fe}
+```
+
+Attributes are key=value pairs or bare flags separated by spaces. Currently supported: `{featured}` on column headings.
+
+## Footer Columns
+
+Use `|||` columns inside `footer.md` for a multi-column footer with section headers:
+
+```
+# Brand Name
+
+|||
+### Product
+- [Features](#)
+- [Pricing](#)
+---
+### Company
+- [About](#)
+- [Blog](#)
+---
+### Legal
+- [Terms](#)
+- [Privacy](#)
+|||
+
+(c) 2025 Brand Name
+```
 
 ## Emoji Shortcodes
 
