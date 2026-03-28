@@ -114,7 +114,10 @@ function slugify(text) {
 // Returns line index of closing :::, or -1 if not found.
 function findFenceClose(lines, openLine, end) {
   let depth = 1;
+  let inCode = false;
   for (let j = openLine + 1; j < end; j++) {
+    if (lines[j].match(/^`{3,}/)) { inCode = !inCode; continue; }
+    if (inCode) continue;
     if (lines[j].match(/^:::\s+\w/)) depth++;
     else if (lines[j].match(/^:::\s*$/)) {
       depth--;
@@ -127,12 +130,17 @@ function findFenceClose(lines, openLine, end) {
 // Split lines at top-level --- separators (respecting ::: nesting).
 function splitAtSeparators(lines) {
   const segments = [[]];
-  let depth = 0;
+  let fenceDepth = 0;
+  let inCode = false;
   for (const line of lines) {
-    if (line.match(/^:::\s+\w/)) depth++;
-    else if (line.match(/^:::\s*$/)) { if (depth > 0) depth--; }
+    // Track code fences — nothing is structural inside code blocks
+    if (line.match(/^`{3,}/)) { inCode = !inCode; }
+    if (!inCode) {
+      if (line.match(/^:::\s+\w/)) fenceDepth++;
+      else if (line.match(/^:::\s*$/)) { if (fenceDepth > 0) fenceDepth--; }
+    }
 
-    if (depth === 0 && line.match(/^---+\s*$/)) {
+    if (!inCode && fenceDepth === 0 && line.match(/^---+\s*$/)) {
       segments.push([]);
     } else {
       segments[segments.length - 1].push(line);
@@ -276,10 +284,13 @@ function tryFencedSection(lines, i, end) {
 function tryColumnFence(lines, i, end) {
   if (!lines[i].match(/^\|\|\|\s*$/)) return null;
 
-  // Find matching closer, respecting ::: nesting
+  // Find matching closer, respecting ::: and ``` nesting
   let depth = 0;
+  let inCode = false;
   let closeIdx = -1;
   for (let j = i + 1; j < end; j++) {
+    if (lines[j].match(/^`{3,}/)) { inCode = !inCode; continue; }
+    if (inCode) continue;
     if (lines[j].match(/^:::\s+\w/)) depth++;
     else if (lines[j].match(/^:::\s*$/)) { if (depth > 0) depth--; }
     else if (depth === 0 && lines[j].match(/^\|\|\|\s*$/)) {
