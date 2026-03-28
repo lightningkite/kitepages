@@ -10,8 +10,19 @@ export function inl(text) {
   let s = text;
   // Newlines → <br>
   s = s.replace(/\n/g, '<br>');
-  // Code spans (highest precedence — nothing parsed inside)
-  s = s.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+  // Extract code spans early — nothing is parsed inside them.
+  // Replace with placeholders, restore after all formatting + typography.
+  const codeSpans = [];
+  s = s.replace(/`([^`]+)`/g, (_, content) => {
+    codeSpans.push(`<code>${content}</code>`);
+    return `\x00C${codeSpans.length - 1}\x00`;
+  });
+
+  // Strikethrough (GFM)
+  s = s.replace(/~~(.+?)~~/g, '<del>$1</del>');
+  // Highlighted (markdown-it-mark)
+  s = s.replace(/==(.+?)==/g, '<mark>$1</mark>');
   // Bold italic
   s = s.replace(/\*\*\*(.+?)\*\*\*/g, '<strong><em>$1</em></strong>');
   // Bold
@@ -20,14 +31,114 @@ export function inl(text) {
   s = s.replace(/\*(.+?)\*/g, '<em>$1</em>');
   // Large text (++text++)
   s = s.replace(/\+\+(.+?)\+\+/g, '<span class="smd-large">$1</span>');
+  // Superscript (Pandoc)
+  s = s.replace(/\^([^\^]+)\^/g, '<sup>$1</sup>');
+  // Subscript (Pandoc — single ~, after ~~ is already consumed)
+  s = s.replace(/~([^~]+)~/g, '<sub>$1</sub>');
   // Underline
   s = s.replace(/_(.+?)_/g, '<u>$1</u>');
   // Links
   s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
   // Star ratings
   s = s.replace(/([★☆⭐]{2,})/g, '<span class="smd-stars">$1</span>');
+  // Autolinks — bare URLs not already in HTML attributes
+  s = s.replace(/(?<![="'>\/])(https?:\/\/[^\s<>)\]"']+)/g, '<a href="$1">$1</a>');
+  // Icon / emoji shortcodes — :name: → emoji (falls back to literal if no match)
+  s = s.replace(/:([a-z][a-z0-9-]*):/g, (match, name) => {
+    const emoji = EMOJI_MAP[name];
+    if (emoji) return emoji;
+    return match; // No match — leave as literal :name:
+  });
+  // Smart typography (applied last, only to text outside HTML tags)
+  s = smartTypography(s);
+
+  // Restore code spans
+  s = s.replace(/\x00C(\d+)\x00/g, (_, idx) => codeSpans[parseInt(idx)]);
   return s;
 }
+
+// ============================================================
+// Smart typography — curly quotes, em dashes, ellipsis, symbols
+// Only applied to text segments, not inside HTML tags.
+// ============================================================
+
+function smartTypography(s) {
+  const parts = s.split(/(<[^>]+>)/);
+  return parts.map((part, i) => {
+    // Odd indices are HTML tags — skip
+    if (i % 2 === 1) return part;
+    return applyTypography(part);
+  }).join('');
+}
+
+function applyTypography(text) {
+  let s = text;
+  // Em dash (--- or --)
+  s = s.replace(/-{2,3}/g, '\u2014');
+  // Ellipsis (... directly after a word character)
+  s = s.replace(/(\w)\.\.\./g, '$1\u2026');
+  // Symbols
+  s = s.replace(/\(c\)/gi, '\u00A9');
+  s = s.replace(/\(tm\)/gi, '\u2122');
+  s = s.replace(/\(r\)/gi, '\u00AE');
+  // Curly double quotes
+  s = s.replace(/(^|[\s(\u2014])"/g, '$1\u201C');
+  s = s.replace(/"/g, '\u201D');
+  // Curly single quotes (also handles apostrophes)
+  s = s.replace(/(^|[\s(\u2014])'/g, '$1\u2018');
+  s = s.replace(/'/g, '\u2019');
+  return s;
+}
+
+// ============================================================
+// Emoji shortcode map — :name: → emoji character
+// Falls back to literal :name: if no match.
+// Future: Tabler Icons SVG lookup before emoji fallback.
+// ============================================================
+
+const EMOJI_MAP = {
+  // Faces & gestures
+  smile: '\u{1F60A}', grin: '\u{1F601}', laugh: '\u{1F602}', wink: '\u{1F609}',
+  heart: '\u2764\uFE0F', 'heart-eyes': '\u{1F60D}', cry: '\u{1F622}', think: '\u{1F914}',
+  thumbsup: '\u{1F44D}', thumbsdown: '\u{1F44E}', wave: '\u{1F44B}', clap: '\u{1F44F}',
+  pray: '\u{1F64F}', muscle: '\u{1F4AA}', eyes: '\u{1F440}', point: '\u{1F449}',
+  // Status & symbols
+  check: '\u2705', x: '\u274C', warning: '\u26A0\uFE0F', info: '\u2139\uFE0F',
+  question: '\u2753', exclamation: '\u2757', star: '\u2B50', sparkles: '\u2728',
+  fire: '\u{1F525}', '100': '\u{1F4AF}', tada: '\u{1F389}', party: '\u{1F389}',
+  rocket: '\u{1F680}', trophy: '\u{1F3C6}', medal: '\u{1F3C5}', crown: '\u{1F451}',
+  flag: '\u{1F6A9}', bell: '\u{1F514}', megaphone: '\u{1F4E2}', bulb: '\u{1F4A1}',
+  // Objects & tools
+  home: '\u{1F3E0}', gear: '\u2699\uFE0F', settings: '\u2699\uFE0F',
+  lock: '\u{1F512}', unlock: '\u{1F513}', key: '\u{1F511}',
+  search: '\u{1F50D}', link: '\u{1F517}', pin: '\u{1F4CC}', 'map-pin': '\u{1F4CD}',
+  pencil: '\u270F\uFE0F', scissors: '\u2702\uFE0F', paperclip: '\u{1F4CE}',
+  folder: '\u{1F4C1}', file: '\u{1F4C4}', trash: '\u{1F5D1}\uFE0F',
+  book: '\u{1F4D6}', calendar: '\u{1F4C5}', clock: '\u{1F555}',
+  phone: '\u{1F4F1}', email: '\u{1F4E7}', mail: '\u{1F4E7}',
+  camera: '\u{1F4F7}', video: '\u{1F3AC}', music: '\u{1F3B5}',
+  gift: '\u{1F381}', money: '\u{1F4B0}', cart: '\u{1F6D2}',
+  // People
+  user: '\u{1F464}', users: '\u{1F465}', person: '\u{1F464}', people: '\u{1F465}',
+  // Charts & data
+  chart: '\u{1F4CA}', 'chart-up': '\u{1F4C8}', 'chart-down': '\u{1F4C9}',
+  // Arrows & navigation
+  'arrow-right': '\u27A1\uFE0F', 'arrow-left': '\u2B05\uFE0F',
+  'arrow-up': '\u2B06\uFE0F', 'arrow-down': '\u2B07\uFE0F',
+  download: '\u2B07\uFE0F', upload: '\u2B06\uFE0F',
+  plus: '\u2795', minus: '\u2796',
+  // Nature & weather
+  sun: '\u2600\uFE0F', moon: '\u{1F319}', cloud: '\u2601\uFE0F',
+  rain: '\u{1F327}\uFE0F', snow: '\u2744\uFE0F', rainbow: '\u{1F308}',
+  tree: '\u{1F333}', flower: '\u{1F338}', leaf: '\u{1F343}',
+  // Food & drink
+  coffee: '\u2615', pizza: '\u{1F355}', beer: '\u{1F37A}', wine: '\u{1F377}',
+  cake: '\u{1F382}',
+  // Transport
+  car: '\u{1F697}', airplane: '\u2708\uFE0F', ship: '\u{1F6A2}',
+  // Animals
+  dog: '\u{1F436}', cat: '\u{1F431}',
+};
 
 // ============================================================
 // HTML escaping
@@ -302,11 +413,29 @@ function renderExpandable(block) {
 
 function renderList(block) {
   const tag = block.ordered ? 'ol' : 'ul';
-  return `<${tag}>` + block.items.map(item => {
+  const isTaskList = block.items.some(item => /^\[[ x\-]\]\s/.test(item));
+  const listClass = isTaskList ? ' class="smd-task-list"' : '';
+
+  return `<${tag}${listClass}>` + block.items.map(item => {
+    // Task list items: [ ] todo, [x] done, [-] partial
+    const taskMatch = item.match(/^\[([ x\-])\]\s*(.*)/);
+    if (taskMatch) {
+      const state = taskMatch[1];
+      const text = taskMatch[2];
+      if (state === 'x') {
+        return `<li class="smd-task-item smd-task-done"><input type="checkbox" disabled checked>${inl(text)}</li>`;
+      } else if (state === '-') {
+        return `<li class="smd-task-item smd-task-partial"><input type="checkbox" disabled checked>${inl(text)}</li>`;
+      }
+      return `<li class="smd-task-item"><input type="checkbox" disabled>${inl(text)}</li>`;
+    }
+
+    // Dot-leader lists (pricing)
     const dotLeaderMatch = item.match(/^(.+?)\s*\.{3,}\s*(.+)$/);
     if (dotLeaderMatch) {
       return `<li><span>${inl(dotLeaderMatch[1])}</span><span style="color:var(--text-muted);white-space:nowrap">${inl(dotLeaderMatch[2])}</span></li>`;
     }
+
     return `<li>${inl(item)}</li>`;
   }).join('') + `</${tag}>`;
 }

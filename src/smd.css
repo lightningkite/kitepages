@@ -1025,4 +1025,101 @@ body:has(.smd-editor-panel.open) .smd-editor-toggle {
   .smd-gallery.count-3 { grid-template-columns: 1fr 1fr; }
   .smd-gallery.count-3 img:last-child { grid-column: span 2; }
 }
+
+/* ===== Phase 2: Inline & Text Features ===== */
+
+/* Highlighted text */
+mark {
+  background: rgba(255, 220, 0, 0.25);
+  padding: 0.1em 0.2em;
+  border-radius: 2px;
+}
+[data-sections="bold"] .smd-section-alt mark { background: rgba(255, 255, 255, 0.2); }
+
+/* Task lists */
+.smd-task-list { list-style: none; padding-left: 0; }
+.smd-task-item {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 4px 0;
+}
+.smd-task-item input[type="checkbox"] {
+  margin: 0;
+  flex-shrink: 0;
+  accent-color: var(--primary);
+}
+.smd-task-done { color: var(--text-muted); }
+.smd-task-partial input[type="checkbox"] { opacity: 0.5; }
+
+/* Inline code */
+code {
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  background: var(--surface-warm);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+}
+
+/* Code blocks */
+pre {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  overflow-x: auto;
+  font-size: 0.9em;
+  line-height: 1.6;
+  margin: 16px 0;
+}
+
+/* Blockquotes */
+blockquote {
+  border-left: 3px solid var(--accent);
+  padding: 12px 20px;
+  margin: 20px 0;
+  color: var(--text-muted);
+  font-style: italic;
+}
+blockquote p { margin: 8px 0; }
+
+/* Records */
+.smd-record {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin: 12px 0;
+}
+.smd-record-name {
+  font-weight: 700;
+  font-size: 1.1em;
+  margin-bottom: 8px;
+}
+.smd-record-fields {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 16px;
+}
+.smd-record-fields dt { font-weight: 600; color: var(--text-muted); }
+
+/* Expandable sections */
+.smd-expandable {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin: 12px 0;
+}
+.smd-expandable summary {
+  padding: 12px 16px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.smd-expandable summary:hover { color: var(--primary); }
+.smd-expandable-content { padding: 0 16px 16px; }
 </style>

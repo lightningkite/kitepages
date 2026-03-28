@@ -169,17 +169,17 @@ Breaking changes to align with standard Markdown.
 - [x] Borrow `>>>` as block-quote-without-prefix (Discord-style)
 - [x] Heading anchors — generate `id` from heading text (e.g. `## Our Menu` → `id="our-menu"`) for deep linking
 
-### Phase 2 — Inline & Text Features
+### Phase 2 — Inline & Text Features ✅
 
 New inline syntax borrowed from GFM/extended Markdown, plus Supermarkdown originals.
 
-- [ ] `~~strikethrough~~` (GFM)
-- [ ] Autolinks — bare URLs become clickable (GFM)
-- [ ] Task lists — `- [ ]` (todo), `- [x]` (done), `- [-]` (partial/indeterminate)
-- [ ] `^superscript^`, `~subscript~` (Pandoc)
-- [ ] `==highlighted text==` (markdown-it-mark)
-- [ ] Smart typography — curly quotes, `--` → em dash, `word...` → ellipsis, `(c)` → ©, `(tm)` → ™
-- [ ] Icon support — `:name:` backed by Tabler Icons (~5,000 including brand icons); falls back to emoji shortcode if no icon match. Theme controls filled vs outline.
+- [x] `~~strikethrough~~` (GFM)
+- [x] Autolinks — bare URLs become clickable (GFM)
+- [x] Task lists — `- [ ]` (todo), `- [x]` (done), `- [-]` (partial/indeterminate)
+- [x] `^superscript^`, `~subscript~` (Pandoc)
+- [x] `==highlighted text==` (markdown-it-mark)
+- [x] Smart typography — curly quotes, `--` → em dash, `word...` → ellipsis, `(c)` → ©, `(tm)` → ™
+- [x] Icon support — `:name:` emoji shortcodes (~80 common names); Tabler Icons SVG integration planned as enhancement
 
 ### Phase 3 — Rich Content
 

@@ -49,6 +49,86 @@ describe('inl (inline formatting)', () => {
     assert.ok(inl('★★★★★').includes('smd-stars'));
   });
 
+  // Phase 2 inline features
+  it('renders strikethrough', () => {
+    assert.ok(inl('~~deleted~~').includes('<del>deleted</del>'));
+  });
+
+  it('renders highlighted text', () => {
+    assert.ok(inl('==important==').includes('<mark>important</mark>'));
+  });
+
+  it('renders superscript', () => {
+    assert.ok(inl('x^2^').includes('<sup>2</sup>'));
+  });
+
+  it('renders subscript', () => {
+    assert.ok(inl('H~2~O').includes('<sub>2</sub>'));
+  });
+
+  it('does not confuse ~subscript~ with ~~strikethrough~~', () => {
+    const html = inl('~~strike~~ and ~sub~');
+    assert.ok(html.includes('<del>strike</del>'));
+    assert.ok(html.includes('<sub>sub</sub>'));
+  });
+
+  it('autolinks bare URLs', () => {
+    const html = inl('Visit https://example.com for more');
+    assert.ok(html.includes('href="https://example.com"'));
+    assert.ok(html.includes('>https://example.com<'));
+  });
+
+  it('does not double-link explicit links', () => {
+    const html = inl('[Site](https://example.com)');
+    // Should have exactly one <a> tag
+    assert.equal((html.match(/<a /g) || []).length, 1);
+  });
+
+  it('applies smart typography — em dash', () => {
+    assert.ok(inl('one -- two').includes('\u2014'));
+  });
+
+  it('applies smart typography — ellipsis', () => {
+    assert.ok(inl('wait...').includes('\u2026'));
+  });
+
+  it('applies smart typography — copyright', () => {
+    assert.ok(inl('(c) 2026').includes('\u00A9'));
+  });
+
+  it('applies smart typography — trademark', () => {
+    assert.ok(inl('Brand(tm)').includes('\u2122'));
+  });
+
+  it('applies smart typography — curly double quotes', () => {
+    const html = inl('She said "hello"');
+    assert.ok(html.includes('\u201C'));
+    assert.ok(html.includes('\u201D'));
+  });
+
+  it('does not apply smart typography inside code spans', () => {
+    const html = inl('Use `--flag` in terminal');
+    assert.ok(html.includes('--flag'));
+    assert.ok(!html.includes('\u2014flag'));
+  });
+
+  // Icon / emoji shortcodes
+  it('resolves emoji shortcodes', () => {
+    assert.ok(inl(':heart:').includes('\u2764'));
+    assert.ok(inl(':rocket:').includes('\u{1F680}'));
+    assert.ok(inl(':check:').includes('\u2705'));
+  });
+
+  it('leaves unknown shortcodes as literal text', () => {
+    assert.equal(inl(':nonexistent:'), ':nonexistent:');
+  });
+
+  it('does not match shortcodes inside URLs', () => {
+    const html = inl('[link](https://example.com:8080/path)');
+    // Should not try to match :8080 as an emoji
+    assert.ok(html.includes(':8080'));
+  });
+
   it('renders code spans', () => {
     assert.ok(inl('use `code` here').includes('<code>code</code>'));
   });
@@ -139,6 +219,16 @@ describe('render', () => {
     const doc = parse('## Test\n::: warning\nBe careful!\n:::');
     const html = render(doc);
     assert.ok(html.includes('smd-block-warning'));
+  });
+
+  it('renders task lists', () => {
+    const doc = parse('## Tasks\n- [ ] Todo\n- [x] Done\n- [-] Partial');
+    const html = render(doc);
+    assert.ok(html.includes('smd-task-list'));
+    assert.ok(html.includes('smd-task-item'));
+    assert.ok(html.includes('smd-task-done'));
+    assert.ok(html.includes('smd-task-partial'));
+    assert.ok(html.includes('type="checkbox"'));
   });
 
   it('renders each demo site without errors', () => {
