@@ -394,27 +394,52 @@ function initEditor() {
         <span class="smd-editor-status" id="smd-editor-status">Press E to toggle</span>
       </div>
       <div class="smd-editor-toolbar" id="smd-editor-toolbar">
-        <button data-action="bold" title="Bold (Ctrl+B)"><b>B</b></button>
-        <button data-action="italic" title="Italic (Ctrl+I)"><i>I</i></button>
-        <button data-action="underline" title="Underline (Ctrl+U)"><u>U</u></button>
-        <button data-action="strike" title="Strikethrough"><s>S</s></button>
-        <span class="smd-toolbar-sep"></span>
-        <button data-action="h1" title="Heading 1">H1</button>
-        <button data-action="h2" title="Heading 2">H2</button>
-        <button data-action="h3" title="Heading 3">H3</button>
-        <span class="smd-toolbar-sep"></span>
-        <button data-action="link" title="Link (Ctrl+K)">&#128279;</button>
-        <button data-action="image" title="Image">&#128247;</button>
-        <button data-action="code" title="Inline code">&#96;&#96;</button>
-        <span class="smd-toolbar-sep"></span>
-        <button data-action="ul" title="Bullet list">&#8226;</button>
-        <button data-action="ol" title="Numbered list">1.</button>
-        <button data-action="task" title="Task list">&#9744;</button>
-        <button data-action="quote" title="Blockquote (Shift+>)">&gt;</button>
-        <span class="smd-toolbar-sep"></span>
-        <button data-action="hr" title="Horizontal rule">&#8213;</button>
-        <button data-action="highlight" title="Highlight">=</button>
-        <button data-action="large" title="Large text">++</button>
+        <div class="smd-toolbar-row">
+          <span class="smd-toolbar-label">Text</span>
+          <button data-action="bold" title="Bold (Ctrl+B)"><b>B</b></button>
+          <button data-action="italic" title="Italic (Ctrl+I)"><i>I</i></button>
+          <button data-action="underline" title="Underline (Ctrl+U)"><u>U</u></button>
+          <button data-action="strike" title="Strikethrough"><s>S</s></button>
+          <button data-action="highlight" title="Highlight ==">==</button>
+          <button data-action="large" title="Large text ++">++</button>
+          <button data-action="superscript" title="Superscript ^">x&#8319;</button>
+          <button data-action="subscript" title="Subscript ~">x&#8322;</button>
+          <span class="smd-toolbar-sep"></span>
+          <button data-action="code" title="Inline code">&lt;/&gt;</button>
+          <button data-action="link" title="Link (Ctrl+K)">&#128279;</button>
+          <button data-action="image" title="Image">&#128247;</button>
+          <button data-action="math-inline" title="Inline math \\(x\\)">&#8721;</button>
+        </div>
+        <div class="smd-toolbar-row">
+          <span class="smd-toolbar-label">Block</span>
+          <button data-action="h1" title="Heading 1">H1</button>
+          <button data-action="h2" title="Heading 2">H2</button>
+          <button data-action="h3" title="Heading 3">H3</button>
+          <span class="smd-toolbar-sep"></span>
+          <button data-action="ul" title="Bullet list">&#8226; List</button>
+          <button data-action="ol" title="Numbered list">1. List</button>
+          <button data-action="task" title="Task list">&#9744; Task</button>
+          <span class="smd-toolbar-sep"></span>
+          <button data-action="quote" title="Blockquote &gt;">&gt; Quote</button>
+          <button data-action="block-quote" title="Block quote &gt;&gt;&gt;">&#10077; Block</button>
+          <button data-action="hr" title="Horizontal rule">&#8213; Rule</button>
+          <button data-action="codeblock" title="Code block">&#96;&#96;&#96; Code</button>
+          <button data-action="table" title="Table">&#9638; Table</button>
+          <button data-action="math-block" title="Math block">&#8721; Math</button>
+          <button data-action="toc" title="Table of contents">&#123;:toc&#125;</button>
+        </div>
+        <div class="smd-toolbar-row">
+          <span class="smd-toolbar-label">Rich</span>
+          <button data-action="columns" title="Columns |||">&#9638;&#9638; Columns</button>
+          <button data-action="card" title="Card ::: card">&#9642; Card</button>
+          <button data-action="testimonial" title="Testimonial ::: quote">&#10077; Testimonial</button>
+          <button data-action="alert" title="Alert/note ::: warning">&#9888; Alert</button>
+          <button data-action="bg-section" title="Background section ::: bg">&#127748; Background</button>
+          <button data-action="carousel" title="Carousel ::: carousel">&#9654; Carousel</button>
+          <button data-action="form" title="Form ::: form">&#128221; Form</button>
+          <button data-action="expandable" title="Expandable &gt;|">&#9660; Expand</button>
+          <button data-action="record" title="Record :: name">&#128203; Record</button>
+        </div>
       </div>
       <div class="smd-editor-content">
         <div class="smd-editor-lines" id="smd-editor-lines"></div>
@@ -492,23 +517,49 @@ function initEditor() {
     const action = btn.dataset.action;
     textarea.focus();
     const actions = {
-      bold:      () => editorWrapSelection(textarea, '**', '**'),
-      italic:    () => editorWrapSelection(textarea, '*', '*'),
-      underline: () => editorWrapSelection(textarea, '_', '_'),
-      strike:    () => editorWrapSelection(textarea, '~~', '~~'),
-      highlight: () => editorWrapSelection(textarea, '==', '=='),
-      large:     () => editorWrapSelection(textarea, '++', '++'),
-      code:      () => editorWrapSelection(textarea, '`', '`'),
-      link:      () => editorWrapSelection(textarea, '[', '](url)'),
-      image:     () => editorInsertText(textarea, '![alt](image.jpg)'),
-      h1:        () => editorLinePrefix(textarea, '# '),
-      h2:        () => editorLinePrefix(textarea, '## '),
-      h3:        () => editorLinePrefix(textarea, '### '),
-      ul:        () => editorLineTransform(textarea, line => '- ' + line),
-      ol:        () => { let n = 1; editorLineTransform(textarea, line => `${n++}. ` + line); },
-      task:      () => editorLineTransform(textarea, line => '- [ ] ' + line),
-      quote:     () => editorLineTransform(textarea, line => '> ' + line),
-      hr:        () => editorInsertText(textarea, '\n---\n'),
+      // Inline formatting
+      bold:        () => editorWrapSelection(textarea, '**', '**'),
+      italic:      () => editorWrapSelection(textarea, '*', '*'),
+      underline:   () => editorWrapSelection(textarea, '_', '_'),
+      strike:      () => editorWrapSelection(textarea, '~~', '~~'),
+      highlight:   () => editorWrapSelection(textarea, '==', '=='),
+      large:       () => editorWrapSelection(textarea, '++', '++'),
+      superscript: () => editorWrapSelection(textarea, '^', '^'),
+      subscript:   () => editorWrapSelection(textarea, '~', '~'),
+      code:        () => editorWrapSelection(textarea, '`', '`'),
+      link:        () => editorWrapSelection(textarea, '[', '](url)'),
+      image:       () => editorInsertText(textarea, '\n![alt](image.jpg)\n'),
+      'math-inline': () => editorWrapSelection(textarea, '\\(', '\\)'),
+
+      // Headings
+      h1:          () => editorLinePrefix(textarea, '# '),
+      h2:          () => editorLinePrefix(textarea, '## '),
+      h3:          () => editorLinePrefix(textarea, '### '),
+
+      // Lists & line-level
+      ul:          () => editorLineTransform(textarea, line => '- ' + line),
+      ol:          () => { let n = 1; editorLineTransform(textarea, line => `${n++}. ` + line); },
+      task:        () => editorLineTransform(textarea, line => '- [ ] ' + line),
+      quote:       () => editorLineTransform(textarea, line => '> ' + line),
+      hr:          () => editorInsertText(textarea, '\n---\n'),
+
+      // Block-level inserts
+      'block-quote': () => editorInsertText(textarea, '\n>>>\nQuoted text here.\n>>>\n'),
+      codeblock:   () => editorInsertText(textarea, '\n```\ncode here\n```\n'),
+      table:       () => editorInsertText(textarea, '\n| Column 1 | Column 2 | Column 3 |\n|----------|----------|----------|\n| cell     | cell     | cell     |\n'),
+      'math-block': () => editorInsertText(textarea, '\n\\[\nx^2 + y^2 = z^2\n\\]\n'),
+      toc:         () => editorInsertText(textarea, '\n{:toc}\n'),
+
+      // Rich blocks
+      columns:     () => editorInsertText(textarea, '\n|||\n### Column 1\nContent here\n---\n### Column 2\nContent here\n|||\n'),
+      card:        () => editorInsertText(textarea, '\n::: card\n### Card Title\nCard description.\n:::\n'),
+      testimonial: () => editorInsertText(textarea, '\n::: quote\n\u2605\u2605\u2605\u2605\u2605\nAmazing experience!\n\u2014 **Customer Name**\n:::\n'),
+      alert:       () => editorInsertText(textarea, '\n::: warning\nImportant information here.\n:::\n'),
+      'bg-section': () => editorInsertText(textarea, '\n::: bg image.jpg\n# Heading\nOverlay text on the image.\n:::\n'),
+      carousel:    () => editorInsertText(textarea, '\n::: carousel\n::: bg slide1.jpg\n# Slide 1\nSubtitle\n:::\n---\n::: bg slide2.jpg\n# Slide 2\nSubtitle\n:::\n:::\n'),
+      form:        () => editorInsertText(textarea, '\n::: form\nName*: {text}\nEmail*: {email}\nMessage: {paragraph}\n\n[Submit](POST /submit)\n:::\n'),
+      expandable:  () => editorInsertText(textarea, '\n>| Click to expand\n   Hidden content goes here.\n   More details.\n'),
+      record:      () => editorInsertText(textarea, '\n:: Item Name\n   Price: $10\n   Description of the item.\n'),
     };
     if (actions[action]) actions[action]();
   });
