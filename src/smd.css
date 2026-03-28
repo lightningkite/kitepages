@@ -1410,4 +1410,3 @@ body:has(.smd-nav[data-style="side"]) .smd-section-alt {
   .smd-gallery { gap: 8px; }
   .smd-gallery img { height: auto !important; box-shadow: none; }
 }
-</style>
