@@ -200,10 +200,12 @@ ${footerHtml}
     }
   }
 
-  // Validate links and images
+  // Validate links and images (skip content inside code blocks)
   const warnings = [];
   for (const file of pageFiles) {
-    const src = readFileSync(join(siteDir, file), 'utf-8');
+    const src = readFileSync(join(siteDir, file), 'utf-8')
+      .replace(/```[\s\S]*?```/g, '')   // Strip fenced code blocks
+      .replace(/`[^`]+`/g, '');          // Strip inline code
     // Check internal links
     const linkPattern = /\[([^\]]*)\]\(([^)]+)\)/g;
     let m;
