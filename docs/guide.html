@@ -1584,12 +1584,16 @@ kbd {
 }
 .smd-columns-stats .smd-column h3 {
   font-family: var(--font-heading);
-  font-size: 2.8rem;
+  font-size: 1rem;
   font-weight: 700;
   margin-bottom: 0.25rem;
   text-transform: none;
   letter-spacing: -0.02em;
   color: var(--text);
+}
+.smd-columns-stats .smd-column h3 .smd-large {
+  font-size: clamp(2rem, 6vw, 4rem);
+  white-space: nowrap;
 }
 .smd-columns-stats .smd-column p {
   color: var(--text-muted);
@@ -1774,7 +1778,7 @@ kbd {
 <span class="hljs-attr">fonts:</span>
   <span class="hljs-attr">heading:</span> <span class="hljs-string">Playfair</span> <span class="hljs-string">Display</span>
   <span class="hljs-attr">body:</span> <span class="hljs-string">Inter</span></code></pre></section><section class="smd-section smd-section-alt" id="background-sections"><h2>Background Sections</h2><hr class="smd-section-rule"><p>Use <code>::: bg image.jpg</code> to create sections with image backgrounds and text overlay. Great for heroes and banners.</p></section><section class="smd-section" id="carousels"><h2>Carousels</h2><hr class="smd-section-rule"><p>Use <code>::: carousel</code> with <code>---</code> between slides. Each slide is typically a <code>::: bg</code> section. Auto-plays every 5 seconds with prev/next buttons.</p></section><section class="smd-section smd-section-alt" id="expandable-sections"><h2>Expandable Sections</h2><hr class="smd-section-rule"><details class="smd-expandable"><summary>How do I get started?</summary><div class="smd-expandable-content"><p>Create a folder with an index.md and theme.yaml file.<br>Run the compiler and deploy the output.</p></div></details><details class="smd-expandable"><summary>Can I use this for a blog?</summary><div class="smd-expandable-content"><p>Yes. Each .md file becomes a page.<br>Add a header.md for consistent navigation.</p></div></details></section><section class="smd-section" id="record-blocks"><h2>Record Blocks</h2><hr class="smd-section-rule"><div class="smd-record"><div class="smd-record-name">Margherita Pizza</div><dl class="smd-record-fields"><dt>Price</dt><dd>$14</dd></dl><p>Our classic thin-crust pizza with fresh mozzarella and basil.</p></div><div class="smd-record"><div class="smd-record-name">Tiramisu</div><dl class="smd-record-fields"><dt>Price</dt><dd>$9</dd></dl><p>Traditional Italian dessert with espresso-soaked ladyfingers.</p></div></section><section class="smd-section smd-section-alt" id="keyboard-shortcuts"><h2>Keyboard Shortcuts</h2><hr class="smd-section-rule"><p>Use double square brackets to render styled keyboard keys:</p><p>Press <kbd>⌘</kbd> + <kbd>K</kbd> to open the launcher.</p><p>Use <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> for the command palette.</p><pre><code>Press [[⌘]] + [[K]] to open the launcher.
-Use [[Ctrl]] + [[Shift]] + [[P]] for the command palette.</code></pre></section><section class="smd-section" id="tabs"><h2>Tabs</h2><hr class="smd-section-rule"><p>Group content into switchable tabs. Each tab is a <code>::: tab Name</code> block inside <code>::: tabs</code>, separated by <code>---</code>:</p><div class="smd-tabs" id="tabs-lvk0ry"><div class="smd-tabs-nav" role="tablist"><button class="smd-tab-btn active" role="tab" onclick="tabSwitch('tabs-lvk0ry',0)">Markdown</button><button class="smd-tab-btn" role="tab" onclick="tabSwitch('tabs-lvk0ry',1)">HTML Output</button><button class="smd-tab-btn" role="tab" onclick="tabSwitch('tabs-lvk0ry',2)">Theme</button></div><div class="smd-tab-panel active" role="tabpanel"><pre><code>## Hello World
+Use [[Ctrl]] + [[Shift]] + [[P]] for the command palette.</code></pre></section><section class="smd-section" id="tabs"><h2>Tabs</h2><hr class="smd-section-rule"><p>Group content into switchable tabs. Each tab is a <code>::: tab Name</code> block inside <code>::: tabs</code>, separated by <code>---</code>:</p><div class="smd-tabs" id="tabs-qfjs56"><div class="smd-tabs-nav" role="tablist"><button class="smd-tab-btn active" role="tab" onclick="tabSwitch('tabs-qfjs56',0)">Markdown</button><button class="smd-tab-btn" role="tab" onclick="tabSwitch('tabs-qfjs56',1)">HTML Output</button><button class="smd-tab-btn" role="tab" onclick="tabSwitch('tabs-qfjs56',2)">Theme</button></div><div class="smd-tab-panel active" role="tabpanel"><pre><code>## Hello World
 This is **Supermarkdown**.</code></pre></div><div class="smd-tab-panel" role="tabpanel"><pre><code class="language-html hljs"><span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;smd-section&quot;</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Hello World<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
   <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>This is <span class="hljs-tag">&lt;<span class="hljs-name">strong</span>&gt;</span>Supermarkdown<span class="hljs-tag">&lt;/<span class="hljs-name">strong</span>&gt;</span>.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>

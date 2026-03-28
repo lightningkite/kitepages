@@ -138,6 +138,7 @@ const EMOJI_MAP = {
   download: '\u2B07\uFE0F', upload: '\u2B06\uFE0F',
   plus: '\u2795', minus: '\u2796',
   // Nature & weather
+  globe: '\u{1F30D}', world: '\u{1F30D}',
   sun: '\u2600\uFE0F', moon: '\u{1F319}', cloud: '\u2601\uFE0F',
   rain: '\u{1F327}\uFE0F', snow: '\u2744\uFE0F', rainbow: '\u{1F308}',
   tree: '\u{1F333}', flower: '\u{1F338}', leaf: '\u{1F343}',

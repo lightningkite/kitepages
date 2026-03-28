@@ -1572,12 +1572,16 @@ kbd {
 }
 .smd-columns-stats .smd-column h3 {
   font-family: var(--font-heading);
-  font-size: 2.8rem;
+  font-size: 1rem;
   font-weight: 700;
   margin-bottom: 0.25rem;
   text-transform: none;
   letter-spacing: -0.02em;
   color: var(--text);
+}
+.smd-columns-stats .smd-column h3 .smd-large {
+  font-size: clamp(2rem, 6vw, 4rem);
+  white-space: nowrap;
 }
 .smd-columns-stats .smd-column p {
   color: var(--text-muted);
