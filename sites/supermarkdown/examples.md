@@ -11,6 +11,8 @@ Real sites built with Supermarkdown, each from a single folder of text files.
 
 A multi-page site with hero carousel, menu pricing, testimonials, and a reservation form.
 
+[View Live Demo](demos/giuseppe/)
+
 |||
 
 ### Source (index.md)
@@ -62,6 +64,8 @@ Theme: forest green + warm gold, Playfair Display headings.
 ## Portfolio
 
 A designer's personal site with project cards, experience timeline, and contact links.
+
+[View Live Demo](demos/portfolio/)
 
 |||
 
@@ -115,6 +119,8 @@ Designer, 2021–2023
 ## Nonprofit
 
 A land trust site with impact statistics, campaign cards, and newsletter signup.
+
+[View Live Demo](demos/nonprofit/)
 
 |||
 
@@ -170,6 +176,8 @@ All the patterns a nonprofit needs, from plain text.
 
 An event site with schedule, accommodations, registry, and RSVP form.
 
+[View Live Demo](demos/wedding/)
+
 |||
 
 ### Source
@@ -217,6 +225,8 @@ A complete wedding site that the couple can edit themselves.
 ## Salon
 
 A service business with pricing, team profiles, testimonials, and online booking.
+
+[View Live Demo](demos/salon/)
 
 |||
 
@@ -270,6 +280,8 @@ Everything a service business needs, editable by the business owner.
 ## SaaS Product
 
 A developer tool landing page with dark theme, pricing tabs, keyboard shortcuts, stats bar, testimonial carousel, and multi-column footer.
+
+[View Raycast Demo](demos/raycast/) — [View Linear Demo](demos/linear/) — [View Lemon Squeezy Demo](demos/lemonsqueezy/)
 
 |||
 

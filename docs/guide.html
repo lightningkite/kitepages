@@ -337,6 +337,10 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   gap: 40px;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   align-items: stretch;
+  margin-bottom: 2rem;
+}
+.smd-columns:last-child {
+  margin-bottom: 0;
 }
 .smd-column {
   display: flex;
@@ -1489,6 +1493,225 @@ body:has(.smd-nav[data-style="side"]) .smd-section-alt {
   overflow-x: auto;
 }
 
+/* ===== Keyboard Shortcuts ===== */
+kbd {
+  display: inline-block;
+  padding: 2px 8px;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.85em;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  box-shadow: 0 2px 0 var(--border);
+  white-space: nowrap;
+  line-height: 1.6;
+  vertical-align: baseline;
+}
+
+/* ===== Tabs ===== */
+.smd-tabs { margin: 1.5rem 0; }
+.smd-tabs-nav {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+}
+.smd-tab-btn {
+  padding: 0.75rem 1.5rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: 500;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+.smd-tab-btn:hover { color: var(--text); }
+.smd-tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  font-weight: 600;
+}
+.smd-tab-panel { display: none; }
+.smd-tab-panel.active { display: block; }
+
+/* ===== Featured Column ===== */
+.smd-column-featured {
+  border: 2px solid var(--primary);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
+}
+.smd-column-featured::before {
+  content: 'Recommended';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--primary);
+  color: white;
+  padding: 2px 16px;
+  border-radius: 12px;
+  font-size: 0.78em;
+  font-weight: 600;
+  font-family: system-ui, -apple-system, sans-serif;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+@media (min-width: 769px) {
+  .smd-columns:has(.smd-column-featured) {
+    align-items: center;
+  }
+  .smd-column-featured {
+    transform: scale(1.04);
+  }
+}
+
+/* ===== Stats Bar ===== */
+.smd-columns-stats {
+  text-align: center;
+  gap: 20px;
+}
+.smd-columns-stats .smd-column {
+  padding: 1.5rem 1rem;
+}
+.smd-columns-stats .smd-column h3 {
+  font-family: var(--font-heading);
+  font-size: 2.8rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  text-transform: none;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.smd-columns-stats .smd-column p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 0;
+}
+
+/* ===== Image Showcase ===== */
+.smd-img-showcase {
+  display: block;
+  margin: 2rem auto;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-lg), 0 0 60px rgba(0,0,0,0.08);
+  max-width: 100%;
+}
+
+/* Browser Frame */
+.smd-browser-frame {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  margin: 2rem 0;
+}
+.smd-browser-dots {
+  display: flex;
+  gap: 7px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.smd-browser-dots span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--border);
+}
+.smd-browser-frame img {
+  display: block;
+  width: 100%;
+}
+
+/* Phone Frame */
+.smd-phone-frame {
+  display: block;
+  text-align: center;
+  margin: 2rem auto;
+}
+.smd-phone-frame img {
+  display: inline-block;
+  border-radius: 32px;
+  max-width: 320px;
+  box-shadow: 0 0 0 10px #111, 0 0 0 12px #333, var(--shadow-lg);
+}
+
+/* ===== Video Background ===== */
+.smd-bg-video {
+  position: relative;
+  overflow: hidden;
+}
+.smd-bg-video-el {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: cover;
+  z-index: 0;
+}
+.smd-bg-video .smd-bg-overlay {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== Column Image Polish ===== */
+.smd-column > img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  object-fit: cover;
+}
+.smd-column > .smd-img-showcase {
+  margin: 0;
+}
+.smd-column > .smd-browser-frame {
+  margin: 0;
+}
+
+/* ===== Footer Columns ===== */
+.smd-footer-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 32px;
+  margin: 20px 0;
+}
+.smd-footer-col-title {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: 600;
+  font-size: 0.9em;
+  color: var(--text);
+  margin-bottom: 12px;
+  letter-spacing: 0.03em;
+}
+.smd-footer-col-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.smd-footer-col-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.9em;
+}
+.smd-footer-col-links a:hover {
+  color: var(--text);
+}
+
 /* ===== Print Stylesheet ===== */
 @media print {
   .smd-nav, .smd-nav-toggle, .smd-skip-nav,
@@ -1536,7 +1759,7 @@ body:has(.smd-nav[data-style="side"]) .smd-section-alt {
 <body>
 <div id="smd-nav-mount"><a href="#smd-content" class="smd-skip-nav">Skip to content</a><nav class="smd-nav" data-style="minimal" aria-label="Main navigation"><a class="smd-nav-brand" href="index.html">Supermarkdown</a><ul class="smd-nav-links"><li><a href="guide.html">Guide</a></li><li><a href="examples.html">Examples</a></li><li><a href="https://github.com/nicholasgasior/supermarkdown">GitHub</a></li></ul><button class="smd-nav-toggle" aria-label="Menu"><span></span></button></nav></div>
 <main id="smd-content" class="smd-page">
-<header class="smd-hero"><h1>Guide</h1></header><nav class="smd-toc" aria-label="Table of contents"><ul><li><a href="#text-formatting">Text Formatting</a></li><li><a href="#headings">Headings</a></li><li><a href="#lists">Lists</a></li><li class="smd-toc-indent"><a href="#bullet-lists">Bullet Lists</a></li><li class="smd-toc-indent"><a href="#numbered-lists">Numbered Lists</a></li><li class="smd-toc-indent"><a href="#task-lists">Task Lists</a></li><li class="smd-toc-indent"><a href="#dot-leader-lists">Dot-Leader Lists</a></li><li><a href="#columns">Columns</a></li><li class="smd-toc-indent"><a href="#fenced-columns">Fenced Columns</a></li><li class="smd-toc-indent"><a href="#prefix-columns">Prefix Columns</a></li><li><a href="#tables">Tables</a></li><li><a href="#blockquotes">Blockquotes</a></li><li class="smd-toc-indent"><a href="#prefix-style">Prefix Style</a></li><li class="smd-toc-indent"><a href="#fenced-style">Fenced Style</a></li><li class="smd-toc-indent"><a href="#gfm-alerts">GFM Alerts</a></li><li><a href="#cards">Cards</a></li><li><a href="#testimonials">Testimonials</a></li><li><a href="#alerts">Alerts</a></li><li><a href="#forms">Forms</a></li><li><a href="#code-blocks">Code Blocks</a></li><li><a href="#background-sections">Background Sections</a></li><li><a href="#carousels">Carousels</a></li><li><a href="#expandable-sections">Expandable Sections</a></li><li><a href="#record-blocks">Record Blocks</a></li><li><a href="#emoji-shortcodes">Emoji Shortcodes</a></li><li><a href="#site-structure">Site Structure</a></li><li><a href="#theming">Theming</a></li></ul></nav><section class="smd-section" id="text-formatting"><h2>Text Formatting</h2><hr class="smd-section-rule"><p>Supermarkdown supports all standard Markdown inline formatting plus several extensions.</p><table><thead><tr><th>Syntax</th><th>Result</th><th>Type</th></tr></thead><tbody><tr><td><code>**bold**</code></td><td><strong>bold</strong></td><td>CommonMark</td></tr><tr><td><code>*italic*</code></td><td><em>italic</em></td><td>CommonMark</td></tr><tr><td><code>_underline_</code></td><td><u>underline</u></td><td>Supermarkdown</td></tr><tr><td><code>~~strikethrough~~</code></td><td><del>strikethrough</del></td><td>GFM</td></tr><tr><td><code>==highlight==</code></td><td><mark>highlight</mark></td><td>markdown-it-mark</td></tr><tr><td><code>++large text++</code></td><td><span class="smd-large">large</span></td><td>Supermarkdown</td></tr><tr><td><code>^superscript^</code></td><td>x<sup>2</sup></td><td>Pandoc</td></tr><tr><td><code>~subscript~</code></td><td>H<sub>2</sub>O</td><td>Pandoc</td></tr></tbody></table><p>Inline code: wrap in backticks. Links: <code>[text](url)</code>. Images: <code>![alt](url)</code>.</p><p>Smart typography converts <code>--</code> to em dashes, <code>...</code> after words to ellipsis, and <code>(c)</code> to ©.</p></section><section class="smd-section smd-section-alt" id="headings"><h2>Headings</h2><hr class="smd-section-rule"><pre><code># H1 — Page hero (large, centered)
+<header class="smd-hero"><h1>Guide</h1></header><nav class="smd-toc" aria-label="Table of contents"><ul><li><a href="#text-formatting">Text Formatting</a></li><li><a href="#headings">Headings</a></li><li><a href="#lists">Lists</a></li><li class="smd-toc-indent"><a href="#bullet-lists">Bullet Lists</a></li><li class="smd-toc-indent"><a href="#numbered-lists">Numbered Lists</a></li><li class="smd-toc-indent"><a href="#task-lists">Task Lists</a></li><li class="smd-toc-indent"><a href="#dot-leader-lists">Dot-Leader Lists</a></li><li><a href="#columns">Columns</a></li><li class="smd-toc-indent"><a href="#fenced-columns">Fenced Columns</a></li><li class="smd-toc-indent"><a href="#prefix-columns">Prefix Columns</a></li><li><a href="#tables">Tables</a></li><li><a href="#blockquotes">Blockquotes</a></li><li class="smd-toc-indent"><a href="#prefix-style">Prefix Style</a></li><li class="smd-toc-indent"><a href="#fenced-style">Fenced Style</a></li><li class="smd-toc-indent"><a href="#gfm-alerts">GFM Alerts</a></li><li><a href="#cards">Cards</a></li><li><a href="#testimonials">Testimonials</a></li><li><a href="#alerts">Alerts</a></li><li><a href="#forms">Forms</a></li><li><a href="#code-blocks">Code Blocks</a></li><li><a href="#background-sections">Background Sections</a></li><li><a href="#carousels">Carousels</a></li><li><a href="#expandable-sections">Expandable Sections</a></li><li><a href="#record-blocks">Record Blocks</a></li><li><a href="#keyboard-shortcuts">Keyboard Shortcuts</a></li><li><a href="#tabs">Tabs</a></li><li><a href="#featured-columns">Featured Columns</a></li><li><a href="#stats-bar">Stats Bar</a></li><li><a href="#image-presentation">Image Presentation</a></li><li class="smd-toc-indent"><a href="#showcase">Showcase</a></li><li class="smd-toc-indent"><a href="#browser-frame">Browser Frame</a></li><li class="smd-toc-indent"><a href="#phone-frame">Phone Frame</a></li><li><a href="#video-backgrounds">Video Backgrounds</a></li><li><a href="#heading-attributes">Heading Attributes</a></li><li><a href="#footer-columns">Footer Columns</a></li><li><a href="#emoji-shortcodes">Emoji Shortcodes</a></li><li><a href="#site-structure">Site Structure</a></li><li><a href="#theming">Theming</a></li></ul></nav><section class="smd-section" id="text-formatting"><h2>Text Formatting</h2><hr class="smd-section-rule"><p>Supermarkdown supports all standard Markdown inline formatting plus several extensions.</p><table><thead><tr><th>Syntax</th><th>Result</th><th>Type</th></tr></thead><tbody><tr><td>Syntax</td><td>Result</td><td>Type</td></tr><tr><td>———</td><td>———</td><td>——</td></tr><tr><td><code>**bold**</code></td><td><strong>bold</strong></td><td>CommonMark</td></tr><tr><td><code>*italic*</code></td><td><em>italic</em></td><td>CommonMark</td></tr><tr><td><code>_underline_</code></td><td><u>underline</u></td><td>Supermarkdown</td></tr><tr><td><code>~~strikethrough~~</code></td><td><del>strikethrough</del></td><td>GFM</td></tr><tr><td><code>==highlight==</code></td><td><mark>highlight</mark></td><td>markdown-it-mark</td></tr><tr><td><code>++large text++</code></td><td><span class="smd-large">large</span></td><td>Supermarkdown</td></tr><tr><td><code>^superscript^</code></td><td>x<sup>2</sup></td><td>Pandoc</td></tr><tr><td><code>~subscript~</code></td><td>H<sub>2</sub>O</td><td>Pandoc</td></tr><tr><td><code>[[Key]]</code></td><td><kbd>Ctrl</kbd></td><td>Supermarkdown</td></tr></tbody></table><p>Inline code: wrap in backticks. Links: <code>[text](url)</code>. Images: <code>![alt](url)</code>.</p><p>Smart typography converts <code>--</code> to em dashes, <code>...</code> after words to ellipsis, and <code>(c)</code> to ©.</p></section><section class="smd-section smd-section-alt" id="headings"><h2>Headings</h2><hr class="smd-section-rule"><pre><code># H1 — Page hero (large, centered)
 ## H2 — Section (creates visual boundary)
 ### H3 — Subsection (column headers)
 #### H4 — Label</code></pre><p>Headings auto-generate anchor IDs from their text. <code>## Our Menu</code> becomes <code>id="our-menu"</code> for deep linking.</p></section><section class="smd-section" id="lists"><h2>Lists</h2><hr class="smd-section-rule"><h3 id="bullet-lists">Bullet Lists</h3><ul><li>First item</li><li>Second item</li><li>Third item</li></ul><h3 id="numbered-lists">Numbered Lists</h3><ol><li>Step one</li><li>Step two</li><li>Step three</li></ol><h3 id="task-lists">Task Lists</h3><ul class="smd-task-list"><li class="smd-task-item smd-task-done"><input type="checkbox" disabled checked>Parser rewrite</li><li class="smd-task-item smd-task-done"><input type="checkbox" disabled checked>Inline formatting</li><li class="smd-task-item smd-task-done"><input type="checkbox" disabled checked>Tables and alerts</li><li class="smd-task-item"><input type="checkbox" disabled>More site variety</li></ul><h3 id="dot-leader-lists">Dot-Leader Lists</h3><p>For pricing and menus:</p><ul><li><span>Bruschetta</span><span style="color:var(--text-muted);white-space:nowrap">$8</span></li><li><span>Calamari</span><span style="color:var(--text-muted);white-space:nowrap">$12</span></li><li><span>Margherita Pizza</span><span style="color:var(--text-muted);white-space:nowrap">$14</span></li></ul></section><section class="smd-section smd-section-alt" id="columns"><h2>Columns</h2><hr class="smd-section-rule"><h3 id="fenced-columns">Fenced Columns</h3><p>Use <code>|||</code> to open, <code>---</code> to separate, <code>|||</code> to close:</p><div class="smd-columns"><div class="smd-column"><h3 id="column-one">Column One</h3><p>First column content here.</p></div><div class="smd-column"><h3 id="column-two">Column Two</h3><p>Second column content here.</p></div><div class="smd-column"><h3 id="column-three">Column Three</h3><p>Third column content here.</p></div></div><h3 id="prefix-columns">Prefix Columns</h3><p>Use <code>| </code> prefix on each line (like <code>> </code> for blockquotes):</p><div class="smd-columns"><div class="smd-column"><h3 id="feature-a">Feature A</h3><p>Short description of the first feature.</p></div><div class="smd-column"><h3 id="feature-b">Feature B</h3><p>Short description of the second feature.</p></div><div class="smd-column"><h3 id="feature-c">Feature C</h3><p>Short description of the third feature.</p></div></div></section><section class="smd-section" id="tables"><h2>Tables</h2><hr class="smd-section-rule"><p>Standard Markdown table syntax with alignment:</p><table><thead><tr><th>Feature</th><th style="text-align:center">Status</th><th style="text-align:right">Phase</th></tr></thead><tbody><tr><td>Parser rewrite</td><td style="text-align:center">Done</td><td style="text-align:right">1</td></tr><tr><td>Inline formatting</td><td style="text-align:center">Done</td><td style="text-align:right">2</td></tr><tr><td>Tables</td><td style="text-align:center">Done</td><td style="text-align:right">3</td></tr><tr><td>Math formulas</td><td style="text-align:center">Done</td><td style="text-align:right">3</td></tr></tbody></table></section><section class="smd-section smd-section-alt" id="blockquotes"><h2>Blockquotes</h2><hr class="smd-section-rule"><h3 id="prefix-style">Prefix Style</h3><blockquote><p>This is a standard blockquote.<br>It can span multiple lines.</p></blockquote><h3 id="fenced-style">Fenced Style</h3><blockquote><p>This is a fenced block quote.<br>No prefix needed on each line.<br>Useful for longer quotations.</p></blockquote><h3 id="gfm-alerts">GFM Alerts</h3><div class="smd-block smd-block-note"><p>This is a note alert using GFM syntax.</p></div><div class="smd-block smd-block-warning"><p>This is a warning. Be careful with this feature.</p></div><div class="smd-block smd-block-tip"><p>Tips provide helpful suggestions for better usage.</p></div></section><section class="smd-section" id="cards"><h2>Cards</h2><hr class="smd-section-rule"><div class="smd-block smd-block-card"><h3 id="card-title">Card Title</h3><p>Cards are great for feature grids and content blocks. They get automatic padding, border radius, and shadow based on the theme.</p></div></section><section class="smd-section smd-section-alt" id="testimonials"><h2>Testimonials</h2><hr class="smd-section-rule"><div class="smd-block smd-block-quote"><p><span class="smd-stars">★★★★★</span><br>This format changed how we think about web content. Our whole team can edit the site now.<br>— <strong>Sarah K., Marketing Director</strong></p></div></section><section class="smd-section" id="alerts"><h2>Alerts</h2><hr class="smd-section-rule"><div class="smd-block smd-block-warning"><p>Always test your site on mobile before deploying.</p></div><div class="smd-block smd-block-info"><p>Supermarkdown files are standard Markdown. They render (less richly) in any Markdown viewer.</p></div></section><section class="smd-section smd-section-alt" id="forms"><h2>Forms</h2><hr class="smd-section-rule"><form class="smd-form" method="POST" action="/book"><div class="smd-form-group"><div class="smd-field"><label for="name">Name *</label><input type="text" id="name" name="name" required></div><div class="smd-field"><label for="email">Email *</label><input type="email" id="email" name="email" required></div></div><div class="smd-form-group"><div class="smd-field"><label for="service">Service *</label><select id="service" name="service" required><option value="" disabled selected>Select...</option><option value="Haircut">Haircut</option><option value="Color">Color</option><option value="Treatment">Treatment</option></select></div><div class="smd-field"><label for="date">Date</label><input type="date" id="date" name="date"></div><div class="smd-field"><label for="notes">Notes</label><textarea id="notes" name="notes"></textarea></div></div><button type="submit">Book Appointment</button></form></section><section class="smd-section" id="code-blocks"><h2>Code Blocks</h2><hr class="smd-section-rule"><p>Fenced code blocks with language annotation:</p><pre><code class="language-javascript hljs"><span class="hljs-comment">// Compile a Supermarkdown site</span>
@@ -1550,7 +1773,78 @@ body:has(.smd-nav[data-style="side"]) .smd-section-alt {
   <span class="hljs-attr">accent:</span> <span class="hljs-string">&quot;#e8a435&quot;</span>
 <span class="hljs-attr">fonts:</span>
   <span class="hljs-attr">heading:</span> <span class="hljs-string">Playfair</span> <span class="hljs-string">Display</span>
-  <span class="hljs-attr">body:</span> <span class="hljs-string">Inter</span></code></pre></section><section class="smd-section smd-section-alt" id="background-sections"><h2>Background Sections</h2><hr class="smd-section-rule"><p>Use <code>::: bg image.jpg</code> to create sections with image backgrounds and text overlay. Great for heroes and banners.</p></section><section class="smd-section" id="carousels"><h2>Carousels</h2><hr class="smd-section-rule"><p>Use <code>::: carousel</code> with <code>---</code> between slides. Each slide is typically a <code>::: bg</code> section. Auto-plays every 5 seconds with prev/next buttons.</p></section><section class="smd-section smd-section-alt" id="expandable-sections"><h2>Expandable Sections</h2><hr class="smd-section-rule"><details class="smd-expandable"><summary>How do I get started?</summary><div class="smd-expandable-content"><p>Create a folder with an index.md and theme.yaml file.<br>Run the compiler and deploy the output.</p></div></details><details class="smd-expandable"><summary>Can I use this for a blog?</summary><div class="smd-expandable-content"><p>Yes. Each .md file becomes a page.<br>Add a header.md for consistent navigation.</p></div></details></section><section class="smd-section" id="record-blocks"><h2>Record Blocks</h2><hr class="smd-section-rule"><div class="smd-record"><div class="smd-record-name">Margherita Pizza</div><dl class="smd-record-fields"><dt>Price</dt><dd>$14</dd></dl><p>Our classic thin-crust pizza with fresh mozzarella and basil.</p></div><div class="smd-record"><div class="smd-record-name">Tiramisu</div><dl class="smd-record-fields"><dt>Price</dt><dd>$9</dd></dl><p>Traditional Italian dessert with espresso-soaked ladyfingers.</p></div></section><section class="smd-section smd-section-alt" id="emoji-shortcodes"><h2>Emoji Shortcodes</h2><hr class="smd-section-rule"><p>Use <code>:name:</code> for emoji: ❤️ 🚀 ✅ ⭐ 🔥</p></section><section class="smd-section" id="site-structure"><h2>Site Structure</h2><hr class="smd-section-rule"><pre><code>mysite/
+  <span class="hljs-attr">body:</span> <span class="hljs-string">Inter</span></code></pre></section><section class="smd-section smd-section-alt" id="background-sections"><h2>Background Sections</h2><hr class="smd-section-rule"><p>Use <code>::: bg image.jpg</code> to create sections with image backgrounds and text overlay. Great for heroes and banners.</p></section><section class="smd-section" id="carousels"><h2>Carousels</h2><hr class="smd-section-rule"><p>Use <code>::: carousel</code> with <code>---</code> between slides. Each slide is typically a <code>::: bg</code> section. Auto-plays every 5 seconds with prev/next buttons.</p></section><section class="smd-section smd-section-alt" id="expandable-sections"><h2>Expandable Sections</h2><hr class="smd-section-rule"><details class="smd-expandable"><summary>How do I get started?</summary><div class="smd-expandable-content"><p>Create a folder with an index.md and theme.yaml file.<br>Run the compiler and deploy the output.</p></div></details><details class="smd-expandable"><summary>Can I use this for a blog?</summary><div class="smd-expandable-content"><p>Yes. Each .md file becomes a page.<br>Add a header.md for consistent navigation.</p></div></details></section><section class="smd-section" id="record-blocks"><h2>Record Blocks</h2><hr class="smd-section-rule"><div class="smd-record"><div class="smd-record-name">Margherita Pizza</div><dl class="smd-record-fields"><dt>Price</dt><dd>$14</dd></dl><p>Our classic thin-crust pizza with fresh mozzarella and basil.</p></div><div class="smd-record"><div class="smd-record-name">Tiramisu</div><dl class="smd-record-fields"><dt>Price</dt><dd>$9</dd></dl><p>Traditional Italian dessert with espresso-soaked ladyfingers.</p></div></section><section class="smd-section smd-section-alt" id="keyboard-shortcuts"><h2>Keyboard Shortcuts</h2><hr class="smd-section-rule"><p>Use double square brackets to render styled keyboard keys:</p><p>Press <kbd>⌘</kbd> + <kbd>K</kbd> to open the launcher.</p><p>Use <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> for the command palette.</p><pre><code>Press [[⌘]] + [[K]] to open the launcher.
+Use [[Ctrl]] + [[Shift]] + [[P]] for the command palette.</code></pre></section><section class="smd-section" id="tabs"><h2>Tabs</h2><hr class="smd-section-rule"><p>Group content into switchable tabs. Each tab is a <code>::: tab Name</code> block inside <code>::: tabs</code>, separated by <code>---</code>:</p><div class="smd-tabs" id="tabs-lvk0ry"><div class="smd-tabs-nav" role="tablist"><button class="smd-tab-btn active" role="tab" onclick="tabSwitch('tabs-lvk0ry',0)">Markdown</button><button class="smd-tab-btn" role="tab" onclick="tabSwitch('tabs-lvk0ry',1)">HTML Output</button><button class="smd-tab-btn" role="tab" onclick="tabSwitch('tabs-lvk0ry',2)">Theme</button></div><div class="smd-tab-panel active" role="tabpanel"><pre><code>## Hello World
+This is **Supermarkdown**.</code></pre></div><div class="smd-tab-panel" role="tabpanel"><pre><code class="language-html hljs"><span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">class</span>=<span class="hljs-string">&quot;smd-section&quot;</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">h2</span>&gt;</span>Hello World<span class="hljs-tag">&lt;/<span class="hljs-name">h2</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>This is <span class="hljs-tag">&lt;<span class="hljs-name">strong</span>&gt;</span>Supermarkdown<span class="hljs-tag">&lt;/<span class="hljs-name">strong</span>&gt;</span>.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">section</span>&gt;</span></code></pre></div><div class="smd-tab-panel" role="tabpanel"><pre><code class="language-yaml hljs"><span class="hljs-attr">colors:</span>
+  <span class="hljs-attr">primary:</span> <span class="hljs-string">&quot;#3d6b42&quot;</span>
+  <span class="hljs-attr">accent:</span> <span class="hljs-string">&quot;#c9a84c&quot;</span>
+<span class="hljs-attr">fonts:</span>
+  <span class="hljs-attr">heading:</span> <span class="hljs-string">Playfair</span> <span class="hljs-string">Display</span>
+  <span class="hljs-attr">body:</span> <span class="hljs-string">Inter</span></code></pre></div></div><pre><code>::: tabs
+::: tab Monthly
+### $12/mo
+Features list...
+:::
+---
+::: tab Annual
+### $8/mo (save 33%)
+Features list...
+:::
+:::</code></pre></section><section class="smd-section smd-section-alt" id="featured-columns"><h2>Featured Columns</h2><hr class="smd-section-rule"><p>Add <code>{featured}</code> to a heading inside columns to highlight that column as the recommended option. Useful for pricing tables:</p><div class="smd-columns"><div class="smd-column"><h3 id="basic">Basic</h3><ul><li>5 projects</li><li>1 GB storage</li><li>Email support</li></ul><div class="smd-cta-row"><a href="#" class="smd-cta-primary">Get Started</a></div></div><div class="smd-column smd-column-featured"><h3 id="pro">Pro</h3><ul><li>Unlimited projects</li><li>100 GB storage</li><li>Priority support</li><li>Custom domain</li></ul><p><span class="smd-large">$12/mo</span></p><div class="smd-cta-row"><a href="#" class="smd-cta-primary">Start Free Trial</a></div></div><div class="smd-column"><h3 id="enterprise">Enterprise</h3><ul><li>Everything in Pro</li><li>SSO & SAML</li><li>Dedicated support</li><li>Custom SLA</li></ul><div class="smd-cta-row"><a href="#" class="smd-cta-primary">Contact Sales</a></div></div></div><pre><code>|||
+### Basic
+- 5 projects
+- Email support
+
+[Get Started](#)
+---
+### Pro {featured}
+- Unlimited projects
+- Priority support
+
+++$12/mo++
+
+[Start Free Trial](#)
+---
+### Enterprise
+- Everything in Pro
+- Dedicated support
+
+[Contact Sales](#)
+|||</code></pre></section><section class="smd-section" id="stats-bar"><h2>Stats Bar</h2><hr class="smd-section-rule"><p>When every column starts with a <code>++stat++</code> heading, the columns auto-detect as a stats bar with large centered numbers:</p><div class="smd-columns smd-columns-stats"><div class="smd-column"><h3 id="25000"><span class="smd-large">25,000</span></h3><p>Active users worldwide</p></div><div class="smd-column"><h3 id="999"><span class="smd-large">99.9%</span></h3><p>Uptime guarantee</p></div><div class="smd-column"><h3 id="495"><span class="smd-large">4.9/5</span></h3><p>Average rating</p></div></div><pre><code>|||
+### ++25,000++
+Active users worldwide
+---
+### ++99.9%++
+Uptime guarantee
+---
+### ++4.9/5++
+Average rating
+|||</code></pre></section><section class="smd-section smd-section-alt" id="image-presentation"><h2>Image Presentation</h2><hr class="smd-section-rule"><p>Add attributes to images for special display treatments:</p><h3 id="showcase">Showcase</h3><p><code>![](app.png){showcase}</code> — large shadow and rounded corners, ideal for product screenshots.</p><h3 id="browser-frame">Browser Frame</h3><p><code>![](app.png){frame}</code> — wraps the image in a browser window chrome with title bar dots.</p><h3 id="phone-frame">Phone Frame</h3><p><code>![](app.png){phone}</code> — wraps the image in a mobile device frame.</p><pre><code>![Dashboard](dashboard.png){showcase}
+![Web App](webapp.png){frame}
+![Mobile](mobile.png){phone}</code></pre><p>Attributes can combine with sizing: <code>![App](app.png =800x){showcase}</code></p></section><section class="smd-section" id="video-backgrounds"><h2>Video Backgrounds</h2><hr class="smd-section-rule"><p>Use a video file instead of an image in <code>::: bg</code> for a video background. The video will autoplay, loop, and be muted:</p><pre><code>::: bg hero.mp4
+# Welcome to Our Platform
+The future of content creation.
+:::</code></pre><p>Supports <code>.mp4</code>, <code>.webm</code>, <code>.ogg</code>, and <code>.mov</code> files.</p></section><section class="smd-section smd-section-alt" id="heading-attributes"><h2>Heading Attributes</h2><hr class="smd-section-rule"><p>Any heading can have attributes in curly braces at the end:</p><pre><code>### Pro Plan {featured}
+## Dashboard {bg=#e8f0fe}</code></pre><p>Attributes are key=value pairs or bare flags separated by spaces. Currently supported: <code>{featured}</code> on column headings.</p></section><section class="smd-section" id="footer-columns"><h2>Footer Columns</h2><hr class="smd-section-rule"><p>Use <code>|||</code> columns inside <code>footer.md</code> for a multi-column footer with section headers:</p><pre><code># Brand Name
+
+|||
+### Product
+- [Features](#)
+- [Pricing](#)
+---
+### Company
+- [About](#)
+- [Blog](#)
+---
+### Legal
+- [Terms](#)
+- [Privacy](#)
+|||
+
+(c) 2025 Brand Name</code></pre></section><section class="smd-section smd-section-alt" id="emoji-shortcodes"><h2>Emoji Shortcodes</h2><hr class="smd-section-rule"><p>Use <code>:name:</code> for emoji: ❤️ 🚀 ✅ ⭐ 🔥</p></section><section class="smd-section" id="site-structure"><h2>Site Structure</h2><hr class="smd-section-rule"><pre><code>mysite/
   index.md          Home page
   about.md          Additional pages
   header.md         Navigation (all pages)
@@ -1617,6 +1911,14 @@ body:has(.smd-nav[data-style="side"]) .smd-section-alt {
       goTo(el.id, ((state[el.id] || 0) + 1) % count);
     });
   }, 5000);
+
+  // Tabs
+  window.tabSwitch = function(id, idx) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.querySelectorAll('.smd-tab-btn').forEach(function(b, i) { b.classList.toggle('active', i === idx); });
+    el.querySelectorAll('.smd-tab-panel').forEach(function(p, i) { p.classList.toggle('active', i === idx); });
+  };
 })();
 </script>
 </body>

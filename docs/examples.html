@@ -337,6 +337,10 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   gap: 40px;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   align-items: stretch;
+  margin-bottom: 2rem;
+}
+.smd-columns:last-child {
+  margin-bottom: 0;
 }
 .smd-column {
   display: flex;
@@ -1489,6 +1493,225 @@ body:has(.smd-nav[data-style="side"]) .smd-section-alt {
   overflow-x: auto;
 }
 
+/* ===== Keyboard Shortcuts ===== */
+kbd {
+  display: inline-block;
+  padding: 2px 8px;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.85em;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  box-shadow: 0 2px 0 var(--border);
+  white-space: nowrap;
+  line-height: 1.6;
+  vertical-align: baseline;
+}
+
+/* ===== Tabs ===== */
+.smd-tabs { margin: 1.5rem 0; }
+.smd-tabs-nav {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+}
+.smd-tab-btn {
+  padding: 0.75rem 1.5rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: 500;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+.smd-tab-btn:hover { color: var(--text); }
+.smd-tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  font-weight: 600;
+}
+.smd-tab-panel { display: none; }
+.smd-tab-panel.active { display: block; }
+
+/* ===== Featured Column ===== */
+.smd-column-featured {
+  border: 2px solid var(--primary);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
+}
+.smd-column-featured::before {
+  content: 'Recommended';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--primary);
+  color: white;
+  padding: 2px 16px;
+  border-radius: 12px;
+  font-size: 0.78em;
+  font-weight: 600;
+  font-family: system-ui, -apple-system, sans-serif;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+@media (min-width: 769px) {
+  .smd-columns:has(.smd-column-featured) {
+    align-items: center;
+  }
+  .smd-column-featured {
+    transform: scale(1.04);
+  }
+}
+
+/* ===== Stats Bar ===== */
+.smd-columns-stats {
+  text-align: center;
+  gap: 20px;
+}
+.smd-columns-stats .smd-column {
+  padding: 1.5rem 1rem;
+}
+.smd-columns-stats .smd-column h3 {
+  font-family: var(--font-heading);
+  font-size: 2.8rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  text-transform: none;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.smd-columns-stats .smd-column p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 0;
+}
+
+/* ===== Image Showcase ===== */
+.smd-img-showcase {
+  display: block;
+  margin: 2rem auto;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-lg), 0 0 60px rgba(0,0,0,0.08);
+  max-width: 100%;
+}
+
+/* Browser Frame */
+.smd-browser-frame {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  margin: 2rem 0;
+}
+.smd-browser-dots {
+  display: flex;
+  gap: 7px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.smd-browser-dots span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--border);
+}
+.smd-browser-frame img {
+  display: block;
+  width: 100%;
+}
+
+/* Phone Frame */
+.smd-phone-frame {
+  display: block;
+  text-align: center;
+  margin: 2rem auto;
+}
+.smd-phone-frame img {
+  display: inline-block;
+  border-radius: 32px;
+  max-width: 320px;
+  box-shadow: 0 0 0 10px #111, 0 0 0 12px #333, var(--shadow-lg);
+}
+
+/* ===== Video Background ===== */
+.smd-bg-video {
+  position: relative;
+  overflow: hidden;
+}
+.smd-bg-video-el {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: cover;
+  z-index: 0;
+}
+.smd-bg-video .smd-bg-overlay {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== Column Image Polish ===== */
+.smd-column > img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  object-fit: cover;
+}
+.smd-column > .smd-img-showcase {
+  margin: 0;
+}
+.smd-column > .smd-browser-frame {
+  margin: 0;
+}
+
+/* ===== Footer Columns ===== */
+.smd-footer-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 32px;
+  margin: 20px 0;
+}
+.smd-footer-col-title {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: 600;
+  font-size: 0.9em;
+  color: var(--text);
+  margin-bottom: 12px;
+  letter-spacing: 0.03em;
+}
+.smd-footer-col-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.smd-footer-col-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.9em;
+}
+.smd-footer-col-links a:hover {
+  color: var(--text);
+}
+
 /* ===== Print Stylesheet ===== */
 @media print {
   .smd-nav, .smd-nav-toggle, .smd-skip-nav,
@@ -1536,7 +1759,7 @@ body:has(.smd-nav[data-style="side"]) .smd-section-alt {
 <body>
 <div id="smd-nav-mount"><a href="#smd-content" class="smd-skip-nav">Skip to content</a><nav class="smd-nav" data-style="minimal" aria-label="Main navigation"><a class="smd-nav-brand" href="index.html">Supermarkdown</a><ul class="smd-nav-links"><li><a href="guide.html">Guide</a></li><li><a href="examples.html">Examples</a></li><li><a href="https://github.com/nicholasgasior/supermarkdown">GitHub</a></li></ul><button class="smd-nav-toggle" aria-label="Menu"><span></span></button></nav></div>
 <main id="smd-content" class="smd-page">
-<header class="smd-hero"><h1>Examples</h1><p class="smd-subtitle">Real sites built with Supermarkdown, each from a single folder of text files.</p></header><section class="smd-section" id="restaurant"><h2>Restaurant</h2><hr class="smd-section-rule"><p>A multi-page site with hero carousel, menu pricing, testimonials, and a reservation form.</p><div class="smd-columns"><div class="smd-column"><h3 id="source-indexmd">Source (index.md)</h3><pre><code>::: carousel
+<header class="smd-hero"><h1>Examples</h1><p class="smd-subtitle">Real sites built with Supermarkdown, each from a single folder of text files.</p></header><section class="smd-section" id="restaurant"><h2>Restaurant</h2><hr class="smd-section-rule"><p>A multi-page site with hero carousel, menu pricing, testimonials, and a reservation form.</p><div class="smd-cta-row"><a href="demos/giuseppe/" class="smd-cta-primary">View Live Demo</a></div><div class="smd-columns"><div class="smd-column"><h3 id="source-indexmd">Source (index.md)</h3><pre><code>::: carousel
 ::: bg restaurant.jpg
 # Giuseppe's
 Authentic Italian since 1985.
@@ -1559,7 +1782,7 @@ Authentic Italian since 1985.
 ★★★★★
 The best Italian outside of Italy.
 — **Maria S.**
-:::</code></pre></div><div class="smd-column"><h3 id="what-you-get">What You Get</h3><p>A responsive site with:</p><ul><li>Auto-rotating hero carousel with prev/next controls</li><li>Three-column menu with dot-leader pricing</li><li>Styled testimonial cards with star ratings</li><li>Alternating section backgrounds</li><li>Reservation form with date picker and party size</li></ul><p>Theme: forest green + warm gold, Playfair Display headings.</p><p>3 pages, 1 theme file, 0 lines of CSS.</p></div></div></section><section class="smd-section smd-section-alt" id="portfolio"><h2>Portfolio</h2><hr class="smd-section-rule"><p>A designer’s personal site with project cards, experience timeline, and contact links.</p><div class="smd-columns"><div class="smd-column"><h3 id="source">Source</h3><pre><code># Sarah Chen
+:::</code></pre></div><div class="smd-column"><h3 id="what-you-get">What You Get</h3><p>A responsive site with:</p><ul><li>Auto-rotating hero carousel with prev/next controls</li><li>Three-column menu with dot-leader pricing</li><li>Styled testimonial cards with star ratings</li><li>Alternating section backgrounds</li><li>Reservation form with date picker and party size</li></ul><p>Theme: forest green + warm gold, Playfair Display headings.</p><p>3 pages, 1 theme file, 0 lines of CSS.</p></div></div></section><section class="smd-section smd-section-alt" id="portfolio"><h2>Portfolio</h2><hr class="smd-section-rule"><p>A designer’s personal site with project cards, experience timeline, and contact links.</p><div class="smd-cta-row"><a href="demos/portfolio/" class="smd-cta-primary">View Live Demo</a></div><div class="smd-columns"><div class="smd-column"><h3 id="source">Source</h3><pre><code># Sarah Chen
 
 Product designer. Currently at Figma.
 Previously Stripe, Airbnb.
@@ -1586,7 +1809,7 @@ Senior Designer, 2023–Present
 ---
 ### Stripe
 Designer, 2021–2023
-|||</code></pre></div><div class="smd-column"><h3 id="what-you-get">What You Get</h3><ul><li>Clean hero with name and subtitle</li><li>Project cards in a responsive grid</li><li>Experience timeline as compact columns</li><li>Contact links styled as CTA buttons</li><li>Bold, minimal design with orange accent</li></ul><p>1 page. 80 lines. Reads like a resume, renders like a portfolio.</p></div></div></section><section class="smd-section" id="nonprofit"><h2>Nonprofit</h2><hr class="smd-section-rule"><p>A land trust site with impact statistics, campaign cards, and newsletter signup.</p><div class="smd-columns"><div class="smd-column"><h3 id="source">Source</h3><pre><code>## Our Impact
+|||</code></pre></div><div class="smd-column"><h3 id="what-you-get">What You Get</h3><ul><li>Clean hero with name and subtitle</li><li>Project cards in a responsive grid</li><li>Experience timeline as compact columns</li><li>Contact links styled as CTA buttons</li><li>Bold, minimal design with orange accent</li></ul><p>1 page. 80 lines. Reads like a resume, renders like a portfolio.</p></div></div></section><section class="smd-section" id="nonprofit"><h2>Nonprofit</h2><hr class="smd-section-rule"><p>A land trust site with impact statistics, campaign cards, and newsletter signup.</p><div class="smd-cta-row"><a href="demos/nonprofit/" class="smd-cta-primary">View Live Demo</a></div><div class="smd-columns"><div class="smd-column"><h3 id="source">Source</h3><pre><code>## Our Impact
 |||
 ### Acres Preserved
 ++12,847++
@@ -1613,7 +1836,7 @@ Goal: $800K
 Restoring 120 acres of
 degraded wetland.
 :::
-|||</code></pre></div><div class="smd-column"><h3 id="what-you-get">What You Get</h3><ul><li>Hero carousel with nature imagery</li><li>Large stat callouts using <code>++bold++</code> syntax</li><li>Campaign cards with goals and descriptions</li><li>Volunteer / Donate / Events columns</li><li>Newsletter signup form</li><li>Nature-inspired color palette</li></ul><p>All the patterns a nonprofit needs, from plain text.</p></div></div></section><section class="smd-section smd-section-alt" id="wedding"><h2>Wedding</h2><hr class="smd-section-rule"><p>An event site with schedule, accommodations, registry, and RSVP form.</p><div class="smd-columns"><div class="smd-column"><h3 id="source">Source</h3><pre><code># Emma &amp; James
+|||</code></pre></div><div class="smd-column"><h3 id="what-you-get">What You Get</h3><ul><li>Hero carousel with nature imagery</li><li>Large stat callouts using <code>++bold++</code> syntax</li><li>Campaign cards with goals and descriptions</li><li>Volunteer / Donate / Events columns</li><li>Newsletter signup form</li><li>Nature-inspired color palette</li></ul><p>All the patterns a nonprofit needs, from plain text.</p></div></div></section><section class="smd-section smd-section-alt" id="wedding"><h2>Wedding</h2><hr class="smd-section-rule"><p>An event site with schedule, accommodations, registry, and RSVP form.</p><div class="smd-cta-row"><a href="demos/wedding/" class="smd-cta-primary">View Live Demo</a></div><div class="smd-columns"><div class="smd-column"><h3 id="source">Source</h3><pre><code># Emma &amp; James
 October 18, 2026 — Napa Valley
 
 ## The Details
@@ -1634,7 +1857,7 @@ Attending*: {Accepts / Declines}
 Dietary: {None / Vegetarian / Vegan}
 Song request: {text}
 [Send RSVP](POST /rsvp)
-:::</code></pre></div><div class="smd-column"><h3 id="what-you-get">What You Get</h3><ul><li>Romantic hero with couple’s photo</li><li>Event schedule as cards</li><li>Accommodation details with booking links</li><li>Registry section with outbound links</li><li>RSVP form with dietary preferences dropdown</li><li>Elegant serif typography</li></ul><p>A complete wedding site that the couple can edit themselves.</p></div></div></section><section class="smd-section" id="salon"><h2>Salon</h2><hr class="smd-section-rule"><p>A service business with pricing, team profiles, testimonials, and online booking.</p><div class="smd-columns"><div class="smd-column"><h3 id="source">Source</h3><pre><code>## Services
+:::</code></pre></div><div class="smd-column"><h3 id="what-you-get">What You Get</h3><ul><li>Romantic hero with couple’s photo</li><li>Event schedule as cards</li><li>Accommodation details with booking links</li><li>Registry section with outbound links</li><li>RSVP form with dietary preferences dropdown</li><li>Elegant serif typography</li></ul><p>A complete wedding site that the couple can edit themselves.</p></div></div></section><section class="smd-section" id="salon"><h2>Salon</h2><hr class="smd-section-rule"><p>A service business with pricing, team profiles, testimonials, and online booking.</p><div class="smd-cta-row"><a href="demos/salon/" class="smd-cta-primary">View Live Demo</a></div><div class="smd-columns"><div class="smd-column"><h3 id="source">Source</h3><pre><code>## Services
 |||
 ### Cuts &amp; Styling
 - Women's Haircut ... $75
@@ -1660,7 +1883,87 @@ Owner &amp; Lead Stylist
 Senior Stylist
 Expert in precision cuts.
 :::
-|||</code></pre></div><div class="smd-column"><h3 id="what-you-get">What You Get</h3><ul><li>Service pricing in clean columns</li><li>Team member cards with bios</li><li>Client testimonials with 5-star ratings</li><li>Location, hours, and parking info</li><li>Appointment booking form with stylist selection</li><li>Pastel color scheme</li></ul><p>Everything a service business needs, editable by the business owner.</p></div></div><div class="smd-cta-row"><a href="guide.html" class="smd-cta-primary">Read the Guide</a><a href="index.html" class="smd-cta-secondary">Back to Home</a></div></section>
+|||</code></pre></div><div class="smd-column"><h3 id="what-you-get">What You Get</h3><ul><li>Service pricing in clean columns</li><li>Team member cards with bios</li><li>Client testimonials with 5-star ratings</li><li>Location, hours, and parking info</li><li>Appointment booking form with stylist selection</li><li>Pastel color scheme</li></ul><p>Everything a service business needs, editable by the business owner.</p></div></div></section><section class="smd-section smd-section-alt" id="saas-product"><h2>SaaS Product</h2><hr class="smd-section-rule"><p>A developer tool landing page with dark theme, pricing tabs, keyboard shortcuts, stats bar, testimonial carousel, and multi-column footer.</p><div class="smd-cta-row"><a href="demos/raycast/" class="smd-cta-primary">View Raycast Demo</a><a href="demos/linear/" class="smd-cta-secondary">View Linear Demo</a><a href="demos/lemonsqueezy/" class="smd-cta-secondary">View Lemon Squeezy Demo</a></div><div class="smd-columns"><div class="smd-column"><h3 id="source">Source</h3><pre><code># Your shortcut to everything
+
+A powerful productivity launcher.
+
+[Download](dl.md) — [Extensions](#ext)
+
+## Features
+
+|||
+::: card
+### :search: App Launcher
+Launch apps instantly with
+a few keystrokes.
+:::
+---
+::: card
+### :gear: System Commands
+Control your Mac without
+touching the mouse.
+:::
+|||
+
+## AI
+
+Select text, hit [[⌘]] + [[⇧]]
++ [[Space]], run an AI command.
+
+## Stats
+
+|||
+### ++25,000++
+Active users
+---
+### ++50ms++
+Response time
+---
+### ++99.9%++
+Uptime
+|||
+
+## Pricing
+::: tabs
+::: tab Monthly
+|||
+### Free
+- Basic features
+[Download](#)
+---
+### Pro {featured}
+- AI commands
+- Cloud sync
+++$12/mo++
+[Start Trial](#)
+:::
+---
+::: tab Annual
+|||
+### Free
+- Basic features
+[Download](#)
+---
+### Pro {featured}
+- AI commands
+- Cloud sync
+++$8/mo++
+[Start Trial](#)
+:::
+:::
+
+## Testimonials
+::: carousel
+::: quote
+Game changer for productivity.
+— **Alex R.**
+:::
+---
+::: quote
+Best tool I've ever used.
+— **Sam K.**
+:::
+:::</code></pre></div><div class="smd-column"><h3 id="what-you-get">What You Get</h3><ul><li>Dark mode with coral accent via <code>mode: dark</code> in theme.yaml</li><li>Keyboard shortcuts rendered as styled key caps</li><li>Stats bar auto-detected from <code>++stat++</code> columns</li><li>Tabbed pricing with Monthly/Annual toggle</li><li>Featured “Recommended” column highlight</li><li>Testimonial carousel with prev/next navigation</li><li>Multi-column footer with section headers</li><li>Emoji icons in card headings</li></ul><p>All the patterns of a modern SaaS landing page, from a single markdown file.</p></div></div><div class="smd-cta-row"><a href="guide.html" class="smd-cta-primary">Read the Guide</a><a href="index.html" class="smd-cta-secondary">Back to Home</a></div></section>
 <footer class="smd-footer" data-style="centered"><div class="smd-footer-title">Supermarkdown</div><div class="smd-footer-links"><a href="index.html">Home</a> <a href="guide.html">Guide</a> <a href="examples.html">Examples</a> <a href="https://github.com/nicholasgasior/supermarkdown">GitHub</a> </div><div class="smd-footer-copy">Made with Supermarkdown, naturally.</div></footer>
 </main>
 <script>
@@ -1710,6 +2013,14 @@ Expert in precision cuts.
       goTo(el.id, ((state[el.id] || 0) + 1) % count);
     });
   }, 5000);
+
+  // Tabs
+  window.tabSwitch = function(id, idx) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.querySelectorAll('.smd-tab-btn').forEach(function(b, i) { b.classList.toggle('active', i === idx); });
+    el.querySelectorAll('.smd-tab-panel').forEach(function(p, i) { p.classList.toggle('active', i === idx); });
+  };
 })();
 </script>
 </body>
