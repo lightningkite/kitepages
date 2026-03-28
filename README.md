@@ -224,6 +224,6 @@ Developer and end-user experience.
 
 ### Ongoing
 
-- [ ] Document layout heuristics in detail (column detection, gallery inference, CTA detection, dot-leader lists, section alternation)
+- [x] Document layout heuristics in detail — see `design/10-layout-heuristics.md`
 - [x] Build the supermarkdown project site (`sites/supermarkdown/`) — index, guide, examples pages with updated syntax docs
 - [ ] More site variety — continuously expand the range of styles, layouts, and industries supported
