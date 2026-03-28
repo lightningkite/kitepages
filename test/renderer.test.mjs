@@ -261,6 +261,19 @@ describe('render', () => {
     assert.ok(html.includes('href="#second"'));
   });
 
+  it('renders inline math', () => {
+    const doc = parse('## Math\nThe formula \\( E = mc^2 \\) is famous.');
+    const html = render(doc);
+    assert.ok(html.includes('smd-math'));
+    assert.ok(html.includes('E = mc^2') || html.includes('E = mc'));
+  });
+
+  it('renders block math', () => {
+    const doc = parse('## Equations\n\\[\nx^2 + y^2 = z^2\n\\]');
+    const html = render(doc);
+    assert.ok(html.includes('smd-math-block'));
+  });
+
   it('renders images with sizing', () => {
     const doc = parse('## Gallery\n![Photo](img.jpg =300x200)');
     const html = render(doc);

@@ -193,7 +193,7 @@ Block-level features for more expressive sites.
 - [x] GFM alert syntax as alias — `> [!NOTE]`, `> [!WARNING]`, `> [!TIP]`, `> [!IMPORTANT]`, `> [!CAUTION]`
 - [x] External embeds — YouTube and Vimeo URLs auto-detected as standalone paragraphs, rendered as responsive iframes
 - [x] Image sizing control — `![alt](url =WIDTHxHEIGHT)` syntax
-- [ ] Math formulas — `\( inline \)` and `\[ block \]` (LaTeX delimiters, not `$`); lazy-load KaTeX
+- [x] Math formulas — `\( inline \)` and `\[ block \]` (LaTeX delimiters, not `$`); KaTeX rendering at compile time, CDN CSS auto-included when math is present
 - [x] Syntax highlighting in code blocks — highlight.js in compiler, theme-aware CSS colors
 - [x] Directive syntax — `{:toc}` for table of contents. Extensible.
 - [x] Side navigation layout — `nav: side` in theme.yaml for persistent sidebar; responsive (collapses to hamburger on mobile)

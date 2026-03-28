@@ -11,12 +11,18 @@ export function inl(text) {
   // Newlines → <br>
   s = s.replace(/\n/g, '<br>');
 
-  // Extract code spans early — nothing is parsed inside them.
+  // Extract code spans and inline math — nothing is parsed inside them.
   // Replace with placeholders, restore after all formatting + typography.
   const codeSpans = [];
   s = s.replace(/`([^`]+)`/g, (_, content) => {
     codeSpans.push(`<code>${content}</code>`);
     return `\x00C${codeSpans.length - 1}\x00`;
+  });
+  // Inline math \( ... \)
+  const mathSpans = [];
+  s = s.replace(/\\\((.+?)\\\)/g, (_, content) => {
+    mathSpans.push(`<span class="smd-math">${escapeHtml(content)}</span>`);
+    return `\x00M${mathSpans.length - 1}\x00`;
   });
 
   // Strikethrough (GFM)
@@ -52,8 +58,9 @@ export function inl(text) {
   // Smart typography (applied last, only to text outside HTML tags)
   s = smartTypography(s);
 
-  // Restore code spans
+  // Restore code spans and math spans
   s = s.replace(/\x00C(\d+)\x00/g, (_, idx) => codeSpans[parseInt(idx)]);
+  s = s.replace(/\x00M(\d+)\x00/g, (_, idx) => mathSpans[parseInt(idx)]);
   return s;
 }
 
@@ -290,6 +297,8 @@ export function renderBlock(block, context) {
       return renderRecord(block);
     case 'expandable':
       return renderExpandable(block);
+    case 'math':
+      return `<div class="smd-math smd-math-block">${escapeHtml(block.content)}</div>`;
     case 'directive':
       return renderDirective(block);
     case 'html':

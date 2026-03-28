@@ -7,6 +7,7 @@ import { join, basename, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import yaml from 'js-yaml';
 import hljs from 'highlight.js/lib/common';
+import katex from 'katex';
 import { parse } from './parser.mjs';
 import { render, renderNav, renderFooter, getThemeVars, getGoogleFontsUrl, getThemeDataAttrs } from './renderer.mjs';
 
@@ -159,6 +160,27 @@ ${footerHtml}
         return `<pre><code class="language-${lang} hljs">${result.value}</code></pre>`;
       } catch { return match; }
     });
+
+    // Math rendering with KaTeX
+    // Block math
+    html = html.replace(/<div class="smd-math smd-math-block">([\s\S]*?)<\/div>/g, (match, tex) => {
+      try {
+        const decoded = tex.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"');
+        return `<div class="smd-math smd-math-block">${katex.renderToString(decoded, { displayMode: true, throwOnError: false })}</div>`;
+      } catch { return match; }
+    });
+    // Inline math
+    html = html.replace(/<span class="smd-math">([\s\S]*?)<\/span>/g, (match, tex) => {
+      try {
+        const decoded = tex.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"');
+        return `<span class="smd-math">${katex.renderToString(decoded, { displayMode: false, throwOnError: false })}</span>`;
+      } catch { return match; }
+    });
+
+    // Add KaTeX CSS if math was used
+    if (html.includes('class="katex"')) {
+      html = html.replace('</head>', '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">\n</head>');
+    }
 
     // Rewrite .md and .smd links to .html
     html = html.replace(/href="([^"]*?)\.md(#[^"]*)?"/g, 'href="$1.html$2"');

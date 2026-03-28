@@ -169,6 +169,7 @@ export function parseBlocks(lines, start = 0, end = null) {
     if ((result = tryPrefixColumns(lines, i, end))) { blocks.push(result.block); i = result.next; continue; }
     if ((result = tryRecord(lines, i, end))) { blocks.push(result.block); i = result.next; continue; }
     if ((result = tryDirective(lines, i))) { blocks.push(result.block); i = result.next; continue; }
+    if ((result = tryBlockMath(lines, i, end))) { blocks.push(result.block); i = result.next; continue; }
     if ((result = tryHtmlBlock(lines, i, end))) { blocks.push(result.block); i = result.next; continue; }
 
     result = parseParagraph(lines, i, end);
@@ -516,6 +517,23 @@ function tryRecord(lines, i, end) {
   };
 }
 
+function tryBlockMath(lines, i, end) {
+  if (!lines[i].match(/^\\\[\s*$/)) return null;
+  const contentLines = [];
+  let j = i + 1;
+  while (j < end) {
+    if (lines[j].match(/^\\\]\s*$/)) {
+      return {
+        block: { type: 'math', display: 'block', content: contentLines.join('\n') },
+        next: j + 1
+      };
+    }
+    contentLines.push(lines[j]);
+    j++;
+  }
+  return null;
+}
+
 function tryDirective(lines, i) {
   const match = lines[i].match(/^\{:(\w+)\}\s*$/);
   if (!match) return null;
@@ -567,6 +585,8 @@ function parseParagraph(lines, i, end) {
     if (line.match(/^\| /)) break;
     if (line.match(/^::\s+/) && !line.match(/^:::\s/)) break;
     if (line.match(/^`{3,}/)) break;
+    if (line.match(/^\\\[\s*$/)) break;
+    if (line.match(/^\{:\w+\}\s*$/)) break;
     const htmlMatch = line.match(/^<([a-zA-Z][\w-]*)/);
     if (htmlMatch && BLOCK_HTML_TAGS.has(htmlMatch[1].toLowerCase())) break;
 

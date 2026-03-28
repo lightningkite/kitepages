@@ -286,6 +286,13 @@ describe('parseBlocks', () => {
     assert.equal(blocks[0].width, 400);
     assert.equal(blocks[0].height, null);
   });
+
+  it('parses block math', () => {
+    const blocks = parseBlocks('\\[\nx^2 + y^2 = z^2\n\\]'.split('\n'));
+    assert.equal(blocks[0].type, 'math');
+    assert.equal(blocks[0].display, 'block');
+    assert.equal(blocks[0].content, 'x^2 + y^2 = z^2');
+  });
 });
 
 describe('parseFormFields', () => {
