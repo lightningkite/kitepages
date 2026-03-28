@@ -1,304 +1,174 @@
 ---
 title: Guide — Supermarkdown
-description: Everything you need to build a site with Supermarkdown
+description: Complete reference for every Supermarkdown feature with live examples
 ---
 
 # Guide
 
-Everything you need to build a site with Supermarkdown.
-
-## Quick Start
-
-Create a folder with these files:
-
-|||
-
-### index.md
-
-```
----
-title: My Site
-description: A short description
----
-
-::: bg hero.jpg
-# Welcome
-We make great things happen.
-:::
-
-## About Us
-We're a small team with big ideas.
-
-## Contact
-::: form
-Name*: {text}
-Email*: {email}
-Message: {paragraph}
-[Send](POST /contact)
-:::
-```
-
----
-
-### theme.yaml
-
-```
-colors:
-  primary: "#2d5a27"
-  accent: "#e8a435"
-  background: "#faf9f6"
-  text: "#2d2d2d"
-
-fonts:
-  heading: Playfair Display
-  body: Source Sans 3
-
-mode: light
-```
-
-|||
-
-Then compile:
-
-```
-node src/compile.mjs mysite/ --out build/
-```
-
-Or view live in the browser via `renderer.html?file=mysite/index.md&theme=mysite/theme.yaml`.
-
-## Site Structure
-
-|||
-
-### Required
-- `index.md` — your home page
-
----
-
-### Recommended
-- `header.md` — navigation bar (all pages)
-- `footer.md` — footer (all pages)
-- `theme.yaml` — colors, fonts, style
-
----
-
-### Optional
-- Additional `.md` pages
-- An `images/` folder for assets
-
-|||
-
-## Page Format
-
-Every page has optional frontmatter and content.
-
-```
----
-title: Page Title
-description: For search engines
-image: preview.jpg
----
-
-Content starts here.
-```
-
-Frontmatter fields: `title` (browser tab, search results), `description` (SEO), `image` (social sharing preview).
+{:toc}
 
 ## Text Formatting
 
-|||
+Supermarkdown supports all standard Markdown inline formatting plus several extensions.
 
-### Syntax
+| Syntax | Result | Type |
+|--------|--------|------|
+| `**bold**` | **bold** | CommonMark |
+| `*italic*` | *italic* | CommonMark |
+| `_underline_` | _underline_ | Supermarkdown |
+| `~~strikethrough~~` | ~~strikethrough~~ | GFM |
+| `==highlight==` | ==highlight== | markdown-it-mark |
+| `++large text++` | ++large++ | Supermarkdown |
+| `^superscript^` | x^2^ | Pandoc |
+| `~subscript~` | H~2~O | Pandoc |
 
-```
-**bold**
-*italic*
-***bold italic***
-++large text++
-_underline_
-[link](url)
-★★★★★
-```
+Inline code: wrap in backticks. Links: `[text](url)`. Images: `![alt](url)`.
 
----
-
-### Result
-
-**bold**, *italic*, ***bold italic***
-
-++42++ — large text for stats
-
-_underline_ for emphasis
-
-[Links](https://example.com) are clickable
-
-★★★★★ — styled star ratings
-
-|||
+Smart typography converts `--` to em dashes, `...` after words to ellipsis, and `(c)` to (c).
 
 ## Headings
 
-Headings control page structure. Each level has a specific role.
+```
+# H1 — Page hero (large, centered)
+## H2 — Section (creates visual boundary)
+### H3 — Subsection (column headers)
+#### H4 — Label
+```
 
-- `#` — Page hero. Large, prominent, potentially full-screen.
-- `##` — Section divider. Creates a visual boundary with spacing. Sections get alternating backgrounds.
-- `###` — Subsection. Groups within a section, commonly used as column headers.
-- `####` — Label. Inline subheading, no structural weight.
+Headings auto-generate anchor IDs from their text. `## Our Menu` becomes `id="our-menu"` for deep linking.
 
-Headings auto-generate anchor IDs from their text for deep linking. Example: `## Our Menu` generates `id="our-menu"`, linkable as `page.md#our-menu`.
+## Lists
+
+### Bullet Lists
+
+- First item
+- Second item
+- Third item
+
+### Numbered Lists
+
+1. Step one
+2. Step two
+3. Step three
+
+### Task Lists
+
+- [x] Parser rewrite
+- [x] Inline formatting
+- [x] Tables and alerts
+- [ ] More site variety
+
+### Dot-Leader Lists
+
+For pricing and menus:
+
+- Bruschetta ... $8
+- Calamari ... $12
+- Margherita Pizza ... $14
 
 ## Columns
 
-Two syntaxes depending on content length.
-
 ### Fenced Columns
 
-For longer content, use `|||` to open and close, with `---` to separate columns:
+Use `|||` to open, `---` to separate, `|||` to close:
 
-```
 |||
-### Column 1
-Content here
+
+### Column One
+First column content here.
+
 ---
-### Column 2
-Content here
-|||
-```
 
-`|||` opens the column block, `---` separates columns, `|||` closes it. On narrow screens, columns stack automatically.
+### Column Two
+Second column content here.
+
+---
+
+### Column Three
+Third column content here.
+
+|||
 
 ### Prefix Columns
 
-For short content, use `| ` prefix on each line (like `> ` for blockquotes):
+Use `| ` prefix on each line (like `> ` for blockquotes):
 
-```
-| ### Feature 1
-| Short description
+| ### Feature A
+| Short description of the first feature.
 
-| ### Feature 2
-| Short description
+| ### Feature B
+| Short description of the second feature.
 
-| ### Feature 3
-| Short description
-```
+| ### Feature C
+| Short description of the third feature.
 
-Adjacent `| ` blocks become columns. A bare `|` on its own line continues the same column (allows blank lines within).
+## Tables
 
-## Lists and Pricing
+Standard Markdown table syntax with alignment:
 
-Standard unordered and ordered lists work as expected:
-
-```
-- Unordered item
-- Another item
-
-1. Ordered item
-2. Another item
-```
-
-Add `...` between an item and its price for dot-leader formatting:
-
-```
-- Bruschetta ... $8
-- Calamari Fritti ... $12
-- Caprese Salad ... $10
-```
-
-Renders with automatic spacing and a dotted leader between name and price.
-
-## Background Sections
-
-Full-bleed sections with a background image and overlaid text:
-
-```
-::: bg https://example.com/photo.jpg
-# Heading
-Subtitle text overlaid on the image.
-:::
-```
-
-Use for hero banners, section dividers, and carousel slides.
-
-## Carousels
-
-Use `::: carousel` with `---` between slides:
-
-```
-::: carousel
-::: bg slide1.jpg
-# Slide One
-:::
----
-::: bg slide2.jpg
-# Slide Two
-:::
-:::
-```
-
-Auto-advances every 5 seconds. Pauses after manual interaction. Shows navigation dots and prev/next buttons.
+| Feature | Status | Phase |
+|:--------|:------:|------:|
+| Parser rewrite | Done | 1 |
+| Inline formatting | Done | 2 |
+| Tables | Done | 3 |
+| Math formulas | Done | 3 |
 
 ## Blockquotes
 
-Standard prefix syntax:
+### Prefix Style
 
-```
-> Single line quote
-> Continues here
-```
+> This is a standard blockquote.
+> It can span multiple lines.
 
-Fenced block quote without prefix:
+### Fenced Style
 
-```
 >>>
-Everything after this marker is quoted
-until the closing marker.
-No need to prefix every line.
+This is a fenced block quote.
+No prefix needed on each line.
+Useful for longer quotations.
 >>>
-```
 
-## Testimonials
+### GFM Alerts
 
-Use `::: quote` for testimonial blocks:
+> [!NOTE]
+> This is a note alert using GFM syntax.
 
-```
-::: quote
-★★★★★
-The best experience we've ever had.
-— **Maria S.**
-:::
-```
+> [!WARNING]
+> This is a warning. Be careful with this feature.
 
-Multiple quotes placed consecutively form a testimonial row.
+> [!TIP]
+> Tips provide helpful suggestions for better usage.
 
 ## Cards
 
-Use `::: card` inside columns for styled content blocks:
-
-```
-|||
 ::: card
-### Project Title
-Description of the project.
+### Card Title
+Cards are great for feature grids and content blocks. They get automatic padding, border radius, and shadow based on the theme.
 :::
----
-::: card
-### Another Project
-Description here.
-:::
-|||
-```
 
-Cards are styled by the theme's `cards` setting: `elevated`, `bordered`, `flat`, or `glass`.
+## Testimonials
+
+::: quote
+★★★★★
+This format changed how we think about web content. Our whole team can edit the site now.
+— **Sarah K., Marketing Director**
+:::
+
+## Alerts
+
+::: warning
+Always test your site on mobile before deploying.
+:::
+
+::: info
+Supermarkdown files are standard Markdown. They render (less richly) in any Markdown viewer.
+:::
 
 ## Forms
 
-Wrap fields in a `::: form` block:
-
-```
 ::: form
 Name*: {text}
 Email*: {email}
-Phone: {text}
 
 Service*: {Haircut / Color / Treatment}
 Date: {date}
@@ -306,126 +176,93 @@ Notes: {paragraph}
 
 [Book Appointment](POST /book)
 :::
-```
-
-Field types: `{text}`, `{email}`, `{paragraph}`, `{number}`, `{date}`, `{file}`, `{checkbox}`, `{Option1 / Option2 / Option3}`.
-
-Mark required fields with `*` after the label. Blank lines create visual field groups.
 
 ## Code Blocks
 
-Fenced code blocks with optional syntax highlighting:
-
-````
-```
-Plain code block
-```
+Fenced code blocks with language annotation:
 
 ```javascript
-const x = 42;
-```
-````
+// Compile a Supermarkdown site
+import { parse } from './parser.mjs';
+import { render } from './renderer.mjs';
 
-## Alerts
-
-```
-::: warning
-Important information here.
-:::
+const doc = parse(source);
+const html = render(doc, theme);
 ```
 
-Types: `warning`, `info`, `success`, `error`, `note`, `tip`.
+```yaml
+# theme.yaml — controls the entire look
+colors:
+  primary: "#2d5a27"
+  accent: "#e8a435"
+fonts:
+  heading: Playfair Display
+  body: Inter
+```
+
+## Background Sections
+
+Use `::: bg image.jpg` to create sections with image backgrounds and text overlay. Great for heroes and banners.
+
+## Carousels
+
+Use `::: carousel` with `---` between slides. Each slide is typically a `::: bg` section. Auto-plays every 5 seconds with prev/next buttons.
 
 ## Expandable Sections
 
-```
->| How do I return an item?
-   You have 30 days to return any item.
-   Just bring your receipt to the store.
-```
+>| How do I get started?
+   Create a folder with an index.md and theme.yaml file.
+   Run the compiler and deploy the output.
 
-`>|` starts a collapsible block. First line is the summary, indented lines are hidden content.
+>| Can I use this for a blog?
+   Yes. Each .md file becomes a page.
+   Add a header.md for consistent navigation.
 
 ## Record Blocks
 
-```
-:: Pizza
+:: Margherita Pizza
    Price: $14
-   Our famous thin crust margherita
+   Our classic thin-crust pizza with fresh mozzarella and basil.
 
-:: Calamari
-   Price: $12
-   Lightly fried with marinara sauce
-```
+:: Tiramisu
+   Price: $9
+   Traditional Italian dessert with espresso-soaked ladyfingers.
 
-`::` starts a record. Indented `Key: value` lines are fields. Plain indented text is the body. Renderer adapts presentation: table on wide screens, cards on narrow.
+## Emoji Shortcodes
 
-## Raw HTML
+Use `:name:` for emoji: :heart: :rocket: :check: :star: :fire:
 
-HTML tags pass through to output as-is, per standard Markdown behavior:
-
-```
-This has a <span style="color: red">red word</span> in it.
-```
-
-Use for edge cases where Supermarkdown syntax doesn't cover your need.
-
-## Navigation
-
-`header.md` becomes the nav bar on every page:
+## Site Structure
 
 ```
-# Site Name
-- [Home](index.md)
-- [About](about.md)
-- [Contact](index.md#contact)
+mysite/
+  index.md          Home page
+  about.md          Additional pages
+  header.md         Navigation (all pages)
+  footer.md         Footer (all pages)
+  theme.yaml        Colors, fonts, style
+  404.md            Custom 404 page
 ```
 
-`footer.md` becomes the footer on every page. Both support links to pages and heading anchors.
+## Theming
 
-## Theme Configuration
+One file controls everything:
 
-|||
-
-### Colors
-
-- `primary` — main brand color
-- `accent` — secondary highlight
-- `background` — page background
-- `surface` — card/panel background
-- `text` — body text color
-- `textMuted` — secondary text
-- `border` — divider color
-
----
-
-### Layout
-
-- `radius` — border radius (0–20)
-- `mode` — `light` or `dark`
-- `nav` — `transparent`, `minimal`, `solid`
-- `sections` — `alternating`, `clean`, `bold`
-- `cards` — `elevated`, `bordered`, `flat`
-- `footer` — `minimal`, `centered`, `columns`
-- `spacing` — `compact`, `normal`, `spacious`
-- `animation` — `subtle`, `expressive`, `none`
-
-|||
-
-### Recommended Font Pairings
-
-- Classic ... Playfair Display + Source Sans 3
-- Modern ... Inter + Inter
-- Warm ... Lora + Nunito
-- Bold ... Montserrat + Open Sans
-- Elegant ... Cormorant Garamond + Proza Libre
-- Clean ... DM Sans + DM Sans
-- Editorial ... Fraunces + Commissioner
-
-## Compiling to Static HTML
-
-```
-node src/compile.mjs sites/mysite/ --out build/
+```yaml
+mode: light
+nav: transparent
+sections: alternating
+cards: elevated
+animation: subtle
+colors:
+  primary: "#1a3a1a"
+  accent: "#c9a84c"
+fonts:
+  heading: Playfair Display
+  body: Source Sans 3
+radius: 12
 ```
 
-Produces self-contained `.html` files with all CSS inlined, Google Fonts loaded, navigation baked in, and `.md` links rewritten to `.html`. Ready to deploy anywhere — GitHub Pages, Netlify, S3, or any static host.
+Nav styles: `transparent`, `solid`, `minimal`, `centered`, `side`.
+Section styles: `alternating`, `bold`, `clean`.
+Card styles: `elevated`, `bordered`, `flat`, `glass`.
