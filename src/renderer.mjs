@@ -496,13 +496,13 @@ function renderList(block) {
 
 let _docHeadings = [];
 
+// Collect only top-level H2/H3 headings for TOC (not headings inside columns, cards, etc.)
 function collectHeadings(blocks) {
   const result = [];
   for (const b of blocks) {
-    if (b.type === 'heading' && b.level >= 2) result.push(b);
-    if (b.blocks) result.push(...collectHeadings(b.blocks));
-    if (b.columns) for (const col of b.columns) result.push(...collectHeadings(col));
-    if (b.slides) for (const slide of b.slides) result.push(...collectHeadings(slide));
+    if (b.type === 'heading' && b.level >= 2 && b.level <= 3) result.push(b);
+    // Don't recurse into columns, cards, or other nested blocks — those contain
+    // content headings (column headers, card titles) not document sections.
   }
   return result;
 }
