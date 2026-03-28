@@ -243,6 +243,11 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   transform: translateY(48px);
   transition-duration: 0.9s;
 }
+/* When staggering children, parent snaps visible — children do the animated reveal */
+.smd-animate.smd-animate-stagger {
+  transform: none;
+  transition: none;
+}
 /* Stagger children */
 .smd-animate-stagger > * {
   opacity: 0;
@@ -880,6 +885,7 @@ body:has(.smd-nav[data-style="transparent"]) .smd-page > .smd-carousel:first-chi
 }
 
 /* ===== Page Transitions ===== */
+/* SPA mode transitions (browser.mjs) */
 .smd-page-old {
   overflow: hidden;
   transition: opacity 0.4s ease, transform 0.4s ease;
@@ -902,6 +908,20 @@ body:has(.smd-nav[data-style="transparent"]) .smd-page > .smd-carousel:first-chi
 .smd-page.pop-in {
   opacity: 0;
   transform: translateX(-4%);
+}
+/* Static multi-page transitions (compiled sites) */
+.smd-page-hidden {
+  opacity: 0;
+  transform: translateY(16px);
+}
+.smd-page-exit {
+  opacity: 0 !important;
+  transform: translateY(-8px) !important;
+  transition: opacity 0.2s ease, transform 0.2s ease !important;
+}
+[data-animation="none"] .smd-page-hidden {
+  opacity: 1;
+  transform: none;
 }
 
 /* ===== Live Editor ===== */

@@ -31,8 +31,7 @@ function loadTheme(siteDir) {
 function compile(siteDir, outDir) {
   const theme = loadTheme(siteDir);
 
-  // For static output, disable animations (no JS to trigger them)
-  const staticTheme = { ...theme, animation: 'none' };
+  const animEnabled = (theme.animation || 'subtle') !== 'none';
 
   // Load header/footer (.md first, fall back to .smd)
   const headerSrc = readOptional(join(siteDir, 'header.md')) || readOptional(join(siteDir, 'header.smd'));
@@ -66,7 +65,7 @@ function compile(siteDir, outDir) {
     // Skip drafts
     if (doc.frontmatter.draft) continue;
 
-    const bodyHtml = render(doc, staticTheme);
+    const bodyHtml = render(doc, theme);
     const navHtml = renderNav(headerDoc, theme);
     const footerHtml = renderFooter(footerDoc, theme);
 
@@ -79,6 +78,8 @@ function compile(siteDir, outDir) {
       description ? `<meta property="og:description" content="${escapeHtml(description)}">` : '',
       image ? `<meta property="og:image" content="${escapeHtml(image)}">` : '',
     ].filter(Boolean).join('\n');
+
+    const pageClass = animEnabled ? 'smd-page smd-page-hidden' : 'smd-page';
 
     let html = `<!DOCTYPE html>
 <html lang="en" ${dataAttrStr}>
@@ -96,12 +97,13 @@ ${themeVars}
 </head>
 <body>
 ${navHtml ? `<div id="smd-nav-mount">${navHtml}</div>` : ''}
-<main id="smd-content" class="smd-page">
+<main id="smd-content" class="${pageClass}">
 ${bodyHtml}
 ${footerHtml}
 </main>
+${animEnabled ? '<noscript><style>.smd-page-hidden,.smd-animate,.smd-animate-stagger>*{opacity:1!important;transform:none!important;transition:none!important}</style></noscript>' : ''}
 <script>
-// Minimal runtime: hamburger toggle, carousel, scroll-based nav
+// Runtime: hamburger, carousel, nav scroll, animations, page transitions
 (function() {
   // Hamburger
   var toggle = document.querySelector('.smd-nav-toggle');
@@ -155,6 +157,92 @@ ${footerHtml}
     el.querySelectorAll('.smd-tab-btn').forEach(function(b, i) { b.classList.toggle('active', i === idx); });
     el.querySelectorAll('.smd-tab-panel').forEach(function(p, i) { p.classList.toggle('active', i === idx); });
   };
+
+  // Animations & SPA-like page transitions
+  var page = document.querySelector('.smd-page');
+  if (page && page.classList.contains('smd-page-hidden')) {
+    function initScrollAnims() {
+      document.querySelectorAll('.smd-hero.smd-animate').forEach(function(el) {
+        setTimeout(function() { el.classList.add('smd-visible'); }, 150);
+      });
+      var first = document.querySelector('.smd-section.smd-animate');
+      if (first) setTimeout(function() { first.classList.add('smd-visible'); }, 300);
+      if ('IntersectionObserver' in window) {
+        var obs = new IntersectionObserver(function(entries) {
+          entries.forEach(function(e) {
+            if (e.isIntersecting) { e.target.classList.add('smd-visible'); obs.unobserve(e.target); }
+          });
+        }, { threshold: 0.05, rootMargin: '0px 0px 50px 0px' });
+        document.querySelectorAll('.smd-animate:not(.smd-hero):not(.smd-visible)').forEach(function(el) { obs.observe(el); });
+      } else {
+        document.querySelectorAll('.smd-animate').forEach(function(el) { el.classList.add('smd-visible'); });
+      }
+    }
+
+    // Initial page enter
+    requestAnimationFrame(function() { page.classList.remove('smd-page-hidden'); });
+    initScrollAnims();
+
+    // SPA navigation: fetch + swap content, keep nav stable
+    function navigateTo(url, push) {
+      var parts = url.split('#');
+      var fetchUrl = parts[0] || location.pathname;
+      var hash = parts[1] || '';
+
+      page.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+      page.style.opacity = '0';
+      page.style.transform = 'translateY(-8px)';
+
+      Promise.all([
+        fetch(fetchUrl).then(function(r) { return r.text(); }),
+        new Promise(function(r) { setTimeout(r, 200); })
+      ]).then(function(results) {
+        var parsed = new DOMParser().parseFromString(results[0], 'text/html');
+        var newMain = parsed.querySelector('.smd-page');
+        if (!newMain) { location.href = url; return; }
+
+        page.innerHTML = newMain.innerHTML;
+        var t = parsed.querySelector('title');
+        if (t) document.title = t.textContent;
+        if (push) history.pushState({}, '', url);
+
+        if (hash) {
+          var target = document.getElementById(hash);
+          if (target) target.scrollIntoView();
+        } else {
+          window.scrollTo(0, 0);
+        }
+
+        // Entry animation
+        page.style.transition = 'none';
+        page.style.transform = 'translateY(16px)';
+        page.offsetHeight;
+        page.style.transition = '';
+        page.style.opacity = '';
+        page.style.transform = '';
+
+        initScrollAnims();
+      }).catch(function() { location.href = url; });
+    }
+
+    document.addEventListener('click', function(e) {
+      var a = e.target.closest('a');
+      if (!a) return;
+      var href = a.getAttribute('href');
+      if (!href || href.startsWith('#') || /^(https?:\\/\\/|mailto:)/.test(href)) return;
+      var path = href.split('#')[0].split('?')[0];
+      if (!path.endsWith('.html')) return;
+      // Same-page anchor: let browser handle natively (CSS scroll-behavior: smooth)
+      var curPage = location.pathname.split('/').pop();
+      if (path === curPage && href.indexOf('#') !== -1) return;
+      e.preventDefault();
+      navigateTo(href, true);
+    });
+
+    window.addEventListener('popstate', function() {
+      navigateTo(location.pathname + location.hash, false);
+    });
+  }
 })();
 </script>
 </body>

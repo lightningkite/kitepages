@@ -255,6 +255,11 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   transform: translateY(48px);
   transition-duration: 0.9s;
 }
+/* When staggering children, parent snaps visible — children do the animated reveal */
+.smd-animate.smd-animate-stagger {
+  transform: none;
+  transition: none;
+}
 /* Stagger children */
 .smd-animate-stagger > * {
   opacity: 0;
@@ -892,6 +897,7 @@ body:has(.smd-nav[data-style="transparent"]) .smd-page > .smd-carousel:first-chi
 }
 
 /* ===== Page Transitions ===== */
+/* SPA mode transitions (browser.mjs) */
 .smd-page-old {
   overflow: hidden;
   transition: opacity 0.4s ease, transform 0.4s ease;
@@ -914,6 +920,20 @@ body:has(.smd-nav[data-style="transparent"]) .smd-page > .smd-carousel:first-chi
 .smd-page.pop-in {
   opacity: 0;
   transform: translateX(-4%);
+}
+/* Static multi-page transitions (compiled sites) */
+.smd-page-hidden {
+  opacity: 0;
+  transform: translateY(16px);
+}
+.smd-page-exit {
+  opacity: 0 !important;
+  transform: translateY(-8px) !important;
+  transition: opacity 0.2s ease, transform 0.2s ease !important;
+}
+[data-animation="none"] .smd-page-hidden {
+  opacity: 1;
+  transform: none;
 }
 
 /* ===== Live Editor ===== */
@@ -1770,23 +1790,24 @@ kbd {
 </head>
 <body>
 <div id="smd-nav-mount"><a href="#smd-content" class="smd-skip-nav">Skip to content</a><nav class="smd-nav" data-style="solid" aria-label="Main navigation"><a class="smd-nav-brand" href="index.html">Raycast</a><ul class="smd-nav-links"><li><a href="#features">Features</a></li><li><a href="#extensions">Extensions</a></li><li><a href="#ai">AI</a></li><li><a href="pro.html">Pro</a></li><li><a href="download.html">Download</a></li></ul><button class="smd-nav-toggle" aria-label="Menu"><span></span></button></nav></div>
-<main id="smd-content" class="smd-page">
-<header class="smd-hero"><h1>Your shortcut to everything</h1><p class="smd-subtitle">A collection of powerful productivity tools all within an extendable launcher. Fast, ergonomic, and reliable.</p></header><div class="smd-cta-row"><a href="download.html" class="smd-cta-primary">Download for Mac</a><a href="#extensions" class="smd-cta-secondary">View Extensions</a></div><section class="smd-section" id="features"><h2>Features</h2><hr class="smd-section-rule"><p>One interface, everything you need. Raycast replaces dozens of apps and context switches with a single keyboard shortcut.</p><div class="smd-columns"><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="search-app-launcher">🔍 App Launcher</h3><p>Launch applications instantly. Type a few characters and hit enter. No more hunting through folders or the dock.</p></div></div><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="file-file-search">📄 File Search</h3><p>Find any file on your Mac in milliseconds. Search by name, content, or type. Preview files without opening them.</p></div></div><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="gear-system-commands">⚙️ System Commands</h3><p>Control your Mac without touching the mouse. Toggle Bluetooth, eject drives, empty trash, lock screen, and more.</p></div></div></div><div class="smd-columns"><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="calendar-schedule">📅 Schedule</h3><p>See your upcoming meetings at a glance. Join video calls with a single keystroke. Never miss a standup again.</p></div></div><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="link-clipboard-history">🔗 Clipboard History</h3><p>Never lose copied text again. Search through your clipboard history, pin frequent items, and paste with a shortcut.</p></div></div><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="pencil-snippets">✏️ Snippets</h3><p>Stop typing the same things. Create text snippets with dynamic placeholders for dates, cursors, and clipboard content.</p></div></div></div></section><section class="smd-section smd-section-alt" id="extensions"><h2>Extensions</h2><hr class="smd-section-rule"><p>There’s an extension for that. Use your favorite tools without even opening them. The Raycast Store has 1,000+ extensions built by the community.</p><div class="smd-columns"><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="github">GitHub</h3><p>Manage issues, pull requests, and notifications. Create issues from anywhere on your Mac. Review PRs without opening a browser.</p></div></div><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="linear">Linear</h3><p>Create issues, search projects, and track cycles. The fastest way to interact with Linear outside the app itself.</p></div></div><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="notion">Notion</h3><p>Search pages, create databases, and capture quick notes. Your second brain, accessible from anywhere.</p></div></div></div><div class="smd-columns"><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="figma">Figma</h3><p>Search files, open recent projects, and browse components. Jump straight into your design work.</p></div></div><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="slack">Slack</h3><p>Send messages, search conversations, and set your status. All without switching to the Slack app.</p></div></div><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="jira">Jira</h3><p>Create tickets, search issues, and transition workflows. Project management at the speed of thought.</p></div></div></div></section><section class="smd-section" id="ai"><h2>AI</h2><hr class="smd-section-rule"><p>Your Mac just got smarter. AI where it’s most useful — integrated directly into your operating system.</p><div class="smd-columns"><div class="smd-column"><h3 id="ai-chat">AI Chat</h3><p>Ask questions, brainstorm ideas, or debug code. A powerful AI assistant that lives in your launcher and understands context.</p></div><div class="smd-column"><h3 id="ai-commands">AI Commands</h3><p>Run AI-powered commands on any selected text. Summarize, translate, fix grammar, explain code, or create custom commands.</p></div><div class="smd-column"><h3 id="ai-presets">AI Presets</h3><p>Save your favorite prompts as reusable presets. Share them with your team. Build a library of AI workflows.</p></div></div><h3 id="quick-ai-in-action">Quick AI in Action</h3><p>Select any text on your screen, hit <kbd>⌘</kbd> + <kbd>⇧</kbd> + <kbd>Space</kbd>, and run an AI command:</p><pre><code>&gt; Fix spelling and grammar
+<main id="smd-content" class="smd-page smd-page-hidden">
+<header class="smd-hero smd-animate"><h1>Your shortcut to everything</h1><p class="smd-subtitle">A collection of powerful productivity tools all within an extendable launcher. Fast, ergonomic, and reliable.</p></header><div class="smd-cta-row"><a href="download.html" class="smd-cta-primary">Download for Mac</a><a href="#extensions" class="smd-cta-secondary">View Extensions</a></div><section class="smd-section smd-animate" id="features"><h2>Features</h2><hr class="smd-section-rule"><p>One interface, everything you need. Raycast replaces dozens of apps and context switches with a single keyboard shortcut.</p><div class="smd-columns smd-animate smd-animate-stagger"><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="search-app-launcher">🔍 App Launcher</h3><p>Launch applications instantly. Type a few characters and hit enter. No more hunting through folders or the dock.</p></div></div><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="file-file-search">📄 File Search</h3><p>Find any file on your Mac in milliseconds. Search by name, content, or type. Preview files without opening them.</p></div></div><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="gear-system-commands">⚙️ System Commands</h3><p>Control your Mac without touching the mouse. Toggle Bluetooth, eject drives, empty trash, lock screen, and more.</p></div></div></div><div class="smd-columns smd-animate smd-animate-stagger"><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="calendar-schedule">📅 Schedule</h3><p>See your upcoming meetings at a glance. Join video calls with a single keystroke. Never miss a standup again.</p></div></div><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="link-clipboard-history">🔗 Clipboard History</h3><p>Never lose copied text again. Search through your clipboard history, pin frequent items, and paste with a shortcut.</p></div></div><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="pencil-snippets">✏️ Snippets</h3><p>Stop typing the same things. Create text snippets with dynamic placeholders for dates, cursors, and clipboard content.</p></div></div></div></section><section class="smd-section smd-section-alt smd-animate" id="extensions"><h2>Extensions</h2><hr class="smd-section-rule"><p>There’s an extension for that. Use your favorite tools without even opening them. The Raycast Store has 1,000+ extensions built by the community.</p><div class="smd-columns smd-animate smd-animate-stagger"><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="github">GitHub</h3><p>Manage issues, pull requests, and notifications. Create issues from anywhere on your Mac. Review PRs without opening a browser.</p></div></div><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="linear">Linear</h3><p>Create issues, search projects, and track cycles. The fastest way to interact with Linear outside the app itself.</p></div></div><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="notion">Notion</h3><p>Search pages, create databases, and capture quick notes. Your second brain, accessible from anywhere.</p></div></div></div><div class="smd-columns smd-animate smd-animate-stagger"><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="figma">Figma</h3><p>Search files, open recent projects, and browse components. Jump straight into your design work.</p></div></div><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="slack">Slack</h3><p>Send messages, search conversations, and set your status. All without switching to the Slack app.</p></div></div><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="jira">Jira</h3><p>Create tickets, search issues, and transition workflows. Project management at the speed of thought.</p></div></div></div></section><section class="smd-section smd-animate" id="ai"><h2>AI</h2><hr class="smd-section-rule"><p>Your Mac just got smarter. AI where it’s most useful — integrated directly into your operating system.</p><div class="smd-columns smd-animate smd-animate-stagger"><div class="smd-column"><h3 id="ai-chat">AI Chat</h3><p>Ask questions, brainstorm ideas, or debug code. A powerful AI assistant that lives in your launcher and understands context.</p></div><div class="smd-column"><h3 id="ai-commands">AI Commands</h3><p>Run AI-powered commands on any selected text. Summarize, translate, fix grammar, explain code, or create custom commands.</p></div><div class="smd-column"><h3 id="ai-presets">AI Presets</h3><p>Save your favorite prompts as reusable presets. Share them with your team. Build a library of AI workflows.</p></div></div><h3 id="quick-ai-in-action">Quick AI in Action</h3><p>Select any text on your screen, hit <kbd>⌘</kbd> + <kbd>⇧</kbd> + <kbd>Space</kbd>, and run an AI command:</p><pre><code>&gt; Fix spelling and grammar
 &gt; Translate to Spanish
 &gt; Explain this code
 &gt; Make this email more professional
-&gt; Summarize in 3 bullet points</code></pre></section><section class="smd-section smd-section-alt" id="dont-repeat-yourself"><h2>Don’t repeat yourself</h2><hr class="smd-section-rule"><p>Automate the things you do all the time. Raycast gives you three powerful tools to eliminate repetitive work.</p><div class="smd-columns"><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="snippets">Snippets</h3><p>Tired of typing the same thing? Create a snippet and insert it by typing its keyword.</p><pre><code>;addr → 3rd Floor, 1 Ashley Road
+&gt; Summarize in 3 bullet points</code></pre></section><section class="smd-section smd-section-alt smd-animate" id="dont-repeat-yourself"><h2>Don’t repeat yourself</h2><hr class="smd-section-rule"><p>Automate the things you do all the time. Raycast gives you three powerful tools to eliminate repetitive work.</p><div class="smd-columns smd-animate smd-animate-stagger"><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="snippets">Snippets</h3><p>Tired of typing the same thing? Create a snippet and insert it by typing its keyword.</p><pre><code>;addr → 3rd Floor, 1 Ashley Road
         WA14 2DT Altrincham, Cheshire
 
 ;sig  → Best regards,
         Alex Thompson
         alex@company.com</code></pre></div></div><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="quicklinks">Quicklinks</h3><p>Say goodbye to open tabs. Create quicklinks to launch anything from anywhere.</p><pre><code>gh {query} → github.com/search?q={query}
 jira {id}  → company.atlassian.net/browse/{id}
-docs {q}   → docs.google.com/search?q={q}</code></pre></div></div><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="hotkeys-aliases">Hotkeys & Aliases</h3><p>Speed up your workflow by assigning hotkeys or aliases to common commands.</p><ul><li><kbd>⌥</kbd> <kbd>Space</kbd> — Clipboard History</li><li><kbd>⌘</kbd> <kbd>⇧</kbd> <kbd>M</kbd> — Toggle Microphone</li><li><kbd>⌘</kbd> <kbd>⇧</kbd> <kbd>D</kbd> — Toggle Do Not Disturb</li></ul></div></div></div></section><section class="smd-section" id="built-for-professionals-like-you"><h2>Built for professionals like you</h2><hr class="smd-section-rule"><p>Used by seriously productive people at the world’s best companies.</p><div class="smd-carousel" id="carousel-bheqcv" role="region" aria-roledescription="carousel" aria-label="Image carousel"><div class="smd-carousel-track" aria-live="polite"><div class="smd-carousel-slide"><div class="smd-block smd-block-quote"><p>Raycast is incrementally turning my Mac into an AI-native operating system and I’m completely here for it. The AI commands on selected text are a game changer.<br>— <strong>Guillermo Rauch</strong>, CEO at Vercel</p></div></div><div class="smd-carousel-slide"><div class="smd-block smd-block-quote"><p>I replaced Alfred, Spotlight, Paste, and three menu bar apps with Raycast. One tool, one shortcut, everything I need. My workflow has never been faster.<br>— <strong>Wes Bos</strong>, Developer & Educator</p></div></div><div class="smd-carousel-slide"><div class="smd-block smd-block-quote"><p>The extension API is so well designed that I built a custom internal tool for our team in an afternoon. It’s React, it’s TypeScript, it just works.<br>— <strong>Max Stoiber</strong>, Co-founder of Stellate</p></div></div></div><button class="smd-carousel-btn smd-carousel-prev" onclick="carouselNav('carousel-bheqcv',-1)" aria-label="Previous">&lsaquo;</button><button class="smd-carousel-btn smd-carousel-next" onclick="carouselNav('carousel-bheqcv',1)" aria-label="Next">&rsaquo;</button><div class="smd-carousel-dots"><button class="smd-carousel-dot active" onclick="carouselGo('carousel-bheqcv',0)" aria-label="Slide 1"></button><button class="smd-carousel-dot" onclick="carouselGo('carousel-bheqcv',1)" aria-label="Slide 2"></button><button class="smd-carousel-dot" onclick="carouselGo('carousel-bheqcv',2)" aria-label="Slide 3"></button></div></div></section><section class="smd-section smd-section-alt" id="stay-in-the-loop"><h2>Stay in the loop</h2><hr class="smd-section-rule"><p>Join the community and learn how other people get the most out of Raycast.</p><div class="smd-embed"><iframe src="https://www.youtube.com/embed/GnjiOBaFBEo" frameborder="0" allowfullscreen loading="lazy" title="YouTube video"></iframe></div></section><section class="smd-section" id="take-the-short-way"><h2>Take the short way</h2><hr class="smd-section-rule"><p>Download and use Raycast for free. No account required to get started. Pro plan available for power users and teams.</p><div class="smd-columns"><div class="smd-column"><h3 id="free">Free</h3><ul><li>App launcher & file search</li><li>Clipboard history</li><li>Snippets & quicklinks</li><li>Window management</li><li>Calculator & conversions</li><li>1,000+ free extensions</li></ul><div class="smd-cta-row"><a href="download.html" class="smd-cta-primary">Download Free</a></div></div><div class="smd-column smd-column-featured"><h3 id="pro">Pro</h3><ul><li>Everything in Free</li><li>AI chat & commands</li><li>Custom AI models</li><li>Cloud sync across devices</li><li>Unlimited clipboard history</li><li>Custom themes</li><li>Priority support</li></ul><p><span class="smd-large">$8/mo</span></p><div class="smd-cta-row"><a href="pro.html" class="smd-cta-primary">Start Pro Trial</a></div></div><div class="smd-column"><h3 id="teams">Teams</h3><ul><li>Everything in Pro</li><li>Team snippet sharing</li><li>Shared quicklinks</li><li>Admin controls</li><li>SSO integration</li><li>Dedicated support</li></ul><div class="smd-cta-row"><a href="contact.html" class="smd-cta-primary">Contact Sales</a></div></div></div><div class="smd-cta-row"><a href="download.html" class="smd-cta-primary">Download Raycast — It's Free</a></div></section>
+docs {q}   → docs.google.com/search?q={q}</code></pre></div></div><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="hotkeys-aliases">Hotkeys & Aliases</h3><p>Speed up your workflow by assigning hotkeys or aliases to common commands.</p><ul><li><kbd>⌥</kbd> <kbd>Space</kbd> — Clipboard History</li><li><kbd>⌘</kbd> <kbd>⇧</kbd> <kbd>M</kbd> — Toggle Microphone</li><li><kbd>⌘</kbd> <kbd>⇧</kbd> <kbd>D</kbd> — Toggle Do Not Disturb</li></ul></div></div></div></section><section class="smd-section smd-animate" id="built-for-professionals-like-you"><h2>Built for professionals like you</h2><hr class="smd-section-rule"><p>Used by seriously productive people at the world’s best companies.</p><div class="smd-carousel" id="carousel-1l3z0s" role="region" aria-roledescription="carousel" aria-label="Image carousel"><div class="smd-carousel-track" aria-live="polite"><div class="smd-carousel-slide"><div class="smd-block smd-block-quote"><p>Raycast is incrementally turning my Mac into an AI-native operating system and I’m completely here for it. The AI commands on selected text are a game changer.<br>— <strong>Guillermo Rauch</strong>, CEO at Vercel</p></div></div><div class="smd-carousel-slide"><div class="smd-block smd-block-quote"><p>I replaced Alfred, Spotlight, Paste, and three menu bar apps with Raycast. One tool, one shortcut, everything I need. My workflow has never been faster.<br>— <strong>Wes Bos</strong>, Developer & Educator</p></div></div><div class="smd-carousel-slide"><div class="smd-block smd-block-quote"><p>The extension API is so well designed that I built a custom internal tool for our team in an afternoon. It’s React, it’s TypeScript, it just works.<br>— <strong>Max Stoiber</strong>, Co-founder of Stellate</p></div></div></div><button class="smd-carousel-btn smd-carousel-prev" onclick="carouselNav('carousel-1l3z0s',-1)" aria-label="Previous">&lsaquo;</button><button class="smd-carousel-btn smd-carousel-next" onclick="carouselNav('carousel-1l3z0s',1)" aria-label="Next">&rsaquo;</button><div class="smd-carousel-dots"><button class="smd-carousel-dot active" onclick="carouselGo('carousel-1l3z0s',0)" aria-label="Slide 1"></button><button class="smd-carousel-dot" onclick="carouselGo('carousel-1l3z0s',1)" aria-label="Slide 2"></button><button class="smd-carousel-dot" onclick="carouselGo('carousel-1l3z0s',2)" aria-label="Slide 3"></button></div></div></section><section class="smd-section smd-section-alt smd-animate" id="stay-in-the-loop"><h2>Stay in the loop</h2><hr class="smd-section-rule"><p>Join the community and learn how other people get the most out of Raycast.</p><div class="smd-embed"><iframe src="https://www.youtube.com/embed/GnjiOBaFBEo" frameborder="0" allowfullscreen loading="lazy" title="YouTube video"></iframe></div></section><section class="smd-section smd-animate" id="take-the-short-way"><h2>Take the short way</h2><hr class="smd-section-rule"><p>Download and use Raycast for free. No account required to get started. Pro plan available for power users and teams.</p><div class="smd-columns smd-animate smd-animate-stagger"><div class="smd-column"><h3 id="free">Free</h3><ul><li>App launcher & file search</li><li>Clipboard history</li><li>Snippets & quicklinks</li><li>Window management</li><li>Calculator & conversions</li><li>1,000+ free extensions</li></ul><div class="smd-cta-row"><a href="download.html" class="smd-cta-primary">Download Free</a></div></div><div class="smd-column smd-column-featured"><h3 id="pro">Pro</h3><ul><li>Everything in Free</li><li>AI chat & commands</li><li>Custom AI models</li><li>Cloud sync across devices</li><li>Unlimited clipboard history</li><li>Custom themes</li><li>Priority support</li></ul><p><span class="smd-large">$8/mo</span></p><div class="smd-cta-row"><a href="pro.html" class="smd-cta-primary">Start Pro Trial</a></div></div><div class="smd-column"><h3 id="teams">Teams</h3><ul><li>Everything in Pro</li><li>Team snippet sharing</li><li>Shared quicklinks</li><li>Admin controls</li><li>SSO integration</li><li>Dedicated support</li></ul><div class="smd-cta-row"><a href="contact.html" class="smd-cta-primary">Contact Sales</a></div></div></div><div class="smd-cta-row"><a href="download.html" class="smd-cta-primary">Download Raycast — It's Free</a></div></section>
 <footer class="smd-footer" data-style="centered"><div class="smd-footer-title">Raycast</div><div class="smd-footer-columns"><div class="smd-footer-col"><div class="smd-footer-col-title">Product</div><ul class="smd-footer-col-links"><li><a href="#features">Features</a></li><li><a href="#extensions">Extensions</a></li><li><a href="pro.html">Pro</a></li><li><a href="download.html">Download</a></li></ul></div><div class="smd-footer-col"><div class="smd-footer-col-title">Resources</div><ul class="smd-footer-col-links"><li><a href="blog.html">Blog</a></li><li><a href="changelog.html">Changelog</a></li><li><a href="docs.html">Documentation</a></li><li><a href="community.html">Community</a></li></ul></div><div class="smd-footer-col"><div class="smd-footer-col-title">Company</div><ul class="smd-footer-col-links"><li><a href="about.html">About</a></li><li><a href="careers.html">Careers</a></li><li><a href="press.html">Press</a></li></ul></div></div><div class="smd-footer-copy">© 2025 Raycast. Built in Berlin.</div></footer>
 </main>
+<noscript><style>.smd-page-hidden,.smd-animate,.smd-animate-stagger>*{opacity:1!important;transform:none!important;transition:none!important}</style></noscript>
 <script>
-// Minimal runtime: hamburger toggle, carousel, scroll-based nav
+// Runtime: hamburger, carousel, nav scroll, animations, page transitions
 (function() {
   // Hamburger
   var toggle = document.querySelector('.smd-nav-toggle');
@@ -1840,6 +1861,92 @@ docs {q}   → docs.google.com/search?q={q}</code></pre></div></div><div class="
     el.querySelectorAll('.smd-tab-btn').forEach(function(b, i) { b.classList.toggle('active', i === idx); });
     el.querySelectorAll('.smd-tab-panel').forEach(function(p, i) { p.classList.toggle('active', i === idx); });
   };
+
+  // Animations & SPA-like page transitions
+  var page = document.querySelector('.smd-page');
+  if (page && page.classList.contains('smd-page-hidden')) {
+    function initScrollAnims() {
+      document.querySelectorAll('.smd-hero.smd-animate').forEach(function(el) {
+        setTimeout(function() { el.classList.add('smd-visible'); }, 150);
+      });
+      var first = document.querySelector('.smd-section.smd-animate');
+      if (first) setTimeout(function() { first.classList.add('smd-visible'); }, 300);
+      if ('IntersectionObserver' in window) {
+        var obs = new IntersectionObserver(function(entries) {
+          entries.forEach(function(e) {
+            if (e.isIntersecting) { e.target.classList.add('smd-visible'); obs.unobserve(e.target); }
+          });
+        }, { threshold: 0.05, rootMargin: '0px 0px 50px 0px' });
+        document.querySelectorAll('.smd-animate:not(.smd-hero):not(.smd-visible)').forEach(function(el) { obs.observe(el); });
+      } else {
+        document.querySelectorAll('.smd-animate').forEach(function(el) { el.classList.add('smd-visible'); });
+      }
+    }
+
+    // Initial page enter
+    requestAnimationFrame(function() { page.classList.remove('smd-page-hidden'); });
+    initScrollAnims();
+
+    // SPA navigation: fetch + swap content, keep nav stable
+    function navigateTo(url, push) {
+      var parts = url.split('#');
+      var fetchUrl = parts[0] || location.pathname;
+      var hash = parts[1] || '';
+
+      page.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+      page.style.opacity = '0';
+      page.style.transform = 'translateY(-8px)';
+
+      Promise.all([
+        fetch(fetchUrl).then(function(r) { return r.text(); }),
+        new Promise(function(r) { setTimeout(r, 200); })
+      ]).then(function(results) {
+        var parsed = new DOMParser().parseFromString(results[0], 'text/html');
+        var newMain = parsed.querySelector('.smd-page');
+        if (!newMain) { location.href = url; return; }
+
+        page.innerHTML = newMain.innerHTML;
+        var t = parsed.querySelector('title');
+        if (t) document.title = t.textContent;
+        if (push) history.pushState({}, '', url);
+
+        if (hash) {
+          var target = document.getElementById(hash);
+          if (target) target.scrollIntoView();
+        } else {
+          window.scrollTo(0, 0);
+        }
+
+        // Entry animation
+        page.style.transition = 'none';
+        page.style.transform = 'translateY(16px)';
+        page.offsetHeight;
+        page.style.transition = '';
+        page.style.opacity = '';
+        page.style.transform = '';
+
+        initScrollAnims();
+      }).catch(function() { location.href = url; });
+    }
+
+    document.addEventListener('click', function(e) {
+      var a = e.target.closest('a');
+      if (!a) return;
+      var href = a.getAttribute('href');
+      if (!href || href.startsWith('#') || /^(https?:\/\/|mailto:)/.test(href)) return;
+      var path = href.split('#')[0].split('?')[0];
+      if (!path.endsWith('.html')) return;
+      // Same-page anchor: let browser handle natively (CSS scroll-behavior: smooth)
+      var curPage = location.pathname.split('/').pop();
+      if (path === curPage && href.indexOf('#') !== -1) return;
+      e.preventDefault();
+      navigateTo(href, true);
+    });
+
+    window.addEventListener('popstate', function() {
+      navigateTo(location.pathname + location.hash, false);
+    });
+  }
 })();
 </script>
 </body>

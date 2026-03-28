@@ -255,6 +255,11 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   transform: translateY(48px);
   transition-duration: 0.9s;
 }
+/* When staggering children, parent snaps visible — children do the animated reveal */
+.smd-animate.smd-animate-stagger {
+  transform: none;
+  transition: none;
+}
 /* Stagger children */
 .smd-animate-stagger > * {
   opacity: 0;
@@ -892,6 +897,7 @@ body:has(.smd-nav[data-style="transparent"]) .smd-page > .smd-carousel:first-chi
 }
 
 /* ===== Page Transitions ===== */
+/* SPA mode transitions (browser.mjs) */
 .smd-page-old {
   overflow: hidden;
   transition: opacity 0.4s ease, transform 0.4s ease;
@@ -914,6 +920,20 @@ body:has(.smd-nav[data-style="transparent"]) .smd-page > .smd-carousel:first-chi
 .smd-page.pop-in {
   opacity: 0;
   transform: translateX(-4%);
+}
+/* Static multi-page transitions (compiled sites) */
+.smd-page-hidden {
+  opacity: 0;
+  transform: translateY(16px);
+}
+.smd-page-exit {
+  opacity: 0 !important;
+  transform: translateY(-8px) !important;
+  transition: opacity 0.2s ease, transform 0.2s ease !important;
+}
+[data-animation="none"] .smd-page-hidden {
+  opacity: 1;
+  transform: none;
 }
 
 /* ===== Live Editor ===== */
@@ -1762,12 +1782,13 @@ kbd {
 </head>
 <body>
 <div id="smd-nav-mount"><a href="#smd-content" class="smd-skip-nav">Skip to content</a><nav class="smd-nav" data-style="transparent" aria-label="Main navigation"><a class="smd-nav-brand" href="index.html">Giuseppe’s Italian Restaurant</a><ul class="smd-nav-links"><li><a href="menu.html">Menu</a></li><li><a href="about.html">About</a></li><li><a href="index.html#make-a-reservation">Reservations</a></li></ul><button class="smd-nav-toggle" aria-label="Menu"><span></span></button></nav></div>
-<main id="smd-content" class="smd-page">
-<div class="smd-bg-section" style="background-image:url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&q=80')"><div class="smd-bg-overlay"><h1>Our Menu</h1><p>Seasonal dishes crafted from the freshest local ingredients and time-honored Italian recipes.</p></div></div><section class="smd-section" id="antipasti"><h2>Antipasti</h2><hr class="smd-section-rule"><ul><li><span>Bruschetta Classica</span><span style="color:var(--text-muted);white-space:nowrap">$8</span></li><li><span>Calamari Fritti with lemon aioli</span><span style="color:var(--text-muted);white-space:nowrap">$12</span></li><li><span>Caprese Salad with burrata</span><span style="color:var(--text-muted);white-space:nowrap">$10</span></li><li><span>Arancini with saffron risotto</span><span style="color:var(--text-muted);white-space:nowrap">$9</span></li><li><span>Carpaccio di Manzo with arugula and parmesan</span><span style="color:var(--text-muted);white-space:nowrap">$14</span></li><li><span>Polpo alla Griglia, grilled octopus with potatoes</span><span style="color:var(--text-muted);white-space:nowrap">$15</span></li><li><span>Crostini Toscani with chicken liver pate</span><span style="color:var(--text-muted);white-space:nowrap">$10</span></li><li><span>Burrata with roasted peppers and basil</span><span style="color:var(--text-muted);white-space:nowrap">$13</span></li></ul></section><section class="smd-section smd-section-alt" id="pasta"><h2>Pasta</h2><hr class="smd-section-rule"><ul><li><span>Linguine alle Vongole</span><span style="color:var(--text-muted);white-space:nowrap">$18</span></li><li><span>Tagliatelle Bolognese</span><span style="color:var(--text-muted);white-space:nowrap">$17</span></li><li><span>Cacio e Pepe</span><span style="color:var(--text-muted);white-space:nowrap">$15</span></li><li><span>Pappardelle with wild boar ragu</span><span style="color:var(--text-muted);white-space:nowrap">$19</span></li><li><span>Ravioli di Ricotta with brown butter and sage</span><span style="color:var(--text-muted);white-space:nowrap">$16</span></li><li><span>Spaghetti alla Carbonara</span><span style="color:var(--text-muted);white-space:nowrap">$16</span></li><li><span>Gnocchi with gorgonzola cream</span><span style="color:var(--text-muted);white-space:nowrap">$15</span></li><li><span>Lasagna della Nonna</span><span style="color:var(--text-muted);white-space:nowrap">$17</span></li><li><span>Orecchiette with broccoli rabe and sausage</span><span style="color:var(--text-muted);white-space:nowrap">$16</span></li><li><span>Penne all’Arrabbiata</span><span style="color:var(--text-muted);white-space:nowrap">$14</span></li></ul></section><section class="smd-section" id="pizza"><h2>Pizza</h2><hr class="smd-section-rule"><ul><li><span>Margherita</span><span style="color:var(--text-muted);white-space:nowrap">$14</span></li><li><span>Quattro Formaggi</span><span style="color:var(--text-muted);white-space:nowrap">$16</span></li><li><span>Diavola with spicy salami</span><span style="color:var(--text-muted);white-space:nowrap">$15</span></li><li><span>Prosciutto e Rucola</span><span style="color:var(--text-muted);white-space:nowrap">$17</span></li><li><span>Funghi Misti with truffle oil</span><span style="color:var(--text-muted);white-space:nowrap">$18</span></li><li><span>Napoli with anchovies, capers, olives</span><span style="color:var(--text-muted);white-space:nowrap">$15</span></li></ul></section><section class="smd-section smd-section-alt" id="secondi"><h2>Secondi</h2><hr class="smd-section-rule"><ul><li><span>Osso Buco alla Milanese</span><span style="color:var(--text-muted);white-space:nowrap">$28</span></li><li><span>Branzino al Forno with herbs and lemon</span><span style="color:var(--text-muted);white-space:nowrap">$26</span></li><li><span>Pollo alla Parmigiana</span><span style="color:var(--text-muted);white-space:nowrap">$22</span></li><li><span>Saltimbocca alla Romana</span><span style="color:var(--text-muted);white-space:nowrap">$24</span></li><li><span>Bistecca alla Fiorentina (for two)</span><span style="color:var(--text-muted);white-space:nowrap">$58</span></li><li><span>Eggplant Parmigiana</span><span style="color:var(--text-muted);white-space:nowrap">$16</span></li><li><span>Lamb Shank Braised in Chianti</span><span style="color:var(--text-muted);white-space:nowrap">$27</span></li><li><span>Seared Duck Breast with cherry reduction</span><span style="color:var(--text-muted);white-space:nowrap">$25</span></li></ul></section><section class="smd-section" id="contorni"><h2>Contorni</h2><hr class="smd-section-rule"><ul><li><span>Roasted seasonal vegetables</span><span style="color:var(--text-muted);white-space:nowrap">$8</span></li><li><span>Sauteed broccoli rabe</span><span style="color:var(--text-muted);white-space:nowrap">$7</span></li><li><span>Truffle fries</span><span style="color:var(--text-muted);white-space:nowrap">$9</span></li><li><span>Mixed green salad</span><span style="color:var(--text-muted);white-space:nowrap">$7</span></li><li><span>Grilled asparagus with lemon</span><span style="color:var(--text-muted);white-space:nowrap">$8</span></li></ul></section><section class="smd-section smd-section-alt" id="dolci"><h2>Dolci</h2><hr class="smd-section-rule"><ul><li><span>Tiramisu</span><span style="color:var(--text-muted);white-space:nowrap">$9</span></li><li><span>Panna Cotta with berry compote</span><span style="color:var(--text-muted);white-space:nowrap">$8</span></li><li><span>Classic Cannoli</span><span style="color:var(--text-muted);white-space:nowrap">$7</span></li><li><span>Affogato</span><span style="color:var(--text-muted);white-space:nowrap">$6</span></li><li><span>Chocolate Torta with espresso cream</span><span style="color:var(--text-muted);white-space:nowrap">$10</span></li><li><span>Semifreddo al Limone</span><span style="color:var(--text-muted);white-space:nowrap">$9</span></li><li><span>Zeppole with Nutella</span><span style="color:var(--text-muted);white-space:nowrap">$8</span></li></ul></section><section class="smd-section" id="wine-list"><h2>Wine List</h2><hr class="smd-section-rule"><div class="smd-columns"><div class="smd-column"><h3 id="reds">Reds</h3><ul><li><span>Chianti Classico, Castello di Volpaia</span><span style="color:var(--text-muted);white-space:nowrap">$12 / $48</span></li><li><span>Barolo, Marchesi di Barolo</span><span style="color:var(--text-muted);white-space:nowrap">$18 / $72</span></li><li><span>Brunello di Montalcino, Banfi</span><span style="color:var(--text-muted);white-space:nowrap">$16 / $64</span></li><li><span>Montepulciano d’Abruzzo, Masciarelli</span><span style="color:var(--text-muted);white-space:nowrap">$10 / $40</span></li><li><span>Amarone della Valpolicella, Allegrini</span><span style="color:var(--text-muted);white-space:nowrap">$20 / $80</span></li><li><span>Super Tuscan, Tignanello</span><span style="color:var(--text-muted);white-space:nowrap">$22 / $88</span></li></ul></div><div class="smd-column"><h3 id="whites">Whites</h3><ul><li><span>Pinot Grigio, Santa Margherita</span><span style="color:var(--text-muted);white-space:nowrap">$11 / $44</span></li><li><span>Vermentino di Sardegna, Argiolas</span><span style="color:var(--text-muted);white-space:nowrap">$10 / $40</span></li><li><span>Gavi di Gavi, La Scolca</span><span style="color:var(--text-muted);white-space:nowrap">$12 / $48</span></li><li><span>Fiano di Avellino, Mastroberardino</span><span style="color:var(--text-muted);white-space:nowrap">$11 / $44</span></li><li><span>Soave Classico, Pieropan</span><span style="color:var(--text-muted);white-space:nowrap">$10 / $40</span></li></ul></div><div class="smd-column"><h3 id="sparkling">Sparkling</h3><ul><li><span>Prosecco, La Marca</span><span style="color:var(--text-muted);white-space:nowrap">$10 / $40</span></li><li><span>Franciacorta Brut, Bellavista</span><span style="color:var(--text-muted);white-space:nowrap">$14 / $56</span></li><li><span>Lambrusco Rosato, Cleto Chiarli</span><span style="color:var(--text-muted);white-space:nowrap">$9 / $36</span></li></ul></div></div><div class="smd-cta-row"><a href="about.html" class="smd-cta-primary">About Us</a><a href="index.html" class="smd-cta-secondary">Back to Home</a></div></section>
+<main id="smd-content" class="smd-page smd-page-hidden">
+<div class="smd-bg-section" style="background-image:url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&q=80')"><div class="smd-bg-overlay"><h1>Our Menu</h1><p>Seasonal dishes crafted from the freshest local ingredients and time-honored Italian recipes.</p></div></div><section class="smd-section smd-animate" id="antipasti"><h2>Antipasti</h2><hr class="smd-section-rule"><ul><li><span>Bruschetta Classica</span><span style="color:var(--text-muted);white-space:nowrap">$8</span></li><li><span>Calamari Fritti with lemon aioli</span><span style="color:var(--text-muted);white-space:nowrap">$12</span></li><li><span>Caprese Salad with burrata</span><span style="color:var(--text-muted);white-space:nowrap">$10</span></li><li><span>Arancini with saffron risotto</span><span style="color:var(--text-muted);white-space:nowrap">$9</span></li><li><span>Carpaccio di Manzo with arugula and parmesan</span><span style="color:var(--text-muted);white-space:nowrap">$14</span></li><li><span>Polpo alla Griglia, grilled octopus with potatoes</span><span style="color:var(--text-muted);white-space:nowrap">$15</span></li><li><span>Crostini Toscani with chicken liver pate</span><span style="color:var(--text-muted);white-space:nowrap">$10</span></li><li><span>Burrata with roasted peppers and basil</span><span style="color:var(--text-muted);white-space:nowrap">$13</span></li></ul></section><section class="smd-section smd-section-alt smd-animate" id="pasta"><h2>Pasta</h2><hr class="smd-section-rule"><ul><li><span>Linguine alle Vongole</span><span style="color:var(--text-muted);white-space:nowrap">$18</span></li><li><span>Tagliatelle Bolognese</span><span style="color:var(--text-muted);white-space:nowrap">$17</span></li><li><span>Cacio e Pepe</span><span style="color:var(--text-muted);white-space:nowrap">$15</span></li><li><span>Pappardelle with wild boar ragu</span><span style="color:var(--text-muted);white-space:nowrap">$19</span></li><li><span>Ravioli di Ricotta with brown butter and sage</span><span style="color:var(--text-muted);white-space:nowrap">$16</span></li><li><span>Spaghetti alla Carbonara</span><span style="color:var(--text-muted);white-space:nowrap">$16</span></li><li><span>Gnocchi with gorgonzola cream</span><span style="color:var(--text-muted);white-space:nowrap">$15</span></li><li><span>Lasagna della Nonna</span><span style="color:var(--text-muted);white-space:nowrap">$17</span></li><li><span>Orecchiette with broccoli rabe and sausage</span><span style="color:var(--text-muted);white-space:nowrap">$16</span></li><li><span>Penne all’Arrabbiata</span><span style="color:var(--text-muted);white-space:nowrap">$14</span></li></ul></section><section class="smd-section smd-animate" id="pizza"><h2>Pizza</h2><hr class="smd-section-rule"><ul><li><span>Margherita</span><span style="color:var(--text-muted);white-space:nowrap">$14</span></li><li><span>Quattro Formaggi</span><span style="color:var(--text-muted);white-space:nowrap">$16</span></li><li><span>Diavola with spicy salami</span><span style="color:var(--text-muted);white-space:nowrap">$15</span></li><li><span>Prosciutto e Rucola</span><span style="color:var(--text-muted);white-space:nowrap">$17</span></li><li><span>Funghi Misti with truffle oil</span><span style="color:var(--text-muted);white-space:nowrap">$18</span></li><li><span>Napoli with anchovies, capers, olives</span><span style="color:var(--text-muted);white-space:nowrap">$15</span></li></ul></section><section class="smd-section smd-section-alt smd-animate" id="secondi"><h2>Secondi</h2><hr class="smd-section-rule"><ul><li><span>Osso Buco alla Milanese</span><span style="color:var(--text-muted);white-space:nowrap">$28</span></li><li><span>Branzino al Forno with herbs and lemon</span><span style="color:var(--text-muted);white-space:nowrap">$26</span></li><li><span>Pollo alla Parmigiana</span><span style="color:var(--text-muted);white-space:nowrap">$22</span></li><li><span>Saltimbocca alla Romana</span><span style="color:var(--text-muted);white-space:nowrap">$24</span></li><li><span>Bistecca alla Fiorentina (for two)</span><span style="color:var(--text-muted);white-space:nowrap">$58</span></li><li><span>Eggplant Parmigiana</span><span style="color:var(--text-muted);white-space:nowrap">$16</span></li><li><span>Lamb Shank Braised in Chianti</span><span style="color:var(--text-muted);white-space:nowrap">$27</span></li><li><span>Seared Duck Breast with cherry reduction</span><span style="color:var(--text-muted);white-space:nowrap">$25</span></li></ul></section><section class="smd-section smd-animate" id="contorni"><h2>Contorni</h2><hr class="smd-section-rule"><ul><li><span>Roasted seasonal vegetables</span><span style="color:var(--text-muted);white-space:nowrap">$8</span></li><li><span>Sauteed broccoli rabe</span><span style="color:var(--text-muted);white-space:nowrap">$7</span></li><li><span>Truffle fries</span><span style="color:var(--text-muted);white-space:nowrap">$9</span></li><li><span>Mixed green salad</span><span style="color:var(--text-muted);white-space:nowrap">$7</span></li><li><span>Grilled asparagus with lemon</span><span style="color:var(--text-muted);white-space:nowrap">$8</span></li></ul></section><section class="smd-section smd-section-alt smd-animate" id="dolci"><h2>Dolci</h2><hr class="smd-section-rule"><ul><li><span>Tiramisu</span><span style="color:var(--text-muted);white-space:nowrap">$9</span></li><li><span>Panna Cotta with berry compote</span><span style="color:var(--text-muted);white-space:nowrap">$8</span></li><li><span>Classic Cannoli</span><span style="color:var(--text-muted);white-space:nowrap">$7</span></li><li><span>Affogato</span><span style="color:var(--text-muted);white-space:nowrap">$6</span></li><li><span>Chocolate Torta with espresso cream</span><span style="color:var(--text-muted);white-space:nowrap">$10</span></li><li><span>Semifreddo al Limone</span><span style="color:var(--text-muted);white-space:nowrap">$9</span></li><li><span>Zeppole with Nutella</span><span style="color:var(--text-muted);white-space:nowrap">$8</span></li></ul></section><section class="smd-section smd-animate" id="wine-list"><h2>Wine List</h2><hr class="smd-section-rule"><div class="smd-columns smd-animate smd-animate-stagger"><div class="smd-column"><h3 id="reds">Reds</h3><ul><li><span>Chianti Classico, Castello di Volpaia</span><span style="color:var(--text-muted);white-space:nowrap">$12 / $48</span></li><li><span>Barolo, Marchesi di Barolo</span><span style="color:var(--text-muted);white-space:nowrap">$18 / $72</span></li><li><span>Brunello di Montalcino, Banfi</span><span style="color:var(--text-muted);white-space:nowrap">$16 / $64</span></li><li><span>Montepulciano d’Abruzzo, Masciarelli</span><span style="color:var(--text-muted);white-space:nowrap">$10 / $40</span></li><li><span>Amarone della Valpolicella, Allegrini</span><span style="color:var(--text-muted);white-space:nowrap">$20 / $80</span></li><li><span>Super Tuscan, Tignanello</span><span style="color:var(--text-muted);white-space:nowrap">$22 / $88</span></li></ul></div><div class="smd-column"><h3 id="whites">Whites</h3><ul><li><span>Pinot Grigio, Santa Margherita</span><span style="color:var(--text-muted);white-space:nowrap">$11 / $44</span></li><li><span>Vermentino di Sardegna, Argiolas</span><span style="color:var(--text-muted);white-space:nowrap">$10 / $40</span></li><li><span>Gavi di Gavi, La Scolca</span><span style="color:var(--text-muted);white-space:nowrap">$12 / $48</span></li><li><span>Fiano di Avellino, Mastroberardino</span><span style="color:var(--text-muted);white-space:nowrap">$11 / $44</span></li><li><span>Soave Classico, Pieropan</span><span style="color:var(--text-muted);white-space:nowrap">$10 / $40</span></li></ul></div><div class="smd-column"><h3 id="sparkling">Sparkling</h3><ul><li><span>Prosecco, La Marca</span><span style="color:var(--text-muted);white-space:nowrap">$10 / $40</span></li><li><span>Franciacorta Brut, Bellavista</span><span style="color:var(--text-muted);white-space:nowrap">$14 / $56</span></li><li><span>Lambrusco Rosato, Cleto Chiarli</span><span style="color:var(--text-muted);white-space:nowrap">$9 / $36</span></li></ul></div></div><div class="smd-cta-row"><a href="about.html" class="smd-cta-primary">About Us</a><a href="index.html" class="smd-cta-secondary">Back to Home</a></div></section>
 <footer class="smd-footer" data-style="centered"><div class="smd-footer-title">Giuseppe’s Italian Restaurant</div><div class="smd-footer-links"><a href="index.html">Home</a> <a href="menu.html">Menu</a> <a href="about.html">About</a> </div><div class="smd-footer-copy">123 Main Street, Portland, OR 97201<br>(503) 555-0142</div></footer>
 </main>
+<noscript><style>.smd-page-hidden,.smd-animate,.smd-animate-stagger>*{opacity:1!important;transform:none!important;transition:none!important}</style></noscript>
 <script>
-// Minimal runtime: hamburger toggle, carousel, scroll-based nav
+// Runtime: hamburger, carousel, nav scroll, animations, page transitions
 (function() {
   // Hamburger
   var toggle = document.querySelector('.smd-nav-toggle');
@@ -1821,6 +1842,92 @@ kbd {
     el.querySelectorAll('.smd-tab-btn').forEach(function(b, i) { b.classList.toggle('active', i === idx); });
     el.querySelectorAll('.smd-tab-panel').forEach(function(p, i) { p.classList.toggle('active', i === idx); });
   };
+
+  // Animations & SPA-like page transitions
+  var page = document.querySelector('.smd-page');
+  if (page && page.classList.contains('smd-page-hidden')) {
+    function initScrollAnims() {
+      document.querySelectorAll('.smd-hero.smd-animate').forEach(function(el) {
+        setTimeout(function() { el.classList.add('smd-visible'); }, 150);
+      });
+      var first = document.querySelector('.smd-section.smd-animate');
+      if (first) setTimeout(function() { first.classList.add('smd-visible'); }, 300);
+      if ('IntersectionObserver' in window) {
+        var obs = new IntersectionObserver(function(entries) {
+          entries.forEach(function(e) {
+            if (e.isIntersecting) { e.target.classList.add('smd-visible'); obs.unobserve(e.target); }
+          });
+        }, { threshold: 0.05, rootMargin: '0px 0px 50px 0px' });
+        document.querySelectorAll('.smd-animate:not(.smd-hero):not(.smd-visible)').forEach(function(el) { obs.observe(el); });
+      } else {
+        document.querySelectorAll('.smd-animate').forEach(function(el) { el.classList.add('smd-visible'); });
+      }
+    }
+
+    // Initial page enter
+    requestAnimationFrame(function() { page.classList.remove('smd-page-hidden'); });
+    initScrollAnims();
+
+    // SPA navigation: fetch + swap content, keep nav stable
+    function navigateTo(url, push) {
+      var parts = url.split('#');
+      var fetchUrl = parts[0] || location.pathname;
+      var hash = parts[1] || '';
+
+      page.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+      page.style.opacity = '0';
+      page.style.transform = 'translateY(-8px)';
+
+      Promise.all([
+        fetch(fetchUrl).then(function(r) { return r.text(); }),
+        new Promise(function(r) { setTimeout(r, 200); })
+      ]).then(function(results) {
+        var parsed = new DOMParser().parseFromString(results[0], 'text/html');
+        var newMain = parsed.querySelector('.smd-page');
+        if (!newMain) { location.href = url; return; }
+
+        page.innerHTML = newMain.innerHTML;
+        var t = parsed.querySelector('title');
+        if (t) document.title = t.textContent;
+        if (push) history.pushState({}, '', url);
+
+        if (hash) {
+          var target = document.getElementById(hash);
+          if (target) target.scrollIntoView();
+        } else {
+          window.scrollTo(0, 0);
+        }
+
+        // Entry animation
+        page.style.transition = 'none';
+        page.style.transform = 'translateY(16px)';
+        page.offsetHeight;
+        page.style.transition = '';
+        page.style.opacity = '';
+        page.style.transform = '';
+
+        initScrollAnims();
+      }).catch(function() { location.href = url; });
+    }
+
+    document.addEventListener('click', function(e) {
+      var a = e.target.closest('a');
+      if (!a) return;
+      var href = a.getAttribute('href');
+      if (!href || href.startsWith('#') || /^(https?:\/\/|mailto:)/.test(href)) return;
+      var path = href.split('#')[0].split('?')[0];
+      if (!path.endsWith('.html')) return;
+      // Same-page anchor: let browser handle natively (CSS scroll-behavior: smooth)
+      var curPage = location.pathname.split('/').pop();
+      if (path === curPage && href.indexOf('#') !== -1) return;
+      e.preventDefault();
+      navigateTo(href, true);
+    });
+
+    window.addEventListener('popstate', function() {
+      navigateTo(location.pathname + location.hash, false);
+    });
+  }
 })();
 </script>
 </body>

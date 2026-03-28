@@ -255,6 +255,11 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   transform: translateY(48px);
   transition-duration: 0.9s;
 }
+/* When staggering children, parent snaps visible — children do the animated reveal */
+.smd-animate.smd-animate-stagger {
+  transform: none;
+  transition: none;
+}
 /* Stagger children */
 .smd-animate-stagger > * {
   opacity: 0;
@@ -892,6 +897,7 @@ body:has(.smd-nav[data-style="transparent"]) .smd-page > .smd-carousel:first-chi
 }
 
 /* ===== Page Transitions ===== */
+/* SPA mode transitions (browser.mjs) */
 .smd-page-old {
   overflow: hidden;
   transition: opacity 0.4s ease, transform 0.4s ease;
@@ -914,6 +920,20 @@ body:has(.smd-nav[data-style="transparent"]) .smd-page > .smd-carousel:first-chi
 .smd-page.pop-in {
   opacity: 0;
   transform: translateX(-4%);
+}
+/* Static multi-page transitions (compiled sites) */
+.smd-page-hidden {
+  opacity: 0;
+  transform: translateY(16px);
+}
+.smd-page-exit {
+  opacity: 0 !important;
+  transform: translateY(-8px) !important;
+  transition: opacity 0.2s ease, transform 0.2s ease !important;
+}
+[data-animation="none"] .smd-page-hidden {
+  opacity: 1;
+  transform: none;
 }
 
 /* ===== Live Editor ===== */
@@ -1762,12 +1782,13 @@ kbd {
 </head>
 <body>
 
-<main id="smd-content" class="smd-page">
-<div class="smd-carousel" id="carousel-48muij" role="region" aria-roledescription="carousel" aria-label="Image carousel"><div class="smd-carousel-track" aria-live="polite"><div class="smd-carousel-slide"><div class="smd-bg-section" style="background-image:url('https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1200&q=80')"><div class="smd-bg-overlay"><h1>Bloom Studio</h1><p>Where beauty meets intention. Book your transformation today.</p></div></div></div></div></div><section class="smd-section" id="services"><h2>Services</h2><hr class="smd-section-rule"><div class="smd-columns"><div class="smd-column"><h3 id="cuts-styling">Cuts & Styling</h3><ul><li><span>Women’s Haircut</span><span style="color:var(--text-muted);white-space:nowrap">$75</span></li><li><span>Men’s Haircut</span><span style="color:var(--text-muted);white-space:nowrap">$45</span></li><li><span>Blowout & Style</span><span style="color:var(--text-muted);white-space:nowrap">$55</span></li><li><span>Special Occasion Updo</span><span style="color:var(--text-muted);white-space:nowrap">$95</span></li></ul></div><div class="smd-column"><h3 id="color">Color</h3><ul><li><span>Single Process Color</span><span style="color:var(--text-muted);white-space:nowrap">$120</span></li><li><span>Balayage / Highlights</span><span style="color:var(--text-muted);white-space:nowrap">$200</span></li><li><span>Color Correction</span><span style="color:var(--text-muted);white-space:nowrap">$250+</span></li><li><span>Gloss Treatment</span><span style="color:var(--text-muted);white-space:nowrap">$60</span></li></ul></div><div class="smd-column"><h3 id="treatments">Treatments</h3><ul><li><span>Deep Conditioning</span><span style="color:var(--text-muted);white-space:nowrap">$40</span></li><li><span>Keratin Smoothing</span><span style="color:var(--text-muted);white-space:nowrap">$300</span></li><li><span>Scalp Treatment</span><span style="color:var(--text-muted);white-space:nowrap">$55</span></li><li><span>Olaplex Add-On</span><span style="color:var(--text-muted);white-space:nowrap">$35</span></li></ul></div></div></section><section class="smd-section smd-section-alt" id="meet-the-team"><h2>Meet the Team</h2><hr class="smd-section-rule"><div class="smd-columns"><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="mia-torres">Mia Torres</h3><p>Owner & Lead Stylist<br>15 years of experience. Specializes in balayage and lived-in color. Trained at Vidal Sassoon Academy.</p></div></div><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="jade-kim">Jade Kim</h3><p>Senior Stylist<br>Expert in precision cuts and textured hair. A favorite for bold transformations.</p></div></div><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="river-santos">River Santos</h3><p>Colorist<br>Known for vivid fashion colors and seamless blends. If you’ve seen it on Instagram, River can do it.</p></div></div><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="ava-mitchell">Ava Mitchell</h3><p>Junior Stylist<br>Fresh talent with an eye for modern, low-maintenance styles. Great with curly and natural hair.</p></div></div></div></section><section class="smd-section" id="what-clients-say"><h2>What Clients Say</h2><hr class="smd-section-rule"><div class="smd-block smd-block-quote"><p><span class="smd-stars">★★★★★</span><br>Mia completely transformed my hair. I went from boxed brunette to the most beautiful dimensional blonde. I’ve never felt more like myself.<br>— <strong>Lauren P.</strong></p></div><div class="smd-block smd-block-quote"><p><span class="smd-stars">★★★★★</span><br>Best men’s cut I’ve ever had. Jade actually listened to what I wanted and nailed it. The atmosphere is so welcoming.<br>— <strong>David K.</strong></p></div><div class="smd-block smd-block-quote"><p><span class="smd-stars">★★★★★</span><br>River did the most incredible rose gold on my dark hair. I get compliments every single day. Worth every penny.<br>— <strong>Priya R.</strong></p></div></section><section class="smd-section smd-section-alt" id="visit-us"><h2>Visit Us</h2><hr class="smd-section-rule"><div class="smd-columns"><div class="smd-column"><h3 id="location">Location</h3><p>2847 South Congress Ave<br>Austin, TX 78704<br>(512) 555-0199</p></div><div class="smd-column"><h3 id="hours">Hours</h3><p>Tuesday–Friday: 10am–7pm<br>Saturday: 9am–5pm<br>Sunday–Monday: Closed</p></div><div class="smd-column"><h3 id="parking">Parking</h3><p>Free street parking on South Congress.<br>Lot available behind the building.</p></div></div></section><section class="smd-section" id="book-an-appointment"><h2>Book an Appointment</h2><hr class="smd-section-rule"><form class="smd-form" method="POST" action="/book"><div class="smd-form-group"><div class="smd-field"><label for="name">Name *</label><input type="text" id="name" name="name" required></div><div class="smd-field"><label for="phone">Phone *</label><input type="text" id="phone" name="phone" required></div><div class="smd-field"><label for="email">Email</label><input type="email" id="email" name="email"></div></div><div class="smd-form-group"><div class="smd-field"><label for="service">Service *</label><select id="service" name="service" required><option value="" disabled selected>Select...</option><option value="Haircut">Haircut</option><option value="Color">Color</option><option value="Balayage">Balayage</option><option value="Treatment">Treatment</option><option value="Other">Other</option></select></div><div class="smd-field"><label for="preferred-stylist">Preferred Stylist</label><select id="preferred-stylist" name="preferred-stylist"><option value="" disabled selected>Select...</option><option value="No preference">No preference</option><option value="Mia">Mia</option><option value="Jade">Jade</option><option value="River">River</option><option value="Ava">Ava</option></select></div></div><div class="smd-form-group"><div class="smd-field"><label for="preferred-date">Preferred date</label><input type="date" id="preferred-date" name="preferred-date"></div><div class="smd-field"><label for="notes">Notes</label><textarea id="notes" name="notes"></textarea></div></div><button type="submit">Request Appointment</button></form></section>
+<main id="smd-content" class="smd-page smd-page-hidden">
+<div class="smd-carousel" id="carousel-5sv1ss" role="region" aria-roledescription="carousel" aria-label="Image carousel"><div class="smd-carousel-track" aria-live="polite"><div class="smd-carousel-slide"><div class="smd-bg-section" style="background-image:url('https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1200&q=80')"><div class="smd-bg-overlay"><h1>Bloom Studio</h1><p>Where beauty meets intention. Book your transformation today.</p></div></div></div></div></div><section class="smd-section smd-animate" id="services"><h2>Services</h2><hr class="smd-section-rule"><div class="smd-columns smd-animate smd-animate-stagger"><div class="smd-column"><h3 id="cuts-styling">Cuts & Styling</h3><ul><li><span>Women’s Haircut</span><span style="color:var(--text-muted);white-space:nowrap">$75</span></li><li><span>Men’s Haircut</span><span style="color:var(--text-muted);white-space:nowrap">$45</span></li><li><span>Blowout & Style</span><span style="color:var(--text-muted);white-space:nowrap">$55</span></li><li><span>Special Occasion Updo</span><span style="color:var(--text-muted);white-space:nowrap">$95</span></li></ul></div><div class="smd-column"><h3 id="color">Color</h3><ul><li><span>Single Process Color</span><span style="color:var(--text-muted);white-space:nowrap">$120</span></li><li><span>Balayage / Highlights</span><span style="color:var(--text-muted);white-space:nowrap">$200</span></li><li><span>Color Correction</span><span style="color:var(--text-muted);white-space:nowrap">$250+</span></li><li><span>Gloss Treatment</span><span style="color:var(--text-muted);white-space:nowrap">$60</span></li></ul></div><div class="smd-column"><h3 id="treatments">Treatments</h3><ul><li><span>Deep Conditioning</span><span style="color:var(--text-muted);white-space:nowrap">$40</span></li><li><span>Keratin Smoothing</span><span style="color:var(--text-muted);white-space:nowrap">$300</span></li><li><span>Scalp Treatment</span><span style="color:var(--text-muted);white-space:nowrap">$55</span></li><li><span>Olaplex Add-On</span><span style="color:var(--text-muted);white-space:nowrap">$35</span></li></ul></div></div></section><section class="smd-section smd-section-alt smd-animate" id="meet-the-team"><h2>Meet the Team</h2><hr class="smd-section-rule"><div class="smd-columns smd-animate smd-animate-stagger"><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="mia-torres">Mia Torres</h3><p>Owner & Lead Stylist<br>15 years of experience. Specializes in balayage and lived-in color. Trained at Vidal Sassoon Academy.</p></div></div><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="jade-kim">Jade Kim</h3><p>Senior Stylist<br>Expert in precision cuts and textured hair. A favorite for bold transformations.</p></div></div><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="river-santos">River Santos</h3><p>Colorist<br>Known for vivid fashion colors and seamless blends. If you’ve seen it on Instagram, River can do it.</p></div></div><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="ava-mitchell">Ava Mitchell</h3><p>Junior Stylist<br>Fresh talent with an eye for modern, low-maintenance styles. Great with curly and natural hair.</p></div></div></div></section><section class="smd-section smd-animate" id="what-clients-say"><h2>What Clients Say</h2><hr class="smd-section-rule"><div class="smd-block smd-block-quote"><p><span class="smd-stars">★★★★★</span><br>Mia completely transformed my hair. I went from boxed brunette to the most beautiful dimensional blonde. I’ve never felt more like myself.<br>— <strong>Lauren P.</strong></p></div><div class="smd-block smd-block-quote"><p><span class="smd-stars">★★★★★</span><br>Best men’s cut I’ve ever had. Jade actually listened to what I wanted and nailed it. The atmosphere is so welcoming.<br>— <strong>David K.</strong></p></div><div class="smd-block smd-block-quote"><p><span class="smd-stars">★★★★★</span><br>River did the most incredible rose gold on my dark hair. I get compliments every single day. Worth every penny.<br>— <strong>Priya R.</strong></p></div></section><section class="smd-section smd-section-alt smd-animate" id="visit-us"><h2>Visit Us</h2><hr class="smd-section-rule"><div class="smd-columns smd-animate smd-animate-stagger"><div class="smd-column"><h3 id="location">Location</h3><p>2847 South Congress Ave<br>Austin, TX 78704<br>(512) 555-0199</p></div><div class="smd-column"><h3 id="hours">Hours</h3><p>Tuesday–Friday: 10am–7pm<br>Saturday: 9am–5pm<br>Sunday–Monday: Closed</p></div><div class="smd-column"><h3 id="parking">Parking</h3><p>Free street parking on South Congress.<br>Lot available behind the building.</p></div></div></section><section class="smd-section smd-animate" id="book-an-appointment"><h2>Book an Appointment</h2><hr class="smd-section-rule"><form class="smd-form" method="POST" action="/book"><div class="smd-form-group"><div class="smd-field"><label for="name">Name *</label><input type="text" id="name" name="name" required></div><div class="smd-field"><label for="phone">Phone *</label><input type="text" id="phone" name="phone" required></div><div class="smd-field"><label for="email">Email</label><input type="email" id="email" name="email"></div></div><div class="smd-form-group"><div class="smd-field"><label for="service">Service *</label><select id="service" name="service" required><option value="" disabled selected>Select...</option><option value="Haircut">Haircut</option><option value="Color">Color</option><option value="Balayage">Balayage</option><option value="Treatment">Treatment</option><option value="Other">Other</option></select></div><div class="smd-field"><label for="preferred-stylist">Preferred Stylist</label><select id="preferred-stylist" name="preferred-stylist"><option value="" disabled selected>Select...</option><option value="No preference">No preference</option><option value="Mia">Mia</option><option value="Jade">Jade</option><option value="River">River</option><option value="Ava">Ava</option></select></div></div><div class="smd-form-group"><div class="smd-field"><label for="preferred-date">Preferred date</label><input type="date" id="preferred-date" name="preferred-date"></div><div class="smd-field"><label for="notes">Notes</label><textarea id="notes" name="notes"></textarea></div></div><button type="submit">Request Appointment</button></form></section>
 
 </main>
+<noscript><style>.smd-page-hidden,.smd-animate,.smd-animate-stagger>*{opacity:1!important;transform:none!important;transition:none!important}</style></noscript>
 <script>
-// Minimal runtime: hamburger toggle, carousel, scroll-based nav
+// Runtime: hamburger, carousel, nav scroll, animations, page transitions
 (function() {
   // Hamburger
   var toggle = document.querySelector('.smd-nav-toggle');
@@ -1821,6 +1842,92 @@ kbd {
     el.querySelectorAll('.smd-tab-btn').forEach(function(b, i) { b.classList.toggle('active', i === idx); });
     el.querySelectorAll('.smd-tab-panel').forEach(function(p, i) { p.classList.toggle('active', i === idx); });
   };
+
+  // Animations & SPA-like page transitions
+  var page = document.querySelector('.smd-page');
+  if (page && page.classList.contains('smd-page-hidden')) {
+    function initScrollAnims() {
+      document.querySelectorAll('.smd-hero.smd-animate').forEach(function(el) {
+        setTimeout(function() { el.classList.add('smd-visible'); }, 150);
+      });
+      var first = document.querySelector('.smd-section.smd-animate');
+      if (first) setTimeout(function() { first.classList.add('smd-visible'); }, 300);
+      if ('IntersectionObserver' in window) {
+        var obs = new IntersectionObserver(function(entries) {
+          entries.forEach(function(e) {
+            if (e.isIntersecting) { e.target.classList.add('smd-visible'); obs.unobserve(e.target); }
+          });
+        }, { threshold: 0.05, rootMargin: '0px 0px 50px 0px' });
+        document.querySelectorAll('.smd-animate:not(.smd-hero):not(.smd-visible)').forEach(function(el) { obs.observe(el); });
+      } else {
+        document.querySelectorAll('.smd-animate').forEach(function(el) { el.classList.add('smd-visible'); });
+      }
+    }
+
+    // Initial page enter
+    requestAnimationFrame(function() { page.classList.remove('smd-page-hidden'); });
+    initScrollAnims();
+
+    // SPA navigation: fetch + swap content, keep nav stable
+    function navigateTo(url, push) {
+      var parts = url.split('#');
+      var fetchUrl = parts[0] || location.pathname;
+      var hash = parts[1] || '';
+
+      page.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+      page.style.opacity = '0';
+      page.style.transform = 'translateY(-8px)';
+
+      Promise.all([
+        fetch(fetchUrl).then(function(r) { return r.text(); }),
+        new Promise(function(r) { setTimeout(r, 200); })
+      ]).then(function(results) {
+        var parsed = new DOMParser().parseFromString(results[0], 'text/html');
+        var newMain = parsed.querySelector('.smd-page');
+        if (!newMain) { location.href = url; return; }
+
+        page.innerHTML = newMain.innerHTML;
+        var t = parsed.querySelector('title');
+        if (t) document.title = t.textContent;
+        if (push) history.pushState({}, '', url);
+
+        if (hash) {
+          var target = document.getElementById(hash);
+          if (target) target.scrollIntoView();
+        } else {
+          window.scrollTo(0, 0);
+        }
+
+        // Entry animation
+        page.style.transition = 'none';
+        page.style.transform = 'translateY(16px)';
+        page.offsetHeight;
+        page.style.transition = '';
+        page.style.opacity = '';
+        page.style.transform = '';
+
+        initScrollAnims();
+      }).catch(function() { location.href = url; });
+    }
+
+    document.addEventListener('click', function(e) {
+      var a = e.target.closest('a');
+      if (!a) return;
+      var href = a.getAttribute('href');
+      if (!href || href.startsWith('#') || /^(https?:\/\/|mailto:)/.test(href)) return;
+      var path = href.split('#')[0].split('?')[0];
+      if (!path.endsWith('.html')) return;
+      // Same-page anchor: let browser handle natively (CSS scroll-behavior: smooth)
+      var curPage = location.pathname.split('/').pop();
+      if (path === curPage && href.indexOf('#') !== -1) return;
+      e.preventDefault();
+      navigateTo(href, true);
+    });
+
+    window.addEventListener('popstate', function() {
+      navigateTo(location.pathname + location.hash, false);
+    });
+  }
 })();
 </script>
 </body>

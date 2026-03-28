@@ -169,6 +169,7 @@ export function render(doc, theme = {}) {
   let i = 0;
   let sectionIndex = 0;
   const anim = theme.animation || 'subtle';
+  _currentAnim = anim;
 
   // Collect all headings for {:toc} directive
   _docHeadings = collectHeadings(blocks);
@@ -341,8 +342,9 @@ function renderColumns(block) {
     return first && first.type === 'heading' && first.level === 3 && /^\+\+.+\+\+$/.test(first.text.trim());
   });
 
+  const staggerClass = _currentAnim !== 'none' ? ' smd-animate smd-animate-stagger' : '';
   const wrapperClass = isStats ? 'smd-columns smd-columns-stats' : 'smd-columns';
-  let html = `<div class="${wrapperClass}">`;
+  let html = `<div class="${wrapperClass}${staggerClass}">`;
   for (const col of block.columns) {
     // Detect featured column: first heading has {featured} attr
     const firstHeading = col.find(b => b.type === 'heading');
@@ -557,6 +559,7 @@ function renderList(block) {
 // ============================================================
 
 let _docHeadings = [];
+let _currentAnim = 'subtle';
 
 // Collect only top-level H2/H3 headings for TOC (not headings inside columns, cards, etc.)
 function collectHeadings(blocks) {

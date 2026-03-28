@@ -255,6 +255,11 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   transform: translateY(48px);
   transition-duration: 0.9s;
 }
+/* When staggering children, parent snaps visible — children do the animated reveal */
+.smd-animate.smd-animate-stagger {
+  transform: none;
+  transition: none;
+}
 /* Stagger children */
 .smd-animate-stagger > * {
   opacity: 0;
@@ -892,6 +897,7 @@ body:has(.smd-nav[data-style="transparent"]) .smd-page > .smd-carousel:first-chi
 }
 
 /* ===== Page Transitions ===== */
+/* SPA mode transitions (browser.mjs) */
 .smd-page-old {
   overflow: hidden;
   transition: opacity 0.4s ease, transform 0.4s ease;
@@ -914,6 +920,20 @@ body:has(.smd-nav[data-style="transparent"]) .smd-page > .smd-carousel:first-chi
 .smd-page.pop-in {
   opacity: 0;
   transform: translateX(-4%);
+}
+/* Static multi-page transitions (compiled sites) */
+.smd-page-hidden {
+  opacity: 0;
+  transform: translateY(16px);
+}
+.smd-page-exit {
+  opacity: 0 !important;
+  transform: translateY(-8px) !important;
+  transition: opacity 0.2s ease, transform 0.2s ease !important;
+}
+[data-animation="none"] .smd-page-hidden {
+  opacity: 1;
+  transform: none;
 }
 
 /* ===== Live Editor ===== */
@@ -1762,12 +1782,13 @@ kbd {
 </head>
 <body>
 <div id="smd-nav-mount"><a href="#smd-content" class="smd-skip-nav">Skip to content</a><nav class="smd-nav" data-style="transparent" aria-label="Main navigation"><a class="smd-nav-brand" href="index.html">Giuseppe’s Italian Restaurant</a><ul class="smd-nav-links"><li><a href="menu.html">Menu</a></li><li><a href="about.html">About</a></li><li><a href="index.html#make-a-reservation">Reservations</a></li></ul><button class="smd-nav-toggle" aria-label="Menu"><span></span></button></nav></div>
-<main id="smd-content" class="smd-page">
-<div class="smd-bg-section" style="background-image:url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1200&q=80')"><div class="smd-bg-overlay"><h1>Our Story</h1><p>A family tradition of Italian cooking, rooted in love and passed down through generations.</p></div></div><section class="smd-section" id="our-history"><h2>Our History</h2><hr class="smd-section-rule"><p>Giuseppe Rossi arrived in Portland in 1982 with little more than a suitcase and his grandmother’s recipe book. After three years working in local kitchens, he opened a small trattoria on Main Street with twelve tables and a dream.</p><p>What started as a humble neighborhood spot quickly became a Portland institution. Word spread about Giuseppe’s hand-rolled pasta, slow-simmered sauces, and the warmth you felt the moment you walked through the door. Four decades later, that same spirit fills every corner of the restaurant.</p><p>Today, Giuseppe’s daughter Elena and son Marco carry the legacy forward, honoring the recipes and traditions their father brought from the hills of Tuscany.</p></section><section class="smd-section smd-section-alt" id="chef-elena-rossi"><h2>Chef Elena Rossi</h2><hr class="smd-section-rule"><div class="smd-bg-section" style="background-image:url('https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=1200&q=80')"><div class="smd-bg-overlay"><h1>Trained in Tuscany. Rooted in Portland.</h1><p>Elena spent five years apprenticing in Florence and Bologna before returning home to lead Giuseppe’s kitchen.</p></div></div></section><section class="smd-section" id="our-philosophy"><h2>Our Philosophy</h2><hr class="smd-section-rule"><div class="smd-columns"><div class="smd-column"><h3 id="farm-to-table">Farm to Table</h3><p>We source produce from local Oregon farms within 50 miles of our kitchen. Every morning, our team selects the freshest seasonal ingredients at the Portland Farmers Market.</p></div><div class="smd-column"><h3 id="handmade-pasta">Handmade Pasta</h3><p>Our pasta is made fresh daily using traditional techniques. From tagliatelle to ravioli, every strand and shape is crafted by hand in our open kitchen.</p></div><div class="smd-column"><h3 id="slow-simmered-sauces">Slow-Simmered Sauces</h3><p>Our signature Bolognese simmers for eight hours. Our marinara uses San Marzano tomatoes imported directly from a family farm near Naples.</p></div></div></section><section class="smd-section smd-section-alt" id="by-the-numbers"><h2>By the Numbers</h2><hr class="smd-section-rule"><div class="smd-columns"><div class="smd-column"><h3 id="tradition">Tradition</h3><p><span class="smd-large">40</span>+<br>years of family tradition</p></div><div class="smd-column"><h3 id="local-farms">Local Farms</h3><p><span class="smd-large">12</span><br>local farms we partner with</p></div><div class="smd-column"><h3 id="generations">Generations</h3><p><span class="smd-large">3</span><br>generations of Rossis in the kitchen</p></div><div class="smd-column"><h3 id="recipes">Recipes</h3><p><span class="smd-large">200</span>+<br>recipes in our collection</p></div></div></section><section class="smd-section" id="gallery"><h2>Gallery</h2><hr class="smd-section-rule"><figure class="smd-gallery count-3"><img src="https://images.unsplash.com/photo-1550966871-3ed3cdb51f3a?w=600&q=80" alt="The dining room at sunset" loading="lazy"><img src="https://images.unsplash.com/photo-1556761223-4c4282c73f77?w=600&q=80" alt="Fresh handmade pasta" loading="lazy"><img src="https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=600&q=80" alt="Our garden herb selection" loading="lazy"></figure><div class="smd-cta-row"><a href="menu.html" class="smd-cta-primary">View Full Menu</a><a href="index.html" class="smd-cta-secondary">Back to Home</a></div></section>
+<main id="smd-content" class="smd-page smd-page-hidden">
+<div class="smd-bg-section" style="background-image:url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1200&q=80')"><div class="smd-bg-overlay"><h1>Our Story</h1><p>A family tradition of Italian cooking, rooted in love and passed down through generations.</p></div></div><section class="smd-section smd-animate" id="our-history"><h2>Our History</h2><hr class="smd-section-rule"><p>Giuseppe Rossi arrived in Portland in 1982 with little more than a suitcase and his grandmother’s recipe book. After three years working in local kitchens, he opened a small trattoria on Main Street with twelve tables and a dream.</p><p>What started as a humble neighborhood spot quickly became a Portland institution. Word spread about Giuseppe’s hand-rolled pasta, slow-simmered sauces, and the warmth you felt the moment you walked through the door. Four decades later, that same spirit fills every corner of the restaurant.</p><p>Today, Giuseppe’s daughter Elena and son Marco carry the legacy forward, honoring the recipes and traditions their father brought from the hills of Tuscany.</p></section><section class="smd-section smd-section-alt smd-animate" id="chef-elena-rossi"><h2>Chef Elena Rossi</h2><hr class="smd-section-rule"><div class="smd-bg-section" style="background-image:url('https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=1200&q=80')"><div class="smd-bg-overlay"><h1>Trained in Tuscany. Rooted in Portland.</h1><p>Elena spent five years apprenticing in Florence and Bologna before returning home to lead Giuseppe’s kitchen.</p></div></div></section><section class="smd-section smd-animate" id="our-philosophy"><h2>Our Philosophy</h2><hr class="smd-section-rule"><div class="smd-columns smd-animate smd-animate-stagger"><div class="smd-column"><h3 id="farm-to-table">Farm to Table</h3><p>We source produce from local Oregon farms within 50 miles of our kitchen. Every morning, our team selects the freshest seasonal ingredients at the Portland Farmers Market.</p></div><div class="smd-column"><h3 id="handmade-pasta">Handmade Pasta</h3><p>Our pasta is made fresh daily using traditional techniques. From tagliatelle to ravioli, every strand and shape is crafted by hand in our open kitchen.</p></div><div class="smd-column"><h3 id="slow-simmered-sauces">Slow-Simmered Sauces</h3><p>Our signature Bolognese simmers for eight hours. Our marinara uses San Marzano tomatoes imported directly from a family farm near Naples.</p></div></div></section><section class="smd-section smd-section-alt smd-animate" id="by-the-numbers"><h2>By the Numbers</h2><hr class="smd-section-rule"><div class="smd-columns smd-animate smd-animate-stagger"><div class="smd-column"><h3 id="tradition">Tradition</h3><p><span class="smd-large">40</span>+<br>years of family tradition</p></div><div class="smd-column"><h3 id="local-farms">Local Farms</h3><p><span class="smd-large">12</span><br>local farms we partner with</p></div><div class="smd-column"><h3 id="generations">Generations</h3><p><span class="smd-large">3</span><br>generations of Rossis in the kitchen</p></div><div class="smd-column"><h3 id="recipes">Recipes</h3><p><span class="smd-large">200</span>+<br>recipes in our collection</p></div></div></section><section class="smd-section smd-animate" id="gallery"><h2>Gallery</h2><hr class="smd-section-rule"><figure class="smd-gallery count-3"><img src="https://images.unsplash.com/photo-1550966871-3ed3cdb51f3a?w=600&q=80" alt="The dining room at sunset" loading="lazy"><img src="https://images.unsplash.com/photo-1556761223-4c4282c73f77?w=600&q=80" alt="Fresh handmade pasta" loading="lazy"><img src="https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=600&q=80" alt="Our garden herb selection" loading="lazy"></figure><div class="smd-cta-row"><a href="menu.html" class="smd-cta-primary">View Full Menu</a><a href="index.html" class="smd-cta-secondary">Back to Home</a></div></section>
 <footer class="smd-footer" data-style="centered"><div class="smd-footer-title">Giuseppe’s Italian Restaurant</div><div class="smd-footer-links"><a href="index.html">Home</a> <a href="menu.html">Menu</a> <a href="about.html">About</a> </div><div class="smd-footer-copy">123 Main Street, Portland, OR 97201<br>(503) 555-0142</div></footer>
 </main>
+<noscript><style>.smd-page-hidden,.smd-animate,.smd-animate-stagger>*{opacity:1!important;transform:none!important;transition:none!important}</style></noscript>
 <script>
-// Minimal runtime: hamburger toggle, carousel, scroll-based nav
+// Runtime: hamburger, carousel, nav scroll, animations, page transitions
 (function() {
   // Hamburger
   var toggle = document.querySelector('.smd-nav-toggle');
@@ -1821,6 +1842,92 @@ kbd {
     el.querySelectorAll('.smd-tab-btn').forEach(function(b, i) { b.classList.toggle('active', i === idx); });
     el.querySelectorAll('.smd-tab-panel').forEach(function(p, i) { p.classList.toggle('active', i === idx); });
   };
+
+  // Animations & SPA-like page transitions
+  var page = document.querySelector('.smd-page');
+  if (page && page.classList.contains('smd-page-hidden')) {
+    function initScrollAnims() {
+      document.querySelectorAll('.smd-hero.smd-animate').forEach(function(el) {
+        setTimeout(function() { el.classList.add('smd-visible'); }, 150);
+      });
+      var first = document.querySelector('.smd-section.smd-animate');
+      if (first) setTimeout(function() { first.classList.add('smd-visible'); }, 300);
+      if ('IntersectionObserver' in window) {
+        var obs = new IntersectionObserver(function(entries) {
+          entries.forEach(function(e) {
+            if (e.isIntersecting) { e.target.classList.add('smd-visible'); obs.unobserve(e.target); }
+          });
+        }, { threshold: 0.05, rootMargin: '0px 0px 50px 0px' });
+        document.querySelectorAll('.smd-animate:not(.smd-hero):not(.smd-visible)').forEach(function(el) { obs.observe(el); });
+      } else {
+        document.querySelectorAll('.smd-animate').forEach(function(el) { el.classList.add('smd-visible'); });
+      }
+    }
+
+    // Initial page enter
+    requestAnimationFrame(function() { page.classList.remove('smd-page-hidden'); });
+    initScrollAnims();
+
+    // SPA navigation: fetch + swap content, keep nav stable
+    function navigateTo(url, push) {
+      var parts = url.split('#');
+      var fetchUrl = parts[0] || location.pathname;
+      var hash = parts[1] || '';
+
+      page.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+      page.style.opacity = '0';
+      page.style.transform = 'translateY(-8px)';
+
+      Promise.all([
+        fetch(fetchUrl).then(function(r) { return r.text(); }),
+        new Promise(function(r) { setTimeout(r, 200); })
+      ]).then(function(results) {
+        var parsed = new DOMParser().parseFromString(results[0], 'text/html');
+        var newMain = parsed.querySelector('.smd-page');
+        if (!newMain) { location.href = url; return; }
+
+        page.innerHTML = newMain.innerHTML;
+        var t = parsed.querySelector('title');
+        if (t) document.title = t.textContent;
+        if (push) history.pushState({}, '', url);
+
+        if (hash) {
+          var target = document.getElementById(hash);
+          if (target) target.scrollIntoView();
+        } else {
+          window.scrollTo(0, 0);
+        }
+
+        // Entry animation
+        page.style.transition = 'none';
+        page.style.transform = 'translateY(16px)';
+        page.offsetHeight;
+        page.style.transition = '';
+        page.style.opacity = '';
+        page.style.transform = '';
+
+        initScrollAnims();
+      }).catch(function() { location.href = url; });
+    }
+
+    document.addEventListener('click', function(e) {
+      var a = e.target.closest('a');
+      if (!a) return;
+      var href = a.getAttribute('href');
+      if (!href || href.startsWith('#') || /^(https?:\/\/|mailto:)/.test(href)) return;
+      var path = href.split('#')[0].split('?')[0];
+      if (!path.endsWith('.html')) return;
+      // Same-page anchor: let browser handle natively (CSS scroll-behavior: smooth)
+      var curPage = location.pathname.split('/').pop();
+      if (path === curPage && href.indexOf('#') !== -1) return;
+      e.preventDefault();
+      navigateTo(href, true);
+    });
+
+    window.addEventListener('popstate', function() {
+      navigateTo(location.pathname + location.hash, false);
+    });
+  }
 })();
 </script>
 </body>
