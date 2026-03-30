@@ -28,6 +28,21 @@ function loadTheme(siteDir) {
   return {};
 }
 
+function buildEditorBundle() {
+  const parserSrc = readFileSync(join(__dirname, 'parser.mjs'), 'utf-8')
+    .replace(/^export\s+/gm, '');
+  const rendererSrc = readFileSync(join(__dirname, 'renderer.mjs'), 'utf-8')
+    .replace(/^export\s+/gm, '');
+  const editorSrc = readFileSync(join(__dirname, 'compiled-editor.js'), 'utf-8');
+  return `(function(){\n${parserSrc}\n${rendererSrc}\n${editorSrc}\n})();`;
+}
+
+let _editorBundle = null;
+function getEditorBundle() {
+  if (!_editorBundle) _editorBundle = buildEditorBundle();
+  return _editorBundle;
+}
+
 function compile(siteDir, outDir) {
   const theme = loadTheme(siteDir);
 
@@ -54,7 +69,21 @@ function compile(siteDir, outDir) {
     pageFiles = allFiles.filter(f => f.endsWith('.smd') && f !== 'header.smd' && f !== 'footer.smd');
   }
 
+  // Collect all sources for the editor playground
+  const editorSources = {};
+  const themeSrc = readOptional(join(siteDir, 'theme.yaml'));
+  if (themeSrc) editorSources['theme.yaml'] = themeSrc;
+  if (headerSrc) editorSources['header.md'] = headerSrc;
+  if (footerSrc) editorSources['footer.md'] = footerSrc;
+  for (const file of pageFiles) {
+    editorSources[file] = readFileSync(join(siteDir, file), 'utf-8');
+  }
+
   mkdirSync(outDir, { recursive: true });
+
+  // Write shared editor bundle
+  writeFileSync(join(outDir, 'smd-editor.js'), getEditorBundle());
+
 
   for (const file of pageFiles) {
     const src = readFileSync(join(siteDir, file), 'utf-8');
@@ -245,6 +274,9 @@ ${animEnabled ? '<noscript><style>.smd-page-hidden,.smd-animate,.smd-animate-sta
   }
 })();
 </script>
+<script type="application/json" id="smd-sources">${JSON.stringify(editorSources)}</script>
+<script type="application/json" id="smd-theme">${JSON.stringify(theme)}</script>
+<script src="smd-editor.js" defer></script>
 </body>
 </html>`;
 
