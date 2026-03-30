@@ -1124,6 +1124,11 @@ body:has(.smd-editor-panel.open) .smd-editor-toggle {
   pointer-events: none;
   tab-size: 2;
   word-wrap: normal;
+  /* Override global pre styles to stay aligned with textarea */
+  border: none;
+  border-radius: 0;
+  font-size: 14px;
+  box-sizing: border-box;
 }
 .smd-editor-panel textarea {
   position: relative;
@@ -1141,6 +1146,7 @@ body:has(.smd-editor-panel.open) .smd-editor-toggle {
   white-space: pre;
   overflow: auto;
   min-width: 0;
+  box-sizing: border-box;
   z-index: 1;
 }
 .smd-editor-panel textarea::selection {
@@ -1149,9 +1155,9 @@ body:has(.smd-editor-panel.open) .smd-editor-toggle {
 
 /* Syntax highlight classes */
 .hl-heading { color: #569cd6; }
-.hl-h1 { font-size: 1.4em; font-weight: bold; color: #4ec9b0; }
-.hl-h2 { font-size: 1.2em; font-weight: bold; color: #569cd6; }
-.hl-h3 { font-size: 1.05em; font-weight: bold; color: #9cdcfe; }
+.hl-h1 { font-weight: bold; color: #4ec9b0; }
+.hl-h2 { font-weight: bold; color: #569cd6; }
+.hl-h3 { font-weight: bold; color: #9cdcfe; }
 .hl-bold { color: #d4d4d4; font-weight: bold; }
 .hl-italic { color: #d4d4d4; font-style: italic; }
 .hl-code { color: #ce9178; background: rgba(206,145,120,0.1); border-radius: 2px; }
@@ -1163,7 +1169,7 @@ body:has(.smd-editor-panel.open) .smd-editor-toggle {
 .hl-bullet { color: #d7ba7d; }
 .hl-hr { color: #808080; }
 .hl-quote-prefix { color: #6a9955; font-style: italic; }
-.hl-large { color: #dcdcaa; font-size: 1.1em; }
+.hl-large { color: #dcdcaa; }
 .hl-strike { color: #808080; text-decoration: line-through; }
 .hl-mark { color: #d4d4d4; background: rgba(255,220,0,0.15); }
 
