@@ -1,0 +1,2047 @@
+<!DOCTYPE html>
+<html lang="en" data-sections="alternating" data-cards="elevated" data-animation="subtle" data-spacing="spacious">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Projects — Apex Electric Co.</title>
+<meta name="description" content="Commercial electrical projects completed by Apex Electric in Denver, including office buildouts, warehouse lighting, restaurant wiring, and panel upgrades.">
+<meta property="og:title" content="Projects — Apex Electric Co.">
+<meta property="og:type" content="website">
+<meta property="og:description" content="Commercial electrical projects completed by Apex Electric in Denver, including office buildouts, warehouse lighting, restaurant wiring, and panel upgrades.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Source%20Sans%203:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap">
+<style>
+/* ===== Reset & Base ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --primary: #3d6b42;
+  --primary-dark: #2c5530;
+  --primary-light: #e8f0e9;
+  --accent: #c9a84c;
+  --text: #2d2d2d;
+  --text-muted: #6b6b6b;
+  --text-light: #999;
+  --bg: #faf9f6;
+  --surface: #ffffff;
+  --surface-warm: #f5f3ee;
+  --border: #e5e2db;
+  --border-light: #f0ede6;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.1), 0 4px 8px rgba(0,0,0,0.04);
+  --radius: 10px;
+  --radius-lg: 16px;
+  --max-width: 1100px;
+  --transition: 0.2s ease;
+  --font-heading: 'Georgia', serif;
+  --font-body: 'Georgia', serif;
+  --section-padding: 72px;
+  --nav-height: 64px;
+}
+
+html { scroll-behavior: smooth; overflow-x: hidden; }
+body {
+  font-family: var(--font-body);
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.75;
+  font-size: 17px;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ===== Navigation ===== */
+.smd-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  transition: background 0.4s, box-shadow 0.4s, backdrop-filter 0.4s;
+}
+.smd-nav-brand {
+  font-family: var(--font-heading);
+  font-size: 1.2em;
+  font-weight: 700;
+  text-decoration: none !important;
+  white-space: nowrap;
+}
+.smd-nav-brand img {
+  height: 32px;
+  width: auto;
+  vertical-align: middle;
+  border-radius: 0;
+}
+.smd-nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+}
+.smd-nav-links a {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.85em;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-decoration: none !important;
+  transition: color 0.2s, opacity 0.2s;
+  opacity: 0.85;
+}
+.smd-nav-links a:hover { opacity: 1; }
+
+/* Nav: transparent (floats over hero, white text) */
+.smd-nav[data-style="transparent"] {
+  background: transparent;
+  color: white;
+}
+.smd-nav[data-style="transparent"] .smd-nav-brand,
+.smd-nav[data-style="transparent"] .smd-nav-links a { color: white; }
+.smd-nav[data-style="transparent"].scrolled {
+  background: var(--bg);
+  color: var(--text);
+  box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+}
+.smd-nav[data-style="transparent"].scrolled .smd-nav-brand,
+.smd-nav[data-style="transparent"].scrolled .smd-nav-links a { color: var(--text); }
+
+/* Nav: solid (colored bar) */
+.smd-nav[data-style="solid"] {
+  background: var(--primary);
+  color: white;
+}
+.smd-nav[data-style="solid"] .smd-nav-brand,
+.smd-nav[data-style="solid"] .smd-nav-links a { color: white; }
+.smd-nav[data-style="solid"].scrolled { box-shadow: 0 2px 12px rgba(0,0,0,0.15); }
+
+/* Nav: minimal (clean line, bg-colored) */
+.smd-nav[data-style="minimal"] {
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.smd-nav[data-style="minimal"] .smd-nav-brand { color: var(--text); }
+.smd-nav[data-style="minimal"] .smd-nav-links a { color: var(--text-muted); }
+.smd-nav[data-style="minimal"] .smd-nav-links a:hover { color: var(--text); }
+
+/* Nav: centered (brand centered, links below or inline) */
+.smd-nav[data-style="centered"] {
+  flex-direction: column;
+  height: auto;
+  padding: 20px 40px 12px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  gap: 8px;
+}
+.smd-nav[data-style="centered"] .smd-nav-brand {
+  color: var(--text);
+  font-size: 1.5em;
+  font-weight: 400;
+}
+.smd-nav[data-style="centered"] .smd-nav-links a {
+  color: var(--text-muted);
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.smd-nav[data-style="centered"].scrolled {
+  flex-direction: row;
+  height: var(--nav-height);
+  padding: 0 40px;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+}
+.smd-nav[data-style="centered"].scrolled .smd-nav-brand { font-size: 1.1em; }
+
+/* Mobile hamburger */
+.smd-nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 32px;
+  height: 24px;
+  position: relative;
+}
+.smd-nav-toggle span,
+.smd-nav-toggle span::before,
+.smd-nav-toggle span::after {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  position: absolute;
+  transition: transform 0.3s, opacity 0.3s;
+}
+.smd-nav-toggle span { top: 50%; transform: translateY(-50%); }
+.smd-nav-toggle span::before { content: ''; top: -8px; }
+.smd-nav-toggle span::after { content: ''; top: 8px; }
+.smd-nav-toggle:focus-visible { outline: 2px solid var(--primary); outline-offset: 4px; border-radius: 4px; }
+
+@media (max-width: 768px) {
+  .smd-nav-toggle { display: block; }
+  .smd-nav-links {
+    position: fixed;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    background: var(--bg);
+    flex-direction: column;
+    padding: 24px 40px;
+    gap: 20px;
+    border-bottom: 1px solid var(--border);
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.3s, opacity 0.3s;
+  }
+  .smd-nav-links.open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .smd-nav-links a { font-size: 1em; opacity: 1; color: var(--text) !important; }
+  .smd-nav[data-style="transparent"] .smd-nav-toggle { color: white; }
+  .smd-nav[data-style="transparent"].scrolled .smd-nav-toggle { color: var(--text); }
+  .smd-nav[data-style="centered"] { flex-direction: row; height: var(--nav-height); padding: 0 24px; }
+  .smd-nav[data-style="centered"] .smd-nav-brand { font-size: 1.1em; }
+}
+
+/* ===== Page Structure ===== */
+.smd-page {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 32px 64px;
+}
+body:has(.smd-nav) .smd-page { padding-top: 0; }
+/* Full-bleed hero carousel/bg-section so transparent nav has dark background behind it */
+.smd-page > .smd-carousel:first-child,
+.smd-page > .smd-bg-section:first-child {
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  border-radius: 0;
+}
+.smd-page > .smd-carousel:first-child { box-shadow: none; }
+
+/* ===== Hero Section ===== */
+.smd-hero {
+  text-align: center;
+  padding: 72px 20px 48px;
+}
+body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100px; }
+.smd-hero h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(2em, 5vw, 3.5em);
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  margin-bottom: 20px;
+  line-height: 1.15;
+}
+.smd-hero .smd-subtitle {
+  font-size: 1.15em;
+  color: var(--text-muted);
+  max-width: 540px;
+  margin: 0 auto;
+  line-height: 1.8;
+}
+
+/* ===== Scroll Animations ===== */
+.smd-animate {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.smd-animate.smd-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* Expressive: more dramatic slide + stagger */
+[data-animation="expressive"] .smd-animate {
+  transform: translateY(48px);
+  transition-duration: 0.9s;
+}
+/* When staggering children, parent snaps visible — children do the animated reveal */
+.smd-animate.smd-animate-stagger {
+  transform: none;
+  transition: none;
+}
+/* Stagger children */
+.smd-animate-stagger > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.smd-animate-stagger.smd-visible > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+.smd-animate-stagger.smd-visible > *:nth-child(1) { transition-delay: 0s; }
+.smd-animate-stagger.smd-visible > *:nth-child(2) { transition-delay: 0.1s; }
+.smd-animate-stagger.smd-visible > *:nth-child(3) { transition-delay: 0.2s; }
+.smd-animate-stagger.smd-visible > *:nth-child(4) { transition-delay: 0.3s; }
+.smd-animate-stagger.smd-visible > *:nth-child(5) { transition-delay: 0.4s; }
+.smd-animate-stagger.smd-visible > *:nth-child(6) { transition-delay: 0.5s; }
+.smd-animate-stagger.smd-visible > *:nth-child(7) { transition-delay: 0.6s; }
+.smd-animate-stagger.smd-visible > *:nth-child(8) { transition-delay: 0.7s; }
+.smd-animate-stagger.smd-visible > *:nth-child(n+9) { transition-delay: 0.8s; }
+[data-animation="none"] .smd-animate,
+[data-animation="none"] .smd-animate-stagger > * {
+  opacity: 1; transform: none; transition: none;
+}
+
+/* ===== Sections ===== */
+.smd-section {
+  padding: var(--section-padding) 0;
+  border-top: 1px solid var(--border);
+}
+/* Section styles: alternating */
+[data-sections="alternating"] .smd-section-alt {
+  background: var(--surface-warm);
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  padding-left: calc(50vw - 50% + 32px);
+  padding-right: calc(50vw - 50% + 32px);
+}
+/* Section styles: bold (full-bleed primary-colored alternating) */
+[data-sections="bold"] .smd-section-alt {
+  background: var(--primary);
+  color: white;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  padding-left: calc(50vw - 50% + 32px);
+  padding-right: calc(50vw - 50% + 32px);
+  border-top-color: transparent;
+}
+[data-sections="bold"] .smd-section-alt h2,
+[data-sections="bold"] .smd-section-alt h3 { color: white; }
+[data-sections="bold"] .smd-section-alt .smd-section-rule { background: rgba(255,255,255,0.4); }
+[data-sections="bold"] .smd-section-alt p { color: rgba(255,255,255,0.9); }
+[data-sections="bold"] .smd-section-alt .smd-block {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.2);
+  color: white;
+}
+[data-sections="bold"] .smd-section-alt .smd-large { color: white; }
+[data-sections="bold"] .smd-section-alt .smd-large { color: white; }
+[data-sections="bold"] .smd-section-alt .smd-stat-label { color: rgba(255,255,255,0.8); }
+[data-sections="bold"] .smd-section-alt .smd-column h3 { color: rgba(255,255,255,0.9); }
+[data-sections="bold"] .smd-section-alt li { color: rgba(255,255,255,0.9); border-bottom-color: rgba(255,255,255,0.15); }
+/* Section styles: clean (no alternation) */
+[data-sections="clean"] .smd-section-alt { background: transparent; }
+
+.smd-section > h2 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.5em, 3vw, 2.2em);
+  font-weight: 400;
+  text-align: center;
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+.smd-section > .smd-section-rule {
+  width: 40px;
+  height: 2px;
+  background: var(--accent);
+  margin: 0 auto 24px;
+  border: none;
+}
+
+/* ===== Columns ===== */
+.smd-columns {
+  display: grid;
+  gap: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  align-items: stretch;
+  margin-bottom: 2rem;
+}
+.smd-columns:last-child {
+  margin-bottom: 0;
+}
+.smd-column {
+  display: flex;
+  flex-direction: column;
+}
+.smd-column > .smd-block:first-child {
+  margin-top: 0;
+}
+.smd-column > .smd-block:last-child {
+  flex: 1;
+  margin-bottom: 0;
+}
+.smd-column h3 {
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--primary-dark);
+  text-transform: uppercase;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.85em;
+  letter-spacing: 0.08em;
+}
+
+/* ===== Compact ===== */
+.smd-compact {
+  display: grid;
+  gap: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+.smd-compact h3 {
+  font-size: 0.85em;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--primary-dark);
+  text-transform: uppercase;
+  font-family: system-ui, -apple-system, sans-serif;
+  letter-spacing: 0.08em;
+}
+
+/* ===== Image Gallery ===== */
+.smd-gallery {
+  display: grid;
+  gap: 16px;
+  margin: 40px 0;
+}
+.smd-gallery.count-1 { grid-template-columns: 1fr; }
+.smd-gallery.count-2 { grid-template-columns: 1fr 1fr; }
+.smd-gallery.count-3 { grid-template-columns: 1fr 1fr 1fr; }
+.smd-gallery.count-4 { grid-template-columns: 1fr 1fr; }
+.smd-gallery img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.smd-gallery img:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ===== Lists ===== */
+.smd-column ul, .smd-section > ul {
+  list-style: none;
+  padding: 0;
+}
+.smd-column li, .smd-section > ul > li {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.smd-column li:last-child, .smd-section > ul > li:last-child {
+  border-bottom: none;
+}
+
+/* ===== Card Styles (applied to .smd-block-card via theme) ===== */
+[data-cards="elevated"] .smd-block-card {
+  box-shadow: var(--shadow-md);
+  border: none;
+}
+[data-cards="elevated"] .smd-block-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+}
+[data-cards="flat"] .smd-block-card {
+  box-shadow: none;
+  border: 1px solid var(--border);
+}
+[data-cards="bordered"] .smd-block-card {
+  box-shadow: none;
+  border: 2px solid var(--text);
+  border-radius: 0;
+}
+[data-cards="glass"] .smd-block-card {
+  background: color-mix(in srgb, var(--surface) 60%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+[data-cards="glass"] .smd-block-card:hover {
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+[data-cards="glass"] .smd-form {
+  background: color-mix(in srgb, var(--surface) 60%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
+}
+[data-cards="glass"] blockquote {
+  background: color-mix(in srgb, var(--surface) 50%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* ===== Forms ===== */
+.smd-form {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  max-width: 640px;
+  margin: 0 auto;
+  box-shadow: var(--shadow-sm);
+}
+[data-cards="bordered"] .smd-form { border: 2px solid var(--text); border-radius: 0; box-shadow: none; }
+[data-cards="glass"] .smd-form { background: rgba(255,255,255,0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3); }
+.smd-form-group {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.smd-field {
+  flex: 1;
+  min-width: 180px;
+}
+.smd-field label {
+  display: block;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.82em;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.smd-field input,
+.smd-field textarea,
+.smd-field select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-family: inherit;
+  font-size: 1em;
+  background: var(--surface);
+  color: var(--text);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+[data-cards="bordered"] .smd-field input,
+[data-cards="bordered"] .smd-field textarea,
+[data-cards="bordered"] .smd-field select { border-radius: 0; border-width: 2px; }
+.smd-field input:focus,
+.smd-field textarea:focus,
+.smd-field select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 12%, transparent);
+}
+.smd-field input::placeholder,
+.smd-field textarea::placeholder { color: var(--text-muted); opacity: 0.7; }
+.smd-field select { -webkit-appearance: none; appearance: none; }
+.smd-field textarea { min-height: 100px; resize: vertical; }
+.smd-form button {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 14px 40px;
+  border-radius: var(--radius);
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.95em;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background var(--transition), transform var(--transition);
+}
+[data-cards="bordered"] .smd-form button { border-radius: 0; }
+.smd-form button:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+.smd-form button:active { transform: translateY(1px); }
+.smd-form button:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+/* ===== Paragraphs ===== */
+.smd-section p, .smd-column p, .smd-compact p {
+  margin-bottom: 8px;
+  color: var(--text);
+}
+.smd-section > p {
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ===== CTA Button Row ===== */
+.smd-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin: 24px auto 32px;
+  max-width: 680px;
+}
+.smd-cta-row a {
+  display: inline-block;
+  padding: 12px 28px;
+  border-radius: 999px;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.92em;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: none !important;
+  transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+[data-cards="bordered"] .smd-cta-row a { border-radius: 0; }
+.smd-cta-row a:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+.smd-cta-row a.smd-cta-primary {
+  background: var(--primary);
+  color: white;
+}
+.smd-cta-row a.smd-cta-primary:hover { background: var(--primary-dark); }
+.smd-cta-row a.smd-cta-secondary {
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+}
+.smd-cta-row a.smd-cta-secondary:hover { background: var(--primary-light); }
+.smd-cta-row a:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.smd-cta-row a:active { transform: translateY(1px); box-shadow: none; }
+
+/* ===== Fenced Blocks (::: name) ===== */
+.smd-block {
+  border-radius: var(--radius-lg);
+  padding: 28px 32px;
+  margin: 24px 0;
+}
+/* Match paragraph readable width when block is a direct section child */
+.smd-section > .smd-block {
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
+}
+/* Note / Info / Tip */
+.smd-block-note, .smd-block-info, .smd-block-tip {
+  background: rgba(33, 150, 243, 0.1);
+  border-left: 4px solid #2196f3;
+  color: var(--text);
+}
+.smd-block-note::before, .smd-block-info::before { content: 'Note'; }
+.smd-block-tip::before { content: 'Tip'; }
+/* Warning */
+.smd-block-warning, .smd-block-caution {
+  background: rgba(245, 158, 11, 0.1);
+  border-left: 4px solid #f59e0b;
+  color: var(--text);
+}
+.smd-block-warning::before { content: 'Warning'; }
+.smd-block-caution::before { content: 'Caution'; }
+/* Error / Danger */
+.smd-block-error, .smd-block-danger {
+  background: rgba(229, 62, 62, 0.1);
+  border-left: 4px solid #e53e3e;
+  color: var(--text);
+}
+.smd-block-error::before { content: 'Error'; }
+.smd-block-danger::before { content: 'Danger'; }
+/* Success */
+.smd-block-success {
+  background: rgba(56, 161, 105, 0.1);
+  border-left: 4px solid #38a169;
+  color: var(--text);
+}
+.smd-block-success::before { content: 'Success'; }
+/* Shared label style for typed blocks */
+.smd-block-note::before, .smd-block-info::before, .smd-block-tip::before,
+.smd-block-warning::before, .smd-block-caution::before,
+.smd-block-error::before, .smd-block-danger::before,
+.smd-block-success::before {
+  display: block;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.8em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+  opacity: 0.7;
+}
+/* Card - generic styled container */
+.smd-block-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+/* Cards inside columns: center content for balanced grid layouts */
+.smd-column > .smd-block-card {
+  text-align: center;
+}
+.smd-column > .smd-block-card img:not(.smd-img-avatar) {
+  display: inline-block;
+  max-width: 60%;
+  height: auto;
+  object-fit: contain;
+  margin: 0 auto;
+}
+/* Quote / Testimonial */
+.smd-block-quote, .smd-block-testimonial {
+  background: var(--surface);
+  border-left: 3px solid var(--accent);
+  box-shadow: var(--shadow-sm);
+  font-style: italic;
+  position: relative;
+}
+.smd-block-quote::before, .smd-block-testimonial::before {
+  content: '\201C';
+  position: absolute;
+  top: 12px;
+  right: 24px;
+  font-size: 3em;
+  color: var(--border);
+  font-family: Georgia, serif;
+  line-height: 1;
+  font-style: normal;
+}
+/* Hero - large centered text block */
+.smd-block-hero {
+  text-align: center;
+  padding: 64px 32px;
+  background: var(--primary);
+  color: white;
+}
+.smd-block-hero h1, .smd-block-hero h2, .smd-block-hero h3 {
+  color: white;
+  font-family: var(--font-heading);
+}
+.smd-block-hero p { color: rgba(255,255,255,0.9); }
+/* Highlight - accent-colored callout */
+.smd-block-highlight {
+  background: var(--primary-light);
+  border: none;
+  text-align: center;
+  padding: 40px 32px;
+}
+/* Unstyled fallback - just a generic container with class */
+.smd-block:not([class*="smd-block-note"]):not([class*="smd-block-info"]):not([class*="smd-block-tip"]):not([class*="smd-block-warning"]):not([class*="smd-block-caution"]):not([class*="smd-block-error"]):not([class*="smd-block-danger"]):not([class*="smd-block-success"]):not([class*="smd-block-card"]):not([class*="smd-block-quote"]):not([class*="smd-block-testimonial"]):not([class*="smd-block-hero"]):not([class*="smd-block-highlight"]) {
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+/* ===== Large Text (__x__) ===== */
+.smd-large {
+  display: block;
+  font-size: 2.8em;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.1;
+  margin-bottom: 8px;
+  font-family: var(--font-heading);
+}
+
+/* ===== Star Ratings ===== */
+.smd-stars { color: var(--accent, #d4a017); font-size: 1.15em; letter-spacing: 0.05em; }
+
+
+/* ===== Links in paragraphs ===== */
+.smd-section p a, .smd-column p a, .smd-compact p a {
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--primary) 30%, transparent);
+  text-underline-offset: 2px;
+  transition: text-decoration-color var(--transition);
+}
+.smd-section p a:hover, .smd-column p a:hover, .smd-compact p a:hover {
+  text-decoration-color: var(--primary);
+}
+
+/* ===== Carousel ===== */
+.smd-carousel {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  margin-bottom: 8px;
+}
+[data-cards="bordered"] .smd-carousel { border-radius: 0; }
+.smd-carousel-track {
+  display: flex;
+  width: 100%;
+  transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+.smd-carousel-slide {
+  flex-shrink: 0;
+  width: 100%;
+}
+.smd-carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: white;
+  border: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  font-size: 1.6em;
+  cursor: pointer;
+  transition: background var(--transition);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.smd-carousel-btn:hover { background: rgba(255,255,255,0.35); }
+.smd-carousel-prev { left: 16px; }
+.smd-carousel-next { right: 16px; }
+.smd-carousel-dots {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 2;
+}
+.smd-carousel-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.7);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: background var(--transition);
+  user-select: none;
+  -webkit-user-select: none;
+}
+.smd-carousel-dot:hover { background: rgba(255,255,255,0.5); }
+.smd-carousel-dot.active { background: white; }
+.smd-carousel-btn:focus-visible { outline: 2px solid white; outline-offset: 2px; }
+
+/* ===== Background Section ===== */
+.smd-bg-section {
+  min-height: 420px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+body:has(.smd-nav[data-style="transparent"]) .smd-page > .smd-carousel:first-child,
+body:has(.smd-nav[data-style="transparent"]) .smd-page > .smd-bg-section:first-child {
+  margin-top: calc(-1 * var(--nav-height));
+}
+body:has(.smd-nav[data-style="transparent"]) .smd-page > .smd-carousel:first-child .smd-bg-section {
+  min-height: calc(420px + var(--nav-height));
+  padding-top: var(--nav-height);
+}
+.smd-bg-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.45), rgba(0,0,0,0.6));
+}
+.smd-bg-overlay {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  color: white;
+  padding: 48px 32px;
+  max-width: 700px;
+}
+.smd-bg-overlay h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.8em, 4.5vw, 3em);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.5), 0 1px 4px rgba(0,0,0,0.3);
+}
+.smd-bg-overlay p {
+  font-size: 1.15em;
+  color: rgba(255,255,255,0.9);
+  line-height: 1.7;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.4), 0 1px 3px rgba(0,0,0,0.2);
+}
+
+/* ===== Footer ===== */
+.smd-footer {
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.88em;
+  margin-top: 32px;
+}
+/* Footer: minimal */
+.smd-footer[data-style="minimal"] {
+  text-align: center;
+  padding: 32px 0 24px;
+}
+.smd-footer[data-style="minimal"] .smd-footer-title {
+  font-family: var(--font-heading);
+  font-size: 1.1em;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+/* Footer: centered (decorative) */
+.smd-footer[data-style="centered"] {
+  text-align: center;
+  padding: 48px 0 32px;
+}
+.smd-footer[data-style="centered"] .smd-footer-title {
+  font-family: var(--font-heading);
+  font-size: 1.6em;
+  color: var(--text);
+  margin-bottom: 16px;
+  font-weight: 400;
+}
+.smd-footer[data-style="centered"] .smd-footer-links {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.smd-footer[data-style="centered"] .smd-footer-links a {
+  color: var(--text-muted);
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.9em;
+  text-decoration: none;
+  letter-spacing: 0.03em;
+}
+.smd-footer[data-style="centered"] .smd-footer-links a:hover { color: var(--text); }
+.smd-footer[data-style="centered"] .smd-footer-rule {
+  width: 40px;
+  height: 2px;
+  background: var(--accent);
+  margin: 0 auto 20px;
+}
+/* Footer: columns (nav links in grid) */
+.smd-footer[data-style="columns"] {
+  padding: 48px 0 24px;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 48px;
+}
+.smd-footer[data-style="columns"] .smd-footer-brand {
+  font-family: var(--font-heading);
+  font-size: 1.3em;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.smd-footer[data-style="columns"] .smd-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 40px;
+}
+.smd-footer[data-style="columns"] .smd-footer-links a {
+  color: var(--text-muted);
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.9em;
+  text-decoration: none;
+}
+.smd-footer[data-style="columns"] .smd-footer-links a:hover { color: var(--text); }
+.smd-footer .smd-footer-copy {
+  font-size: 0.85em;
+  color: var(--text-light);
+}
+@media (max-width: 768px) {
+  .smd-footer[data-style="columns"] { grid-template-columns: 1fr; gap: 24px; }
+}
+
+/* ===== Page Transitions ===== */
+/* SPA mode transitions (browser.mjs) */
+.smd-page-old {
+  overflow: hidden;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.smd-page-old.push-out {
+  opacity: 0;
+  transform: translateX(-8%);
+}
+.smd-page-old.pop-out {
+  opacity: 0;
+  transform: translateX(8%);
+}
+.smd-page {
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.smd-page.push-in {
+  opacity: 0;
+  transform: translateX(4%);
+}
+.smd-page.pop-in {
+  opacity: 0;
+  transform: translateX(-4%);
+}
+/* Static multi-page transitions (compiled sites) */
+.smd-page-hidden {
+  opacity: 0;
+  transform: translateY(16px);
+}
+.smd-page-exit {
+  opacity: 0 !important;
+  transform: translateY(-8px) !important;
+  transition: opacity 0.2s ease, transform 0.2s ease !important;
+}
+[data-animation="none"] .smd-page-hidden {
+  opacity: 1;
+  transform: none;
+}
+
+/* ===== Live Editor ===== */
+.smd-editor-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 200;
+  background: rgba(0,0,0,0.8);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: system-ui, sans-serif;
+  transition: background 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.smd-editor-toggle:hover { background: rgba(0,0,0,0.95); }
+.smd-editor-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 45%;
+  min-width: 360px;
+  max-width: 640px;
+  z-index: 150;
+  background: #1e1e1e;
+  color: #d4d4d4;
+  display: flex;
+  flex-direction: row;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  box-shadow: 4px 0 24px rgba(0,0,0,0.3);
+}
+.smd-editor-panel.open {
+  transform: translateX(0);
+}
+body:has(.smd-editor-panel.open) .smd-page {
+  margin-left: auto;
+  margin-right: 0;
+  max-width: 55vw;
+  transition: max-width 0.3s ease;
+}
+body:has(.smd-editor-panel.open) .smd-nav {
+  left: min(45%, 640px);
+  transition: left 0.3s ease;
+}
+body:has(.smd-editor-panel.open) .smd-editor-toggle {
+  left: calc(min(45%, 640px) + 12px);
+  right: auto;
+}
+
+/* Editor sidebar — file tree */
+.smd-editor-sidebar {
+  width: 160px;
+  flex-shrink: 0;
+  background: #181818;
+  border-right: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+.smd-editor-sidebar-header {
+  padding: 10px 12px;
+  font: 11px/1.4 system-ui, sans-serif;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-bottom: 1px solid #2a2a2a;
+}
+.smd-editor-files {
+  list-style: none;
+  padding: 4px 0;
+}
+.smd-editor-files li {
+  padding: 5px 12px;
+  font: 13px/1.4 system-ui, sans-serif;
+  color: #aaa;
+  cursor: pointer;
+  border-left: 2px solid transparent;
+}
+.smd-editor-files li:hover { background: #252525; color: #ddd; }
+.smd-editor-files li.active {
+  background: #1e1e1e;
+  color: #fff;
+  border-left-color: #569cd6;
+}
+
+/* Editor main area */
+.smd-editor-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.smd-editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  border-bottom: 1px solid #333;
+  font: 12px/1.4 system-ui, sans-serif;
+  color: #888;
+  flex-shrink: 0;
+  gap: 8px;
+}
+.smd-editor-header strong { color: #ccc; font-size: 13px; }
+.smd-editor-status { flex: 1; text-align: right; }
+
+/* Editor toolbar */
+.smd-editor-toolbar {
+  display: flex;
+  flex-direction: column;
+  background: #252525;
+  border-bottom: 1px solid #333;
+  flex-shrink: 0;
+}
+.smd-toolbar-row {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px 8px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #2a2a2a;
+}
+.smd-toolbar-row:last-child { border-bottom: none; }
+.smd-toolbar-label {
+  font: 10px/1 system-ui, sans-serif;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  width: 32px;
+  flex-shrink: 0;
+}
+.smd-editor-toolbar button {
+  background: none;
+  border: 1px solid transparent;
+  color: #bbb;
+  font: 11px/1 system-ui, sans-serif;
+  padding: 3px 6px;
+  border-radius: 3px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.smd-editor-toolbar button:hover {
+  background: #333;
+  color: #fff;
+  border-color: #555;
+}
+.smd-toolbar-sep {
+  width: 1px;
+  height: 16px;
+  background: #333;
+  margin: 0 3px;
+}
+
+/* Editor content — line numbers + syntax highlight overlay + textarea */
+.smd-editor-content {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+.smd-editor-lines {
+  width: 40px;
+  flex-shrink: 0;
+  background: #1a1a1a;
+  padding: 16px 0;
+  overflow: hidden;
+  text-align: right;
+  user-select: none;
+}
+.smd-editor-lines div {
+  font: 14px/1.6 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  padding-right: 8px;
+  color: #555;
+}
+.smd-editor-code-wrap {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+}
+.smd-editor-highlight {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  margin: 0;
+  padding: 16px;
+  font: 14px/1.6 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  white-space: pre;
+  overflow: auto;
+  color: #666;
+  background: #1e1e1e;
+  pointer-events: none;
+  tab-size: 2;
+  word-wrap: normal;
+  /* Override global pre styles to stay aligned with textarea */
+  border: none;
+  border-radius: 0;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+.smd-editor-panel textarea {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  color: transparent;
+  caret-color: #d4d4d4;
+  border: none;
+  padding: 16px;
+  font: 14px/1.6 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  resize: none;
+  outline: none;
+  tab-size: 2;
+  white-space: pre;
+  overflow: auto;
+  min-width: 0;
+  box-sizing: border-box;
+  z-index: 1;
+}
+.smd-editor-panel textarea::selection {
+  background: rgba(38, 79, 120, 0.7);
+}
+
+/* Syntax highlight classes */
+.hl-heading { color: #569cd6; }
+.hl-h1 { font-weight: bold; color: #4ec9b0; }
+.hl-h2 { font-weight: bold; color: #569cd6; }
+.hl-h3 { font-weight: bold; color: #9cdcfe; }
+.hl-bold { color: #d4d4d4; font-weight: bold; }
+.hl-italic { color: #d4d4d4; font-style: italic; }
+.hl-code { color: #ce9178; background: rgba(206,145,120,0.1); border-radius: 2px; }
+.hl-link { color: #4ec9b0; }
+.hl-fence { color: #c586c0; }
+.hl-meta { color: #808080; }
+.hl-key { color: #9cdcfe; }
+.hl-value { color: #ce9178; }
+.hl-bullet { color: #d7ba7d; }
+.hl-hr { color: #808080; }
+.hl-quote-prefix { color: #6a9955; font-style: italic; }
+.hl-large { color: #dcdcaa; }
+.hl-strike { color: #808080; text-decoration: line-through; }
+.hl-mark { color: #d4d4d4; background: rgba(255,220,0,0.15); }
+
+/* ===== Spacing ===== */
+[data-spacing="compact"] { --section-padding: 48px; }
+[data-spacing="spacious"] { --section-padding: 96px; --max-width: 1200px; }
+
+/* ===== Responsive ===== */
+@media (max-width: 700px) {
+  .smd-page { padding: 0 20px 48px; }
+  .smd-hero { padding: 48px 12px 32px; }
+  .smd-section { padding: 48px 0; }
+  [data-sections="alternating"] .smd-section-alt,
+  [data-sections="bold"] .smd-section-alt {
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    padding-left: calc(50vw - 50% + 20px);
+    padding-right: calc(50vw - 50% + 20px);
+  }
+  .smd-columns { grid-template-columns: 1fr; gap: 28px; }
+  .smd-compact { grid-template-columns: 1fr; gap: 28px; }
+  .smd-gallery { gap: 10px; }
+  .smd-gallery.count-2,
+  .smd-gallery.count-3 { grid-template-columns: 1fr; }
+  .smd-gallery img { height: 220px; }
+  .smd-bg-section { min-height: 300px; }
+  .smd-bg-overlay { padding: 32px 20px; }
+  .smd-carousel-btn { width: 36px; height: 36px; font-size: 1.2em; }
+  .smd-carousel-prev { left: 8px; }
+  .smd-carousel-next { right: 8px; }
+  .smd-cta-row { gap: 16px; }
+  .smd-form { padding: 24px; }
+  .smd-form-group { flex-direction: column; gap: 16px; }
+  .smd-field { min-width: 100%; }
+  .smd-large { font-size: 2em; }
+  .smd-nav { padding: 0 20px; }
+}
+@media (min-width: 701px) and (max-width: 900px) {
+  .smd-gallery.count-3 { grid-template-columns: 1fr 1fr; }
+  .smd-gallery.count-3 img:last-child { grid-column: span 2; }
+}
+
+/* ===== Phase 2: Inline & Text Features ===== */
+
+/* Highlighted text */
+mark {
+  background: rgba(255, 220, 0, 0.25);
+  padding: 0.1em 0.2em;
+  border-radius: 2px;
+}
+[data-sections="bold"] .smd-section-alt mark { background: rgba(255, 255, 255, 0.2); }
+
+/* Task lists */
+.smd-task-list { list-style: none; padding-left: 0; }
+.smd-task-item {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 4px 0;
+}
+.smd-task-item input[type="checkbox"] {
+  margin: 0;
+  flex-shrink: 0;
+  accent-color: var(--primary);
+}
+.smd-task-done { color: var(--text-muted); }
+.smd-task-partial input[type="checkbox"] { opacity: 0.5; }
+
+/* Inline code */
+code {
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  background: var(--surface-warm);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+}
+
+/* Code blocks */
+pre {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  overflow-x: auto;
+  font-size: 0.9em;
+  line-height: 1.6;
+  margin: 16px 0;
+}
+
+/* Blockquotes */
+blockquote {
+  border-left: 3px solid var(--accent);
+  padding: 12px 20px;
+  margin: 20px 0;
+  color: var(--text-muted);
+  font-style: italic;
+}
+blockquote p { margin: 8px 0; }
+
+/* Records */
+.smd-record {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin: 12px 0;
+}
+.smd-record-name {
+  font-weight: 700;
+  font-size: 1.1em;
+  margin-bottom: 8px;
+}
+.smd-record-fields {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 16px;
+}
+.smd-record-fields dt { font-weight: 600; color: var(--text-muted); }
+
+/* Expandable sections */
+.smd-expandable {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin: 12px 0;
+}
+.smd-expandable summary {
+  padding: 12px 16px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.smd-expandable summary:hover { color: var(--primary); }
+.smd-expandable-content { padding: 0 16px 16px; }
+
+/* Skip to content link (accessibility) */
+.smd-skip-nav {
+  position: absolute;
+  top: -100px;
+  left: 16px;
+  background: var(--primary);
+  color: white;
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  z-index: 200;
+  font-size: 0.9em;
+  text-decoration: none;
+}
+.smd-skip-nav:focus {
+  top: 8px;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 0.95em;
+}
+th, td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+th {
+  font-weight: 600;
+  color: var(--primary-dark);
+  border-bottom: 2px solid var(--border);
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.85em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+tr:hover td { background: var(--surface-warm); }
+
+/* Embeds (YouTube, Vimeo) */
+.smd-embed {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 */
+  height: 0;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  margin: 24px 0;
+  box-shadow: var(--shadow-md);
+}
+.smd-embed iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border: none;
+}
+
+/* Table of Contents */
+.smd-toc {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin: 24px 0;
+}
+.smd-toc ul { list-style: none; padding: 0; }
+.smd-toc li { padding: 4px 0; }
+.smd-toc a {
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.95em;
+}
+.smd-toc a:hover { color: var(--primary); text-decoration: underline; }
+.smd-toc-indent { padding-left: 20px; }
+
+/* Nav: side (persistent sidebar) */
+.smd-nav[data-style="side"] {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 260px;
+  height: auto;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 24px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  z-index: 100;
+}
+.smd-nav[data-style="side"] .smd-nav-brand {
+  color: var(--text);
+  font-size: 1.2em;
+  margin-bottom: 24px;
+  display: block;
+}
+.smd-nav[data-style="side"] .smd-nav-links {
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+.smd-nav[data-style="side"] .smd-nav-links li {
+  width: 100%;
+}
+.smd-nav[data-style="side"] .smd-nav-links a {
+  color: var(--text-muted);
+  display: block;
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  font-size: 0.9em;
+  opacity: 1;
+}
+.smd-nav[data-style="side"] .smd-nav-links a:hover {
+  background: var(--surface-warm);
+  color: var(--text);
+}
+.smd-nav[data-style="side"].scrolled {
+  box-shadow: none;
+  background: var(--surface);
+}
+.smd-nav[data-style="side"] .smd-nav-toggle { display: none; }
+
+/* Side nav page offset */
+body:has(.smd-nav[data-style="side"]) .smd-page {
+  margin-left: 260px;
+  padding-top: 32px;
+}
+body:has(.smd-nav[data-style="side"]) .smd-hero {
+  padding-top: 32px;
+}
+/* Side nav: full-bleed sections stay within content area */
+body:has(.smd-nav[data-style="side"]) .smd-section-alt {
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+@media (max-width: 768px) {
+  .smd-nav[data-style="side"] {
+    position: fixed;
+    width: 100%;
+    height: var(--nav-height);
+    flex-direction: row;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    overflow: visible;
+    padding: 0 20px;
+    align-items: center;
+  }
+  .smd-nav[data-style="side"] .smd-nav-brand { margin-bottom: 0; }
+  .smd-nav[data-style="side"] .smd-nav-links {
+    position: fixed;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    background: var(--bg);
+    flex-direction: column;
+    padding: 24px 40px;
+    gap: 20px;
+    border-bottom: 1px solid var(--border);
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.3s, opacity 0.3s;
+  }
+  .smd-nav[data-style="side"] .smd-nav-links.open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .smd-nav[data-style="side"] .smd-nav-toggle { display: block; }
+  body:has(.smd-nav[data-style="side"]) .smd-page {
+    margin-left: 0;
+    padding-top: calc(var(--nav-height) + 16px);
+  }
+}
+
+/* Syntax highlighting (theme-aware) */
+.hljs-keyword, .hljs-selector-tag, .hljs-type { color: var(--primary); font-weight: 600; }
+.hljs-string, .hljs-template-variable { color: var(--accent); }
+.hljs-comment, .hljs-quote { color: var(--text-muted); font-style: italic; }
+.hljs-number, .hljs-literal { color: var(--accent); }
+.hljs-title, .hljs-section { color: var(--primary-dark, var(--primary)); font-weight: 600; }
+.hljs-attr, .hljs-attribute { color: var(--primary); }
+.hljs-built_in, .hljs-name { color: var(--primary); }
+.hljs-meta { color: var(--text-muted); }
+.hljs-deletion { color: #c0392b; background: rgba(192,57,43,0.1); }
+.hljs-addition { color: #27ae60; background: rgba(39,174,96,0.1); }
+
+/* Math blocks */
+.smd-math-block {
+  text-align: center;
+  padding: 20px 0;
+  margin: 16px 0;
+  overflow-x: auto;
+}
+
+/* ===== Keyboard Shortcuts ===== */
+kbd {
+  display: inline-block;
+  padding: 2px 8px;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.85em;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  box-shadow: 0 2px 0 var(--border);
+  white-space: nowrap;
+  line-height: 1.6;
+  vertical-align: baseline;
+}
+
+/* ===== Tabs ===== */
+.smd-tabs { margin: 1.5rem 0; }
+.smd-tabs-nav {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+}
+.smd-tab-btn {
+  padding: 0.75rem 1.5rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: 500;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+.smd-tab-btn:hover { color: var(--text); }
+.smd-tab-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
+.smd-tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  font-weight: 600;
+}
+.smd-tab-panel { display: none; }
+.smd-tab-panel.active { display: block; }
+
+/* ===== Featured Column ===== */
+.smd-column-featured {
+  border: 2px solid var(--primary);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
+}
+.smd-column-featured::before {
+  content: 'Recommended';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--primary);
+  color: white;
+  padding: 2px 16px;
+  border-radius: 12px;
+  font-size: 0.78em;
+  font-weight: 600;
+  font-family: system-ui, -apple-system, sans-serif;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+@media (min-width: 769px) {
+  .smd-columns:has(.smd-column-featured) {
+    align-items: center;
+  }
+  .smd-column-featured {
+    transform: scale(1.04);
+  }
+}
+
+/* ===== Stats Bar ===== */
+.smd-columns-stats {
+  text-align: center;
+  gap: 20px;
+}
+.smd-columns-stats .smd-column {
+  padding: 1.5rem 1rem;
+}
+.smd-columns-stats .smd-column h3 {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  text-transform: none;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.smd-columns-stats .smd-column h3 .smd-large {
+  font-size: clamp(2rem, 6vw, 4rem);
+  white-space: nowrap;
+}
+.smd-columns-stats .smd-column p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 0;
+}
+
+/* ===== Image Avatar ===== */
+.smd-img-avatar {
+  display: inline-block;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  vertical-align: middle;
+  margin-right: 8px;
+  border: 2px solid var(--accent, var(--primary));
+}
+
+/* ===== Image Showcase ===== */
+.smd-img-showcase {
+  display: block;
+  margin: 2rem auto;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-lg), 0 0 60px rgba(0,0,0,0.08);
+  max-width: 100%;
+  max-height: 70vh;
+  object-fit: cover;
+}
+
+/* Browser Frame */
+.smd-browser-frame {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  margin: 2rem 0;
+}
+.smd-browser-dots {
+  display: flex;
+  gap: 7px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.smd-browser-dots span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--border);
+}
+.smd-browser-frame img {
+  display: block;
+  width: 100%;
+}
+
+/* Phone Frame */
+.smd-phone-frame {
+  display: block;
+  text-align: center;
+  margin: 2rem auto;
+}
+.smd-phone-frame img {
+  display: inline-block;
+  border-radius: 32px;
+  max-width: 320px;
+  box-shadow: 0 0 0 10px var(--text, #111), 0 0 0 12px var(--text-muted, #333), var(--shadow-lg);
+}
+
+/* ===== Video Background ===== */
+.smd-bg-video {
+  position: relative;
+  overflow: hidden;
+}
+.smd-bg-video-el {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: cover;
+  z-index: 0;
+}
+.smd-bg-video .smd-bg-overlay {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== Column Image Polish ===== */
+.smd-column > img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  object-fit: cover;
+}
+.smd-column > .smd-img-showcase {
+  margin: 0;
+}
+.smd-column > .smd-browser-frame {
+  margin: 0;
+}
+
+/* ===== Footer Columns ===== */
+.smd-footer-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 32px;
+  margin: 20px 0;
+}
+.smd-footer-col-title {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: 600;
+  font-size: 0.9em;
+  color: var(--text);
+  margin-bottom: 12px;
+  letter-spacing: 0.03em;
+}
+.smd-footer-col-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.smd-footer-col-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.9em;
+}
+.smd-footer-col-links a:hover {
+  color: var(--text);
+}
+
+/* ===== Print Stylesheet ===== */
+@media print {
+  .smd-nav, .smd-nav-toggle, .smd-skip-nav,
+  .smd-carousel-btn, .smd-carousel-dots,
+  .smd-editor-toggle, .smd-editor-panel { display: none !important; }
+  body { font-size: 12pt; line-height: 1.5; color: #000; background: #fff; }
+  .smd-page { max-width: 100%; padding: 0; }
+  .smd-hero { padding: 20px 0; }
+  .smd-section { padding: 24px 0; break-inside: avoid; }
+  .smd-section-alt { background: transparent !important; margin: 0 !important; padding-left: 0 !important; padding-right: 0 !important; }
+  .smd-bg-section { min-height: auto; background: none !important; color: #000; }
+  .smd-bg-overlay { background: none !important; padding: 16px 0; }
+  .smd-carousel-track { display: block; }
+  .smd-carousel-slide { display: none; }
+  .smd-carousel-slide:first-child { display: block; }
+  .smd-block { box-shadow: none; border: 1px solid #ccc; }
+  a { color: #000; text-decoration: underline; }
+  a[href]::after { content: " (" attr(href) ")"; font-size: 0.8em; color: #666; }
+  a[href^="#"]::after, a[href^="javascript"]::after { content: none; }
+  .smd-cta-row a::after { content: none; }
+  img { max-width: 100% !important; }
+  .smd-gallery { gap: 8px; }
+  .smd-gallery img { height: auto !important; box-shadow: none; }
+}
+
+:root {
+  --primary: #F5A623;
+  --primary-dark: #D4901A;
+  --primary-light: #1a2332;
+  --accent: #F5A623;
+  --bg: #0C1821;
+  --surface: #162A3A;
+  --surface-warm: #132D3D;
+  --text: #F0F0F0;
+  --text-muted: #9EAAB8;
+  --border: #1E3A4F;
+  --border-light: #172F40;
+  --bg: #0C1821;
+  --surface: #162A3A;
+  --surface-warm: #132D3D;
+  --text: #F0F0F0;
+  --text-muted: #9EAAB8;
+  --text-light: #666;
+  --border: #1E3A4F;
+  --border-light: #172F40;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.2), 0 1px 2px rgba(0,0,0,0.15);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.3), 0 2px 4px rgba(0,0,0,0.2);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.4), 0 4px 8px rgba(0,0,0,0.25);
+  --font-body: 'Source Sans 3', Georgia, serif;
+  --font-heading: 'Montserrat', Georgia, serif;
+  --radius: 8px;
+  --radius-lg: 12px;
+}
+</style>
+</head>
+<body>
+<div id="smd-nav-mount"><a href="#smd-content" class="smd-skip-nav">Skip to content</a><nav class="smd-nav" data-style="transparent" aria-label="Main navigation"><a class="smd-nav-brand" href="index.html">Apex Electric Co.</a><ul class="smd-nav-links"><li><a href="services.html">Services</a></li><li><a href="projects.html">Projects</a></li><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li></ul><button class="smd-nav-toggle" aria-label="Menu"><span></span></button></nav></div>
+<main id="smd-content" class="smd-page smd-page-hidden">
+<header class="smd-hero smd-animate"><h1>Our Work</h1><p class="smd-subtitle">A sample of recent projects across the Denver metro. Every project shown was completed on time, on budget, and passed inspection on the first walk-through.</p></header><div class="smd-cta-row"><a href="contact.html" class="smd-cta-primary">Get a Free Estimate</a></div><section class="smd-section smd-animate" id="front-range-logistics-warehouse-rewire"><h2>Front Range Logistics — Warehouse Rewire</h2><hr class="smd-section-rule"><div class="smd-bg-section" style="background-image:url('https://images.unsplash.com/photo-1610463076431-2717271d692d?w=1400&amp;q=80')"><div class="smd-bg-overlay"></div></div><p>Complete electrical rewire of a 40,000 sq ft distribution warehouse in Commerce City. The existing knob-and-tube wiring (yes, in a warehouse) was a serious fire hazard. We replaced the entire system — new 600A three-phase service, sub-panels throughout, LED high-bay lighting, and motor circuits for conveyor systems.</p><div class="smd-columns smd-animate smd-animate-stagger"><div class="smd-column"><h3 id="scope">Scope</h3><ul><li>600A three-phase service upgrade</li><li>12 sub-panel installations</li><li>200+ LED high-bay fixtures</li><li>Motor control circuits for conveyor lines</li><li>Emergency lighting and exit signs</li></ul></div><div class="smd-column"><h3 id="results">Results</h3><ul><li>Zero days of operational downtime</li><li>55% reduction in lighting energy costs</li><li>Passed all inspections on first walk-through</li><li>Completed in 6 weeks (2 weeks ahead of schedule)</li></ul></div></div></section><section class="smd-section smd-section-alt smd-animate" id="civic-center-partners-multi-tenant-office"><h2>Civic Center Partners — Multi-Tenant Office</h2><hr class="smd-section-rule"><figure class="smd-gallery count-1"><img src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1400&q=80" alt="Modern office space" loading="lazy"></figure><p>Three separate tenant improvements in a Class A office building in downtown Denver. Each buildout required different layouts, dedicated panels, and metered electrical for individual tenant billing. We coordinated closely with the property management team to minimize disruption to existing tenants.</p><div class="smd-columns smd-animate smd-animate-stagger"><div class="smd-column"><h3 id="scope">Scope</h3><ul><li>3 tenant buildouts (4,500 - 8,000 sq ft each)</li><li>Dedicated sub-panels per tenant</li><li>Open-office lighting layouts</li><li>Conference room AV pre-wire</li><li>Cat6A structured cabling throughout</li></ul></div><div class="smd-column"><h3 id="results">Results</h3><ul><li>All three buildouts completed within 90 days</li><li>Tenants moved in on schedule</li><li>Clean inspection reports across all phases</li></ul></div></div></section><section class="smd-section smd-animate" id="marchettis-ristorante-full-restaurant-build"><h2>Marchetti’s Ristorante — Full Restaurant Build</h2><hr class="smd-section-rule"><figure class="smd-gallery count-1"><img src="https://images.unsplash.com/photo-1603779931001-a6b508e5da81?w=1400&q=80" alt="Restaurant kitchen" loading="lazy"></figure><p>Ground-up electrical for a new Italian restaurant in Cherry Creek. Restaurant kitchens are some of the most demanding commercial electrical environments — high-amperage circuits for ovens and ranges, GFCI protection near water, dedicated circuits for walk-in coolers, and aesthetic lighting for the dining room that sets the right mood.</p><div class="smd-columns smd-animate smd-animate-stagger"><div class="smd-column"><h3 id="scope">Scope</h3><ul><li>400A service with commercial kitchen load</li><li>Dedicated circuits for all kitchen equipment</li><li>Walk-in cooler and freezer wiring</li><li>Dining room dimming and accent lighting</li><li>Exterior patio string lighting</li><li>POS system and security pre-wire</li></ul></div><div class="smd-column"><h3 id="results">Results</h3><ul><li>Opened on time for planned grand opening</li><li>Passed health department and building inspection same week</li><li>Owner called us back for emergency panel repair — on-site in under an hour</li></ul></div></div></section><section class="smd-section smd-section-alt smd-animate" id="ridgeline-medical-group-dental-office-buildout"><h2>Ridgeline Medical Group — Dental Office Buildout</h2><hr class="smd-section-rule"><figure class="smd-gallery count-1"><img src="https://images.unsplash.com/photo-1621831337128-35676ca30868?w=1400&q=80" alt="Commercial office" loading="lazy"></figure><p>Specialized electrical for a six-operatory dental practice in Highlands Ranch. Dental offices have unique requirements — dedicated circuits for each chair’s equipment, specialized lighting, x-ray machine power, and clean grounding for sensitive electronics.</p><div class="smd-columns smd-animate smd-animate-stagger"><div class="smd-column"><h3 id="scope">Scope</h3><ul><li>200A panel with isolated ground circuits</li><li>Dedicated 20A circuits per operatory</li><li>X-ray equipment power and shielding</li><li>Operatory task lighting</li><li>Lobby and hallway LED lighting</li><li>Emergency generator connection</li></ul></div><div class="smd-column"><h3 id="results">Results</h3><ul><li>All equipment powered and tested before opening day</li><li>Isolated grounds eliminated interference with digital x-ray sensors</li><li>Practice has been open 3 years with zero electrical issues</li></ul></div></div></section><section class="smd-section smd-animate" id="peak-fitness-gym-led-retrofit"><h2>Peak Fitness — Gym LED Retrofit</h2><hr class="smd-section-rule"><figure class="smd-gallery count-1"><img src="https://images.unsplash.com/photo-1555983076-1d4ce0cec1aa?w=1400&q=80" alt="Warehouse interior" loading="lazy"></figure><p>LED lighting retrofit for a 15,000 sq ft fitness center in Arvada. Replaced 96 fluorescent fixtures with high-efficiency LED panels and added occupancy-based controls to utility areas. The project paid for itself in energy savings within 18 months.</p><div class="smd-columns smd-animate smd-animate-stagger"><div class="smd-column"><h3 id="scope">Scope</h3><ul><li>96 fixture LED retrofit (4-foot and 8-foot)</li><li>Occupancy sensors in restrooms and storage</li><li>Daylight harvesting in front cardio area</li><li>New lighting contactors and controls</li><li>Utility rebate application assistance</li></ul></div><div class="smd-column"><h3 id="results">Results</h3><ul><li>58% reduction in lighting energy costs</li><li>$14,000 utility rebate captured</li><li>18-month payback period</li><li>Completed over two weekends with no closure</li></ul></div></div></section><section class="smd-section smd-section-alt smd-animate" id="start-your-project"><h2>Start Your Project</h2><hr class="smd-section-rule"><p>Every project begins with a conversation. Tell us what you need and we’ll give you an honest assessment, a clear proposal, and a timeline you can count on.</p><div class="smd-cta-row"><a href="contact.html" class="smd-cta-primary">Get a Free Estimate</a><a href="tel:3035550187" class="smd-cta-secondary">Call (303) 555-0187</a></div></section>
+<footer class="smd-footer" data-style="columns"><div class="smd-footer-title">Apex Electric Co.</div><div class="smd-footer-columns"><div class="smd-footer-col"><div class="smd-footer-col-title">Services</div><ul class="smd-footer-col-links"><li><a href="services.html#commercial-wiring">Commercial Wiring</a></li><li><a href="services.html#electrical-upgrades">Electrical Upgrades</a></li><li><a href="services.html#lighting-systems">Lighting Systems</a></li><li><a href="services.html#24-7-emergency-service">Emergency Service</a></li></ul></div><div class="smd-footer-col"><div class="smd-footer-col-title">Company</div><ul class="smd-footer-col-links"><li><a href="about.html">About Us</a></li><li><a href="projects.html">Projects</a></li><li><a href="contact.html">Contact</a></li></ul></div><div class="smd-footer-col"><div class="smd-footer-col-title">Get in Touch</div><ul class="smd-footer-col-links"><li>(303) 555-0187</li><li>info@apexelectricco.com</li><li>4720 S. Broadway, Unit 12</li><li>Denver, CO 80216</li></ul></div></div><div class="smd-footer-copy">Licensed & Insured — CO License #EC.0042817 — Copyright 2026 Apex Electric Co.</div></footer>
+</main>
+<noscript><style>.smd-page-hidden,.smd-animate,.smd-animate-stagger>*{opacity:1!important;transform:none!important;transition:none!important}</style></noscript>
+<script>
+// Runtime: hamburger, carousel, nav scroll, animations, page transitions
+(function() {
+  // Hamburger
+  var toggle = document.querySelector('.smd-nav-toggle');
+  var links = document.querySelector('.smd-nav-links');
+  if (toggle && links) {
+    toggle.setAttribute('aria-label', 'Toggle navigation');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.addEventListener('click', function() {
+      var open = links.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+
+  // Nav scroll
+  var nav = document.querySelector('.smd-nav');
+  if (nav) {
+    var scrolled = false;
+    window.addEventListener('scroll', function() {
+      var s = window.scrollY > 80;
+      if (s !== scrolled) { scrolled = s; nav.classList.toggle('scrolled', scrolled); }
+    }, { passive: true });
+  }
+
+  // Carousel
+  var state = {};
+  var pauseUntil = {};
+  function goTo(id, idx) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    state[id] = idx;
+    el.querySelector('.smd-carousel-track').style.transform = 'translateX(-' + idx * 100 + '%)';
+    el.querySelectorAll('.smd-carousel-dot').forEach(function(d, i) { d.classList.toggle('active', i === idx); });
+  }
+  window.carouselNav = function(id, dir) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var count = el.querySelectorAll('.smd-carousel-slide').length;
+    goTo(id, ((state[id] || 0) + dir + count) % count);
+    pauseUntil[id] = Date.now() + 10000;
+  };
+  window.carouselGo = function(id, idx) {
+    goTo(id, idx);
+    pauseUntil[id] = Date.now() + 10000;
+  };
+  setInterval(function() {
+    document.querySelectorAll('.smd-carousel').forEach(function(el) {
+      var count = el.querySelectorAll('.smd-carousel-slide').length;
+      if (count <= 1) return;
+      if (pauseUntil[el.id] && Date.now() < pauseUntil[el.id]) return;
+      goTo(el.id, ((state[el.id] || 0) + 1) % count);
+    });
+  }, 5000);
+
+  // Tabs
+  window.tabSwitch = function(id, idx) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.querySelectorAll('.smd-tab-btn').forEach(function(b, i) { b.classList.toggle('active', i === idx); });
+    el.querySelectorAll('.smd-tab-panel').forEach(function(p, i) { p.classList.toggle('active', i === idx); });
+  };
+
+  // Animations & SPA-like page transitions
+  var page = document.querySelector('.smd-page');
+  if (page && page.classList.contains('smd-page-hidden')) {
+    function initScrollAnims() {
+      document.querySelectorAll('.smd-hero.smd-animate').forEach(function(el) {
+        setTimeout(function() { el.classList.add('smd-visible'); }, 150);
+      });
+      var first = document.querySelector('.smd-section.smd-animate');
+      if (first) setTimeout(function() { first.classList.add('smd-visible'); }, 300);
+      if ('IntersectionObserver' in window) {
+        var obs = new IntersectionObserver(function(entries) {
+          entries.forEach(function(e) {
+            if (e.isIntersecting) { e.target.classList.add('smd-visible'); obs.unobserve(e.target); }
+          });
+        }, { threshold: 0.05, rootMargin: '0px 0px 50px 0px' });
+        document.querySelectorAll('.smd-animate:not(.smd-hero):not(.smd-visible)').forEach(function(el) { obs.observe(el); });
+      } else {
+        document.querySelectorAll('.smd-animate').forEach(function(el) { el.classList.add('smd-visible'); });
+      }
+    }
+
+    // Initial page enter
+    requestAnimationFrame(function() { page.classList.remove('smd-page-hidden'); });
+    initScrollAnims();
+
+    // SPA navigation: fetch + swap content, keep nav stable
+    var currentNav = null;
+    function navigateTo(url, push) {
+      // Cancel any in-flight navigation
+      if (currentNav) currentNav.abort();
+      var ctrl = new AbortController();
+      currentNav = ctrl;
+
+      var parts = url.split('#');
+      var fetchUrl = parts[0] || location.pathname;
+      var hash = parts[1] || '';
+
+      page.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+      page.style.opacity = '0';
+      page.style.transform = 'translateY(-8px)';
+
+      Promise.all([
+        fetch(fetchUrl, { signal: ctrl.signal }).then(function(r) { return r.text(); }),
+        new Promise(function(r) { setTimeout(r, 200); })
+      ]).then(function(results) {
+        if (ctrl.signal.aborted) return;
+        currentNav = null;
+        var parsed = new DOMParser().parseFromString(results[0], 'text/html');
+        var newMain = parsed.querySelector('.smd-page');
+        if (!newMain) { location.href = url; return; }
+
+        page.innerHTML = newMain.innerHTML;
+        var t = parsed.querySelector('title');
+        if (t) document.title = t.textContent;
+        if (push) history.pushState({}, '', url);
+
+        if (hash) {
+          var target = document.getElementById(hash);
+          if (target) target.scrollIntoView();
+        } else {
+          window.scrollTo(0, 0);
+        }
+
+        // Entry animation
+        page.style.transition = 'none';
+        page.style.transform = 'translateY(16px)';
+        page.offsetHeight;
+        page.style.transition = '';
+        page.style.opacity = '';
+        page.style.transform = '';
+
+        initScrollAnims();
+      }).catch(function(e) {
+        if (e.name === 'AbortError') return;
+        // Reset visual state before fallback
+        page.style.transition = '';
+        page.style.opacity = '';
+        page.style.transform = '';
+        location.href = url;
+      });
+    }
+
+    document.addEventListener('click', function(e) {
+      var a = e.target.closest('a');
+      if (!a) return;
+      var href = a.getAttribute('href');
+      if (!href || href.startsWith('#') || /^(https?:\/\/|mailto:)/.test(href)) return;
+      var path = href.split('#')[0].split('?')[0];
+      if (!path.endsWith('.html')) return;
+      // Same-page anchor: let browser handle natively (CSS scroll-behavior: smooth)
+      var curPage = location.pathname.split('/').pop();
+      if (path === curPage && href.indexOf('#') !== -1) return;
+      e.preventDefault();
+      navigateTo(href, true);
+    });
+
+    window.addEventListener('popstate', function() {
+      navigateTo(location.pathname + location.hash, false);
+    });
+  }
+})();
+</script>
+<script type="application/json" id="smd-sources">{"theme.yaml":"mode: dark\ncolors:\n  primary: \"#F5A623\"\n  primaryDark: \"#D4901A\"\n  primaryLight: \"#1a2332\"\n  accent: \"#F5A623\"\n  background: \"#0C1821\"\n  surface: \"#162A3A\"\n  surfaceWarm: \"#132D3D\"\n  text: \"#F0F0F0\"\n  textMuted: \"#9EAAB8\"\n  border: \"#1E3A4F\"\n  borderLight: \"#172F40\"\n\nfonts:\n  heading: Montserrat\n  body: Source Sans 3\n\nradius: 8\nradiusLg: 12\nnav: transparent\nsections: alternating\ncards: elevated\nanimation: subtle\nfooter: columns\nspacing: spacious\n","header.md":"# Apex Electric Co.\n\n- [Services](services.md)\n- [Projects](projects.md)\n- [About Us](about.md)\n- [Contact](contact.md)\n","footer.md":"# Apex Electric Co.\n\n|||\n### Services\n- [Commercial Wiring](services.md#commercial-wiring)\n- [Electrical Upgrades](services.md#electrical-upgrades)\n- [Lighting Systems](services.md#lighting-systems)\n- [Emergency Service](services.md#24-7-emergency-service)\n---\n### Company\n- [About Us](about.md)\n- [Projects](projects.md)\n- [Contact](contact.md)\n---\n### Get in Touch\n- (303) 555-0187\n- info@apexelectricco.com\n- 4720 S. Broadway, Unit 12\n- Denver, CO 80216\n|||\n\nLicensed & Insured -- CO License #EC.0042817 -- Copyright 2026 Apex Electric Co.\n","404.md":"---\ntitle: Page Not Found — Apex Electric Co.\n---\n\n# Page Not Found\n\nThe page you're looking for doesn't exist or has been moved. Let's get you back on track.\n\n[Back to Home](index.md) -- [Contact Us](contact.md)\n","about.md":"---\ntitle: About Us — Apex Electric Co.\ndescription: Meet the team behind Apex Electric, Denver's trusted commercial electrical contractor. 20 years of experience, licensed master electricians, and a commitment to doing the job right.\n---\n\n# About Apex Electric\n\n::: bg https://images.unsplash.com/photo-1615774925655-a0e97fc85c14?w=1400&q=80\n:::\n\n## Our Story\n\nApex Electric started in 2006 with one truck, one master electrician, and a simple idea: commercial electrical work doesn't have to be a headache for the customer.\n\nTwenty years later, we've completed over 500 commercial projects across the Denver metro area. We're still not the biggest contractor in town, and we plan to keep it that way. Every client works directly with the owner. Every project is staffed with licensed journeymen and masters -- never temps, never day labor.\n\nWe've built our reputation on three things: showing up when we say we will, doing the job right the first time, and charging a fair price for honest work.\n\n## What Sets Us Apart\n\n|||\n::: card\n### Owner on Every Job\nYou work directly with the owner from estimate to final inspection. No sales reps, no hand-offs, no telephone game.\n:::\n---\n::: card\n### Licensed Crew Only\nEvery electrician on our team holds a Colorado journeyman or master license. No apprentices running jobs solo.\n:::\n---\n::: card\n### Two-Year Warranty\nWe stand behind our work with a full two-year labor warranty. If something isn't right, we come back and fix it. No questions, no charge.\n:::\n|||\n\n## Licenses and Certifications\n\n|||\n### Licensing\n- Colorado Master Electrician License EC.0042817\n- City of Denver Electrical Contractor License\n- City of Aurora Electrical Contractor License\n- OSHA 30-Hour Construction Safety Certified\n---\n### Insurance\n- $2,000,000 General Liability\n- Full Workers' Compensation Coverage\n- Commercial Auto Insurance\n- Certificates of insurance provided on request\n---\n### Affiliations\n- Independent Electrical Contractors (IEC)\n- Denver Metro Chamber of Commerce\n- Better Business Bureau -- A+ Rating\n- NFPA Member\n|||\n\n## Our Values\n\n|||\n### Honesty\nWe give you a straight answer, even when it's not what you want to hear. If your project doesn't need us, we'll tell you. If there's a less expensive way to solve the problem, we'll suggest it.\n---\n### Craftsmanship\nElectrical work is hidden behind walls, but that doesn't mean it should look like it. Straight conduit runs, clean wire management, proper labeling -- we take pride in work you'll never see.\n---\n### Reliability\nWe show up on time. We hit our deadlines. We return phone calls. It sounds basic because it is. But in this industry, basic reliability is surprisingly rare.\n|||\n\n## By the Numbers\n\n|||\n### ++20++\nYears in Business\n---\n### ++500++\nProjects Completed\n---\n### ++12++\nLicensed Electricians\n---\n### ++0++\nUnresolved Complaints\n|||\n\n## Work With Us\n\nWhether it's a new construction project, an upgrade, or an emergency -- we'd like to earn your business.\n\n[Get a Free Estimate](contact.md) -- [Call (303) 555-0187](tel:3035550187)\n","contact.md":"---\ntitle: Contact — Apex Electric Co.\ndescription: Get a free estimate from Apex Electric for your commercial electrical project in Denver, CO. Call, email, or fill out our contact form.\n---\n\n# Get a Free Estimate\n\nTell us about your project and we'll get back to you within one business day. Or call us right now -- we actually answer the phone.\n\n[Call (303) 555-0187](tel:3035550187) -- [info@apexelectricco.com](mailto:info@apexelectricco.com)\n\n## Send Us a Message\n\n::: form\nName*: {text}\nEmail*: {email}\nPhone*: {text}\nCompany: {text}\n\nProject Type*: {New Construction / Tenant Improvement / Panel Upgrade / Lighting / Emergency Repair / Other}\nEstimated Budget: {Under $10k / $10k - $25k / $25k - $50k / $50k - $100k / $100k+ / Not Sure}\n\nTell us about your project*: {paragraph}\nPreferred contact method: {Phone / Email / Either}\n\n[Request Estimate](POST /contact)\n:::\n\n## Other Ways to Reach Us\n\n|||\n### Call or Email\n- **(303) 555-0187** -- Main line\n- **(303) 555-0188** -- 24/7 Emergency\n- info@apexelectricco.com\n- Monday -- Friday, 7AM -- 5PM\n---\n### Visit Our Shop\n- 4720 S. Broadway, Unit 12\n- Denver, CO 80216\n- Open to walk-ins during business hours\n---\n### Emergency Service\n- Available 24/7, 365 days a year\n- 60-minute response time in Denver metro\n- Call the emergency line: **(303) 555-0188**\n|||\n\n## Service Area\n\nWe serve the entire Denver metro area and Front Range corridor, including Aurora, Lakewood, Arvada, Westminster, Thornton, Centennial, Littleton, Parker, Castle Rock, Golden, Brighton, and surrounding communities. No travel charge within 50 miles of Denver.\n\n## Ready to Start?\n\n[Call (303) 555-0187](tel:3035550187) -- [View Our Services](services.md)\n","index.md":"---\ntitle: Apex Electric Co. — Commercial Electrical Contractors | Denver, CO\ndescription: Denver's trusted commercial electricians. New construction wiring, electrical upgrades, lighting systems, and 24/7 emergency service for businesses across the Front Range.\n---\n\n::: bg https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1400&q=80\n# Commercial Electrical Contractors You Can Count On\n\nLicensed, insured, and built on 20 years of keeping Denver businesses running. From tenant improvements to full-building rewires, we do the job right the first time.\n\n[Get a Free Estimate](contact.md) -- [Our Services](services.md)\n:::\n\n## What We Do\n\n|||\n::: card\n### Commercial Wiring\n\n![Electrical panel](https://images.unsplash.com/photo-1544724569-5f546fd6f2b5?w=600&q=80 =120x)\n\nNew construction, tenant improvements, and office buildouts. We handle everything from conduit runs to final terminations.\n:::\n---\n::: card\n### Electrical Upgrades\n\n![Electrical upgrade](https://images.unsplash.com/photo-1576446470246-499c738d1c8e?w=600&q=80 =120x)\n\nPanel upgrades, service changes, and code compliance. We bring aging systems up to current NEC standards safely.\n:::\n---\n::: card\n### Lighting Systems\n\n![Commercial lighting](https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=600&q=80 =120x)\n\nLED retrofits, warehouse high-bays, office lighting design, and exterior security lighting that cuts your energy bill.\n:::\n|||\n\n## Why Denver Businesses Choose Apex\n\nWe're not the biggest electrical contractor in town -- and that's the point. You get direct access to the owner on every project. No layers of project managers, no subcontracted crews, no surprises on the invoice.\n\nEvery electrician on our team is a licensed journeyman or master. We show up on time, keep a clean jobsite, and stand behind our work with a two-year warranty on all labor.\n\n[See Our Work](projects.md) -- [About Our Team](about.md)\n\n## By the Numbers\n\n|||\n### ++20++\nYears in Business\n---\n### ++500++\nProjects Completed\n---\n### ++98%++\nOn-Time Completion\n---\n### ++2 Year++\nLabor Warranty\n|||\n\n## What Our Clients Say\n\n::: quote\n★★★★★\nApex rewired our entire 40,000 sq ft warehouse without a single day of downtime. They worked nights and weekends to keep our operations running. Couldn't ask for a better partner.\n— **Mike Rawlings**, Facilities Director, Front Range Logistics\n:::\n\n::: quote\n★★★★★\nWe've used Apex for three tenant improvements in our office building. Consistent quality, fair pricing, and they always pass inspection on the first try. That matters when you're on a tight build schedule.\n— **Sandra Chen**, Property Manager, Civic Center Partners\n:::\n\n::: quote\n★★★★★\nHad a panel failure on a Friday night that took out half our restaurant. Apex had a crew on-site within an hour and we opened on time Saturday morning. These guys are the real deal.\n— **Tony Marchetti**, Owner, Marchetti's Ristorante\n:::\n\n## Areas We Serve\n\nDenver Metro, Aurora, Lakewood, Arvada, Westminster, Thornton, Centennial, Littleton, Parker, Castle Rock, and the entire Front Range. If you're within 50 miles of Denver, we'll be there.\n\n## Ready to Talk About Your Project?\n\nWhether it's a new buildout, a panel upgrade, or an emergency at 2AM -- we pick up the phone.\n\n[Get a Free Estimate](contact.md) -- [Call (303) 555-0187](tel:3035550187)\n","projects.md":"---\ntitle: Projects — Apex Electric Co.\ndescription: Commercial electrical projects completed by Apex Electric in Denver, including office buildouts, warehouse lighting, restaurant wiring, and panel upgrades.\n---\n\n# Our Work\n\nA sample of recent projects across the Denver metro. Every project shown was completed on time, on budget, and passed inspection on the first walk-through.\n\n[Get a Free Estimate](contact.md)\n\n## Front Range Logistics -- Warehouse Rewire\n\n::: bg https://images.unsplash.com/photo-1610463076431-2717271d692d?w=1400&q=80\n:::\n\nComplete electrical rewire of a 40,000 sq ft distribution warehouse in Commerce City. The existing knob-and-tube wiring (yes, in a warehouse) was a serious fire hazard. We replaced the entire system -- new 600A three-phase service, sub-panels throughout, LED high-bay lighting, and motor circuits for conveyor systems.\n\n|||\n### Scope\n- 600A three-phase service upgrade\n- 12 sub-panel installations\n- 200+ LED high-bay fixtures\n- Motor control circuits for conveyor lines\n- Emergency lighting and exit signs\n---\n### Results\n- Zero days of operational downtime\n- 55% reduction in lighting energy costs\n- Passed all inspections on first walk-through\n- Completed in 6 weeks (2 weeks ahead of schedule)\n|||\n\n## Civic Center Partners -- Multi-Tenant Office\n\n![Modern office space](https://images.unsplash.com/photo-1497366754035-f200968a6e72?w=1400&q=80)\n\nThree separate tenant improvements in a Class A office building in downtown Denver. Each buildout required different layouts, dedicated panels, and metered electrical for individual tenant billing. We coordinated closely with the property management team to minimize disruption to existing tenants.\n\n|||\n### Scope\n- 3 tenant buildouts (4,500 - 8,000 sq ft each)\n- Dedicated sub-panels per tenant\n- Open-office lighting layouts\n- Conference room AV pre-wire\n- Cat6A structured cabling throughout\n---\n### Results\n- All three buildouts completed within 90 days\n- Tenants moved in on schedule\n- Clean inspection reports across all phases\n|||\n\n## Marchetti's Ristorante -- Full Restaurant Build\n\n![Restaurant kitchen](https://images.unsplash.com/photo-1603779931001-a6b508e5da81?w=1400&q=80)\n\nGround-up electrical for a new Italian restaurant in Cherry Creek. Restaurant kitchens are some of the most demanding commercial electrical environments -- high-amperage circuits for ovens and ranges, GFCI protection near water, dedicated circuits for walk-in coolers, and aesthetic lighting for the dining room that sets the right mood.\n\n|||\n### Scope\n- 400A service with commercial kitchen load\n- Dedicated circuits for all kitchen equipment\n- Walk-in cooler and freezer wiring\n- Dining room dimming and accent lighting\n- Exterior patio string lighting\n- POS system and security pre-wire\n---\n### Results\n- Opened on time for planned grand opening\n- Passed health department and building inspection same week\n- Owner called us back for emergency panel repair -- on-site in under an hour\n|||\n\n## Ridgeline Medical Group -- Dental Office Buildout\n\n![Commercial office](https://images.unsplash.com/photo-1621831337128-35676ca30868?w=1400&q=80)\n\nSpecialized electrical for a six-operatory dental practice in Highlands Ranch. Dental offices have unique requirements -- dedicated circuits for each chair's equipment, specialized lighting, x-ray machine power, and clean grounding for sensitive electronics.\n\n|||\n### Scope\n- 200A panel with isolated ground circuits\n- Dedicated 20A circuits per operatory\n- X-ray equipment power and shielding\n- Operatory task lighting\n- Lobby and hallway LED lighting\n- Emergency generator connection\n---\n### Results\n- All equipment powered and tested before opening day\n- Isolated grounds eliminated interference with digital x-ray sensors\n- Practice has been open 3 years with zero electrical issues\n|||\n\n## Peak Fitness -- Gym LED Retrofit\n\n![Warehouse interior](https://images.unsplash.com/photo-1555983076-1d4ce0cec1aa?w=1400&q=80)\n\nLED lighting retrofit for a 15,000 sq ft fitness center in Arvada. Replaced 96 fluorescent fixtures with high-efficiency LED panels and added occupancy-based controls to utility areas. The project paid for itself in energy savings within 18 months.\n\n|||\n### Scope\n- 96 fixture LED retrofit (4-foot and 8-foot)\n- Occupancy sensors in restrooms and storage\n- Daylight harvesting in front cardio area\n- New lighting contactors and controls\n- Utility rebate application assistance\n---\n### Results\n- 58% reduction in lighting energy costs\n- $14,000 utility rebate captured\n- 18-month payback period\n- Completed over two weekends with no closure\n|||\n\n## Start Your Project\n\nEvery project begins with a conversation. Tell us what you need and we'll give you an honest assessment, a clear proposal, and a timeline you can count on.\n\n[Get a Free Estimate](contact.md) -- [Call (303) 555-0187](tel:3035550187)\n","services.md":"---\ntitle: Services — Apex Electric Co.\ndescription: Commercial electrical services including new construction wiring, panel upgrades, lighting systems, data cabling, and 24/7 emergency service in Denver, CO.\n---\n\n# Commercial Electrical Services\n\nFull-service commercial electrical work for offices, retail, restaurants, warehouses, and industrial facilities across the Denver metro area.\n\n[Get a Free Estimate](contact.md)\n\n## Commercial Wiring\n\n::: bg https://images.unsplash.com/photo-1660330589693-99889d60181e?w=1400&q=80\n:::\n\nNew construction and tenant improvements are our bread and butter. We work with general contractors, property managers, and business owners to deliver electrical systems that are built to code, on schedule, and within budget.\n\n|||\n### What's Included\n- Full electrical design assistance\n- Conduit and wire installation\n- Panel and sub-panel installation\n- Receptacle and switch placement\n- Circuit labeling and documentation\n- Final testing and inspection coordination\n---\n### Common Projects\n- Office buildouts and remodels\n- Retail store fit-outs\n- Restaurant kitchen electrical\n- Medical and dental offices\n- Multi-tenant commercial buildings\n- Warehouse and distribution centers\n|||\n\n## Electrical Upgrades\n\nOlder buildings with undersized panels and outdated wiring aren't just inefficient -- they're a fire risk. We specialize in bringing commercial electrical systems up to current NEC standards without disrupting your operations.\n\n|||\n::: card\n### Panel Upgrades\nReplace aging 100A or 200A panels with modern, high-capacity panels that support today's electrical loads. Full labeling and documentation included.\n:::\n---\n::: card\n### Service Changes\nUpgrading from single-phase to three-phase? Increasing your service from 200A to 400A or 600A? We handle the utility coordination, permitting, and installation.\n:::\n---\n::: card\n### Code Compliance\nFailed an inspection? We diagnose the issues, develop a remediation plan, and get your building up to code so you can pass re-inspection the first time.\n:::\n|||\n\n## Lighting Systems\n\n![Commercial lighting installation](https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=1400&q=80)\n\nGood lighting isn't just about visibility -- it affects productivity, safety, and your electric bill. We design and install lighting systems for every commercial environment.\n\n- LED retrofits and upgrades ... Save 40-60% on lighting energy costs\n- Warehouse high-bay lighting ... Bright, even coverage for large spaces\n- Office lighting design ... Task-appropriate, glare-free layouts\n- Exterior and parking lot lighting ... Security and safety for your property\n- Emergency and exit lighting ... Code-compliant egress systems\n- Lighting controls and dimmers ... Automated scheduling and daylight harvesting\n\n## Data and Low-Voltage\n\nModern businesses run on connectivity. We install structured cabling systems that support your network, phones, security, and AV equipment.\n\n|||\n### Network Cabling\n- Cat6 and Cat6A structured cabling\n- Fiber optic backbone installation\n- Server room and IDF buildouts\n- Cable testing and certification\n---\n### Other Low-Voltage\n- Security camera cabling\n- Access control wiring\n- Audio/visual system cabling\n- Paging and intercom systems\n|||\n\n## 24/7 Emergency Service\n\nElectrical emergencies don't wait for business hours. When you lose power, smell burning, or have a critical system go down, call us. We maintain an on-call crew specifically for emergency commercial calls.\n\n::: info\n**Emergency line: (303) 555-0187** -- We respond to emergency calls within 60 minutes, 24 hours a day, 7 days a week.\n:::\n\n|||\n::: card\n### Power Outages\nDiagnosis and repair of circuits, panels, and service equipment to get your business back online fast.\n:::\n---\n::: card\n### Equipment Failures\nMotor controls, disconnects, transformers, and other critical equipment repaired or replaced on an emergency basis.\n:::\n---\n::: card\n### Safety Hazards\nBurning smells, sparking, exposed wiring, water intrusion into electrical systems -- we secure the hazard and make permanent repairs.\n:::\n|||\n\n## Our Process\n\n|||\n### 1. Site Visit\nWe walk the job with you, understand your needs, and take measurements. No charge, no obligation.\n---\n### 2. Proposal\nYou get a clear, itemized proposal -- not a vague estimate. Materials, labor, permits, and timeline all spelled out.\n---\n### 3. Scheduling\nWe coordinate with your GC, property manager, or directly with you. We show up when we say we will.\n---\n### 4. Execution\nLicensed journeymen and masters do the work. Clean jobsite, proper materials, to code every time.\n---\n### 5. Inspection\nWe schedule and attend all inspections. If something needs correction, we handle it immediately.\n---\n### 6. Warranty\nTwo-year labor warranty on everything we do. If there's an issue, we come back and fix it. Period.\n|||\n\n## Frequently Asked Questions\n\n>| Do you handle permitting?\n   Yes. We pull all necessary electrical permits and coordinate inspections with the local AHJ (Authority Having Jurisdiction). Permit costs are included in our proposals.\n\n>| What areas do you serve?\n   We serve the entire Denver metro area and Front Range, including Aurora, Lakewood, Arvada, Westminster, Centennial, Littleton, Parker, Castle Rock, and surrounding communities. For projects within 50 miles of Denver, there's no travel charge.\n\n>| Are you licensed and insured?\n   Absolutely. We hold a Colorado Master Electrician license (EC.0042817), carry $2M in general liability insurance, and maintain full workers' compensation coverage. We're happy to provide certificates of insurance for your records.\n\n>| Can you work nights and weekends to avoid disrupting our business?\n   Yes, and we do it regularly. Many of our retail and restaurant clients need work done outside business hours. We'll schedule around your operations at no additional charge for standard after-hours work.\n\n>| Do you offer maintenance contracts?\n   We offer annual and semi-annual preventive maintenance programs for commercial clients. Regular maintenance catches small problems before they become expensive emergencies. Ask us for details.\n\n## Let's Talk About Your Project\n\nTell us what you need. We'll schedule a free site visit and get you a clear, honest proposal.\n\n[Get a Free Estimate](contact.md) -- [Call (303) 555-0187](tel:3035550187)\n"}</script>
+<script type="application/json" id="smd-theme">{"mode":"dark","colors":{"primary":"#F5A623","primaryDark":"#D4901A","primaryLight":"#1a2332","accent":"#F5A623","background":"#0C1821","surface":"#162A3A","surfaceWarm":"#132D3D","text":"#F0F0F0","textMuted":"#9EAAB8","border":"#1E3A4F","borderLight":"#172F40"},"fonts":{"heading":"Montserrat","body":"Source Sans 3"},"radius":8,"radiusLg":12,"nav":"transparent","sections":"alternating","cards":"elevated","animation":"subtle","footer":"columns","spacing":"spacious"}</script>
+<script src="smd-editor.js" defer></script>
+</body>
+</html>

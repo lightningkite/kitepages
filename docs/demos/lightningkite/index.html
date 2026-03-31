@@ -1,0 +1,2048 @@
+<!DOCTYPE html>
+<html lang="en" data-sections="alternating" data-cards="elevated" data-animation="subtle" data-spacing="spacious">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lightning Kite — Strikingly Good Software</title>
+<meta name="description" content="Take your software idea from concept to completion with Utah's premiere web and mobile app software engineering team.">
+<meta property="og:title" content="Lightning Kite — Strikingly Good Software">
+<meta property="og:type" content="website">
+<meta property="og:description" content="Take your software idea from concept to completion with Utah's premiere web and mobile app software engineering team.">
+<meta property="og:image" content="home-title-intro.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bebas%20Neue:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Lato:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap">
+<style>
+/* ===== Reset & Base ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --primary: #3d6b42;
+  --primary-dark: #2c5530;
+  --primary-light: #e8f0e9;
+  --accent: #c9a84c;
+  --text: #2d2d2d;
+  --text-muted: #6b6b6b;
+  --text-light: #999;
+  --bg: #faf9f6;
+  --surface: #ffffff;
+  --surface-warm: #f5f3ee;
+  --border: #e5e2db;
+  --border-light: #f0ede6;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.1), 0 4px 8px rgba(0,0,0,0.04);
+  --radius: 10px;
+  --radius-lg: 16px;
+  --max-width: 1100px;
+  --transition: 0.2s ease;
+  --font-heading: 'Georgia', serif;
+  --font-body: 'Georgia', serif;
+  --section-padding: 72px;
+  --nav-height: 64px;
+}
+
+html { scroll-behavior: smooth; overflow-x: hidden; }
+body {
+  font-family: var(--font-body);
+  color: var(--text);
+  background: var(--bg);
+  line-height: 1.75;
+  font-size: 17px;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+a { color: var(--primary); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* ===== Navigation ===== */
+.smd-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  height: var(--nav-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  transition: background 0.4s, box-shadow 0.4s, backdrop-filter 0.4s;
+}
+.smd-nav-brand {
+  font-family: var(--font-heading);
+  font-size: 1.2em;
+  font-weight: 700;
+  text-decoration: none !important;
+  white-space: nowrap;
+}
+.smd-nav-brand img {
+  height: 32px;
+  width: auto;
+  vertical-align: middle;
+  border-radius: 0;
+}
+.smd-nav-links {
+  display: flex;
+  gap: 32px;
+  list-style: none;
+}
+.smd-nav-links a {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.85em;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  text-decoration: none !important;
+  transition: color 0.2s, opacity 0.2s;
+  opacity: 0.85;
+}
+.smd-nav-links a:hover { opacity: 1; }
+
+/* Nav: transparent (floats over hero, white text) */
+.smd-nav[data-style="transparent"] {
+  background: transparent;
+  color: white;
+}
+.smd-nav[data-style="transparent"] .smd-nav-brand,
+.smd-nav[data-style="transparent"] .smd-nav-links a { color: white; }
+.smd-nav[data-style="transparent"].scrolled {
+  background: var(--bg);
+  color: var(--text);
+  box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+}
+.smd-nav[data-style="transparent"].scrolled .smd-nav-brand,
+.smd-nav[data-style="transparent"].scrolled .smd-nav-links a { color: var(--text); }
+
+/* Nav: solid (colored bar) */
+.smd-nav[data-style="solid"] {
+  background: var(--primary);
+  color: white;
+}
+.smd-nav[data-style="solid"] .smd-nav-brand,
+.smd-nav[data-style="solid"] .smd-nav-links a { color: white; }
+.smd-nav[data-style="solid"].scrolled { box-shadow: 0 2px 12px rgba(0,0,0,0.15); }
+
+/* Nav: minimal (clean line, bg-colored) */
+.smd-nav[data-style="minimal"] {
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.smd-nav[data-style="minimal"] .smd-nav-brand { color: var(--text); }
+.smd-nav[data-style="minimal"] .smd-nav-links a { color: var(--text-muted); }
+.smd-nav[data-style="minimal"] .smd-nav-links a:hover { color: var(--text); }
+
+/* Nav: centered (brand centered, links below or inline) */
+.smd-nav[data-style="centered"] {
+  flex-direction: column;
+  height: auto;
+  padding: 20px 40px 12px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  gap: 8px;
+}
+.smd-nav[data-style="centered"] .smd-nav-brand {
+  color: var(--text);
+  font-size: 1.5em;
+  font-weight: 400;
+}
+.smd-nav[data-style="centered"] .smd-nav-links a {
+  color: var(--text-muted);
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.smd-nav[data-style="centered"].scrolled {
+  flex-direction: row;
+  height: var(--nav-height);
+  padding: 0 40px;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+}
+.smd-nav[data-style="centered"].scrolled .smd-nav-brand { font-size: 1.1em; }
+
+/* Mobile hamburger */
+.smd-nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  width: 32px;
+  height: 24px;
+  position: relative;
+}
+.smd-nav-toggle span,
+.smd-nav-toggle span::before,
+.smd-nav-toggle span::after {
+  display: block;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  position: absolute;
+  transition: transform 0.3s, opacity 0.3s;
+}
+.smd-nav-toggle span { top: 50%; transform: translateY(-50%); }
+.smd-nav-toggle span::before { content: ''; top: -8px; }
+.smd-nav-toggle span::after { content: ''; top: 8px; }
+.smd-nav-toggle:focus-visible { outline: 2px solid var(--primary); outline-offset: 4px; border-radius: 4px; }
+
+@media (max-width: 768px) {
+  .smd-nav-toggle { display: block; }
+  .smd-nav-links {
+    position: fixed;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    background: var(--bg);
+    flex-direction: column;
+    padding: 24px 40px;
+    gap: 20px;
+    border-bottom: 1px solid var(--border);
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.3s, opacity 0.3s;
+  }
+  .smd-nav-links.open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .smd-nav-links a { font-size: 1em; opacity: 1; color: var(--text) !important; }
+  .smd-nav[data-style="transparent"] .smd-nav-toggle { color: white; }
+  .smd-nav[data-style="transparent"].scrolled .smd-nav-toggle { color: var(--text); }
+  .smd-nav[data-style="centered"] { flex-direction: row; height: var(--nav-height); padding: 0 24px; }
+  .smd-nav[data-style="centered"] .smd-nav-brand { font-size: 1.1em; }
+}
+
+/* ===== Page Structure ===== */
+.smd-page {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 32px 64px;
+}
+body:has(.smd-nav) .smd-page { padding-top: 0; }
+/* Full-bleed hero carousel/bg-section so transparent nav has dark background behind it */
+.smd-page > .smd-carousel:first-child,
+.smd-page > .smd-bg-section:first-child {
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  border-radius: 0;
+}
+.smd-page > .smd-carousel:first-child { box-shadow: none; }
+
+/* ===== Hero Section ===== */
+.smd-hero {
+  text-align: center;
+  padding: 72px 20px 48px;
+}
+body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100px; }
+.smd-hero h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(2em, 5vw, 3.5em);
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  margin-bottom: 20px;
+  line-height: 1.15;
+}
+.smd-hero .smd-subtitle {
+  font-size: 1.15em;
+  color: var(--text-muted);
+  max-width: 540px;
+  margin: 0 auto;
+  line-height: 1.8;
+}
+
+/* ===== Scroll Animations ===== */
+.smd-animate {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.smd-animate.smd-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* Expressive: more dramatic slide + stagger */
+[data-animation="expressive"] .smd-animate {
+  transform: translateY(48px);
+  transition-duration: 0.9s;
+}
+/* When staggering children, parent snaps visible — children do the animated reveal */
+.smd-animate.smd-animate-stagger {
+  transform: none;
+  transition: none;
+}
+/* Stagger children */
+.smd-animate-stagger > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.smd-animate-stagger.smd-visible > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+.smd-animate-stagger.smd-visible > *:nth-child(1) { transition-delay: 0s; }
+.smd-animate-stagger.smd-visible > *:nth-child(2) { transition-delay: 0.1s; }
+.smd-animate-stagger.smd-visible > *:nth-child(3) { transition-delay: 0.2s; }
+.smd-animate-stagger.smd-visible > *:nth-child(4) { transition-delay: 0.3s; }
+.smd-animate-stagger.smd-visible > *:nth-child(5) { transition-delay: 0.4s; }
+.smd-animate-stagger.smd-visible > *:nth-child(6) { transition-delay: 0.5s; }
+.smd-animate-stagger.smd-visible > *:nth-child(7) { transition-delay: 0.6s; }
+.smd-animate-stagger.smd-visible > *:nth-child(8) { transition-delay: 0.7s; }
+.smd-animate-stagger.smd-visible > *:nth-child(n+9) { transition-delay: 0.8s; }
+[data-animation="none"] .smd-animate,
+[data-animation="none"] .smd-animate-stagger > * {
+  opacity: 1; transform: none; transition: none;
+}
+
+/* ===== Sections ===== */
+.smd-section {
+  padding: var(--section-padding) 0;
+  border-top: 1px solid var(--border);
+}
+/* Section styles: alternating */
+[data-sections="alternating"] .smd-section-alt {
+  background: var(--surface-warm);
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  padding-left: calc(50vw - 50% + 32px);
+  padding-right: calc(50vw - 50% + 32px);
+}
+/* Section styles: bold (full-bleed primary-colored alternating) */
+[data-sections="bold"] .smd-section-alt {
+  background: var(--primary);
+  color: white;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+  padding-left: calc(50vw - 50% + 32px);
+  padding-right: calc(50vw - 50% + 32px);
+  border-top-color: transparent;
+}
+[data-sections="bold"] .smd-section-alt h2,
+[data-sections="bold"] .smd-section-alt h3 { color: white; }
+[data-sections="bold"] .smd-section-alt .smd-section-rule { background: rgba(255,255,255,0.4); }
+[data-sections="bold"] .smd-section-alt p { color: rgba(255,255,255,0.9); }
+[data-sections="bold"] .smd-section-alt .smd-block {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.2);
+  color: white;
+}
+[data-sections="bold"] .smd-section-alt .smd-large { color: white; }
+[data-sections="bold"] .smd-section-alt .smd-large { color: white; }
+[data-sections="bold"] .smd-section-alt .smd-stat-label { color: rgba(255,255,255,0.8); }
+[data-sections="bold"] .smd-section-alt .smd-column h3 { color: rgba(255,255,255,0.9); }
+[data-sections="bold"] .smd-section-alt li { color: rgba(255,255,255,0.9); border-bottom-color: rgba(255,255,255,0.15); }
+/* Section styles: clean (no alternation) */
+[data-sections="clean"] .smd-section-alt { background: transparent; }
+
+.smd-section > h2 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.5em, 3vw, 2.2em);
+  font-weight: 400;
+  text-align: center;
+  margin-bottom: 12px;
+  letter-spacing: -0.01em;
+}
+.smd-section > .smd-section-rule {
+  width: 40px;
+  height: 2px;
+  background: var(--accent);
+  margin: 0 auto 24px;
+  border: none;
+}
+
+/* ===== Columns ===== */
+.smd-columns {
+  display: grid;
+  gap: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  align-items: stretch;
+  margin-bottom: 2rem;
+}
+.smd-columns:last-child {
+  margin-bottom: 0;
+}
+.smd-column {
+  display: flex;
+  flex-direction: column;
+}
+.smd-column > .smd-block:first-child {
+  margin-top: 0;
+}
+.smd-column > .smd-block:last-child {
+  flex: 1;
+  margin-bottom: 0;
+}
+.smd-column h3 {
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--primary-dark);
+  text-transform: uppercase;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.85em;
+  letter-spacing: 0.08em;
+}
+
+/* ===== Compact ===== */
+.smd-compact {
+  display: grid;
+  gap: 40px;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+}
+.smd-compact h3 {
+  font-size: 0.85em;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--primary-dark);
+  text-transform: uppercase;
+  font-family: system-ui, -apple-system, sans-serif;
+  letter-spacing: 0.08em;
+}
+
+/* ===== Image Gallery ===== */
+.smd-gallery {
+  display: grid;
+  gap: 16px;
+  margin: 40px 0;
+}
+.smd-gallery.count-1 { grid-template-columns: 1fr; }
+.smd-gallery.count-2 { grid-template-columns: 1fr 1fr; }
+.smd-gallery.count-3 { grid-template-columns: 1fr 1fr 1fr; }
+.smd-gallery.count-4 { grid-template-columns: 1fr 1fr; }
+.smd-gallery img {
+  width: 100%;
+  height: 280px;
+  object-fit: cover;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.smd-gallery img:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* ===== Lists ===== */
+.smd-column ul, .smd-section > ul {
+  list-style: none;
+  padding: 0;
+}
+.smd-column li, .smd-section > ul > li {
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-light);
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+.smd-column li:last-child, .smd-section > ul > li:last-child {
+  border-bottom: none;
+}
+
+/* ===== Card Styles (applied to .smd-block-card via theme) ===== */
+[data-cards="elevated"] .smd-block-card {
+  box-shadow: var(--shadow-md);
+  border: none;
+}
+[data-cards="elevated"] .smd-block-card:hover {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+}
+[data-cards="flat"] .smd-block-card {
+  box-shadow: none;
+  border: 1px solid var(--border);
+}
+[data-cards="bordered"] .smd-block-card {
+  box-shadow: none;
+  border: 2px solid var(--text);
+  border-radius: 0;
+}
+[data-cards="glass"] .smd-block-card {
+  background: color-mix(in srgb, var(--surface) 60%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+}
+[data-cards="glass"] .smd-block-card:hover {
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+  transform: translateY(-2px);
+}
+[data-cards="glass"] .smd-form {
+  background: color-mix(in srgb, var(--surface) 60%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
+}
+[data-cards="glass"] blockquote {
+  background: color-mix(in srgb, var(--surface) 50%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* ===== Forms ===== */
+.smd-form {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 40px;
+  max-width: 640px;
+  margin: 0 auto;
+  box-shadow: var(--shadow-sm);
+}
+[data-cards="bordered"] .smd-form { border: 2px solid var(--text); border-radius: 0; box-shadow: none; }
+[data-cards="glass"] .smd-form { background: rgba(255,255,255,0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3); }
+.smd-form-group {
+  display: flex;
+  gap: 20px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.smd-field {
+  flex: 1;
+  min-width: 180px;
+}
+.smd-field label {
+  display: block;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.82em;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.smd-field input,
+.smd-field textarea,
+.smd-field select {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-family: inherit;
+  font-size: 1em;
+  background: var(--surface);
+  color: var(--text);
+  transition: border-color var(--transition), box-shadow var(--transition);
+}
+[data-cards="bordered"] .smd-field input,
+[data-cards="bordered"] .smd-field textarea,
+[data-cards="bordered"] .smd-field select { border-radius: 0; border-width: 2px; }
+.smd-field input:focus,
+.smd-field textarea:focus,
+.smd-field select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 12%, transparent);
+}
+.smd-field input::placeholder,
+.smd-field textarea::placeholder { color: var(--text-muted); opacity: 0.7; }
+.smd-field select { -webkit-appearance: none; appearance: none; }
+.smd-field textarea { min-height: 100px; resize: vertical; }
+.smd-form button {
+  background: var(--primary);
+  color: white;
+  border: none;
+  padding: 14px 40px;
+  border-radius: var(--radius);
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.95em;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  margin-top: 8px;
+  transition: background var(--transition), transform var(--transition);
+}
+[data-cards="bordered"] .smd-form button { border-radius: 0; }
+.smd-form button:hover {
+  background: var(--primary-dark);
+  transform: translateY(-1px);
+}
+.smd-form button:active { transform: translateY(1px); }
+.smd-form button:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+/* ===== Paragraphs ===== */
+.smd-section p, .smd-column p, .smd-compact p {
+  margin-bottom: 8px;
+  color: var(--text);
+}
+.smd-section > p {
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ===== CTA Button Row ===== */
+.smd-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  margin: 24px auto 32px;
+  max-width: 680px;
+}
+.smd-cta-row a {
+  display: inline-block;
+  padding: 12px 28px;
+  border-radius: 999px;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.92em;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-decoration: none !important;
+  transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+[data-cards="bordered"] .smd-cta-row a { border-radius: 0; }
+.smd-cta-row a:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+.smd-cta-row a.smd-cta-primary {
+  background: var(--primary);
+  color: white;
+}
+.smd-cta-row a.smd-cta-primary:hover { background: var(--primary-dark); }
+.smd-cta-row a.smd-cta-secondary {
+  background: transparent;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+}
+.smd-cta-row a.smd-cta-secondary:hover { background: var(--primary-light); }
+.smd-cta-row a:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.smd-cta-row a:active { transform: translateY(1px); box-shadow: none; }
+
+/* ===== Fenced Blocks (::: name) ===== */
+.smd-block {
+  border-radius: var(--radius-lg);
+  padding: 28px 32px;
+  margin: 24px 0;
+}
+/* Match paragraph readable width when block is a direct section child */
+.smd-section > .smd-block {
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
+}
+/* Note / Info / Tip */
+.smd-block-note, .smd-block-info, .smd-block-tip {
+  background: rgba(33, 150, 243, 0.1);
+  border-left: 4px solid #2196f3;
+  color: var(--text);
+}
+.smd-block-note::before, .smd-block-info::before { content: 'Note'; }
+.smd-block-tip::before { content: 'Tip'; }
+/* Warning */
+.smd-block-warning, .smd-block-caution {
+  background: rgba(245, 158, 11, 0.1);
+  border-left: 4px solid #f59e0b;
+  color: var(--text);
+}
+.smd-block-warning::before { content: 'Warning'; }
+.smd-block-caution::before { content: 'Caution'; }
+/* Error / Danger */
+.smd-block-error, .smd-block-danger {
+  background: rgba(229, 62, 62, 0.1);
+  border-left: 4px solid #e53e3e;
+  color: var(--text);
+}
+.smd-block-error::before { content: 'Error'; }
+.smd-block-danger::before { content: 'Danger'; }
+/* Success */
+.smd-block-success {
+  background: rgba(56, 161, 105, 0.1);
+  border-left: 4px solid #38a169;
+  color: var(--text);
+}
+.smd-block-success::before { content: 'Success'; }
+/* Shared label style for typed blocks */
+.smd-block-note::before, .smd-block-info::before, .smd-block-tip::before,
+.smd-block-warning::before, .smd-block-caution::before,
+.smd-block-error::before, .smd-block-danger::before,
+.smd-block-success::before {
+  display: block;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.8em;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+  opacity: 0.7;
+}
+/* Card - generic styled container */
+.smd-block-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+/* Cards inside columns: center content for balanced grid layouts */
+.smd-column > .smd-block-card {
+  text-align: center;
+}
+.smd-column > .smd-block-card img:not(.smd-img-avatar) {
+  display: inline-block;
+  max-width: 60%;
+  height: auto;
+  object-fit: contain;
+  margin: 0 auto;
+}
+/* Quote / Testimonial */
+.smd-block-quote, .smd-block-testimonial {
+  background: var(--surface);
+  border-left: 3px solid var(--accent);
+  box-shadow: var(--shadow-sm);
+  font-style: italic;
+  position: relative;
+}
+.smd-block-quote::before, .smd-block-testimonial::before {
+  content: '\201C';
+  position: absolute;
+  top: 12px;
+  right: 24px;
+  font-size: 3em;
+  color: var(--border);
+  font-family: Georgia, serif;
+  line-height: 1;
+  font-style: normal;
+}
+/* Hero - large centered text block */
+.smd-block-hero {
+  text-align: center;
+  padding: 64px 32px;
+  background: var(--primary);
+  color: white;
+}
+.smd-block-hero h1, .smd-block-hero h2, .smd-block-hero h3 {
+  color: white;
+  font-family: var(--font-heading);
+}
+.smd-block-hero p { color: rgba(255,255,255,0.9); }
+/* Highlight - accent-colored callout */
+.smd-block-highlight {
+  background: var(--primary-light);
+  border: none;
+  text-align: center;
+  padding: 40px 32px;
+}
+/* Unstyled fallback - just a generic container with class */
+.smd-block:not([class*="smd-block-note"]):not([class*="smd-block-info"]):not([class*="smd-block-tip"]):not([class*="smd-block-warning"]):not([class*="smd-block-caution"]):not([class*="smd-block-error"]):not([class*="smd-block-danger"]):not([class*="smd-block-success"]):not([class*="smd-block-card"]):not([class*="smd-block-quote"]):not([class*="smd-block-testimonial"]):not([class*="smd-block-hero"]):not([class*="smd-block-highlight"]) {
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+/* ===== Large Text (__x__) ===== */
+.smd-large {
+  display: block;
+  font-size: 2.8em;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.1;
+  margin-bottom: 8px;
+  font-family: var(--font-heading);
+}
+
+/* ===== Star Ratings ===== */
+.smd-stars { color: var(--accent, #d4a017); font-size: 1.15em; letter-spacing: 0.05em; }
+
+
+/* ===== Links in paragraphs ===== */
+.smd-section p a, .smd-column p a, .smd-compact p a {
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--primary) 30%, transparent);
+  text-underline-offset: 2px;
+  transition: text-decoration-color var(--transition);
+}
+.smd-section p a:hover, .smd-column p a:hover, .smd-compact p a:hover {
+  text-decoration-color: var(--primary);
+}
+
+/* ===== Carousel ===== */
+.smd-carousel {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  margin-bottom: 8px;
+}
+[data-cards="bordered"] .smd-carousel { border-radius: 0; }
+.smd-carousel-track {
+  display: flex;
+  width: 100%;
+  transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+.smd-carousel-slide {
+  flex-shrink: 0;
+  width: 100%;
+}
+.smd-carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  color: white;
+  border: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  font-size: 1.6em;
+  cursor: pointer;
+  transition: background var(--transition);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.smd-carousel-btn:hover { background: rgba(255,255,255,0.35); }
+.smd-carousel-prev { left: 16px; }
+.smd-carousel-next { right: 16px; }
+.smd-carousel-dots {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 10px;
+  z-index: 2;
+}
+.smd-carousel-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid rgba(255,255,255,0.7);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: background var(--transition);
+  user-select: none;
+  -webkit-user-select: none;
+}
+.smd-carousel-dot:hover { background: rgba(255,255,255,0.5); }
+.smd-carousel-dot.active { background: white; }
+.smd-carousel-btn:focus-visible { outline: 2px solid white; outline-offset: 2px; }
+
+/* ===== Background Section ===== */
+.smd-bg-section {
+  min-height: 420px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+body:has(.smd-nav[data-style="transparent"]) .smd-page > .smd-carousel:first-child,
+body:has(.smd-nav[data-style="transparent"]) .smd-page > .smd-bg-section:first-child {
+  margin-top: calc(-1 * var(--nav-height));
+}
+body:has(.smd-nav[data-style="transparent"]) .smd-page > .smd-carousel:first-child .smd-bg-section {
+  min-height: calc(420px + var(--nav-height));
+  padding-top: var(--nav-height);
+}
+.smd-bg-section::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.45), rgba(0,0,0,0.6));
+}
+.smd-bg-overlay {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  color: white;
+  padding: 48px 32px;
+  max-width: 700px;
+}
+.smd-bg-overlay h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(1.8em, 4.5vw, 3em);
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.5), 0 1px 4px rgba(0,0,0,0.3);
+}
+.smd-bg-overlay p {
+  font-size: 1.15em;
+  color: rgba(255,255,255,0.9);
+  line-height: 1.7;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.4), 0 1px 3px rgba(0,0,0,0.2);
+}
+
+/* ===== Footer ===== */
+.smd-footer {
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.88em;
+  margin-top: 32px;
+}
+/* Footer: minimal */
+.smd-footer[data-style="minimal"] {
+  text-align: center;
+  padding: 32px 0 24px;
+}
+.smd-footer[data-style="minimal"] .smd-footer-title {
+  font-family: var(--font-heading);
+  font-size: 1.1em;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+/* Footer: centered (decorative) */
+.smd-footer[data-style="centered"] {
+  text-align: center;
+  padding: 48px 0 32px;
+}
+.smd-footer[data-style="centered"] .smd-footer-title {
+  font-family: var(--font-heading);
+  font-size: 1.6em;
+  color: var(--text);
+  margin-bottom: 16px;
+  font-weight: 400;
+}
+.smd-footer[data-style="centered"] .smd-footer-links {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.smd-footer[data-style="centered"] .smd-footer-links a {
+  color: var(--text-muted);
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.9em;
+  text-decoration: none;
+  letter-spacing: 0.03em;
+}
+.smd-footer[data-style="centered"] .smd-footer-links a:hover { color: var(--text); }
+.smd-footer[data-style="centered"] .smd-footer-rule {
+  width: 40px;
+  height: 2px;
+  background: var(--accent);
+  margin: 0 auto 20px;
+}
+/* Footer: columns (nav links in grid) */
+.smd-footer[data-style="columns"] {
+  padding: 48px 0 24px;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 48px;
+}
+.smd-footer[data-style="columns"] .smd-footer-brand {
+  font-family: var(--font-heading);
+  font-size: 1.3em;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.smd-footer[data-style="columns"] .smd-footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 40px;
+}
+.smd-footer[data-style="columns"] .smd-footer-links a {
+  color: var(--text-muted);
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.9em;
+  text-decoration: none;
+}
+.smd-footer[data-style="columns"] .smd-footer-links a:hover { color: var(--text); }
+.smd-footer .smd-footer-copy {
+  font-size: 0.85em;
+  color: var(--text-light);
+}
+@media (max-width: 768px) {
+  .smd-footer[data-style="columns"] { grid-template-columns: 1fr; gap: 24px; }
+}
+
+/* ===== Page Transitions ===== */
+/* SPA mode transitions (browser.mjs) */
+.smd-page-old {
+  overflow: hidden;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.smd-page-old.push-out {
+  opacity: 0;
+  transform: translateX(-8%);
+}
+.smd-page-old.pop-out {
+  opacity: 0;
+  transform: translateX(8%);
+}
+.smd-page {
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+.smd-page.push-in {
+  opacity: 0;
+  transform: translateX(4%);
+}
+.smd-page.pop-in {
+  opacity: 0;
+  transform: translateX(-4%);
+}
+/* Static multi-page transitions (compiled sites) */
+.smd-page-hidden {
+  opacity: 0;
+  transform: translateY(16px);
+}
+.smd-page-exit {
+  opacity: 0 !important;
+  transform: translateY(-8px) !important;
+  transition: opacity 0.2s ease, transform 0.2s ease !important;
+}
+[data-animation="none"] .smd-page-hidden {
+  opacity: 1;
+  transform: none;
+}
+
+/* ===== Live Editor ===== */
+.smd-editor-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 200;
+  background: rgba(0,0,0,0.8);
+  color: white;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  font-size: 18px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: system-ui, sans-serif;
+  transition: background 0.2s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.smd-editor-toggle:hover { background: rgba(0,0,0,0.95); }
+.smd-editor-panel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 45%;
+  min-width: 360px;
+  max-width: 640px;
+  z-index: 150;
+  background: #1e1e1e;
+  color: #d4d4d4;
+  display: flex;
+  flex-direction: row;
+  transform: translateX(-100%);
+  transition: transform 0.3s ease;
+  box-shadow: 4px 0 24px rgba(0,0,0,0.3);
+}
+.smd-editor-panel.open {
+  transform: translateX(0);
+}
+body:has(.smd-editor-panel.open) .smd-page {
+  margin-left: auto;
+  margin-right: 0;
+  max-width: 55vw;
+  transition: max-width 0.3s ease;
+}
+body:has(.smd-editor-panel.open) .smd-nav {
+  left: min(45%, 640px);
+  transition: left 0.3s ease;
+}
+body:has(.smd-editor-panel.open) .smd-editor-toggle {
+  left: calc(min(45%, 640px) + 12px);
+  right: auto;
+}
+
+/* Editor sidebar — file tree */
+.smd-editor-sidebar {
+  width: 160px;
+  flex-shrink: 0;
+  background: #181818;
+  border-right: 1px solid #333;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+.smd-editor-sidebar-header {
+  padding: 10px 12px;
+  font: 11px/1.4 system-ui, sans-serif;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  border-bottom: 1px solid #2a2a2a;
+}
+.smd-editor-files {
+  list-style: none;
+  padding: 4px 0;
+}
+.smd-editor-files li {
+  padding: 5px 12px;
+  font: 13px/1.4 system-ui, sans-serif;
+  color: #aaa;
+  cursor: pointer;
+  border-left: 2px solid transparent;
+}
+.smd-editor-files li:hover { background: #252525; color: #ddd; }
+.smd-editor-files li.active {
+  background: #1e1e1e;
+  color: #fff;
+  border-left-color: #569cd6;
+}
+
+/* Editor main area */
+.smd-editor-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.smd-editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 16px;
+  border-bottom: 1px solid #333;
+  font: 12px/1.4 system-ui, sans-serif;
+  color: #888;
+  flex-shrink: 0;
+  gap: 8px;
+}
+.smd-editor-header strong { color: #ccc; font-size: 13px; }
+.smd-editor-status { flex: 1; text-align: right; }
+
+/* Editor toolbar */
+.smd-editor-toolbar {
+  display: flex;
+  flex-direction: column;
+  background: #252525;
+  border-bottom: 1px solid #333;
+  flex-shrink: 0;
+}
+.smd-toolbar-row {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 3px 8px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #2a2a2a;
+}
+.smd-toolbar-row:last-child { border-bottom: none; }
+.smd-toolbar-label {
+  font: 10px/1 system-ui, sans-serif;
+  color: #555;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  width: 32px;
+  flex-shrink: 0;
+}
+.smd-editor-toolbar button {
+  background: none;
+  border: 1px solid transparent;
+  color: #bbb;
+  font: 11px/1 system-ui, sans-serif;
+  padding: 3px 6px;
+  border-radius: 3px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.smd-editor-toolbar button:hover {
+  background: #333;
+  color: #fff;
+  border-color: #555;
+}
+.smd-toolbar-sep {
+  width: 1px;
+  height: 16px;
+  background: #333;
+  margin: 0 3px;
+}
+
+/* Editor content — line numbers + syntax highlight overlay + textarea */
+.smd-editor-content {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+.smd-editor-lines {
+  width: 40px;
+  flex-shrink: 0;
+  background: #1a1a1a;
+  padding: 16px 0;
+  overflow: hidden;
+  text-align: right;
+  user-select: none;
+}
+.smd-editor-lines div {
+  font: 14px/1.6 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  padding-right: 8px;
+  color: #555;
+}
+.smd-editor-code-wrap {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  min-width: 0;
+}
+.smd-editor-highlight {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  margin: 0;
+  padding: 16px;
+  font: 14px/1.6 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  white-space: pre;
+  overflow: auto;
+  color: #666;
+  background: #1e1e1e;
+  pointer-events: none;
+  tab-size: 2;
+  word-wrap: normal;
+  /* Override global pre styles to stay aligned with textarea */
+  border: none;
+  border-radius: 0;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+.smd-editor-panel textarea {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  color: transparent;
+  caret-color: #d4d4d4;
+  border: none;
+  padding: 16px;
+  font: 14px/1.6 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  resize: none;
+  outline: none;
+  tab-size: 2;
+  white-space: pre;
+  overflow: auto;
+  min-width: 0;
+  box-sizing: border-box;
+  z-index: 1;
+}
+.smd-editor-panel textarea::selection {
+  background: rgba(38, 79, 120, 0.7);
+}
+
+/* Syntax highlight classes */
+.hl-heading { color: #569cd6; }
+.hl-h1 { font-weight: bold; color: #4ec9b0; }
+.hl-h2 { font-weight: bold; color: #569cd6; }
+.hl-h3 { font-weight: bold; color: #9cdcfe; }
+.hl-bold { color: #d4d4d4; font-weight: bold; }
+.hl-italic { color: #d4d4d4; font-style: italic; }
+.hl-code { color: #ce9178; background: rgba(206,145,120,0.1); border-radius: 2px; }
+.hl-link { color: #4ec9b0; }
+.hl-fence { color: #c586c0; }
+.hl-meta { color: #808080; }
+.hl-key { color: #9cdcfe; }
+.hl-value { color: #ce9178; }
+.hl-bullet { color: #d7ba7d; }
+.hl-hr { color: #808080; }
+.hl-quote-prefix { color: #6a9955; font-style: italic; }
+.hl-large { color: #dcdcaa; }
+.hl-strike { color: #808080; text-decoration: line-through; }
+.hl-mark { color: #d4d4d4; background: rgba(255,220,0,0.15); }
+
+/* ===== Spacing ===== */
+[data-spacing="compact"] { --section-padding: 48px; }
+[data-spacing="spacious"] { --section-padding: 96px; --max-width: 1200px; }
+
+/* ===== Responsive ===== */
+@media (max-width: 700px) {
+  .smd-page { padding: 0 20px 48px; }
+  .smd-hero { padding: 48px 12px 32px; }
+  .smd-section { padding: 48px 0; }
+  [data-sections="alternating"] .smd-section-alt,
+  [data-sections="bold"] .smd-section-alt {
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    padding-left: calc(50vw - 50% + 20px);
+    padding-right: calc(50vw - 50% + 20px);
+  }
+  .smd-columns { grid-template-columns: 1fr; gap: 28px; }
+  .smd-compact { grid-template-columns: 1fr; gap: 28px; }
+  .smd-gallery { gap: 10px; }
+  .smd-gallery.count-2,
+  .smd-gallery.count-3 { grid-template-columns: 1fr; }
+  .smd-gallery img { height: 220px; }
+  .smd-bg-section { min-height: 300px; }
+  .smd-bg-overlay { padding: 32px 20px; }
+  .smd-carousel-btn { width: 36px; height: 36px; font-size: 1.2em; }
+  .smd-carousel-prev { left: 8px; }
+  .smd-carousel-next { right: 8px; }
+  .smd-cta-row { gap: 16px; }
+  .smd-form { padding: 24px; }
+  .smd-form-group { flex-direction: column; gap: 16px; }
+  .smd-field { min-width: 100%; }
+  .smd-large { font-size: 2em; }
+  .smd-nav { padding: 0 20px; }
+}
+@media (min-width: 701px) and (max-width: 900px) {
+  .smd-gallery.count-3 { grid-template-columns: 1fr 1fr; }
+  .smd-gallery.count-3 img:last-child { grid-column: span 2; }
+}
+
+/* ===== Phase 2: Inline & Text Features ===== */
+
+/* Highlighted text */
+mark {
+  background: rgba(255, 220, 0, 0.25);
+  padding: 0.1em 0.2em;
+  border-radius: 2px;
+}
+[data-sections="bold"] .smd-section-alt mark { background: rgba(255, 255, 255, 0.2); }
+
+/* Task lists */
+.smd-task-list { list-style: none; padding-left: 0; }
+.smd-task-item {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding: 4px 0;
+}
+.smd-task-item input[type="checkbox"] {
+  margin: 0;
+  flex-shrink: 0;
+  accent-color: var(--primary);
+}
+.smd-task-done { color: var(--text-muted); }
+.smd-task-partial input[type="checkbox"] { opacity: 0.5; }
+
+/* Inline code */
+code {
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  background: var(--surface-warm);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-size: 0.88em;
+}
+pre code {
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  font-size: inherit;
+}
+
+/* Code blocks */
+pre {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  overflow-x: auto;
+  font-size: 0.9em;
+  line-height: 1.6;
+  margin: 16px 0;
+}
+
+/* Blockquotes */
+blockquote {
+  border-left: 3px solid var(--accent);
+  padding: 12px 20px;
+  margin: 20px 0;
+  color: var(--text-muted);
+  font-style: italic;
+}
+blockquote p { margin: 8px 0; }
+
+/* Records */
+.smd-record {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin: 12px 0;
+}
+.smd-record-name {
+  font-weight: 700;
+  font-size: 1.1em;
+  margin-bottom: 8px;
+}
+.smd-record-fields {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 16px;
+}
+.smd-record-fields dt { font-weight: 600; color: var(--text-muted); }
+
+/* Expandable sections */
+.smd-expandable {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin: 12px 0;
+}
+.smd-expandable summary {
+  padding: 12px 16px;
+  cursor: pointer;
+  font-weight: 600;
+}
+.smd-expandable summary:hover { color: var(--primary); }
+.smd-expandable-content { padding: 0 16px 16px; }
+
+/* Skip to content link (accessibility) */
+.smd-skip-nav {
+  position: absolute;
+  top: -100px;
+  left: 16px;
+  background: var(--primary);
+  color: white;
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  z-index: 200;
+  font-size: 0.9em;
+  text-decoration: none;
+}
+.smd-skip-nav:focus {
+  top: 8px;
+}
+
+/* Tables */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+  font-size: 0.95em;
+}
+th, td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+th {
+  font-weight: 600;
+  color: var(--primary-dark);
+  border-bottom: 2px solid var(--border);
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.85em;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+tr:hover td { background: var(--surface-warm); }
+
+/* Embeds (YouTube, Vimeo) */
+.smd-embed {
+  position: relative;
+  padding-bottom: 56.25%; /* 16:9 */
+  height: 0;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  margin: 24px 0;
+  box-shadow: var(--shadow-md);
+}
+.smd-embed iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  border: none;
+}
+
+/* Table of Contents */
+.smd-toc {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  margin: 24px 0;
+}
+.smd-toc ul { list-style: none; padding: 0; }
+.smd-toc li { padding: 4px 0; }
+.smd-toc a {
+  color: var(--text);
+  text-decoration: none;
+  font-size: 0.95em;
+}
+.smd-toc a:hover { color: var(--primary); text-decoration: underline; }
+.smd-toc-indent { padding-left: 20px; }
+
+/* Nav: side (persistent sidebar) */
+.smd-nav[data-style="side"] {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 260px;
+  height: auto;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 24px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  z-index: 100;
+}
+.smd-nav[data-style="side"] .smd-nav-brand {
+  color: var(--text);
+  font-size: 1.2em;
+  margin-bottom: 24px;
+  display: block;
+}
+.smd-nav[data-style="side"] .smd-nav-links {
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+.smd-nav[data-style="side"] .smd-nav-links li {
+  width: 100%;
+}
+.smd-nav[data-style="side"] .smd-nav-links a {
+  color: var(--text-muted);
+  display: block;
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  font-size: 0.9em;
+  opacity: 1;
+}
+.smd-nav[data-style="side"] .smd-nav-links a:hover {
+  background: var(--surface-warm);
+  color: var(--text);
+}
+.smd-nav[data-style="side"].scrolled {
+  box-shadow: none;
+  background: var(--surface);
+}
+.smd-nav[data-style="side"] .smd-nav-toggle { display: none; }
+
+/* Side nav page offset */
+body:has(.smd-nav[data-style="side"]) .smd-page {
+  margin-left: 260px;
+  padding-top: 32px;
+}
+body:has(.smd-nav[data-style="side"]) .smd-hero {
+  padding-top: 32px;
+}
+/* Side nav: full-bleed sections stay within content area */
+body:has(.smd-nav[data-style="side"]) .smd-section-alt {
+  margin-left: 0;
+  margin-right: 0;
+  padding-left: 32px;
+  padding-right: 32px;
+}
+@media (max-width: 768px) {
+  .smd-nav[data-style="side"] {
+    position: fixed;
+    width: 100%;
+    height: var(--nav-height);
+    flex-direction: row;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    overflow: visible;
+    padding: 0 20px;
+    align-items: center;
+  }
+  .smd-nav[data-style="side"] .smd-nav-brand { margin-bottom: 0; }
+  .smd-nav[data-style="side"] .smd-nav-links {
+    position: fixed;
+    top: var(--nav-height);
+    left: 0;
+    right: 0;
+    background: var(--bg);
+    flex-direction: column;
+    padding: 24px 40px;
+    gap: 20px;
+    border-bottom: 1px solid var(--border);
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.3s, opacity 0.3s;
+  }
+  .smd-nav[data-style="side"] .smd-nav-links.open {
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .smd-nav[data-style="side"] .smd-nav-toggle { display: block; }
+  body:has(.smd-nav[data-style="side"]) .smd-page {
+    margin-left: 0;
+    padding-top: calc(var(--nav-height) + 16px);
+  }
+}
+
+/* Syntax highlighting (theme-aware) */
+.hljs-keyword, .hljs-selector-tag, .hljs-type { color: var(--primary); font-weight: 600; }
+.hljs-string, .hljs-template-variable { color: var(--accent); }
+.hljs-comment, .hljs-quote { color: var(--text-muted); font-style: italic; }
+.hljs-number, .hljs-literal { color: var(--accent); }
+.hljs-title, .hljs-section { color: var(--primary-dark, var(--primary)); font-weight: 600; }
+.hljs-attr, .hljs-attribute { color: var(--primary); }
+.hljs-built_in, .hljs-name { color: var(--primary); }
+.hljs-meta { color: var(--text-muted); }
+.hljs-deletion { color: #c0392b; background: rgba(192,57,43,0.1); }
+.hljs-addition { color: #27ae60; background: rgba(39,174,96,0.1); }
+
+/* Math blocks */
+.smd-math-block {
+  text-align: center;
+  padding: 20px 0;
+  margin: 16px 0;
+  overflow-x: auto;
+}
+
+/* ===== Keyboard Shortcuts ===== */
+kbd {
+  display: inline-block;
+  padding: 2px 8px;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.85em;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  box-shadow: 0 2px 0 var(--border);
+  white-space: nowrap;
+  line-height: 1.6;
+  vertical-align: baseline;
+}
+
+/* ===== Tabs ===== */
+.smd-tabs { margin: 1.5rem 0; }
+.smd-tabs-nav {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid var(--border);
+  margin-bottom: 1.5rem;
+  overflow-x: auto;
+}
+.smd-tab-btn {
+  padding: 0.75rem 1.5rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: 500;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+.smd-tab-btn:hover { color: var(--text); }
+.smd-tab-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
+.smd-tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  font-weight: 600;
+}
+.smd-tab-panel { display: none; }
+.smd-tab-panel.active { display: block; }
+
+/* ===== Featured Column ===== */
+.smd-column-featured {
+  border: 2px solid var(--primary);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  position: relative;
+  z-index: 1;
+}
+.smd-column-featured::before {
+  content: 'Recommended';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--primary);
+  color: white;
+  padding: 2px 16px;
+  border-radius: 12px;
+  font-size: 0.78em;
+  font-weight: 600;
+  font-family: system-ui, -apple-system, sans-serif;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+@media (min-width: 769px) {
+  .smd-columns:has(.smd-column-featured) {
+    align-items: center;
+  }
+  .smd-column-featured {
+    transform: scale(1.04);
+  }
+}
+
+/* ===== Stats Bar ===== */
+.smd-columns-stats {
+  text-align: center;
+  gap: 20px;
+}
+.smd-columns-stats .smd-column {
+  padding: 1.5rem 1rem;
+}
+.smd-columns-stats .smd-column h3 {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  text-transform: none;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.smd-columns-stats .smd-column h3 .smd-large {
+  font-size: clamp(2rem, 6vw, 4rem);
+  white-space: nowrap;
+}
+.smd-columns-stats .smd-column p {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  margin-top: 0;
+}
+
+/* ===== Image Avatar ===== */
+.smd-img-avatar {
+  display: inline-block;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  vertical-align: middle;
+  margin-right: 8px;
+  border: 2px solid var(--accent, var(--primary));
+}
+
+/* ===== Image Showcase ===== */
+.smd-img-showcase {
+  display: block;
+  margin: 2rem auto;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-lg), 0 0 60px rgba(0,0,0,0.08);
+  max-width: 100%;
+  max-height: 70vh;
+  object-fit: cover;
+}
+
+/* Browser Frame */
+.smd-browser-frame {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-lg);
+  margin: 2rem 0;
+}
+.smd-browser-dots {
+  display: flex;
+  gap: 7px;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.smd-browser-dots span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--border);
+}
+.smd-browser-frame img {
+  display: block;
+  width: 100%;
+}
+
+/* Phone Frame */
+.smd-phone-frame {
+  display: block;
+  text-align: center;
+  margin: 2rem auto;
+}
+.smd-phone-frame img {
+  display: inline-block;
+  border-radius: 32px;
+  max-width: 320px;
+  box-shadow: 0 0 0 10px var(--text, #111), 0 0 0 12px var(--text-muted, #333), var(--shadow-lg);
+}
+
+/* ===== Video Background ===== */
+.smd-bg-video {
+  position: relative;
+  overflow: hidden;
+}
+.smd-bg-video-el {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: cover;
+  z-index: 0;
+}
+.smd-bg-video .smd-bg-overlay {
+  position: relative;
+  z-index: 1;
+}
+
+/* ===== Column Image Polish ===== */
+.smd-column > img {
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  object-fit: cover;
+}
+.smd-column > .smd-img-showcase {
+  margin: 0;
+}
+.smd-column > .smd-browser-frame {
+  margin: 0;
+}
+
+/* ===== Footer Columns ===== */
+.smd-footer-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 32px;
+  margin: 20px 0;
+}
+.smd-footer-col-title {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-weight: 600;
+  font-size: 0.9em;
+  color: var(--text);
+  margin-bottom: 12px;
+  letter-spacing: 0.03em;
+}
+.smd-footer-col-links {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.smd-footer-col-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.9em;
+}
+.smd-footer-col-links a:hover {
+  color: var(--text);
+}
+
+/* ===== Print Stylesheet ===== */
+@media print {
+  .smd-nav, .smd-nav-toggle, .smd-skip-nav,
+  .smd-carousel-btn, .smd-carousel-dots,
+  .smd-editor-toggle, .smd-editor-panel { display: none !important; }
+  body { font-size: 12pt; line-height: 1.5; color: #000; background: #fff; }
+  .smd-page { max-width: 100%; padding: 0; }
+  .smd-hero { padding: 20px 0; }
+  .smd-section { padding: 24px 0; break-inside: avoid; }
+  .smd-section-alt { background: transparent !important; margin: 0 !important; padding-left: 0 !important; padding-right: 0 !important; }
+  .smd-bg-section { min-height: auto; background: none !important; color: #000; }
+  .smd-bg-overlay { background: none !important; padding: 16px 0; }
+  .smd-carousel-track { display: block; }
+  .smd-carousel-slide { display: none; }
+  .smd-carousel-slide:first-child { display: block; }
+  .smd-block { box-shadow: none; border: 1px solid #ccc; }
+  a { color: #000; text-decoration: underline; }
+  a[href]::after { content: " (" attr(href) ")"; font-size: 0.8em; color: #666; }
+  a[href^="#"]::after, a[href^="javascript"]::after { content: none; }
+  .smd-cta-row a::after { content: none; }
+  img { max-width: 100% !important; }
+  .smd-gallery { gap: 8px; }
+  .smd-gallery img { height: auto !important; box-shadow: none; }
+}
+
+:root {
+  --primary: #fcb912;
+  --primary-dark: #e0a50f;
+  --primary-light: #1a3040;
+  --accent: #fcb912;
+  --bg: #0e2f3a;
+  --surface: #124156;
+  --surface-warm: #0b2530;
+  --text: #f0f0f0;
+  --text-muted: #b0b0b0;
+  --border: #1a4a5e;
+  --border-light: #153d4e;
+  --bg: #0e2f3a;
+  --surface: #124156;
+  --surface-warm: #0b2530;
+  --text: #f0f0f0;
+  --text-muted: #b0b0b0;
+  --text-light: #666;
+  --border: #1a4a5e;
+  --border-light: #153d4e;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.2), 0 1px 2px rgba(0,0,0,0.15);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.3), 0 2px 4px rgba(0,0,0,0.2);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.4), 0 4px 8px rgba(0,0,0,0.25);
+  --font-body: 'Lato', Georgia, serif;
+  --font-heading: 'Bebas Neue', Georgia, serif;
+  --radius: 30px;
+  --radius-lg: 30px;
+}
+</style>
+</head>
+<body>
+<div id="smd-nav-mount"><a href="#smd-content" class="smd-skip-nav">Skip to content</a><nav class="smd-nav" data-style="transparent" aria-label="Main navigation"><a class="smd-nav-brand" href="index.html"><img src="logo.svg" alt="Lightning Kite" loading="lazy" style="max-width:100%;vertical-align:middle;"></a><ul class="smd-nav-links"><li><a href="services.html">Build With Us</a></li><li><a href="work.html">Our Work</a></li><li><a href="team.html">Our Team</a></li><li><a href="contact.html">Let’s Talk</a></li></ul><button class="smd-nav-toggle" aria-label="Menu"><span></span></button></nav></div>
+<main id="smd-content" class="smd-page smd-page-hidden">
+<header class="smd-hero smd-animate"><h1>We Build Strikingly Good Software</h1><p class="smd-subtitle">Native mobile apps, web platforms, and IoT solutions — built by a team that treats software development as an art form.</p></header><div class="smd-cta-row"><a href="contact.html" class="smd-cta-primary">Let's Talk</a><a href="work.html" class="smd-cta-secondary">See Our Work</a></div><section class="smd-section smd-animate" id="web-and-mobile-development-done-right"><h2>Web and Mobile Development Done Right</h2><hr class="smd-section-rule"><div class="smd-columns smd-animate smd-animate-stagger"><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="expertise">Expertise</h3><img src="reason-expertise.png" alt="Expertise" width="120" loading="lazy" style="max-width:100%;border-radius:var(--radius);max-width:120px"><p>Proficient across iOS, Android, web, and embedded systems. Our engineers collaborate across 31 programming languages to build the right solution.</p></div></div><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="communication">Communication</h3><img src="reason-communication.png" alt="Communication" width="120" loading="lazy" style="max-width:100%;border-radius:var(--radius);max-width:120px"><p>Radical transparency isn’t a buzzword here. Our entire U.S.-based team works in the same office, and you’ll never be out of the loop on your project.</p></div></div><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="craftsmanship">Craftsmanship</h3><img src="reason-masterpiece.png" alt="Masterpiece" width="120" loading="lazy" style="max-width:100%;border-radius:var(--radius);max-width:120px"><p>Software development is our art. Every project gets the same meticulous attention to detail, whether it’s a startup MVP or an enterprise rebuild.</p></div></div></div></section><section class="smd-section smd-section-alt smd-animate" id="why-choose-lightning-kite"><h2>Why Choose Lightning Kite?</h2><hr class="smd-section-rule"><p>We deliver quality software through excellent communication and deep technical knowledge. From native mobile apps to complex IoT backends, we build solutions that work across every device and scale with your business.</p><p>Our vision is simple: innovative apps that solve real problems, built by people who genuinely care about the outcome.</p><div class="smd-cta-row"><a href="work.html" class="smd-cta-primary">See Our Work</a><a href="team.html" class="smd-cta-secondary">Meet the Team</a></div></section><section class="smd-section smd-animate" id="by-the-numbers"><h2>By the Numbers</h2><hr class="smd-section-rule"><div class="smd-columns smd-columns-stats smd-animate smd-animate-stagger"><div class="smd-column"><h3 id="31"><span class="smd-large">31</span></h3><p>Programming Languages</p></div><div class="smd-column"><h3 id="115"><span class="smd-large">115</span></h3><p>Mobile Projects</p></div><div class="smd-column"><h3 id="204"><span class="smd-large">204</span></h3><p>Web Projects</p></div></div></section><section class="smd-section smd-section-alt smd-animate" id="what-our-clients-say"><h2>What Our Clients Say</h2><hr class="smd-section-rule"><div class="smd-block smd-block-quote"><p>We interviewed many different companies before choosing Lightning Kite. Their transparency and customer service is what set them apart. They truly care about delivering quality.</p><p><img src="harley.jpg" alt="Harley" class="smd-img-avatar" loading="lazy"> — <strong>Harley</strong>, Project Lead</p></div><div class="smd-block smd-block-quote"><p>Integrity is paramount with Lightning Kite. They are a real hidden gem. If you want honest, talented people building your software, look no further.</p><p><img src="steve.jpg" alt="Steve" class="smd-img-avatar" loading="lazy"> — <strong>Steve</strong>, Reminderband</p></div><div class="smd-block smd-block-quote"><p>We’ve worked with Lightning Kite for over 5 years. As their team has grown, so has their creativity and diversity. They’re a true long-term partner.</p><p><img src="jake.jpg" alt="Jake" class="smd-img-avatar" loading="lazy"> — <strong>Jake</strong>, Taxbot</p></div></section><section class="smd-section smd-animate" id="bring-your-ideas-to-life"><h2>Bring Your Ideas to Life</h2><hr class="smd-section-rule"><p>What type of project do you need? Let’s work out the details.</p><div class="smd-cta-row"><a href="contact.html" class="smd-cta-primary">Let's Talk</a></div></section>
+<footer class="smd-footer" data-style="columns"><div class="smd-footer-title">Lightning Kite</div><div class="smd-footer-columns"><div class="smd-footer-col"><div class="smd-footer-col-title">Company</div><ul class="smd-footer-col-links"><li><a href="services.html">Build With Us</a></li><li><a href="work.html">Our Work</a></li><li><a href="team.html">Our Team</a></li><li><a href="contact.html">Let’s Talk</a></li></ul></div><div class="smd-footer-col"><div class="smd-footer-col-title">Services</div><ul class="smd-footer-col-links"><li><a href="services.html#what-we-build">Mobile Development</a></li><li><a href="services.html#what-we-build">Web Applications</a></li><li><a href="services.html#what-we-build">IoT Solutions</a></li><li><a href="services.html#technologies-we-work-with">Cloud Infrastructure</a></li></ul></div><div class="smd-footer-col"><div class="smd-footer-col-title">Get in Touch</div><ul class="smd-footer-col-links"><li>info@lightningkite.com</li><li>+1-435-753-3260</li><li>255 South 300 West, Unit B</li><li>Logan, Utah 84321</li></ul></div></div><div class="smd-footer-copy">Copyright 2026 Lightning Kite. All rights reserved.</div></footer>
+</main>
+<noscript><style>.smd-page-hidden,.smd-animate,.smd-animate-stagger>*{opacity:1!important;transform:none!important;transition:none!important}</style></noscript>
+<script>
+// Runtime: hamburger, carousel, nav scroll, animations, page transitions
+(function() {
+  // Hamburger
+  var toggle = document.querySelector('.smd-nav-toggle');
+  var links = document.querySelector('.smd-nav-links');
+  if (toggle && links) {
+    toggle.setAttribute('aria-label', 'Toggle navigation');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.addEventListener('click', function() {
+      var open = links.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+
+  // Nav scroll
+  var nav = document.querySelector('.smd-nav');
+  if (nav) {
+    var scrolled = false;
+    window.addEventListener('scroll', function() {
+      var s = window.scrollY > 80;
+      if (s !== scrolled) { scrolled = s; nav.classList.toggle('scrolled', scrolled); }
+    }, { passive: true });
+  }
+
+  // Carousel
+  var state = {};
+  var pauseUntil = {};
+  function goTo(id, idx) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    state[id] = idx;
+    el.querySelector('.smd-carousel-track').style.transform = 'translateX(-' + idx * 100 + '%)';
+    el.querySelectorAll('.smd-carousel-dot').forEach(function(d, i) { d.classList.toggle('active', i === idx); });
+  }
+  window.carouselNav = function(id, dir) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    var count = el.querySelectorAll('.smd-carousel-slide').length;
+    goTo(id, ((state[id] || 0) + dir + count) % count);
+    pauseUntil[id] = Date.now() + 10000;
+  };
+  window.carouselGo = function(id, idx) {
+    goTo(id, idx);
+    pauseUntil[id] = Date.now() + 10000;
+  };
+  setInterval(function() {
+    document.querySelectorAll('.smd-carousel').forEach(function(el) {
+      var count = el.querySelectorAll('.smd-carousel-slide').length;
+      if (count <= 1) return;
+      if (pauseUntil[el.id] && Date.now() < pauseUntil[el.id]) return;
+      goTo(el.id, ((state[el.id] || 0) + 1) % count);
+    });
+  }, 5000);
+
+  // Tabs
+  window.tabSwitch = function(id, idx) {
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.querySelectorAll('.smd-tab-btn').forEach(function(b, i) { b.classList.toggle('active', i === idx); });
+    el.querySelectorAll('.smd-tab-panel').forEach(function(p, i) { p.classList.toggle('active', i === idx); });
+  };
+
+  // Animations & SPA-like page transitions
+  var page = document.querySelector('.smd-page');
+  if (page && page.classList.contains('smd-page-hidden')) {
+    function initScrollAnims() {
+      document.querySelectorAll('.smd-hero.smd-animate').forEach(function(el) {
+        setTimeout(function() { el.classList.add('smd-visible'); }, 150);
+      });
+      var first = document.querySelector('.smd-section.smd-animate');
+      if (first) setTimeout(function() { first.classList.add('smd-visible'); }, 300);
+      if ('IntersectionObserver' in window) {
+        var obs = new IntersectionObserver(function(entries) {
+          entries.forEach(function(e) {
+            if (e.isIntersecting) { e.target.classList.add('smd-visible'); obs.unobserve(e.target); }
+          });
+        }, { threshold: 0.05, rootMargin: '0px 0px 50px 0px' });
+        document.querySelectorAll('.smd-animate:not(.smd-hero):not(.smd-visible)').forEach(function(el) { obs.observe(el); });
+      } else {
+        document.querySelectorAll('.smd-animate').forEach(function(el) { el.classList.add('smd-visible'); });
+      }
+    }
+
+    // Initial page enter
+    requestAnimationFrame(function() { page.classList.remove('smd-page-hidden'); });
+    initScrollAnims();
+
+    // SPA navigation: fetch + swap content, keep nav stable
+    var currentNav = null;
+    function navigateTo(url, push) {
+      // Cancel any in-flight navigation
+      if (currentNav) currentNav.abort();
+      var ctrl = new AbortController();
+      currentNav = ctrl;
+
+      var parts = url.split('#');
+      var fetchUrl = parts[0] || location.pathname;
+      var hash = parts[1] || '';
+
+      page.style.transition = 'opacity 0.2s ease, transform 0.2s ease';
+      page.style.opacity = '0';
+      page.style.transform = 'translateY(-8px)';
+
+      Promise.all([
+        fetch(fetchUrl, { signal: ctrl.signal }).then(function(r) { return r.text(); }),
+        new Promise(function(r) { setTimeout(r, 200); })
+      ]).then(function(results) {
+        if (ctrl.signal.aborted) return;
+        currentNav = null;
+        var parsed = new DOMParser().parseFromString(results[0], 'text/html');
+        var newMain = parsed.querySelector('.smd-page');
+        if (!newMain) { location.href = url; return; }
+
+        page.innerHTML = newMain.innerHTML;
+        var t = parsed.querySelector('title');
+        if (t) document.title = t.textContent;
+        if (push) history.pushState({}, '', url);
+
+        if (hash) {
+          var target = document.getElementById(hash);
+          if (target) target.scrollIntoView();
+        } else {
+          window.scrollTo(0, 0);
+        }
+
+        // Entry animation
+        page.style.transition = 'none';
+        page.style.transform = 'translateY(16px)';
+        page.offsetHeight;
+        page.style.transition = '';
+        page.style.opacity = '';
+        page.style.transform = '';
+
+        initScrollAnims();
+      }).catch(function(e) {
+        if (e.name === 'AbortError') return;
+        // Reset visual state before fallback
+        page.style.transition = '';
+        page.style.opacity = '';
+        page.style.transform = '';
+        location.href = url;
+      });
+    }
+
+    document.addEventListener('click', function(e) {
+      var a = e.target.closest('a');
+      if (!a) return;
+      var href = a.getAttribute('href');
+      if (!href || href.startsWith('#') || /^(https?:\/\/|mailto:)/.test(href)) return;
+      var path = href.split('#')[0].split('?')[0];
+      if (!path.endsWith('.html')) return;
+      // Same-page anchor: let browser handle natively (CSS scroll-behavior: smooth)
+      var curPage = location.pathname.split('/').pop();
+      if (path === curPage && href.indexOf('#') !== -1) return;
+      e.preventDefault();
+      navigateTo(href, true);
+    });
+
+    window.addEventListener('popstate', function() {
+      navigateTo(location.pathname + location.hash, false);
+    });
+  }
+})();
+</script>
+<script type="application/json" id="smd-sources">{"theme.yaml":"mode: dark\ncolors:\n  primary: \"#fcb912\"\n  primaryDark: \"#e0a50f\"\n  primaryLight: \"#1a3040\"\n  accent: \"#fcb912\"\n  background: \"#0e2f3a\"\n  surface: \"#124156\"\n  surfaceWarm: \"#0b2530\"\n  text: \"#f0f0f0\"\n  textMuted: \"#b0b0b0\"\n  border: \"#1a4a5e\"\n  borderLight: \"#153d4e\"\n\nfonts:\n  heading: Bebas Neue\n  body: Lato\n\nradius: 30\nradiusLg: 30\nnav: transparent\nsections: alternating\ncards: elevated\nanimation: subtle\nfooter: columns\nspacing: spacious\n","header.md":"# ![Lightning Kite](logo.svg)\n\n- [Build With Us](services.md)\n- [Our Work](work.md)\n- [Our Team](team.md)\n- [Let's Talk](contact.md)\n","footer.md":"# Lightning Kite\n\n|||\n### Company\n- [Build With Us](services.md)\n- [Our Work](work.md)\n- [Our Team](team.md)\n- [Let's Talk](contact.md)\n---\n### Services\n- [Mobile Development](services.md#what-we-build)\n- [Web Applications](services.md#what-we-build)\n- [IoT Solutions](services.md#what-we-build)\n- [Cloud Infrastructure](services.md#technologies-we-work-with)\n---\n### Get in Touch\n- info@lightningkite.com\n- +1-435-753-3260\n- 255 South 300 West, Unit B\n- Logan, Utah 84321\n|||\n\nCopyright 2026 Lightning Kite. All rights reserved.\n","404.md":"---\ntitle: Page Not Found — Lightning Kite\ndescription: The page you're looking for doesn't exist.\n---\n\n# 404\n\nThe page you're looking for doesn't exist or has been moved.\n\n[Back to Home](index.md) -- [Contact Us](contact.md)\n","contact.md":"---\ntitle: Contact — Lightning Kite\ndescription: Get in touch with Lightning Kite to discuss your software project.\n---\n\n# Let's Talk\n\nHave a project in mind? Want to learn more about what we do? We'd love to hear from you.\n\n[Schedule a Call](https://lightningkite.com/schedule-a-call) -- [info@lightningkite.com](mailto:info@lightningkite.com)\n\n## Send Us a Message\n\n::: form\nName*: {text}\nEmail*: {email}\nCompany: {text}\nProject Type*: {Mobile App / Web Application / IoT Solution / Other}\nBudget Range: {Under $25k / $25k - $50k / $50k - $100k / $100k+}\nTell us about your project*: {paragraph}\n\n[Send Message](POST /contact)\n:::\n\n## Other Ways to Reach Us\n\n|||\n### Call or Email\n- +1-435-753-3260\n- info@lightningkite.com\n- Monday -- Friday, 8AM -- 5PM Mountain Time\n---\n### Visit Our Office\n- 255 South 300 West, Unit B\n- Logan, Utah 84321\n- We even have a live office stream during business hours\n---\n### Follow Us\n- [GitHub](https://github.com/lightningkite)\n- [LinkedIn](https://linkedin.com/company/lightning-kite)\n|||\n\n## Not Sure Where to Start?\n\nCheck out our services or browse our past work to see what we can do.\n\n[Build With Us](services.md) -- [See Our Work](work.md)\n","index.md":"---\ntitle: Lightning Kite — Strikingly Good Software\ndescription: Take your software idea from concept to completion with Utah's premiere web and mobile app software engineering team.\nimage: home-title-intro.png\n---\n\n# We Build Strikingly Good Software\n\nNative mobile apps, web platforms, and IoT solutions -- built by a team that treats software development as an art form.\n\n[Let's Talk](contact.md) -- [See Our Work](work.md)\n\n## Web and Mobile Development Done Right\n\n|||\n::: card\n### Expertise\n\n![Expertise](reason-expertise.png =120x)\n\nProficient across iOS, Android, web, and embedded systems. Our engineers collaborate across 31 programming languages to build the right solution.\n:::\n---\n::: card\n### Communication\n\n![Communication](reason-communication.png =120x)\n\nRadical transparency isn't a buzzword here. Our entire U.S.-based team works in the same office, and you'll never be out of the loop on your project.\n:::\n---\n::: card\n### Craftsmanship\n\n![Masterpiece](reason-masterpiece.png =120x)\n\nSoftware development is our art. Every project gets the same meticulous attention to detail, whether it's a startup MVP or an enterprise rebuild.\n:::\n|||\n\n## Why Choose Lightning Kite?\n\nWe deliver quality software through excellent communication and deep technical knowledge. From native mobile apps to complex IoT backends, we build solutions that work across every device and scale with your business.\n\nOur vision is simple: innovative apps that solve real problems, built by people who genuinely care about the outcome.\n\n[See Our Work](work.md) -- [Meet the Team](team.md)\n\n## By the Numbers\n\n|||\n### ++31++\nProgramming Languages\n---\n### ++115++\nMobile Projects\n---\n### ++204++\nWeb Projects\n|||\n\n## What Our Clients Say\n\n::: quote\nWe interviewed many different companies before choosing Lightning Kite. Their transparency and customer service is what set them apart. They truly care about delivering quality.\n\n![Harley](harley.jpg){avatar} -- **Harley**, Project Lead\n:::\n\n::: quote\nIntegrity is paramount with Lightning Kite. They are a real hidden gem. If you want honest, talented people building your software, look no further.\n\n![Steve](steve.jpg){avatar} -- **Steve**, Reminderband\n:::\n\n::: quote\nWe've worked with Lightning Kite for over 5 years. As their team has grown, so has their creativity and diversity. They're a true long-term partner.\n\n![Jake](jake.jpg){avatar} -- **Jake**, Taxbot\n:::\n\n## Bring Your Ideas to Life\n\nWhat type of project do you need? Let's work out the details.\n\n[Let's Talk](contact.md)\n","services.md":"---\ntitle: Build With Us — Lightning Kite\ndescription: Custom software development services including native mobile apps, web applications, IoT solutions, and cloud infrastructure.\n---\n\n# Build Your Ideas With Us\n\nLightning Kite is a software development agency that helps businesses and startups bring their ideas to life with bespoke, custom-built software solutions.\n\n[Let's Talk](contact.md)\n\n## What We Build\n\n|||\n::: card\n### Mobile Development\nNative iOS and Android apps built for performance and polish. We build what's right for your users and your platform -- no cookie-cutter cross-platform shortcuts.\n:::\n---\n::: card\n### Web Applications\nFrom customer-facing dashboards to internal tools, we build web platforms that are fast, accessible, and built to last.\n:::\n---\n::: card\n### IoT Solutions\nConnected devices, firmware updates, and cloud backends. We've built production IoT systems that manage thousands of devices in the field.\n:::\n|||\n\n## Our Process\n\n|||\n### 1. Discovery\nWe start by understanding your business, your users, and your goals. No templated questionnaires -- a real conversation about what you need and why.\n---\n### 2. Architecture\nBefore writing a line of code, we design the technical foundation. The right architecture decisions early save months of rework later.\n---\n### 3. Build\nIterative development with regular demos. You see working software every sprint, not just status reports.\n---\n### 4. Launch & Support\nWe don't disappear after launch. Deployment, monitoring, and ongoing improvements -- we're with you for the long haul.\n|||\n\n## Radical Transparency\n\n::: info\nOur entire team works in the same office in Logan, Utah. We even offer a live office stream during business hours so you can watch the people who could be building your software.\n:::\n\nNo offshore handoffs, no distributed teams in different time zones. When you call, you talk to the people building your product. 31 programming languages. iOS, Android, web, embedded, cloud. We pick the right tool for the job -- and many of our clients have worked with us for 5+ years.\n\n[Let's Talk](contact.md) -- [See Our Work](work.md)\n\n## Technologies We Work With\n\n|||\n### Mobile\n- Swift & SwiftUI\n- Kotlin & Jetpack Compose\n- Cross-platform (KMP)\n- Flutter\n---\n### Web\n- TypeScript & React\n- Kotlin/JVM backends\n- Node.js\n- PostgreSQL & MongoDB\n---\n### Infrastructure\n- AWS & GCP\n- Docker & Kubernetes\n- CI/CD pipelines\n- IoT protocols (MQTT, BLE)\n|||\n\n## Frequently Asked Questions\n\n>| How long does a typical project take?\n   It depends on scope, but most projects range from 3 to 9 months. We'll give you a realistic timeline during discovery -- no inflated estimates, no surprises.\n\n>| What's your pricing model?\n   We work on a time-and-materials basis with weekly invoicing. You see exactly what you're paying for. We can also scope fixed-price milestones for well-defined features.\n\n>| Do you work with startups?\n   Absolutely. We've helped startups go from napkin sketch to App Store. We're also experienced with enterprise clients who need to modernize legacy systems.\n\n>| Can you take over an existing codebase?\n   Yes. We regularly inherit projects from other teams. We'll do a thorough code audit first so we understand what we're working with before making changes.\n\n>| What happens after launch?\n   We offer ongoing support and maintenance. Most of our clients stay with us long-term -- our longest partnership is over 5 years and counting.\n\n## Ready to Build?\n\nTell us about your project. We'll schedule a call to discuss your goals, timeline, and how we can help.\n\n[Let's Talk](contact.md) -- [See Our Work](work.md)\n","team.md":"---\ntitle: Our Team — Lightning Kite\ndescription: Meet the Lightning Kite team. Software engineers, designers, and project managers based in Logan, Utah.\n---\n\n# Meet the Team\n\nWe're a tight-knit team of engineers, designers, and project managers working out of our office in Logan, Utah. No remote handoffs, no offshore outsourcing -- just talented people who love building software.\n\n## Leadership\n\n|||\n::: card\n![Dan](team-dan.jpeg){avatar}\n### Dan\n**President**\n\nLeads the company vision and client relationships. Ensures every project gets the leadership and resources it needs to succeed.\n:::\n---\n::: card\n![Joseph](team-joseph.jpg){avatar}\n### Joseph\n**General Manager**\n\nKeeps the engine running. Operations, resourcing, and making sure the team has everything they need to do their best work.\n:::\n---\n::: card\n![Eric](team-eric.jpg){avatar}\n### Eric\n**Business Development**\n\nYour first point of contact. Understands your business needs and connects you with the right team to bring your vision to life.\n:::\n|||\n\n## Project Management\n\n|||\n::: card\n![Justin](team-justin.png){avatar}\n### Justin\n**Project Manager**\n\nKeeps projects on track with clear communication and organized sprints. Your direct line to the development team.\n:::\n---\n::: card\n![Alex](team-alex.jpg){avatar}\n### Alex\n**Project Manager**\n\nManages complex builds with an emphasis on quality and timeline. Believes in the strength that comes from enduring difficult challenges.\n:::\n|||\n\n## Engineering\n\n|||\n::: card\n![Wesley](team-wesley.png){avatar}\n### Wesley\n**Software Engineer**\n\nA craftsman who believes the best code is the code you don't have to write. Efficiency and clarity in every line.\n:::\n---\n::: card\n![Hunter](team-hunter.jpg){avatar}\n### Hunter\n**Software Engineer**\n\nFull-stack problem solver. Tackles challenges across mobile, web, and backend with equal confidence.\n:::\n---\n::: card\n![Levi](team-levi.jpg){avatar}\n### Levi\n**Software Engineer**\n\nReliable and thorough. Delivers clean, well-tested code that works the first time.\n:::\n|||\n\n|||\n::: card\n![Albin](team-albin.jpg){avatar}\n### Albin\n**Software Engineer**\n\nUnderstands that nobody knows everything -- and that's what makes collaboration powerful.\n:::\n---\n::: card\n![Brady](team-brady.jpg){avatar}\n### Brady\n**Software Engineer**\n\nBrings energy and directness to every project. Not afraid to question assumptions and push for better solutions.\n:::\n---\n::: card\n![Jacey](team-jacey.jpg){avatar}\n### Jacey\n**Software Engineer**\n\nBelieves in doing it scared if you have to. Tackles unfamiliar challenges head-on and grows from every one.\n:::\n|||\n\n|||\n::: card\n![Trax](team-trax.jpg){avatar}\n### Trax\n**Software Engineer**\n\nFocused and methodical. Follows the path that works and doesn't overcomplicate things.\n:::\n---\n::: card\n![Merdan](team-merdan.png){avatar}\n### Merdan\n**Data Analytics Engineer**\n\nTurns raw data into actionable insights. Builds the pipelines and dashboards that help clients understand their business.\n:::\n|||\n\n## Design & Security\n\n|||\n::: card\n![Elsie](team-elsie.png){avatar}\n### Elsie\n**UX/UI Designer**\n\nBelieves simplicity is the ultimate sophistication. Creates interfaces that are intuitive, beautiful, and purposeful.\n:::\n---\n::: card\n![Harley](team-harley.jpg){avatar}\n### Harley\n**Senior Security Specialist**\n\nKeeps our systems and our clients' systems safe. Security isn't an afterthought -- it's built into everything we deliver.\n:::\n|||\n\n## Work With Us\n\nInterested in joining the team or starting a project? We'd love to hear from you.\n\n[Let's Talk](contact.md)\n","work.md":"---\ntitle: Our Work — Lightning Kite\ndescription: A portfolio of mobile apps, web platforms, and IoT solutions built by Lightning Kite.\n---\n\n# Our Work\n\nOver 300 projects delivered across mobile, web, and IoT. Here are some highlights.\n\n## Blackstone Products\n\n![Blackstone Griddle](blackstone-griddle.webp =x400){showcase}\n\nBlackstone came to us with a critical challenge: their IoT-connected smart grill platform needed a complete overhaul. We rebuilt the cross-platform mobile app from the ground up, implemented OTA firmware update infrastructure, and built a robust cloud backend to manage thousands of connected devices.\n\n|||\n::: card\n### Mobile App\nCross-platform native app for iOS and Android with real-time grill monitoring, temperature controls, and recipe integration.\n:::\n---\n::: card\n### Firmware Updates\nOver-the-air update system that reliably delivers firmware to devices in the field without user intervention.\n:::\n---\n::: card\n### Cloud Backend\nScalable IoT backend handling device telemetry, user accounts, and real-time communication between app and grill.\n:::\n|||\n\n## Vanden Bussche Irrigation\n\nVanden Bussche needed to replace their outdated legacy systems with a modern B2B e-commerce platform. We built a bespoke solution tailored to the workflows of contractors and landscapers -- product catalogs, bulk ordering, account management, and supply chain integration.\n\n|||\n::: card\n### E-Commerce Platform\nCustom B2B storefront with contractor pricing tiers, bulk ordering, and account-based access controls.\n:::\n---\n::: card\n### Legacy Migration\nCareful data migration from decades-old systems, preserving customer history and product relationships.\n:::\n---\n::: card\n### Supply Chain Integration\nReal-time inventory sync with warehouse systems and automated order fulfillment workflows.\n:::\n|||\n\n## Additional Work\n\n|||\n::: card\n### Taxbot\nCross-platform trip and expense tracking for independent contractors. iOS, Android, and web. 5+ year partnership.\n:::\n---\n::: card\n### Food Truck League\nMobile app for discovering food trucks. Real-time location tracking, menus, and event schedules on iOS and Android.\n:::\n---\n::: card\n### Ramp\nStudent skills assessment platform combining iOS and web interfaces for educators.\n:::\n|||\n\n|||\n::: card\n### Rydeshift\nVehicle sales platform streamlining buying and selling across iOS, Android, and web with integrated financing.\n:::\n---\n::: card\n### Custom Enterprise Tools\nInternal dashboards, workflow automation, and data platforms tailored to client needs that off-the-shelf software can't solve.\n:::\n---\n::: card\n### IoT Device Management\nConnected device platforms with firmware OTA updates, telemetry pipelines, and real-time monitoring dashboards.\n:::\n|||\n\n## Let's Build Something Great\n\nHave a project in mind? We'd love to hear about it.\n\n[Let's Talk](contact.md)\n"}</script>
+<script type="application/json" id="smd-theme">{"mode":"dark","colors":{"primary":"#fcb912","primaryDark":"#e0a50f","primaryLight":"#1a3040","accent":"#fcb912","background":"#0e2f3a","surface":"#124156","surfaceWarm":"#0b2530","text":"#f0f0f0","textMuted":"#b0b0b0","border":"#1a4a5e","borderLight":"#153d4e"},"fonts":{"heading":"Bebas Neue","body":"Lato"},"radius":30,"radiusLg":30,"nav":"transparent","sections":"alternating","cards":"elevated","animation":"subtle","footer":"columns","spacing":"spacious"}</script>
+<script src="smd-editor.js" defer></script>
+</body>
+</html>

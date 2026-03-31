@@ -39,7 +39,7 @@
   --nav-height: 64px;
 }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 body {
   font-family: var(--font-body);
   color: var(--text);
@@ -47,6 +47,7 @@ body {
   line-height: 1.75;
   font-size: 17px;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 a { color: var(--primary); text-decoration: none; }
 a:hover { text-decoration: underline; }
@@ -71,6 +72,12 @@ a:hover { text-decoration: underline; }
   font-weight: 700;
   text-decoration: none !important;
   white-space: nowrap;
+}
+.smd-nav-brand img {
+  height: 32px;
+  width: auto;
+  vertical-align: middle;
+  border-radius: 0;
 }
 .smd-nav-links {
   display: flex;
@@ -172,6 +179,7 @@ a:hover { text-decoration: underline; }
 .smd-nav-toggle span { top: 50%; transform: translateY(-50%); }
 .smd-nav-toggle span::before { content: ''; top: -8px; }
 .smd-nav-toggle span::after { content: ''; top: 8px; }
+.smd-nav-toggle:focus-visible { outline: 2px solid var(--primary); outline-offset: 4px; border-radius: 4px; }
 
 @media (max-width: 768px) {
   .smd-nav-toggle { display: block; }
@@ -275,6 +283,10 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
 .smd-animate-stagger.smd-visible > *:nth-child(3) { transition-delay: 0.2s; }
 .smd-animate-stagger.smd-visible > *:nth-child(4) { transition-delay: 0.3s; }
 .smd-animate-stagger.smd-visible > *:nth-child(5) { transition-delay: 0.4s; }
+.smd-animate-stagger.smd-visible > *:nth-child(6) { transition-delay: 0.5s; }
+.smd-animate-stagger.smd-visible > *:nth-child(7) { transition-delay: 0.6s; }
+.smd-animate-stagger.smd-visible > *:nth-child(8) { transition-delay: 0.7s; }
+.smd-animate-stagger.smd-visible > *:nth-child(n+9) { transition-delay: 0.8s; }
 [data-animation="none"] .smd-animate,
 [data-animation="none"] .smd-animate-stagger > * {
   opacity: 1; transform: none; transition: none;
@@ -442,15 +454,27 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   border-radius: 0;
 }
 [data-cards="glass"] .smd-block-card {
-  background: rgba(255,255,255,0.6);
+  background: color-mix(in srgb, var(--surface) 60%, transparent);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.3);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
   box-shadow: 0 4px 16px rgba(0,0,0,0.06);
 }
 [data-cards="glass"] .smd-block-card:hover {
-  background: rgba(255,255,255,0.8);
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
   box-shadow: 0 8px 24px rgba(0,0,0,0.1);
   transform: translateY(-2px);
+}
+[data-cards="glass"] .smd-form {
+  background: color-mix(in srgb, var(--surface) 60%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
+}
+[data-cards="glass"] blockquote {
+  background: color-mix(in srgb, var(--surface) 50%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 /* ===== Forms ===== */
@@ -494,7 +518,7 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   border-radius: var(--radius);
   font-family: inherit;
   font-size: 1em;
-  background: var(--bg);
+  background: var(--surface);
   color: var(--text);
   transition: border-color var(--transition), box-shadow var(--transition);
 }
@@ -506,8 +530,11 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
 .smd-field select:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(61,107,66,0.1);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 12%, transparent);
 }
+.smd-field input::placeholder,
+.smd-field textarea::placeholder { color: var(--text-muted); opacity: 0.7; }
+.smd-field select { -webkit-appearance: none; appearance: none; }
 .smd-field textarea { min-height: 100px; resize: vertical; }
 .smd-form button {
   background: var(--primary);
@@ -528,6 +555,8 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   background: var(--primary-dark);
   transform: translateY(-1px);
 }
+.smd-form button:active { transform: translateY(1px); }
+.smd-form button:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
 
 /* ===== Paragraphs ===== */
 .smd-section p, .smd-column p, .smd-compact p {
@@ -546,7 +575,7 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   flex-wrap: wrap;
   gap: 12px;
   justify-content: center;
-  margin: 24px auto 8px;
+  margin: 24px auto 32px;
   max-width: 680px;
 }
 .smd-cta-row a {
@@ -576,6 +605,8 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   border: 2px solid var(--primary);
 }
 .smd-cta-row a.smd-cta-secondary:hover { background: var(--primary-light); }
+.smd-cta-row a:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.smd-cta-row a:active { transform: translateY(1px); box-shadow: none; }
 
 /* ===== Fenced Blocks (::: name) ===== */
 .smd-block {
@@ -583,35 +614,41 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   padding: 28px 32px;
   margin: 24px 0;
 }
+/* Match paragraph readable width when block is a direct section child */
+.smd-section > .smd-block {
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
+}
 /* Note / Info / Tip */
 .smd-block-note, .smd-block-info, .smd-block-tip {
-  background: #e8f4fd;
+  background: rgba(33, 150, 243, 0.1);
   border-left: 4px solid #2196f3;
-  color: #1a3a4a;
+  color: var(--text);
 }
 .smd-block-note::before, .smd-block-info::before { content: 'Note'; }
 .smd-block-tip::before { content: 'Tip'; }
 /* Warning */
 .smd-block-warning, .smd-block-caution {
-  background: #fff8e1;
+  background: rgba(245, 158, 11, 0.1);
   border-left: 4px solid #f59e0b;
-  color: #4a3a0a;
+  color: var(--text);
 }
 .smd-block-warning::before { content: 'Warning'; }
 .smd-block-caution::before { content: 'Caution'; }
 /* Error / Danger */
 .smd-block-error, .smd-block-danger {
-  background: #fde8e8;
+  background: rgba(229, 62, 62, 0.1);
   border-left: 4px solid #e53e3e;
-  color: #4a1a1a;
+  color: var(--text);
 }
 .smd-block-error::before { content: 'Error'; }
 .smd-block-danger::before { content: 'Danger'; }
 /* Success */
 .smd-block-success {
-  background: #e8f8e8;
+  background: rgba(56, 161, 105, 0.1);
   border-left: 4px solid #38a169;
-  color: #1a3a1a;
+  color: var(--text);
 }
 .smd-block-success::before { content: 'Success'; }
 /* Shared label style for typed blocks */
@@ -633,6 +670,17 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   background: var(--surface);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
+}
+/* Cards inside columns: center content for balanced grid layouts */
+.smd-column > .smd-block-card {
+  text-align: center;
+}
+.smd-column > .smd-block-card img:not(.smd-img-avatar) {
+  display: inline-block;
+  max-width: 60%;
+  height: auto;
+  object-fit: contain;
+  margin: 0 auto;
 }
 /* Quote / Testimonial */
 .smd-block-quote, .smd-block-testimonial {
@@ -690,13 +738,13 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
 }
 
 /* ===== Star Ratings ===== */
-.smd-stars { color: #d4a017; font-size: 1.15em; letter-spacing: 0.05em; }
+.smd-stars { color: var(--accent, #d4a017); font-size: 1.15em; letter-spacing: 0.05em; }
 
 
 /* ===== Links in paragraphs ===== */
 .smd-section p a, .smd-column p a, .smd-compact p a {
   text-decoration: underline;
-  text-decoration-color: rgba(61,107,66,0.3);
+  text-decoration-color: color-mix(in srgb, var(--primary) 30%, transparent);
   text-underline-offset: 2px;
   transition: text-decoration-color var(--transition);
 }
@@ -716,7 +764,7 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
 .smd-carousel-track {
   display: flex;
   width: 100%;
-  transition: transform 0.5s ease;
+  transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 .smd-carousel-slide {
   flex-shrink: 0;
@@ -728,6 +776,7 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   transform: translateY(-50%);
   background: rgba(255,255,255,0.2);
   backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   color: white;
   border: none;
   width: 48px;
@@ -740,6 +789,8 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   display: flex;
   align-items: center;
   justify-content: center;
+  user-select: none;
+  -webkit-user-select: none;
 }
 .smd-carousel-btn:hover { background: rgba(255,255,255,0.35); }
 .smd-carousel-prev { left: 16px; }
@@ -762,8 +813,12 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   cursor: pointer;
   padding: 0;
   transition: background var(--transition);
+  user-select: none;
+  -webkit-user-select: none;
 }
+.smd-carousel-dot:hover { background: rgba(255,255,255,0.5); }
 .smd-carousel-dot.active { background: white; }
+.smd-carousel-btn:focus-visible { outline: 2px solid white; outline-offset: 2px; }
 
 /* ===== Background Section ===== */
 .smd-bg-section {
@@ -787,7 +842,7 @@ body:has(.smd-nav[data-style="transparent"]) .smd-page > .smd-carousel:first-chi
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0.55));
+  background: linear-gradient(to bottom, rgba(0,0,0,0.45), rgba(0,0,0,0.6));
 }
 .smd-bg-overlay {
   position: relative;
@@ -803,13 +858,13 @@ body:has(.smd-nav[data-style="transparent"]) .smd-page > .smd-carousel:first-chi
   font-weight: 400;
   letter-spacing: -0.02em;
   margin-bottom: 16px;
-  text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  text-shadow: 0 2px 16px rgba(0,0,0,0.5), 0 1px 4px rgba(0,0,0,0.3);
 }
 .smd-bg-overlay p {
   font-size: 1.15em;
   color: rgba(255,255,255,0.9);
   line-height: 1.7;
-  text-shadow: 0 1px 6px rgba(0,0,0,0.3);
+  text-shadow: 0 1px 8px rgba(0,0,0,0.4), 0 1px 3px rgba(0,0,0,0.2);
 }
 
 /* ===== Footer ===== */
@@ -1212,6 +1267,7 @@ body:has(.smd-editor-panel.open) .smd-editor-toggle {
   .smd-carousel-btn { width: 36px; height: 36px; font-size: 1.2em; }
   .smd-carousel-prev { left: 8px; }
   .smd-carousel-next { right: 8px; }
+  .smd-cta-row { gap: 16px; }
   .smd-form { padding: 24px; }
   .smd-form-group { flex-direction: column; gap: 16px; }
   .smd-field { min-width: 100%; }
@@ -1559,6 +1615,7 @@ kbd {
   white-space: nowrap;
 }
 .smd-tab-btn:hover { color: var(--text); }
+.smd-tab-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
 .smd-tab-btn.active {
   color: var(--primary);
   border-bottom-color: var(--primary);
@@ -1627,6 +1684,18 @@ kbd {
   margin-top: 0;
 }
 
+/* ===== Image Avatar ===== */
+.smd-img-avatar {
+  display: inline-block;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  vertical-align: middle;
+  margin-right: 8px;
+  border: 2px solid var(--accent, var(--primary));
+}
+
 /* ===== Image Showcase ===== */
 .smd-img-showcase {
   display: block;
@@ -1634,6 +1703,8 @@ kbd {
   border-radius: var(--radius-lg) !important;
   box-shadow: var(--shadow-lg), 0 0 60px rgba(0,0,0,0.08);
   max-width: 100%;
+  max-height: 70vh;
+  object-fit: cover;
 }
 
 /* Browser Frame */
@@ -1672,7 +1743,7 @@ kbd {
   display: inline-block;
   border-radius: 32px;
   max-width: 320px;
-  box-shadow: 0 0 0 10px #111, 0 0 0 12px #333, var(--shadow-lg);
+  box-shadow: 0 0 0 10px var(--text, #111), 0 0 0 12px var(--text-muted, #333), var(--shadow-lg);
 }
 
 /* ===== Video Background ===== */
@@ -1789,7 +1860,7 @@ kbd {
 <body>
 
 <main id="smd-content" class="smd-page smd-page-hidden">
-<div class="smd-carousel" id="carousel-abpgkf" role="region" aria-roledescription="carousel" aria-label="Image carousel"><div class="smd-carousel-track" aria-live="polite"><div class="smd-carousel-slide"><div class="smd-bg-section" style="background-image:url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200&q=80')"><div class="smd-bg-overlay"><h1>Protecting Wild Places</h1><p>The Columbia River Valley’s natural heritage, preserved for generations to come.</p></div></div></div><div class="smd-carousel-slide"><div class="smd-bg-section" style="background-image:url('https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=1200&q=80')"><div class="smd-bg-overlay"><h1>12,000 Acres Protected</h1><p>Join us in our mission to conserve critical habitats and open spaces.</p></div></div></div></div><button class="smd-carousel-btn smd-carousel-prev" onclick="carouselNav('carousel-abpgkf',-1)" aria-label="Previous">&lsaquo;</button><button class="smd-carousel-btn smd-carousel-next" onclick="carouselNav('carousel-abpgkf',1)" aria-label="Next">&rsaquo;</button><div class="smd-carousel-dots"><button class="smd-carousel-dot active" onclick="carouselGo('carousel-abpgkf',0)" aria-label="Slide 1"></button><button class="smd-carousel-dot" onclick="carouselGo('carousel-abpgkf',1)" aria-label="Slide 2"></button></div></div><section class="smd-section smd-animate" id="our-impact"><h2>Our Impact</h2><hr class="smd-section-rule"><div class="smd-columns smd-animate smd-animate-stagger"><div class="smd-column"><h3 id="acres-preserved">Acres Preserved</h3><p><span class="smd-large">12,847</span><br>acres of forests, wetlands, and meadows permanently protected.</p></div><div class="smd-column"><h3 id="species-sheltered">Species Sheltered</h3><p><span class="smd-large">340</span>+<br>native species of birds, mammals, and plants call our preserves home.</p></div><div class="smd-column"><h3 id="community">Community</h3><p><span class="smd-large">5,200</span>+<br>members and volunteers supporting conservation in the valley.</p></div></div></section><section class="smd-section smd-section-alt smd-animate" id="current-campaigns"><h2>Current Campaigns</h2><hr class="smd-section-rule"><div class="smd-columns smd-animate smd-animate-stagger"><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="eagle-creek-corridor">Eagle Creek Corridor</h3><p>Goal: $2.4M<br>A 640-acre parcel connecting two existing preserves, creating an unbroken wildlife corridor along Eagle Creek. Development pressure is mounting — we need to act by summer 2026.</p></div></div><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="wetland-restoration-at-marsh-lake">Wetland Restoration at Marsh Lake</h3><p>Goal: $800K<br>Restoring 120 acres of degraded wetland to filter water, reduce flooding, and provide critical habitat for migrating waterfowl.</p></div></div><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="youth-conservation-corps">Youth Conservation Corps</h3><p>Goal: $150K<br>Funding summer internships for 40 local high school students to learn land stewardship, ecological monitoring, and conservation careers.</p></div></div></div></section><section class="smd-section smd-animate" id="get-involved"><h2>Get Involved</h2><hr class="smd-section-rule"><div class="smd-columns smd-animate smd-animate-stagger"><div class="smd-column"><h3 id="volunteer">Volunteer</h3><p>Trail maintenance, wildlife monitoring, and guided hikes. No experience needed.<br><a href="/volunteer">See opportunities</a></p></div><div class="smd-column"><h3 id="donate">Donate</h3><p>Every dollar protects wild places. Gifts are tax-deductible.<br><a href="/donate">Make a gift</a></p></div><div class="smd-column"><h3 id="events">Events</h3><p>Monthly nature walks, annual gala, and seasonal bird counts.<br><a href="/events">View calendar</a></p></div></div></section><section class="smd-section smd-section-alt smd-animate" id="stay-connected"><h2>Stay Connected</h2><hr class="smd-section-rule"><form class="smd-form" method="POST" action="/subscribe"><div class="smd-form-group"><div class="smd-field"><label for="name">Name</label><input type="text" id="name" name="name"></div><div class="smd-field"><label for="email">Email *</label><input type="email" id="email" name="email" required></div></div><button type="submit">Subscribe to Newsletter</button></form></section>
+<div class="smd-carousel" id="carousel-u35zq6" role="region" aria-roledescription="carousel" aria-label="Image carousel"><div class="smd-carousel-track" aria-live="polite"><div class="smd-carousel-slide"><div class="smd-bg-section" style="background-image:url('https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1200&amp;q=80')"><div class="smd-bg-overlay"><h1>Protecting Wild Places</h1><p>The Columbia River Valley’s natural heritage, preserved for generations to come.</p></div></div></div><div class="smd-carousel-slide"><div class="smd-bg-section" style="background-image:url('https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?w=1200&amp;q=80')"><div class="smd-bg-overlay"><h1>12,000 Acres Protected</h1><p>Join us in our mission to conserve critical habitats and open spaces.</p></div></div></div></div><button class="smd-carousel-btn smd-carousel-prev" onclick="carouselNav('carousel-u35zq6',-1)" aria-label="Previous">&lsaquo;</button><button class="smd-carousel-btn smd-carousel-next" onclick="carouselNav('carousel-u35zq6',1)" aria-label="Next">&rsaquo;</button><div class="smd-carousel-dots"><button class="smd-carousel-dot active" onclick="carouselGo('carousel-u35zq6',0)" aria-label="Slide 1"></button><button class="smd-carousel-dot" onclick="carouselGo('carousel-u35zq6',1)" aria-label="Slide 2"></button></div></div><section class="smd-section smd-animate" id="our-impact"><h2>Our Impact</h2><hr class="smd-section-rule"><div class="smd-columns smd-animate smd-animate-stagger"><div class="smd-column"><h3 id="acres-preserved">Acres Preserved</h3><p><span class="smd-large">12,847</span><br>acres of forests, wetlands, and meadows permanently protected.</p></div><div class="smd-column"><h3 id="species-sheltered">Species Sheltered</h3><p><span class="smd-large">340</span>+<br>native species of birds, mammals, and plants call our preserves home.</p></div><div class="smd-column"><h3 id="community">Community</h3><p><span class="smd-large">5,200</span>+<br>members and volunteers supporting conservation in the valley.</p></div></div></section><section class="smd-section smd-section-alt smd-animate" id="current-campaigns"><h2>Current Campaigns</h2><hr class="smd-section-rule"><div class="smd-columns smd-animate smd-animate-stagger"><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="eagle-creek-corridor">Eagle Creek Corridor</h3><p>Goal: $2.4M<br>A 640-acre parcel connecting two existing preserves, creating an unbroken wildlife corridor along Eagle Creek. Development pressure is mounting — we need to act by summer 2026.</p></div></div><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="wetland-restoration-at-marsh-lake">Wetland Restoration at Marsh Lake</h3><p>Goal: $800K<br>Restoring 120 acres of degraded wetland to filter water, reduce flooding, and provide critical habitat for migrating waterfowl.</p></div></div><div class="smd-column"><div class="smd-block smd-block-card"><h3 id="youth-conservation-corps">Youth Conservation Corps</h3><p>Goal: $150K<br>Funding summer internships for 40 local high school students to learn land stewardship, ecological monitoring, and conservation careers.</p></div></div></div></section><section class="smd-section smd-animate" id="get-involved"><h2>Get Involved</h2><hr class="smd-section-rule"><div class="smd-columns smd-animate smd-animate-stagger"><div class="smd-column"><h3 id="volunteer">Volunteer</h3><p>Trail maintenance, wildlife monitoring, and guided hikes. No experience needed.<br><a href="/volunteer">See opportunities</a></p></div><div class="smd-column"><h3 id="donate">Donate</h3><p>Every dollar protects wild places. Gifts are tax-deductible.<br><a href="/donate">Make a gift</a></p></div><div class="smd-column"><h3 id="events">Events</h3><p>Monthly nature walks, annual gala, and seasonal bird counts.<br><a href="/events">View calendar</a></p></div></div></section><section class="smd-section smd-section-alt smd-animate" id="stay-connected"><h2>Stay Connected</h2><hr class="smd-section-rule"><form class="smd-form" method="POST" action="/subscribe"><div class="smd-form-group"><div class="smd-field"><label for="name">Name</label><input type="text" id="name" name="name"></div><div class="smd-field"><label for="email">Email *</label><input type="email" id="email" name="email" required></div></div><button type="submit">Subscribe to Newsletter</button></form></section>
 
 </main>
 <noscript><style>.smd-page-hidden,.smd-animate,.smd-animate-stagger>*{opacity:1!important;transform:none!important;transition:none!important}</style></noscript>
@@ -1799,7 +1870,14 @@ kbd {
   // Hamburger
   var toggle = document.querySelector('.smd-nav-toggle');
   var links = document.querySelector('.smd-nav-links');
-  if (toggle && links) toggle.addEventListener('click', function() { links.classList.toggle('open'); });
+  if (toggle && links) {
+    toggle.setAttribute('aria-label', 'Toggle navigation');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.addEventListener('click', function() {
+      var open = links.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
 
   // Nav scroll
   var nav = document.querySelector('.smd-nav');
@@ -1875,7 +1953,13 @@ kbd {
     initScrollAnims();
 
     // SPA navigation: fetch + swap content, keep nav stable
+    var currentNav = null;
     function navigateTo(url, push) {
+      // Cancel any in-flight navigation
+      if (currentNav) currentNav.abort();
+      var ctrl = new AbortController();
+      currentNav = ctrl;
+
       var parts = url.split('#');
       var fetchUrl = parts[0] || location.pathname;
       var hash = parts[1] || '';
@@ -1885,9 +1969,11 @@ kbd {
       page.style.transform = 'translateY(-8px)';
 
       Promise.all([
-        fetch(fetchUrl).then(function(r) { return r.text(); }),
+        fetch(fetchUrl, { signal: ctrl.signal }).then(function(r) { return r.text(); }),
         new Promise(function(r) { setTimeout(r, 200); })
       ]).then(function(results) {
+        if (ctrl.signal.aborted) return;
+        currentNav = null;
         var parsed = new DOMParser().parseFromString(results[0], 'text/html');
         var newMain = parsed.querySelector('.smd-page');
         if (!newMain) { location.href = url; return; }
@@ -1913,7 +1999,14 @@ kbd {
         page.style.transform = '';
 
         initScrollAnims();
-      }).catch(function() { location.href = url; });
+      }).catch(function(e) {
+        if (e.name === 'AbortError') return;
+        // Reset visual state before fallback
+        page.style.transition = '';
+        page.style.opacity = '';
+        page.style.transform = '';
+        location.href = url;
+      });
     }
 
     document.addEventListener('click', function(e) {

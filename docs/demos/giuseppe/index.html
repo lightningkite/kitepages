@@ -40,7 +40,7 @@
   --nav-height: 64px;
 }
 
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
 body {
   font-family: var(--font-body);
   color: var(--text);
@@ -48,6 +48,7 @@ body {
   line-height: 1.75;
   font-size: 17px;
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 a { color: var(--primary); text-decoration: none; }
 a:hover { text-decoration: underline; }
@@ -72,6 +73,12 @@ a:hover { text-decoration: underline; }
   font-weight: 700;
   text-decoration: none !important;
   white-space: nowrap;
+}
+.smd-nav-brand img {
+  height: 32px;
+  width: auto;
+  vertical-align: middle;
+  border-radius: 0;
 }
 .smd-nav-links {
   display: flex;
@@ -173,6 +180,7 @@ a:hover { text-decoration: underline; }
 .smd-nav-toggle span { top: 50%; transform: translateY(-50%); }
 .smd-nav-toggle span::before { content: ''; top: -8px; }
 .smd-nav-toggle span::after { content: ''; top: 8px; }
+.smd-nav-toggle:focus-visible { outline: 2px solid var(--primary); outline-offset: 4px; border-radius: 4px; }
 
 @media (max-width: 768px) {
   .smd-nav-toggle { display: block; }
@@ -276,6 +284,10 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
 .smd-animate-stagger.smd-visible > *:nth-child(3) { transition-delay: 0.2s; }
 .smd-animate-stagger.smd-visible > *:nth-child(4) { transition-delay: 0.3s; }
 .smd-animate-stagger.smd-visible > *:nth-child(5) { transition-delay: 0.4s; }
+.smd-animate-stagger.smd-visible > *:nth-child(6) { transition-delay: 0.5s; }
+.smd-animate-stagger.smd-visible > *:nth-child(7) { transition-delay: 0.6s; }
+.smd-animate-stagger.smd-visible > *:nth-child(8) { transition-delay: 0.7s; }
+.smd-animate-stagger.smd-visible > *:nth-child(n+9) { transition-delay: 0.8s; }
 [data-animation="none"] .smd-animate,
 [data-animation="none"] .smd-animate-stagger > * {
   opacity: 1; transform: none; transition: none;
@@ -443,15 +455,27 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   border-radius: 0;
 }
 [data-cards="glass"] .smd-block-card {
-  background: rgba(255,255,255,0.6);
+  background: color-mix(in srgb, var(--surface) 60%, transparent);
   backdrop-filter: blur(12px);
-  border: 1px solid rgba(255,255,255,0.3);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
   box-shadow: 0 4px 16px rgba(0,0,0,0.06);
 }
 [data-cards="glass"] .smd-block-card:hover {
-  background: rgba(255,255,255,0.8);
+  background: color-mix(in srgb, var(--surface) 80%, transparent);
   box-shadow: 0 8px 24px rgba(0,0,0,0.1);
   transform: translateY(-2px);
+}
+[data-cards="glass"] .smd-form {
+  background: color-mix(in srgb, var(--surface) 60%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
+}
+[data-cards="glass"] blockquote {
+  background: color-mix(in srgb, var(--surface) 50%, transparent);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
 }
 
 /* ===== Forms ===== */
@@ -495,7 +519,7 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   border-radius: var(--radius);
   font-family: inherit;
   font-size: 1em;
-  background: var(--bg);
+  background: var(--surface);
   color: var(--text);
   transition: border-color var(--transition), box-shadow var(--transition);
 }
@@ -507,8 +531,11 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
 .smd-field select:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(61,107,66,0.1);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 12%, transparent);
 }
+.smd-field input::placeholder,
+.smd-field textarea::placeholder { color: var(--text-muted); opacity: 0.7; }
+.smd-field select { -webkit-appearance: none; appearance: none; }
 .smd-field textarea { min-height: 100px; resize: vertical; }
 .smd-form button {
   background: var(--primary);
@@ -529,6 +556,8 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   background: var(--primary-dark);
   transform: translateY(-1px);
 }
+.smd-form button:active { transform: translateY(1px); }
+.smd-form button:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
 
 /* ===== Paragraphs ===== */
 .smd-section p, .smd-column p, .smd-compact p {
@@ -547,7 +576,7 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   flex-wrap: wrap;
   gap: 12px;
   justify-content: center;
-  margin: 24px auto 8px;
+  margin: 24px auto 32px;
   max-width: 680px;
 }
 .smd-cta-row a {
@@ -577,6 +606,8 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   border: 2px solid var(--primary);
 }
 .smd-cta-row a.smd-cta-secondary:hover { background: var(--primary-light); }
+.smd-cta-row a:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.smd-cta-row a:active { transform: translateY(1px); box-shadow: none; }
 
 /* ===== Fenced Blocks (::: name) ===== */
 .smd-block {
@@ -584,35 +615,41 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   padding: 28px 32px;
   margin: 24px 0;
 }
+/* Match paragraph readable width when block is a direct section child */
+.smd-section > .smd-block {
+  max-width: 680px;
+  margin-left: auto;
+  margin-right: auto;
+}
 /* Note / Info / Tip */
 .smd-block-note, .smd-block-info, .smd-block-tip {
-  background: #e8f4fd;
+  background: rgba(33, 150, 243, 0.1);
   border-left: 4px solid #2196f3;
-  color: #1a3a4a;
+  color: var(--text);
 }
 .smd-block-note::before, .smd-block-info::before { content: 'Note'; }
 .smd-block-tip::before { content: 'Tip'; }
 /* Warning */
 .smd-block-warning, .smd-block-caution {
-  background: #fff8e1;
+  background: rgba(245, 158, 11, 0.1);
   border-left: 4px solid #f59e0b;
-  color: #4a3a0a;
+  color: var(--text);
 }
 .smd-block-warning::before { content: 'Warning'; }
 .smd-block-caution::before { content: 'Caution'; }
 /* Error / Danger */
 .smd-block-error, .smd-block-danger {
-  background: #fde8e8;
+  background: rgba(229, 62, 62, 0.1);
   border-left: 4px solid #e53e3e;
-  color: #4a1a1a;
+  color: var(--text);
 }
 .smd-block-error::before { content: 'Error'; }
 .smd-block-danger::before { content: 'Danger'; }
 /* Success */
 .smd-block-success {
-  background: #e8f8e8;
+  background: rgba(56, 161, 105, 0.1);
   border-left: 4px solid #38a169;
-  color: #1a3a1a;
+  color: var(--text);
 }
 .smd-block-success::before { content: 'Success'; }
 /* Shared label style for typed blocks */
@@ -634,6 +671,17 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   background: var(--surface);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
+}
+/* Cards inside columns: center content for balanced grid layouts */
+.smd-column > .smd-block-card {
+  text-align: center;
+}
+.smd-column > .smd-block-card img:not(.smd-img-avatar) {
+  display: inline-block;
+  max-width: 60%;
+  height: auto;
+  object-fit: contain;
+  margin: 0 auto;
 }
 /* Quote / Testimonial */
 .smd-block-quote, .smd-block-testimonial {
@@ -691,13 +739,13 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
 }
 
 /* ===== Star Ratings ===== */
-.smd-stars { color: #d4a017; font-size: 1.15em; letter-spacing: 0.05em; }
+.smd-stars { color: var(--accent, #d4a017); font-size: 1.15em; letter-spacing: 0.05em; }
 
 
 /* ===== Links in paragraphs ===== */
 .smd-section p a, .smd-column p a, .smd-compact p a {
   text-decoration: underline;
-  text-decoration-color: rgba(61,107,66,0.3);
+  text-decoration-color: color-mix(in srgb, var(--primary) 30%, transparent);
   text-underline-offset: 2px;
   transition: text-decoration-color var(--transition);
 }
@@ -717,7 +765,7 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
 .smd-carousel-track {
   display: flex;
   width: 100%;
-  transition: transform 0.5s ease;
+  transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
 .smd-carousel-slide {
   flex-shrink: 0;
@@ -729,6 +777,7 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   transform: translateY(-50%);
   background: rgba(255,255,255,0.2);
   backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   color: white;
   border: none;
   width: 48px;
@@ -741,6 +790,8 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   display: flex;
   align-items: center;
   justify-content: center;
+  user-select: none;
+  -webkit-user-select: none;
 }
 .smd-carousel-btn:hover { background: rgba(255,255,255,0.35); }
 .smd-carousel-prev { left: 16px; }
@@ -763,8 +814,12 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   cursor: pointer;
   padding: 0;
   transition: background var(--transition);
+  user-select: none;
+  -webkit-user-select: none;
 }
+.smd-carousel-dot:hover { background: rgba(255,255,255,0.5); }
 .smd-carousel-dot.active { background: white; }
+.smd-carousel-btn:focus-visible { outline: 2px solid white; outline-offset: 2px; }
 
 /* ===== Background Section ===== */
 .smd-bg-section {
@@ -788,7 +843,7 @@ body:has(.smd-nav[data-style="transparent"]) .smd-page > .smd-carousel:first-chi
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0.55));
+  background: linear-gradient(to bottom, rgba(0,0,0,0.45), rgba(0,0,0,0.6));
 }
 .smd-bg-overlay {
   position: relative;
@@ -804,13 +859,13 @@ body:has(.smd-nav[data-style="transparent"]) .smd-page > .smd-carousel:first-chi
   font-weight: 400;
   letter-spacing: -0.02em;
   margin-bottom: 16px;
-  text-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  text-shadow: 0 2px 16px rgba(0,0,0,0.5), 0 1px 4px rgba(0,0,0,0.3);
 }
 .smd-bg-overlay p {
   font-size: 1.15em;
   color: rgba(255,255,255,0.9);
   line-height: 1.7;
-  text-shadow: 0 1px 6px rgba(0,0,0,0.3);
+  text-shadow: 0 1px 8px rgba(0,0,0,0.4), 0 1px 3px rgba(0,0,0,0.2);
 }
 
 /* ===== Footer ===== */
@@ -1213,6 +1268,7 @@ body:has(.smd-editor-panel.open) .smd-editor-toggle {
   .smd-carousel-btn { width: 36px; height: 36px; font-size: 1.2em; }
   .smd-carousel-prev { left: 8px; }
   .smd-carousel-next { right: 8px; }
+  .smd-cta-row { gap: 16px; }
   .smd-form { padding: 24px; }
   .smd-form-group { flex-direction: column; gap: 16px; }
   .smd-field { min-width: 100%; }
@@ -1560,6 +1616,7 @@ kbd {
   white-space: nowrap;
 }
 .smd-tab-btn:hover { color: var(--text); }
+.smd-tab-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
 .smd-tab-btn.active {
   color: var(--primary);
   border-bottom-color: var(--primary);
@@ -1628,6 +1685,18 @@ kbd {
   margin-top: 0;
 }
 
+/* ===== Image Avatar ===== */
+.smd-img-avatar {
+  display: inline-block;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  vertical-align: middle;
+  margin-right: 8px;
+  border: 2px solid var(--accent, var(--primary));
+}
+
 /* ===== Image Showcase ===== */
 .smd-img-showcase {
   display: block;
@@ -1635,6 +1704,8 @@ kbd {
   border-radius: var(--radius-lg) !important;
   box-shadow: var(--shadow-lg), 0 0 60px rgba(0,0,0,0.08);
   max-width: 100%;
+  max-height: 70vh;
+  object-fit: cover;
 }
 
 /* Browser Frame */
@@ -1673,7 +1744,7 @@ kbd {
   display: inline-block;
   border-radius: 32px;
   max-width: 320px;
-  box-shadow: 0 0 0 10px #111, 0 0 0 12px #333, var(--shadow-lg);
+  box-shadow: 0 0 0 10px var(--text, #111), 0 0 0 12px var(--text-muted, #333), var(--shadow-lg);
 }
 
 /* ===== Video Background ===== */
@@ -1790,7 +1861,7 @@ kbd {
 <body>
 <div id="smd-nav-mount"><a href="#smd-content" class="smd-skip-nav">Skip to content</a><nav class="smd-nav" data-style="transparent" aria-label="Main navigation"><a class="smd-nav-brand" href="index.html">Giuseppe’s Italian Restaurant</a><ul class="smd-nav-links"><li><a href="menu.html">Menu</a></li><li><a href="about.html">About</a></li><li><a href="index.html#make-a-reservation">Reservations</a></li></ul><button class="smd-nav-toggle" aria-label="Menu"><span></span></button></nav></div>
 <main id="smd-content" class="smd-page smd-page-hidden">
-<div class="smd-carousel" id="carousel-6eb9hv" role="region" aria-roledescription="carousel" aria-label="Image carousel"><div class="smd-carousel-track" aria-live="polite"><div class="smd-carousel-slide"><div class="smd-bg-section" style="background-image:url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&q=80')"><div class="smd-bg-overlay"><h1>Giuseppe’s Italian Restaurant</h1><p>Authentic Italian cuisine in downtown Portland. Family owned since 1985.</p></div></div></div><div class="smd-carousel-slide"><div class="smd-bg-section" style="background-image:url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&q=80')"><div class="smd-bg-overlay"><h1>A Warm Welcome Awaits</h1><p>Our dining room seats 80 guests in an intimate, candlelit atmosphere.</p></div></div></div><div class="smd-carousel-slide"><div class="smd-bg-section" style="background-image:url('https://images.unsplash.com/photo-1600891964092-4316c288032e?w=1200&q=80')"><div class="smd-bg-overlay"><h1>The Garden Patio</h1><p>Dine under the stars on our award-winning patio, open May through October.</p></div></div></div></div><button class="smd-carousel-btn smd-carousel-prev" onclick="carouselNav('carousel-6eb9hv',-1)" aria-label="Previous">&lsaquo;</button><button class="smd-carousel-btn smd-carousel-next" onclick="carouselNav('carousel-6eb9hv',1)" aria-label="Next">&rsaquo;</button><div class="smd-carousel-dots"><button class="smd-carousel-dot active" onclick="carouselGo('carousel-6eb9hv',0)" aria-label="Slide 1"></button><button class="smd-carousel-dot" onclick="carouselGo('carousel-6eb9hv',1)" aria-label="Slide 2"></button><button class="smd-carousel-dot" onclick="carouselGo('carousel-6eb9hv',2)" aria-label="Slide 3"></button></div></div><div class="smd-cta-row"><a href="about.html" class="smd-cta-primary">About Us</a><a href="menu.html" class="smd-cta-secondary">View Full Menu</a></div><section class="smd-section smd-animate" id="our-menu"><h2>Our Menu</h2><hr class="smd-section-rule"><div class="smd-columns smd-animate smd-animate-stagger"><div class="smd-column"><h3 id="appetizers">Appetizers</h3><ul><li><span>Bruschetta</span><span style="color:var(--text-muted);white-space:nowrap">$8</span></li><li><span>Calamari Fritti</span><span style="color:var(--text-muted);white-space:nowrap">$12</span></li><li><span>Caprese Salad</span><span style="color:var(--text-muted);white-space:nowrap">$10</span></li><li><span>Arancini</span><span style="color:var(--text-muted);white-space:nowrap">$9</span></li></ul></div><div class="smd-column"><h3 id="entrees">Entrees</h3><ul><li><span>Margherita Pizza</span><span style="color:var(--text-muted);white-space:nowrap">$14</span></li><li><span>Linguine alle Vongole</span><span style="color:var(--text-muted);white-space:nowrap">$18</span></li><li><span>Osso Buco</span><span style="color:var(--text-muted);white-space:nowrap">$24</span></li><li><span>Eggplant Parmigiana</span><span style="color:var(--text-muted);white-space:nowrap">$16</span></li></ul></div><div class="smd-column"><h3 id="desserts">Desserts</h3><ul><li><span>Tiramisu</span><span style="color:var(--text-muted);white-space:nowrap">$9</span></li><li><span>Panna Cotta</span><span style="color:var(--text-muted);white-space:nowrap">$8</span></li><li><span>Cannoli</span><span style="color:var(--text-muted);white-space:nowrap">$7</span></li><li><span>Affogato</span><span style="color:var(--text-muted);white-space:nowrap">$6</span></li></ul></div></div><div class="smd-cta-row"><a href="menu.html" class="smd-cta-primary">View Full Menu</a></div></section><section class="smd-section smd-section-alt smd-animate" id="what-our-guests-say"><h2>What Our Guests Say</h2><hr class="smd-section-rule"><div class="smd-block smd-block-quote"><p><span class="smd-stars">★★★★★</span><br>The best Italian food outside of Italy. The osso buco melts in your mouth. We’ve been coming here for years and it never disappoints.<br>— <strong>Maria S.</strong></p></div><div class="smd-block smd-block-quote"><p><span class="smd-stars">★★★★☆</span><br>Great atmosphere and food. The wine list is exceptional. A bit pricey but absolutely worth it for special occasions.<br>— <strong>James R.</strong></p></div><div class="smd-block smd-block-quote"><p><span class="smd-stars">★★★★★</span><br>We come here every anniversary. The garden patio is magical in the summer. The staff always makes us feel like family.<br>— <strong>Linda K.</strong></p></div></section><section class="smd-section smd-animate" id="hours-location"><h2>Hours & Location</h2><hr class="smd-section-rule"><div class="smd-columns smd-animate smd-animate-stagger"><div class="smd-column"><h3 id="hours">Hours</h3><p>Monday–Friday: 11am–10pm<br>Saturday: 10am–11pm<br>Sunday: 10am–9pm</p></div><div class="smd-column"><h3 id="find-us">Find Us</h3><p>123 Main Street<br>Portland, OR 97201<br>(503) 555-0142</p></div><div class="smd-column"><h3 id="reservations">Reservations</h3><p>Book online or call us.<br>Walk-ins welcome.</p></div></div></section><section class="smd-section smd-section-alt smd-animate" id="make-a-reservation"><h2>Make a Reservation</h2><hr class="smd-section-rule"><form class="smd-form" method="POST" action="/reservations"><div class="smd-form-group"><div class="smd-field"><label for="name">Name *</label><input type="text" id="name" name="name" required></div><div class="smd-field"><label for="email">Email *</label><input type="email" id="email" name="email" required></div><div class="smd-field"><label for="phone">Phone</label><input type="text" id="phone" name="phone"></div></div><div class="smd-form-group"><div class="smd-field"><label for="date">Date *</label><input type="date" id="date" name="date" required></div><div class="smd-field"><label for="party-size">Party size *</label><select id="party-size" name="party-size" required><option value="" disabled selected>Select...</option><option value="1">1</option><option value="2">2</option><option value="3-4">3-4</option><option value="5-6">5-6</option><option value="7+">7+</option></select></div></div><div class="smd-form-group"><div class="smd-field"><label for="special-requests">Special requests</label><textarea id="special-requests" name="special-requests"></textarea></div></div><button type="submit">Reserve a Table</button></form></section>
+<div class="smd-carousel" id="carousel-iqmu4x" role="region" aria-roledescription="carousel" aria-label="Image carousel"><div class="smd-carousel-track" aria-live="polite"><div class="smd-carousel-slide"><div class="smd-bg-section" style="background-image:url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&amp;q=80')"><div class="smd-bg-overlay"><h1>Giuseppe’s Italian Restaurant</h1><p>Authentic Italian cuisine in downtown Portland. Family owned since 1985.</p></div></div></div><div class="smd-carousel-slide"><div class="smd-bg-section" style="background-image:url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&amp;q=80')"><div class="smd-bg-overlay"><h1>A Warm Welcome Awaits</h1><p>Our dining room seats 80 guests in an intimate, candlelit atmosphere.</p></div></div></div><div class="smd-carousel-slide"><div class="smd-bg-section" style="background-image:url('https://images.unsplash.com/photo-1600891964092-4316c288032e?w=1200&amp;q=80')"><div class="smd-bg-overlay"><h1>The Garden Patio</h1><p>Dine under the stars on our award-winning patio, open May through October.</p></div></div></div></div><button class="smd-carousel-btn smd-carousel-prev" onclick="carouselNav('carousel-iqmu4x',-1)" aria-label="Previous">&lsaquo;</button><button class="smd-carousel-btn smd-carousel-next" onclick="carouselNav('carousel-iqmu4x',1)" aria-label="Next">&rsaquo;</button><div class="smd-carousel-dots"><button class="smd-carousel-dot active" onclick="carouselGo('carousel-iqmu4x',0)" aria-label="Slide 1"></button><button class="smd-carousel-dot" onclick="carouselGo('carousel-iqmu4x',1)" aria-label="Slide 2"></button><button class="smd-carousel-dot" onclick="carouselGo('carousel-iqmu4x',2)" aria-label="Slide 3"></button></div></div><div class="smd-cta-row"><a href="about.html" class="smd-cta-primary">About Us</a><a href="menu.html" class="smd-cta-secondary">View Full Menu</a></div><section class="smd-section smd-animate" id="our-menu"><h2>Our Menu</h2><hr class="smd-section-rule"><div class="smd-columns smd-animate smd-animate-stagger"><div class="smd-column"><h3 id="appetizers">Appetizers</h3><ul><li><span>Bruschetta</span><span style="color:var(--text-muted);white-space:nowrap">$8</span></li><li><span>Calamari Fritti</span><span style="color:var(--text-muted);white-space:nowrap">$12</span></li><li><span>Caprese Salad</span><span style="color:var(--text-muted);white-space:nowrap">$10</span></li><li><span>Arancini</span><span style="color:var(--text-muted);white-space:nowrap">$9</span></li></ul></div><div class="smd-column"><h3 id="entrees">Entrees</h3><ul><li><span>Margherita Pizza</span><span style="color:var(--text-muted);white-space:nowrap">$14</span></li><li><span>Linguine alle Vongole</span><span style="color:var(--text-muted);white-space:nowrap">$18</span></li><li><span>Osso Buco</span><span style="color:var(--text-muted);white-space:nowrap">$24</span></li><li><span>Eggplant Parmigiana</span><span style="color:var(--text-muted);white-space:nowrap">$16</span></li></ul></div><div class="smd-column"><h3 id="desserts">Desserts</h3><ul><li><span>Tiramisu</span><span style="color:var(--text-muted);white-space:nowrap">$9</span></li><li><span>Panna Cotta</span><span style="color:var(--text-muted);white-space:nowrap">$8</span></li><li><span>Cannoli</span><span style="color:var(--text-muted);white-space:nowrap">$7</span></li><li><span>Affogato</span><span style="color:var(--text-muted);white-space:nowrap">$6</span></li></ul></div></div><div class="smd-cta-row"><a href="menu.html" class="smd-cta-primary">View Full Menu</a></div></section><section class="smd-section smd-section-alt smd-animate" id="what-our-guests-say"><h2>What Our Guests Say</h2><hr class="smd-section-rule"><div class="smd-block smd-block-quote"><p><span class="smd-stars">★★★★★</span><br>The best Italian food outside of Italy. The osso buco melts in your mouth. We’ve been coming here for years and it never disappoints.<br>— <strong>Maria S.</strong></p></div><div class="smd-block smd-block-quote"><p><span class="smd-stars">★★★★☆</span><br>Great atmosphere and food. The wine list is exceptional. A bit pricey but absolutely worth it for special occasions.<br>— <strong>James R.</strong></p></div><div class="smd-block smd-block-quote"><p><span class="smd-stars">★★★★★</span><br>We come here every anniversary. The garden patio is magical in the summer. The staff always makes us feel like family.<br>— <strong>Linda K.</strong></p></div></section><section class="smd-section smd-animate" id="hours-location"><h2>Hours & Location</h2><hr class="smd-section-rule"><div class="smd-columns smd-animate smd-animate-stagger"><div class="smd-column"><h3 id="hours">Hours</h3><p>Monday–Friday: 11am–10pm<br>Saturday: 10am–11pm<br>Sunday: 10am–9pm</p></div><div class="smd-column"><h3 id="find-us">Find Us</h3><p>123 Main Street<br>Portland, OR 97201<br>(503) 555-0142</p></div><div class="smd-column"><h3 id="reservations">Reservations</h3><p>Book online or call us.<br>Walk-ins welcome.</p></div></div></section><section class="smd-section smd-section-alt smd-animate" id="make-a-reservation"><h2>Make a Reservation</h2><hr class="smd-section-rule"><form class="smd-form" method="POST" action="/reservations"><div class="smd-form-group"><div class="smd-field"><label for="name">Name *</label><input type="text" id="name" name="name" required></div><div class="smd-field"><label for="email">Email *</label><input type="email" id="email" name="email" required></div><div class="smd-field"><label for="phone">Phone</label><input type="text" id="phone" name="phone"></div></div><div class="smd-form-group"><div class="smd-field"><label for="date">Date *</label><input type="date" id="date" name="date" required></div><div class="smd-field"><label for="party-size">Party size *</label><select id="party-size" name="party-size" required><option value="" disabled selected>Select...</option><option value="1">1</option><option value="2">2</option><option value="3-4">3-4</option><option value="5-6">5-6</option><option value="7+">7+</option></select></div></div><div class="smd-form-group"><div class="smd-field"><label for="special-requests">Special requests</label><textarea id="special-requests" name="special-requests"></textarea></div></div><button type="submit">Reserve a Table</button></form></section>
 <footer class="smd-footer" data-style="centered"><div class="smd-footer-title">Giuseppe’s Italian Restaurant</div><div class="smd-footer-links"><a href="index.html">Home</a> <a href="menu.html">Menu</a> <a href="about.html">About</a> </div><div class="smd-footer-copy">123 Main Street, Portland, OR 97201<br>(503) 555-0142</div></footer>
 </main>
 <noscript><style>.smd-page-hidden,.smd-animate,.smd-animate-stagger>*{opacity:1!important;transform:none!important;transition:none!important}</style></noscript>
@@ -1800,7 +1871,14 @@ kbd {
   // Hamburger
   var toggle = document.querySelector('.smd-nav-toggle');
   var links = document.querySelector('.smd-nav-links');
-  if (toggle && links) toggle.addEventListener('click', function() { links.classList.toggle('open'); });
+  if (toggle && links) {
+    toggle.setAttribute('aria-label', 'Toggle navigation');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.addEventListener('click', function() {
+      var open = links.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
 
   // Nav scroll
   var nav = document.querySelector('.smd-nav');
@@ -1876,7 +1954,13 @@ kbd {
     initScrollAnims();
 
     // SPA navigation: fetch + swap content, keep nav stable
+    var currentNav = null;
     function navigateTo(url, push) {
+      // Cancel any in-flight navigation
+      if (currentNav) currentNav.abort();
+      var ctrl = new AbortController();
+      currentNav = ctrl;
+
       var parts = url.split('#');
       var fetchUrl = parts[0] || location.pathname;
       var hash = parts[1] || '';
@@ -1886,9 +1970,11 @@ kbd {
       page.style.transform = 'translateY(-8px)';
 
       Promise.all([
-        fetch(fetchUrl).then(function(r) { return r.text(); }),
+        fetch(fetchUrl, { signal: ctrl.signal }).then(function(r) { return r.text(); }),
         new Promise(function(r) { setTimeout(r, 200); })
       ]).then(function(results) {
+        if (ctrl.signal.aborted) return;
+        currentNav = null;
         var parsed = new DOMParser().parseFromString(results[0], 'text/html');
         var newMain = parsed.querySelector('.smd-page');
         if (!newMain) { location.href = url; return; }
@@ -1914,7 +2000,14 @@ kbd {
         page.style.transform = '';
 
         initScrollAnims();
-      }).catch(function() { location.href = url; });
+      }).catch(function(e) {
+        if (e.name === 'AbortError') return;
+        // Reset visual state before fallback
+        page.style.transition = '';
+        page.style.opacity = '';
+        page.style.transform = '';
+        location.href = url;
+      });
     }
 
     document.addEventListener('click', function(e) {
