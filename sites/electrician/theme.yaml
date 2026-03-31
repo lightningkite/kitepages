@@ -1,0 +1,26 @@
+mode: dark
+colors:
+  primary: "#F5A623"
+  primaryDark: "#D4901A"
+  primaryLight: "#1a2332"
+  accent: "#F5A623"
+  background: "#0C1821"
+  surface: "#162A3A"
+  surfaceWarm: "#132D3D"
+  text: "#F0F0F0"
+  textMuted: "#9EAAB8"
+  border: "#1E3A4F"
+  borderLight: "#172F40"
+
+fonts:
+  heading: Montserrat
+  body: Source Sans 3
+
+radius: 8
+radiusLg: 12
+nav: transparent
+sections: alternating
+cards: elevated
+animation: subtle
+footer: columns
+spacing: spacious

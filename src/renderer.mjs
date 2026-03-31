@@ -48,11 +48,12 @@ export function inl(text) {
   s = s.replace(/_(.+?)_/g, '<u>$1</u>');
   // Inline images with optional attrs: ![alt](url){avatar}
   s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)(?:\{([^}]+)\})?/g, (_, alt, src, attrs) => {
-    if (attrs === 'avatar') return `<img src="${src}" alt="${alt}" class="smd-img-avatar" loading="lazy">`;
-    return `<img src="${src}" alt="${alt}" loading="lazy" style="max-width:100%;vertical-align:middle;">`;
+    const eSrc = escapeHtml(src), eAlt = escapeHtml(alt);
+    if (attrs === 'avatar') return `<img src="${eSrc}" alt="${eAlt}" class="smd-img-avatar" loading="lazy">`;
+    return `<img src="${eSrc}" alt="${eAlt}" loading="lazy" style="max-width:100%;vertical-align:middle;">`;
   });
   // Links
-  s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
+  s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, text, href) => `<a href="${escapeHtml(href)}">${text}</a>`);
   // Star ratings
   s = s.replace(/([★☆⭐]{2,})/g, '<span class="smd-stars">$1</span>');
   // Autolinks — bare URLs not already in HTML attributes
@@ -88,8 +89,8 @@ function smartTypography(s) {
 
 function applyTypography(text) {
   let s = text;
-  // Em dash (--- or --)
-  s = s.replace(/-{2,3}/g, '\u2014');
+  // Em dash: convert -- or --- when preceded by a word char or space (not flag-like --help)
+  s = s.replace(/([\w\s])-{2,3}(?=[\w\s])/g, (match, before) => before + '\u2014');
   // Ellipsis (... directly after a word character)
   s = s.replace(/(\w)\.\.\./g, '$1\u2026');
   // Symbols
@@ -283,24 +284,26 @@ export function renderBlock(block, context) {
     case 'form':
       return renderForm(block.content);
     case 'image': {
+      const eSrc = escapeHtml(block.src);
+      const eAlt = escapeHtml(block.alt);
       const w = block.width ? ` width="${block.width}"` : '';
       const h = block.height ? ` height="${block.height}"` : '';
       const a = block.attrs || {};
       if (a.frame) {
-        return `<div class="smd-browser-frame"><div class="smd-browser-dots"><span></span><span></span><span></span></div><img src="${block.src}" alt="${block.alt}"${w}${h} loading="lazy"></div>`;
+        return `<div class="smd-browser-frame"><div class="smd-browser-dots"><span></span><span></span><span></span></div><img src="${eSrc}" alt="${eAlt}"${w}${h} loading="lazy"></div>`;
       }
       if (a.phone) {
-        return `<div class="smd-phone-frame"><img src="${block.src}" alt="${block.alt}"${w}${h} loading="lazy"></div>`;
+        return `<div class="smd-phone-frame"><img src="${eSrc}" alt="${eAlt}"${w}${h} loading="lazy"></div>`;
       }
       if (a.avatar) {
-        return `<img src="${block.src}" alt="${block.alt}" loading="lazy" class="smd-img-avatar">`;
+        return `<img src="${eSrc}" alt="${eAlt}" loading="lazy" class="smd-img-avatar">`;
       }
       // Build inline size constraints from =WIDTHxHEIGHT
       const styles = ['max-width:100%', 'border-radius:var(--radius)'];
       if (block.width) styles.push(`max-width:${block.width}px`);
       if (block.height) styles.push(`max-height:${block.height}px`);
       const cls = a.showcase ? ' class="smd-img-showcase"' : '';
-      return `<img src="${block.src}" alt="${block.alt}"${w}${h} loading="lazy"${cls} style="${styles.join(';')}">`;
+      return `<img src="${eSrc}" alt="${eAlt}"${w}${h} loading="lazy"${cls} style="${styles.join(';')}">`;
     }
     case 'columns':
       return renderColumns(block);
@@ -416,9 +419,10 @@ function renderTabs(block) {
 }
 
 function renderBgSection(block) {
+  const eBg = escapeHtml(block.bgImage);
   if (block.bgType === 'video') {
     let html = '<div class="smd-bg-section smd-bg-video">';
-    html += `<video class="smd-bg-video-el" autoplay muted loop playsinline><source src="${block.bgImage}"></video>`;
+    html += `<video class="smd-bg-video-el" autoplay muted loop playsinline><source src="${eBg}"></video>`;
     html += '<div class="smd-bg-overlay">';
     for (const b of block.blocks) {
       if (b.type === 'heading' && b.level === 1) html += `<h1>${inl(b.text)}</h1>`;
@@ -428,7 +432,7 @@ function renderBgSection(block) {
     html += '</div></div>';
     return html;
   }
-  let html = `<div class="smd-bg-section" style="background-image:url('${block.bgImage}')">`;
+  let html = `<div class="smd-bg-section" style="background-image:url('${eBg}')">`;
   html += '<div class="smd-bg-overlay">';
   for (const b of block.blocks) {
     if (b.type === 'heading' && b.level === 1) {
@@ -654,7 +658,7 @@ function renderCtaRow(text) {
   let html = '<div class="smd-cta-row">';
   links.forEach((link, idx) => {
     const cls = idx === 0 ? 'smd-cta-primary' : 'smd-cta-secondary';
-    html += `<a href="${link.href}" class="${cls}">${link.label}</a>`;
+    html += `<a href="${escapeHtml(link.href)}" class="${cls}">${escapeHtml(link.label)}</a>`;
   });
   html += '</div>';
   return html;
@@ -667,30 +671,30 @@ function renderCtaRow(text) {
 function renderForm(form) {
   const method = form.action?.method || 'POST';
   const url = form.action?.url || '#';
-  let html = `<form class="smd-form" method="${method}" action="${url}">`;
+  let html = `<form class="smd-form" method="${escapeHtml(method)}" action="${escapeHtml(url)}">`;
   for (const group of form.groups) {
     html += '<div class="smd-form-group">';
     for (const field of group) {
-      const id = field.label.toLowerCase().replace(/\s+/g, '-');
+      const id = escapeHtml(field.label.toLowerCase().replace(/\s+/g, '-'));
       const req = field.required ? ' required' : '';
-      const ph = field.placeholder ? ` placeholder="${field.placeholder}"` : '';
+      const ph = field.placeholder ? ` placeholder="${escapeHtml(field.placeholder)}"` : '';
       html += '<div class="smd-field">';
-      html += `<label for="${id}">${field.label}${field.required ? ' *' : ''}</label>`;
+      html += `<label for="${id}">${escapeHtml(field.label)}${field.required ? ' *' : ''}</label>`;
       if (field.fieldType === 'paragraph') {
         html += `<textarea id="${id}" name="${id}"${ph}${req}></textarea>`;
       } else if (field.fieldType === 'select') {
         html += `<select id="${id}" name="${id}"${req}>`;
         html += '<option value="" disabled selected>Select...</option>';
-        for (const opt of field.options) html += `<option value="${opt}">${opt}</option>`;
+        for (const opt of field.options) html += `<option value="${escapeHtml(opt)}">${escapeHtml(opt)}</option>`;
         html += '</select>';
       } else {
-        html += `<input type="${field.fieldType}" id="${id}" name="${id}"${ph}${req}>`;
+        html += `<input type="${escapeHtml(field.fieldType)}" id="${id}" name="${id}"${ph}${req}>`;
       }
       html += '</div>';
     }
     html += '</div>';
   }
-  if (form.action) html += `<button type="submit">${form.action.label}</button>`;
+  if (form.action) html += `<button type="submit">${escapeHtml(form.action.label)}</button>`;
   html += '</form>';
   return html;
 }
@@ -791,6 +795,10 @@ export function getThemeVars(theme = {}) {
     lines.push(`--text-light: ${c.textLight || '#666'};`);
     lines.push(`--border: ${c.border || '#2a2a2a'};`);
     lines.push(`--border-light: ${c.borderLight || '#222'};`);
+    // Dark mode needs stronger shadows to be visible
+    lines.push(`--shadow-sm: 0 1px 3px rgba(0,0,0,0.2), 0 1px 2px rgba(0,0,0,0.15);`);
+    lines.push(`--shadow-md: 0 4px 12px rgba(0,0,0,0.3), 0 2px 4px rgba(0,0,0,0.2);`);
+    lines.push(`--shadow-lg: 0 8px 24px rgba(0,0,0,0.4), 0 4px 8px rgba(0,0,0,0.25);`);
   }
   if (theme.fonts) {
     if (theme.fonts.body) lines.push(`--font-body: '${theme.fonts.body}', Georgia, serif;`);

@@ -137,7 +137,14 @@ ${animEnabled ? '<noscript><style>.smd-page-hidden,.smd-animate,.smd-animate-sta
   // Hamburger
   var toggle = document.querySelector('.smd-nav-toggle');
   var links = document.querySelector('.smd-nav-links');
-  if (toggle && links) toggle.addEventListener('click', function() { links.classList.toggle('open'); });
+  if (toggle && links) {
+    toggle.setAttribute('aria-label', 'Toggle navigation');
+    toggle.setAttribute('aria-expanded', 'false');
+    toggle.addEventListener('click', function() {
+      var open = links.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
 
   // Nav scroll
   var nav = document.querySelector('.smd-nav');
@@ -213,7 +220,13 @@ ${animEnabled ? '<noscript><style>.smd-page-hidden,.smd-animate,.smd-animate-sta
     initScrollAnims();
 
     // SPA navigation: fetch + swap content, keep nav stable
+    var currentNav = null;
     function navigateTo(url, push) {
+      // Cancel any in-flight navigation
+      if (currentNav) currentNav.abort();
+      var ctrl = new AbortController();
+      currentNav = ctrl;
+
       var parts = url.split('#');
       var fetchUrl = parts[0] || location.pathname;
       var hash = parts[1] || '';
@@ -223,9 +236,11 @@ ${animEnabled ? '<noscript><style>.smd-page-hidden,.smd-animate,.smd-animate-sta
       page.style.transform = 'translateY(-8px)';
 
       Promise.all([
-        fetch(fetchUrl).then(function(r) { return r.text(); }),
+        fetch(fetchUrl, { signal: ctrl.signal }).then(function(r) { return r.text(); }),
         new Promise(function(r) { setTimeout(r, 200); })
       ]).then(function(results) {
+        if (ctrl.signal.aborted) return;
+        currentNav = null;
         var parsed = new DOMParser().parseFromString(results[0], 'text/html');
         var newMain = parsed.querySelector('.smd-page');
         if (!newMain) { location.href = url; return; }
@@ -251,7 +266,14 @@ ${animEnabled ? '<noscript><style>.smd-page-hidden,.smd-animate,.smd-animate-sta
         page.style.transform = '';
 
         initScrollAnims();
-      }).catch(function() { location.href = url; });
+      }).catch(function(e) {
+        if (e.name === 'AbortError') return;
+        // Reset visual state before fallback
+        page.style.transition = '';
+        page.style.opacity = '';
+        page.style.transform = '';
+        location.href = url;
+      });
     }
 
     document.addEventListener('click', function(e) {
@@ -339,7 +361,7 @@ ${animEnabled ? '<noscript><style>.smd-page-hidden,.smd-animate,.smd-animate-sta
     let m;
     while ((m = linkPattern.exec(src)) !== null) {
       const href = m[2].split('#')[0]; // Strip anchor
-      if (!href || /^https?:\/\//.test(href) || /^mailto:/.test(href) || /^(POST|GET|PUT|DELETE)\s/.test(href)) continue;
+      if (!href || /^https?:\/\//.test(href) || /^mailto:/.test(href) || /^tel:/.test(href) || /^(POST|GET|PUT|DELETE)\s/.test(href)) continue;
       const target = join(siteDir, href);
       if (!existsSync(target)) {
         warnings.push(`${file}: broken link → ${href}`);
