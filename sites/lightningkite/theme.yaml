@@ -1,0 +1,26 @@
+mode: dark
+colors:
+  primary: "#fcb912"
+  primaryDark: "#e0a50f"
+  primaryLight: "#1a3040"
+  accent: "#fcb912"
+  background: "#0e2f3a"
+  surface: "#124156"
+  surfaceWarm: "#0b2530"
+  text: "#f0f0f0"
+  textMuted: "#b0b0b0"
+  border: "#1a4a5e"
+  borderLight: "#153d4e"
+
+fonts:
+  heading: Bebas Neue
+  body: Lato
+
+radius: 30
+radiusLg: 30
+nav: transparent
+sections: alternating
+cards: elevated
+animation: subtle
+footer: columns
+spacing: spacious

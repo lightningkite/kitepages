@@ -46,6 +46,11 @@ export function inl(text) {
   s = s.replace(/~([^~]+)~/g, '<sub>$1</sub>');
   // Underline
   s = s.replace(/_(.+?)_/g, '<u>$1</u>');
+  // Inline images with optional attrs: ![alt](url){avatar}
+  s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)(?:\{([^}]+)\})?/g, (_, alt, src, attrs) => {
+    if (attrs === 'avatar') return `<img src="${src}" alt="${alt}" class="smd-img-avatar" loading="lazy">`;
+    return `<img src="${src}" alt="${alt}" loading="lazy" style="max-width:100%;vertical-align:middle;">`;
+  });
   // Links
   s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2">$1</a>');
   // Star ratings
@@ -287,8 +292,15 @@ export function renderBlock(block, context) {
       if (a.phone) {
         return `<div class="smd-phone-frame"><img src="${block.src}" alt="${block.alt}"${w}${h} loading="lazy"></div>`;
       }
+      if (a.avatar) {
+        return `<img src="${block.src}" alt="${block.alt}" loading="lazy" class="smd-img-avatar">`;
+      }
+      // Build inline size constraints from =WIDTHxHEIGHT
+      const styles = ['max-width:100%', 'border-radius:var(--radius)'];
+      if (block.width) styles.push(`max-width:${block.width}px`);
+      if (block.height) styles.push(`max-height:${block.height}px`);
       const cls = a.showcase ? ' class="smd-img-showcase"' : '';
-      return `<img src="${block.src}" alt="${block.alt}"${w}${h} loading="lazy"${cls} style="max-width:100%;border-radius:var(--radius);">`;
+      return `<img src="${block.src}" alt="${block.alt}"${w}${h} loading="lazy"${cls} style="${styles.join(';')}">`;
     }
     case 'columns':
       return renderColumns(block);
@@ -433,7 +445,7 @@ function renderBgSection(block) {
 
 function hasImageAttrs(img) {
   const a = img.attrs;
-  return a && (a.showcase || a.frame || a.phone);
+  return a && (a.showcase || a.frame || a.phone || a.avatar);
 }
 
 function renderGallery(images) {

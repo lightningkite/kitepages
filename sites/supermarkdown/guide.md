@@ -149,6 +149,8 @@ Useful for longer quotations.
 Cards are great for feature grids and content blocks. They get automatic padding, border radius, and shadow based on the theme.
 :::
 
+Cards inside columns are automatically centered -- headings, text, and images all center-align for balanced grid layouts. Images inside column cards use `object-fit: contain` so logos and icons display without cropping.
+
 ## Testimonials
 
 ::: quote
@@ -380,7 +382,7 @@ Add attributes to images for special display treatments:
 
 ### Showcase
 
-`![](app.png){showcase}` -- large shadow and rounded corners, ideal for product screenshots.
+`![](app.png){showcase}` -- large shadow and rounded corners, ideal for product screenshots. Capped at 70% viewport height so it never overwhelms the page.
 
 ### Browser Frame
 
@@ -390,13 +392,44 @@ Add attributes to images for special display treatments:
 
 `![](app.png){phone}` -- wraps the image in a mobile device frame.
 
+### Avatar
+
+`![](photo.jpg){avatar}` -- 64px circular image with accent-colored border. Works both as a standalone block image and inline next to text, ideal for testimonial attributions:
+
+```
+::: quote
+Great experience working with this team.
+
+![Name](photo.jpg){avatar} -- **Name**, Title
+:::
+```
+
 ```
 ![Dashboard](dashboard.png){showcase}
 ![Web App](webapp.png){frame}
 ![Mobile](mobile.png){phone}
+![Team Member](photo.jpg){avatar}
 ```
 
-Attributes can combine with sizing: `![App](app.png =800x){showcase}`
+### Image Sizing
+
+Use `=WIDTHxHEIGHT` to constrain image dimensions. Width and height are applied as `max-width` and `max-height`, so the image scales down but never stretches beyond its natural size:
+
+```
+![Logo](logo.png =200x)        -- max 200px wide, height auto
+![Banner](hero.jpg =x400)       -- max 400px tall, width auto
+![Thumb](pic.jpg =300x200)      -- max 300px wide, max 200px tall
+```
+
+Sizing combines with attributes: `![App](app.png =800x){showcase}`
+
+### Inline Images
+
+Images can appear inline within paragraphs. Useful for small icons or avatar photos next to text:
+
+```
+![avatar](photo.jpg){avatar} -- **Name**, Company
+```
 
 ## Video Backgrounds
 
@@ -461,6 +494,19 @@ mysite/
   theme.yaml        Colors, fonts, style
   404.md            Custom 404 page
 ```
+
+### Nav Logo
+
+Use an image in the header H1 to display a logo instead of text in the navigation bar:
+
+```
+# ![Brand Name](logo.svg)
+
+- [Features](features.md)
+- [Pricing](pricing.md)
+```
+
+The logo image is automatically constrained to 32px height and displayed without border radius.
 
 ## Theming
 
