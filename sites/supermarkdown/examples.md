@@ -277,6 +277,147 @@ Everything a service business needs, editable by the business owner.
 
 |||
 
+## Software Agency
+
+A multi-page agency site with dark theme, team photos, client logos, project case studies, stats bar, and testimonials with avatars.
+
+[View Live Demo](demos/lightningkite/)
+
+|||
+
+### Source (index.md)
+
+```
+# We Build Strikingly Good Software
+
+Native mobile apps, web platforms, and
+IoT solutions -- built by a team that
+treats software development as an art.
+
+[Let's Talk](contact.md) -- [See Our Work](work.md)
+
+## Web and Mobile Development Done Right
+
+|||
+::: card
+### Expertise
+![Expertise](reason-expertise.png =120x)
+Proficient across iOS, Android, web,
+and embedded systems.
+:::
+---
+::: card
+### Communication
+![Communication](reason-communication.png =120x)
+Radical transparency isn't a buzzword.
+:::
+|||
+
+## By the Numbers
+|||
+### ++31++
+Programming Languages
+---
+### ++115++
+Mobile Projects
+---
+### ++204++
+Web Projects
+|||
+
+## What Our Clients Say
+::: quote
+Integrity is paramount with Lightning Kite.
+They are a real hidden gem.
+![Steve](steve.jpg){avatar} -- **Steve**
+:::
+```
+
+---
+
+### What You Get
+
+- Dark teal theme with golden yellow accent
+- Multi-page site (home, services, work, team, contact)
+- Team member grid with real photos
+- Client logo bar
+- Project case studies with descriptions
+- Stats bar auto-detected from `++stat++` columns
+- Testimonials with avatar images
+- Bold display font (Bebas Neue) headings
+
+8 pages, real imagery, agency-ready from markdown.
+
+|||
+
+## Electrician
+
+A multi-page service business site with dark theme, background hero image, project portfolio, contact form, and emergency service info.
+
+[View Live Demo](demos/electrician/)
+
+|||
+
+### Source (index.md)
+
+```
+::: bg building-photo.jpg
+# Commercial Electrical Contractors
+  You Can Count On
+
+Licensed, insured, and built on 20 years
+of keeping Denver businesses running.
+
+[Get a Free Estimate](contact.md)
+[Our Services](services.md)
+:::
+
+## What We Do
+|||
+::: card
+### Commercial Wiring
+![Panel](panel.jpg =120x)
+New construction and office buildouts.
+:::
+---
+::: card
+### Electrical Upgrades
+![Upgrade](upgrade.jpg =120x)
+Panel upgrades and code compliance.
+:::
+|||
+
+## By the Numbers
+|||
+### ++20++
+Years in Business
+---
+### ++500++
+Projects Completed
+---
+### ++98%++
+On-Time Completion
+|||
+```
+
+---
+
+### What You Get
+
+- Dark theme with orange/gold accents
+- Full-bleed hero with background image overlay
+- Service cards with images
+- Stats bar with large highlighted numbers
+- Client testimonials with star ratings
+- Multi-page site (home, services, projects, about, contact)
+- Contact form with project type and budget selects
+- Emergency service contact info
+- Column footer with phone, address, and links
+
+6 pages covering everything a trade business needs.
+
+|||
+
 ## SaaS Product
 
 A developer tool landing page with dark theme, pricing tabs, keyboard shortcuts, stats bar, testimonial carousel, and multi-column footer.
