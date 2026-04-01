@@ -1,4 +1,4 @@
-// SuperMarkdown Renderer — pure functions, no DOM dependencies.
+// Kite Pages Renderer — pure functions, no DOM dependencies.
 // render(doc, theme) → HTML string
 
 // ============================================================
@@ -21,7 +21,7 @@ export function inl(text) {
   // Inline math \( ... \)
   const mathSpans = [];
   s = s.replace(/\\\((.+?)\\\)/g, (_, content) => {
-    mathSpans.push(`<span class="smd-math">${escapeHtml(content)}</span>`);
+    mathSpans.push(`<span class="kp-math">${escapeHtml(content)}</span>`);
     return `\x00M${mathSpans.length - 1}\x00`;
   });
 
@@ -39,7 +39,7 @@ export function inl(text) {
   // Italic
   s = s.replace(/\*(.+?)\*/g, '<em>$1</em>');
   // Large text (++text++)
-  s = s.replace(/\+\+(.+?)\+\+/g, '<span class="smd-large">$1</span>');
+  s = s.replace(/\+\+(.+?)\+\+/g, '<span class="kp-large">$1</span>');
   // Superscript (Pandoc)
   s = s.replace(/\^([^\^]+)\^/g, '<sup>$1</sup>');
   // Subscript (Pandoc — single ~, after ~~ is already consumed)
@@ -49,13 +49,13 @@ export function inl(text) {
   // Inline images with optional attrs: ![alt](url){avatar}
   s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)(?:\{([^}]+)\})?/g, (_, alt, src, attrs) => {
     const eSrc = escapeHtml(src), eAlt = escapeHtml(alt);
-    if (attrs === 'avatar') return `<img src="${eSrc}" alt="${eAlt}" class="smd-img-avatar" loading="lazy">`;
+    if (attrs === 'avatar') return `<img src="${eSrc}" alt="${eAlt}" class="kp-img-avatar" loading="lazy">`;
     return `<img src="${eSrc}" alt="${eAlt}" loading="lazy" style="max-width:100%;vertical-align:middle;">`;
   });
   // Links
   s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, text, href) => `<a href="${escapeHtml(href)}">${text}</a>`);
   // Star ratings
-  s = s.replace(/([★☆⭐]{2,})/g, '<span class="smd-stars">$1</span>');
+  s = s.replace(/([★☆⭐]{2,})/g, '<span class="kp-stars">$1</span>');
   // Autolinks — bare URLs not already in HTML attributes
   s = s.replace(/(?<![="'>\/])(https?:\/\/[^\s<>)\]"']+)/g, '<a href="$1">$1</a>');
   // Icon / emoji shortcodes — :name: → emoji (falls back to literal if no match)
@@ -185,12 +185,12 @@ export function render(doc, theme = {}) {
 
     // H1 → hero
     if (block.type === 'heading' && block.level === 1) {
-      const animClass = anim !== 'none' ? ' smd-animate' : '';
-      html += `<header class="smd-hero${animClass}">`;
+      const animClass = anim !== 'none' ? ' kp-animate' : '';
+      html += `<header class="kp-hero${animClass}">`;
       html += `<h1>${inl(block.text)}</h1>`;
       i++;
       if (i < blocks.length && blocks[i].type === 'paragraph') {
-        html += `<p class="smd-subtitle">${inl(blocks[i].text)}</p>`;
+        html += `<p class="kp-subtitle">${inl(blocks[i].text)}</p>`;
         i++;
       }
       html += '</header>';
@@ -199,12 +199,12 @@ export function render(doc, theme = {}) {
 
     // H2 → section wrapper
     if (block.type === 'heading' && block.level === 2) {
-      const altClass = sectionIndex % 2 === 1 ? ' smd-section-alt' : '';
-      const animClass = anim !== 'none' ? ' smd-animate' : '';
+      const altClass = sectionIndex % 2 === 1 ? ' kp-section-alt' : '';
+      const animClass = anim !== 'none' ? ' kp-animate' : '';
       const sectionId = block.id || `section-${sectionIndex}`;
-      html += `<section class="smd-section${altClass}${animClass}" id="${sectionId}">`;
+      html += `<section class="kp-section${altClass}${animClass}" id="${sectionId}">`;
       html += `<h2>${inl(block.text)}</h2>`;
-      html += `<hr class="smd-section-rule">`;
+      html += `<hr class="kp-section-rule">`;
       i++;
       while (i < blocks.length && !(blocks[i].type === 'heading' && blocks[i].level <= 2)) {
         if (blocks[i].type === 'image' && !hasImageAttrs(blocks[i])) {
@@ -290,19 +290,19 @@ export function renderBlock(block, context) {
       const h = block.height ? ` height="${block.height}"` : '';
       const a = block.attrs || {};
       if (a.frame) {
-        return `<div class="smd-browser-frame"><div class="smd-browser-dots"><span></span><span></span><span></span></div><img src="${eSrc}" alt="${eAlt}"${w}${h} loading="lazy"></div>`;
+        return `<div class="kp-browser-frame"><div class="kp-browser-dots"><span></span><span></span><span></span></div><img src="${eSrc}" alt="${eAlt}"${w}${h} loading="lazy"></div>`;
       }
       if (a.phone) {
-        return `<div class="smd-phone-frame"><img src="${eSrc}" alt="${eAlt}"${w}${h} loading="lazy"></div>`;
+        return `<div class="kp-phone-frame"><img src="${eSrc}" alt="${eAlt}"${w}${h} loading="lazy"></div>`;
       }
       if (a.avatar) {
-        return `<img src="${eSrc}" alt="${eAlt}" loading="lazy" class="smd-img-avatar">`;
+        return `<img src="${eSrc}" alt="${eAlt}" loading="lazy" class="kp-img-avatar">`;
       }
       // Build inline size constraints from =WIDTHxHEIGHT
       const styles = ['max-width:100%', 'border-radius:var(--radius)'];
       if (block.width) styles.push(`max-width:${block.width}px`);
       if (block.height) styles.push(`max-height:${block.height}px`);
-      const cls = a.showcase ? ' class="smd-img-showcase"' : '';
+      const cls = a.showcase ? ' class="kp-img-showcase"' : '';
       return `<img src="${eSrc}" alt="${eAlt}"${w}${h} loading="lazy"${cls} style="${styles.join(';')}">`;
     }
     case 'columns':
@@ -328,7 +328,7 @@ export function renderBlock(block, context) {
     case 'expandable':
       return renderExpandable(block);
     case 'math':
-      return `<div class="smd-math smd-math-block">${escapeHtml(block.content)}</div>`;
+      return `<div class="kp-math kp-math-block">${escapeHtml(block.content)}</div>`;
     case 'directive':
       return renderDirective(block);
     case 'html':
@@ -357,14 +357,14 @@ function renderColumns(block) {
     return first && first.type === 'heading' && first.level === 3 && /^\+\+.+\+\+$/.test(first.text.trim());
   });
 
-  const staggerClass = _currentAnim !== 'none' ? ' smd-animate smd-animate-stagger' : '';
-  const wrapperClass = isStats ? 'smd-columns smd-columns-stats' : 'smd-columns';
+  const staggerClass = _currentAnim !== 'none' ? ' kp-animate kp-animate-stagger' : '';
+  const wrapperClass = isStats ? 'kp-columns kp-columns-stats' : 'kp-columns';
   let html = `<div class="${wrapperClass}${staggerClass}">`;
   for (const col of block.columns) {
     // Detect featured column: first heading has {featured} attr
     const firstHeading = col.find(b => b.type === 'heading');
     const isFeatured = firstHeading?.attrs?.featured;
-    const colClass = isFeatured ? 'smd-column smd-column-featured' : 'smd-column';
+    const colClass = isFeatured ? 'kp-column kp-column-featured' : 'kp-column';
     html += `<div class="${colClass}">`;
     for (const b of col) html += renderBlock(b, 'column');
     html += '</div>';
@@ -375,10 +375,10 @@ function renderColumns(block) {
 
 export function renderCarousel(block) {
   const id = 'carousel-' + Math.random().toString(36).slice(2, 8);
-  let html = `<div class="smd-carousel" id="${id}" role="region" aria-roledescription="carousel" aria-label="Image carousel">`;
-  html += `<div class="smd-carousel-track" aria-live="polite">`;
+  let html = `<div class="kp-carousel" id="${id}" role="region" aria-roledescription="carousel" aria-label="Image carousel">`;
+  html += `<div class="kp-carousel-track" aria-live="polite">`;
   block.slides.forEach((slideBlocks) => {
-    html += '<div class="smd-carousel-slide">';
+    html += '<div class="kp-carousel-slide">';
     for (const b of slideBlocks) {
       if (b.type === 'bg-section') html += renderBgSection(b);
       else html += renderBlock(b);
@@ -387,11 +387,11 @@ export function renderCarousel(block) {
   });
   html += '</div>';
   if (block.slides.length > 1) {
-    html += `<button class="smd-carousel-btn smd-carousel-prev" onclick="carouselNav('${id}',-1)" aria-label="Previous">&lsaquo;</button>`;
-    html += `<button class="smd-carousel-btn smd-carousel-next" onclick="carouselNav('${id}',1)" aria-label="Next">&rsaquo;</button>`;
-    html += '<div class="smd-carousel-dots">';
+    html += `<button class="kp-carousel-btn kp-carousel-prev" onclick="carouselNav('${id}',-1)" aria-label="Previous">&lsaquo;</button>`;
+    html += `<button class="kp-carousel-btn kp-carousel-next" onclick="carouselNav('${id}',1)" aria-label="Next">&rsaquo;</button>`;
+    html += '<div class="kp-carousel-dots">';
     block.slides.forEach((_, idx) => {
-      html += `<button class="smd-carousel-dot${idx === 0 ? ' active' : ''}" onclick="carouselGo('${id}',${idx})" aria-label="Slide ${idx+1}"></button>`;
+      html += `<button class="kp-carousel-dot${idx === 0 ? ' active' : ''}" onclick="carouselGo('${id}',${idx})" aria-label="Slide ${idx+1}"></button>`;
     });
     html += '</div>';
   }
@@ -401,16 +401,16 @@ export function renderCarousel(block) {
 
 function renderTabs(block) {
   const id = 'tabs-' + Math.random().toString(36).slice(2, 8);
-  let html = `<div class="smd-tabs" id="${id}">`;
-  html += '<div class="smd-tabs-nav" role="tablist">';
+  let html = `<div class="kp-tabs" id="${id}">`;
+  html += '<div class="kp-tabs-nav" role="tablist">';
   block.tabs.forEach((tab, idx) => {
     const active = idx === 0 ? ' active' : '';
-    html += `<button class="smd-tab-btn${active}" role="tab" onclick="tabSwitch('${id}',${idx})">${tab.name}</button>`;
+    html += `<button class="kp-tab-btn${active}" role="tab" onclick="tabSwitch('${id}',${idx})">${tab.name}</button>`;
   });
   html += '</div>';
   block.tabs.forEach((tab, idx) => {
     const active = idx === 0 ? ' active' : '';
-    html += `<div class="smd-tab-panel${active}" role="tabpanel">`;
+    html += `<div class="kp-tab-panel${active}" role="tabpanel">`;
     for (const b of tab.blocks) html += renderBlock(b);
     html += '</div>';
   });
@@ -421,9 +421,9 @@ function renderTabs(block) {
 function renderBgSection(block) {
   const eBg = escapeHtml(block.bgImage);
   if (block.bgType === 'video') {
-    let html = '<div class="smd-bg-section smd-bg-video">';
-    html += `<video class="smd-bg-video-el" autoplay muted loop playsinline><source src="${eBg}"></video>`;
-    html += '<div class="smd-bg-overlay">';
+    let html = '<div class="kp-bg-section kp-bg-video">';
+    html += `<video class="kp-bg-video-el" autoplay muted loop playsinline><source src="${eBg}"></video>`;
+    html += '<div class="kp-bg-overlay">';
     for (const b of block.blocks) {
       if (b.type === 'heading' && b.level === 1) html += `<h1>${inl(b.text)}</h1>`;
       else if (b.type === 'heading') html += `<h${b.level}>${inl(b.text)}</h${b.level}>`;
@@ -432,8 +432,8 @@ function renderBgSection(block) {
     html += '</div></div>';
     return html;
   }
-  let html = `<div class="smd-bg-section" style="background-image:url('${eBg}')">`;
-  html += '<div class="smd-bg-overlay">';
+  let html = `<div class="kp-bg-section" style="background-image:url('${eBg}')">`;
+  html += '<div class="kp-bg-overlay">';
   for (const b of block.blocks) {
     if (b.type === 'heading' && b.level === 1) {
       html += `<h1>${inl(b.text)}</h1>`;
@@ -454,7 +454,7 @@ function hasImageAttrs(img) {
 
 function renderGallery(images) {
   const n = images.length;
-  let html = `<figure class="smd-gallery count-${Math.min(n, 4)}">`;
+  let html = `<figure class="kp-gallery count-${Math.min(n, 4)}">`;
   for (const img of images) {
     const w = img.width ? ` width="${img.width}"` : '';
     const h = img.height ? ` height="${img.height}"` : '';
@@ -465,21 +465,21 @@ function renderGallery(images) {
 }
 
 function renderCard(block) {
-  let html = '<div class="smd-block smd-block-card">';
+  let html = '<div class="kp-block kp-block-card">';
   for (const b of block.blocks) html += renderBlock(b);
   html += '</div>';
   return html;
 }
 
 function renderQuoteBlock(block) {
-  let html = '<div class="smd-block smd-block-quote">';
+  let html = '<div class="kp-block kp-block-quote">';
   for (const b of block.blocks) html += renderBlock(b);
   html += '</div>';
   return html;
 }
 
 function renderAlert(block) {
-  let html = `<div class="smd-block smd-block-${block.alertType}">`;
+  let html = `<div class="kp-block kp-block-${block.alertType}">`;
   for (const b of block.blocks) html += renderBlock(b);
   html += '</div>';
   return html;
@@ -518,10 +518,10 @@ function renderTable(block) {
 }
 
 function renderRecord(block) {
-  let html = '<div class="smd-record">';
-  html += `<div class="smd-record-name">${inl(block.name)}</div>`;
+  let html = '<div class="kp-record">';
+  html += `<div class="kp-record-name">${inl(block.name)}</div>`;
   if (block.fields.length > 0) {
-    html += '<dl class="smd-record-fields">';
+    html += '<dl class="kp-record-fields">';
     for (const f of block.fields) {
       html += `<dt>${inl(f.key)}</dt><dd>${inl(f.value)}</dd>`;
     }
@@ -533,9 +533,9 @@ function renderRecord(block) {
 }
 
 function renderExpandable(block) {
-  let html = '<details class="smd-expandable">';
+  let html = '<details class="kp-expandable">';
   html += `<summary>${inl(block.summary)}</summary>`;
-  html += '<div class="smd-expandable-content">';
+  html += '<div class="kp-expandable-content">';
   for (const b of block.blocks) html += renderBlock(b);
   html += '</div></details>';
   return html;
@@ -544,7 +544,7 @@ function renderExpandable(block) {
 function renderList(block) {
   const tag = block.ordered ? 'ol' : 'ul';
   const isTaskList = block.items.some(item => /^\[[ x\-]\]\s/.test(item));
-  const listClass = isTaskList ? ' class="smd-task-list"' : '';
+  const listClass = isTaskList ? ' class="kp-task-list"' : '';
 
   return `<${tag}${listClass}>` + block.items.map(item => {
     // Task list items: [ ] todo, [x] done, [-] partial
@@ -553,11 +553,11 @@ function renderList(block) {
       const state = taskMatch[1];
       const text = taskMatch[2];
       if (state === 'x') {
-        return `<li class="smd-task-item smd-task-done"><input type="checkbox" disabled checked>${inl(text)}</li>`;
+        return `<li class="kp-task-item kp-task-done"><input type="checkbox" disabled checked>${inl(text)}</li>`;
       } else if (state === '-') {
-        return `<li class="smd-task-item smd-task-partial"><input type="checkbox" disabled checked>${inl(text)}</li>`;
+        return `<li class="kp-task-item kp-task-partial"><input type="checkbox" disabled checked>${inl(text)}</li>`;
       }
-      return `<li class="smd-task-item"><input type="checkbox" disabled>${inl(text)}</li>`;
+      return `<li class="kp-task-item"><input type="checkbox" disabled>${inl(text)}</li>`;
     }
 
     // Dot-leader lists (pricing)
@@ -596,9 +596,9 @@ function renderDirective(block) {
 
 function renderToc() {
   if (_docHeadings.length === 0) return '';
-  let html = '<nav class="smd-toc" aria-label="Table of contents"><ul>';
+  let html = '<nav class="kp-toc" aria-label="Table of contents"><ul>';
   for (const h of _docHeadings) {
-    const indent = h.level > 2 ? ` class="smd-toc-indent"` : '';
+    const indent = h.level > 2 ? ` class="kp-toc-indent"` : '';
     html += `<li${indent}><a href="#${h.id}">${h.text}</a></li>`;
   }
   html += '</ul></nav>';
@@ -621,7 +621,7 @@ function getEmbed(url) {
 }
 
 function renderEmbed(embed) {
-  const wrapper = '<div class="smd-embed">';
+  const wrapper = '<div class="kp-embed">';
   if (embed.type === 'youtube') {
     return `${wrapper}<iframe src="https://www.youtube.com/embed/${embed.id}" frameborder="0" allowfullscreen loading="lazy" title="YouTube video"></iframe></div>`;
   }
@@ -633,7 +633,7 @@ function renderEmbed(embed) {
 
 function renderFencedGeneric(block) {
   const type = block.sectionType.toLowerCase().replace(/\s+/g, '-');
-  let html = `<div class="smd-block smd-block-${type}">`;
+  let html = `<div class="kp-block kp-block-${type}">`;
   for (const b of block.blocks) html += renderBlock(b);
   html += '</div>';
   return html;
@@ -655,9 +655,9 @@ function renderCtaRow(text) {
   while ((match = linkPattern.exec(text)) !== null) {
     links.push({ label: match[1], href: match[2] });
   }
-  let html = '<div class="smd-cta-row">';
+  let html = '<div class="kp-cta-row">';
   links.forEach((link, idx) => {
-    const cls = idx === 0 ? 'smd-cta-primary' : 'smd-cta-secondary';
+    const cls = idx === 0 ? 'kp-cta-primary' : 'kp-cta-secondary';
     html += `<a href="${escapeHtml(link.href)}" class="${cls}">${escapeHtml(link.label)}</a>`;
   });
   html += '</div>';
@@ -671,14 +671,14 @@ function renderCtaRow(text) {
 function renderForm(form) {
   const method = form.action?.method || 'POST';
   const url = form.action?.url || '#';
-  let html = `<form class="smd-form" method="${escapeHtml(method)}" action="${escapeHtml(url)}">`;
+  let html = `<form class="kp-form" method="${escapeHtml(method)}" action="${escapeHtml(url)}">`;
   for (const group of form.groups) {
-    html += '<div class="smd-form-group">';
+    html += '<div class="kp-form-group">';
     for (const field of group) {
       const id = escapeHtml(field.label.toLowerCase().replace(/\s+/g, '-'));
       const req = field.required ? ' required' : '';
       const ph = field.placeholder ? ` placeholder="${escapeHtml(field.placeholder)}"` : '';
-      html += '<div class="smd-field">';
+      html += '<div class="kp-field">';
       html += `<label for="${id}">${escapeHtml(field.label)}${field.required ? ' *' : ''}</label>`;
       if (field.fieldType === 'paragraph') {
         html += `<textarea id="${id}" name="${id}"${ph}${req}></textarea>`;
@@ -710,19 +710,19 @@ export function renderNav(headerDoc, theme = {}) {
   const h1 = blocks.find(b => b.type === 'heading' && b.level === 1);
   const list = blocks.find(b => b.type === 'list');
 
-  let html = '<a href="#smd-content" class="smd-skip-nav">Skip to content</a>';
-  html += `<nav class="smd-nav" data-style="${navStyle}" aria-label="Main navigation">`;
+  let html = '<a href="#kp-content" class="kp-skip-nav">Skip to content</a>';
+  html += `<nav class="kp-nav" data-style="${navStyle}" aria-label="Main navigation">`;
   if (h1) {
-    html += `<a class="smd-nav-brand" href="index.md">${inl(h1.text)}</a>`;
+    html += `<a class="kp-nav-brand" href="index.md">${inl(h1.text)}</a>`;
   }
-  html += '<ul class="smd-nav-links">';
+  html += '<ul class="kp-nav-links">';
   if (list) {
     for (const item of list.items) {
       html += `<li>${inl(item)}</li>`;
     }
   }
   html += '</ul>';
-  html += '<button class="smd-nav-toggle" aria-label="Menu"><span></span></button>';
+  html += '<button class="kp-nav-toggle" aria-label="Menu"><span></span></button>';
   html += '</nav>';
   return html;
 }
@@ -732,18 +732,18 @@ export function renderFooter(footerDoc, theme = {}) {
   const footerStyle = theme.footer || 'minimal';
   const blocks = footerDoc.blocks;
 
-  let html = `<footer class="smd-footer" data-style="${footerStyle}">`;
+  let html = `<footer class="kp-footer" data-style="${footerStyle}">`;
   for (const block of blocks) {
     if (block.type === 'heading' && block.level === 1) {
-      html += `<div class="smd-footer-title">${inl(block.text)}</div>`;
+      html += `<div class="kp-footer-title">${inl(block.text)}</div>`;
     } else if (block.type === 'columns') {
-      html += '<div class="smd-footer-columns">';
+      html += '<div class="kp-footer-columns">';
       for (const col of block.columns) {
-        html += '<div class="smd-footer-col">';
+        html += '<div class="kp-footer-col">';
         for (const b of col) {
-          if (b.type === 'heading') html += `<div class="smd-footer-col-title">${inl(b.text)}</div>`;
+          if (b.type === 'heading') html += `<div class="kp-footer-col-title">${inl(b.text)}</div>`;
           else if (b.type === 'list') {
-            html += '<ul class="smd-footer-col-links">';
+            html += '<ul class="kp-footer-col-links">';
             for (const item of b.items) html += `<li>${inl(item)}</li>`;
             html += '</ul>';
           } else if (b.type === 'paragraph') {
@@ -754,11 +754,11 @@ export function renderFooter(footerDoc, theme = {}) {
       }
       html += '</div>';
     } else if (block.type === 'list') {
-      html += '<div class="smd-footer-links">';
+      html += '<div class="kp-footer-links">';
       for (const item of block.items) html += inl(item) + ' ';
       html += '</div>';
     } else if (block.type === 'paragraph') {
-      html += `<div class="smd-footer-copy">${inl(block.text)}</div>`;
+      html += `<div class="kp-footer-copy">${inl(block.text)}</div>`;
     }
   }
   html += '</footer>';

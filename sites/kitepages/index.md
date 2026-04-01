@@ -1,9 +1,9 @@
 ---
-title: Supermarkdown — Content In, Website Out
+title: Kite Pages — Content In, Website Out
 description: A Markdown superset that turns plain text into polished, responsive websites. No HTML, no CSS, no breakpoints.
 ---
 
-# Supermarkdown
+# Kite Pages
 
 Write content. Get a website. No HTML, no CSS, no breakpoints.
 
@@ -60,7 +60,7 @@ An LLM can produce a complete site in 60 lines of plain text -- and another LLM 
 ## Feature Highlights
 
 > [!TIP]
-> Every feature below is built into Supermarkdown. No plugins, no configuration.
+> Every feature below is built into Kite Pages. No plugins, no configuration.
 
 |||
 
@@ -224,7 +224,7 @@ Columns with dot-leader pricing. A styled reservation form. Responsive layout. T
 
 ## Before and After
 
-| Scenario | Without | With Supermarkdown |
+| Scenario | Without | With Kite Pages |
 |----------|---------|-------------------|
 | Small business needs a site | Pay a developer | Describe it in a text file |
 | AI generates a site | 400+ lines of HTML | 60 lines of .md |

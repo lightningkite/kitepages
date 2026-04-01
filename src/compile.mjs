@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// SuperMarkdown Compiler — reads a site directory, produces static HTML files.
+// Kite Pages Compiler — reads a site directory, produces static HTML files.
 // Usage: node src/compile.mjs <site-dir> [--out <output-dir>]
 
 import { readFileSync, writeFileSync, mkdirSync, readdirSync, existsSync } from 'fs';
@@ -48,26 +48,20 @@ function compile(siteDir, outDir) {
 
   const animEnabled = (theme.animation || 'subtle') !== 'none';
 
-  // Load header/footer (.md first, fall back to .smd)
-  const headerSrc = readOptional(join(siteDir, 'header.md')) || readOptional(join(siteDir, 'header.smd'));
-  const footerSrc = readOptional(join(siteDir, 'footer.md')) || readOptional(join(siteDir, 'footer.smd'));
+  const headerSrc = readOptional(join(siteDir, 'header.md'));
+  const footerSrc = readOptional(join(siteDir, 'footer.md'));
   const headerDoc = headerSrc ? parse(headerSrc) : null;
   const footerDoc = footerSrc ? parse(footerSrc) : null;
 
   // Load CSS
-  const css = readFileSync(join(__dirname, 'smd.css'), 'utf-8');
+  const css = readFileSync(join(__dirname, 'kp.css'), 'utf-8');
   const themeVars = getThemeVars(theme);
   const fontsUrl = getGoogleFontsUrl(theme);
   const dataAttrs = getThemeDataAttrs(theme);
   const dataAttrStr = Object.entries(dataAttrs).map(([k, v]) => `${k}="${v}"`).join(' ');
 
-  // Find all page files (.md first, fall back to .smd)
   const allFiles = readdirSync(siteDir);
-  let pageFiles = allFiles.filter(f => f.endsWith('.md') && f !== 'header.md' && f !== 'footer.md');
-  if (pageFiles.length === 0) {
-    // Backward compat: try .smd files
-    pageFiles = allFiles.filter(f => f.endsWith('.smd') && f !== 'header.smd' && f !== 'footer.smd');
-  }
+  const pageFiles = allFiles.filter(f => f.endsWith('.md') && f !== 'header.md' && f !== 'footer.md');
 
   // Collect all sources for the editor playground
   const editorSources = {};
@@ -82,13 +76,13 @@ function compile(siteDir, outDir) {
   mkdirSync(outDir, { recursive: true });
 
   // Write shared editor bundle
-  writeFileSync(join(outDir, 'smd-editor.js'), getEditorBundle());
+  writeFileSync(join(outDir, 'kp-editor.js'), getEditorBundle());
 
 
   for (const file of pageFiles) {
     const src = readFileSync(join(siteDir, file), 'utf-8');
     const doc = parse(src);
-    const title = doc.frontmatter.title || file.replace(/\.(md|smd)$/, '');
+    const title = doc.frontmatter.title || file.replace(/\.md$/, '');
     const description = doc.frontmatter.description || '';
 
     // Skip drafts
@@ -108,7 +102,7 @@ function compile(siteDir, outDir) {
       image ? `<meta property="og:image" content="${escapeHtml(image)}">` : '',
     ].filter(Boolean).join('\n');
 
-    const pageClass = animEnabled ? 'smd-page smd-page-hidden' : 'smd-page';
+    const pageClass = animEnabled ? 'kp-page kp-page-hidden' : 'kp-page';
 
     let html = `<!DOCTYPE html>
 <html lang="en" ${dataAttrStr}>
@@ -125,18 +119,18 @@ ${themeVars}
 </style>
 </head>
 <body>
-${navHtml ? `<div id="smd-nav-mount">${navHtml}</div>` : ''}
-<main id="smd-content" class="${pageClass}">
+${navHtml ? `<div id="kp-nav-mount">${navHtml}</div>` : ''}
+<main id="kp-content" class="${pageClass}">
 ${bodyHtml}
 ${footerHtml}
 </main>
-${animEnabled ? '<noscript><style>.smd-page-hidden,.smd-animate,.smd-animate-stagger>*{opacity:1!important;transform:none!important;transition:none!important}</style></noscript>' : ''}
+${animEnabled ? '<noscript><style>.kp-page-hidden,.kp-animate,.kp-animate-stagger>*{opacity:1!important;transform:none!important;transition:none!important}</style></noscript>' : ''}
 <script>
 // Runtime: hamburger, carousel, nav scroll, animations, page transitions
 (function() {
   // Hamburger
-  var toggle = document.querySelector('.smd-nav-toggle');
-  var links = document.querySelector('.smd-nav-links');
+  var toggle = document.querySelector('.kp-nav-toggle');
+  var links = document.querySelector('.kp-nav-links');
   if (toggle && links) {
     toggle.setAttribute('aria-label', 'Toggle navigation');
     toggle.setAttribute('aria-expanded', 'false');
@@ -147,7 +141,7 @@ ${animEnabled ? '<noscript><style>.smd-page-hidden,.smd-animate,.smd-animate-sta
   }
 
   // Nav scroll
-  var nav = document.querySelector('.smd-nav');
+  var nav = document.querySelector('.kp-nav');
   if (nav) {
     var scrolled = false;
     window.addEventListener('scroll', function() {
@@ -163,13 +157,13 @@ ${animEnabled ? '<noscript><style>.smd-page-hidden,.smd-animate,.smd-animate-sta
     var el = document.getElementById(id);
     if (!el) return;
     state[id] = idx;
-    el.querySelector('.smd-carousel-track').style.transform = 'translateX(-' + idx * 100 + '%)';
-    el.querySelectorAll('.smd-carousel-dot').forEach(function(d, i) { d.classList.toggle('active', i === idx); });
+    el.querySelector('.kp-carousel-track').style.transform = 'translateX(-' + idx * 100 + '%)';
+    el.querySelectorAll('.kp-carousel-dot').forEach(function(d, i) { d.classList.toggle('active', i === idx); });
   }
   window.carouselNav = function(id, dir) {
     var el = document.getElementById(id);
     if (!el) return;
-    var count = el.querySelectorAll('.smd-carousel-slide').length;
+    var count = el.querySelectorAll('.kp-carousel-slide').length;
     goTo(id, ((state[id] || 0) + dir + count) % count);
     pauseUntil[id] = Date.now() + 10000;
   };
@@ -178,8 +172,8 @@ ${animEnabled ? '<noscript><style>.smd-page-hidden,.smd-animate,.smd-animate-sta
     pauseUntil[id] = Date.now() + 10000;
   };
   setInterval(function() {
-    document.querySelectorAll('.smd-carousel').forEach(function(el) {
-      var count = el.querySelectorAll('.smd-carousel-slide').length;
+    document.querySelectorAll('.kp-carousel').forEach(function(el) {
+      var count = el.querySelectorAll('.kp-carousel-slide').length;
       if (count <= 1) return;
       if (pauseUntil[el.id] && Date.now() < pauseUntil[el.id]) return;
       goTo(el.id, ((state[el.id] || 0) + 1) % count);
@@ -190,33 +184,33 @@ ${animEnabled ? '<noscript><style>.smd-page-hidden,.smd-animate,.smd-animate-sta
   window.tabSwitch = function(id, idx) {
     var el = document.getElementById(id);
     if (!el) return;
-    el.querySelectorAll('.smd-tab-btn').forEach(function(b, i) { b.classList.toggle('active', i === idx); });
-    el.querySelectorAll('.smd-tab-panel').forEach(function(p, i) { p.classList.toggle('active', i === idx); });
+    el.querySelectorAll('.kp-tab-btn').forEach(function(b, i) { b.classList.toggle('active', i === idx); });
+    el.querySelectorAll('.kp-tab-panel').forEach(function(p, i) { p.classList.toggle('active', i === idx); });
   };
 
   // Animations & SPA-like page transitions
-  var page = document.querySelector('.smd-page');
-  if (page && page.classList.contains('smd-page-hidden')) {
+  var page = document.querySelector('.kp-page');
+  if (page && page.classList.contains('kp-page-hidden')) {
     function initScrollAnims() {
-      document.querySelectorAll('.smd-hero.smd-animate').forEach(function(el) {
-        setTimeout(function() { el.classList.add('smd-visible'); }, 150);
+      document.querySelectorAll('.kp-hero.kp-animate').forEach(function(el) {
+        setTimeout(function() { el.classList.add('kp-visible'); }, 150);
       });
-      var first = document.querySelector('.smd-section.smd-animate');
-      if (first) setTimeout(function() { first.classList.add('smd-visible'); }, 300);
+      var first = document.querySelector('.kp-section.kp-animate');
+      if (first) setTimeout(function() { first.classList.add('kp-visible'); }, 300);
       if ('IntersectionObserver' in window) {
         var obs = new IntersectionObserver(function(entries) {
           entries.forEach(function(e) {
-            if (e.isIntersecting) { e.target.classList.add('smd-visible'); obs.unobserve(e.target); }
+            if (e.isIntersecting) { e.target.classList.add('kp-visible'); obs.unobserve(e.target); }
           });
         }, { threshold: 0.05, rootMargin: '0px 0px 50px 0px' });
-        document.querySelectorAll('.smd-animate:not(.smd-hero):not(.smd-visible)').forEach(function(el) { obs.observe(el); });
+        document.querySelectorAll('.kp-animate:not(.kp-hero):not(.kp-visible)').forEach(function(el) { obs.observe(el); });
       } else {
-        document.querySelectorAll('.smd-animate').forEach(function(el) { el.classList.add('smd-visible'); });
+        document.querySelectorAll('.kp-animate').forEach(function(el) { el.classList.add('kp-visible'); });
       }
     }
 
     // Initial page enter
-    requestAnimationFrame(function() { page.classList.remove('smd-page-hidden'); });
+    requestAnimationFrame(function() { page.classList.remove('kp-page-hidden'); });
     initScrollAnims();
 
     // SPA navigation: fetch + swap content, keep nav stable
@@ -242,7 +236,7 @@ ${animEnabled ? '<noscript><style>.smd-page-hidden,.smd-animate,.smd-animate-sta
         if (ctrl.signal.aborted) return;
         currentNav = null;
         var parsed = new DOMParser().parseFromString(results[0], 'text/html');
-        var newMain = parsed.querySelector('.smd-page');
+        var newMain = parsed.querySelector('.kp-page');
         if (!newMain) { location.href = url; return; }
 
         page.innerHTML = newMain.innerHTML;
@@ -296,9 +290,9 @@ ${animEnabled ? '<noscript><style>.smd-page-hidden,.smd-animate,.smd-animate-sta
   }
 })();
 </script>
-<script type="application/json" id="smd-sources">${JSON.stringify(editorSources)}</script>
-<script type="application/json" id="smd-theme">${JSON.stringify(theme)}</script>
-<script src="smd-editor.js" defer></script>
+<script type="application/json" id="kp-sources">${JSON.stringify(editorSources)}</script>
+<script type="application/json" id="kp-theme">${JSON.stringify(theme)}</script>
+<script src="kp-editor.js" defer></script>
 </body>
 </html>`;
 
@@ -313,17 +307,17 @@ ${animEnabled ? '<noscript><style>.smd-page-hidden,.smd-animate,.smd-animate-sta
 
     // Math rendering with KaTeX
     // Block math
-    html = html.replace(/<div class="smd-math smd-math-block">([\s\S]*?)<\/div>/g, (match, tex) => {
+    html = html.replace(/<div class="kp-math kp-math-block">([\s\S]*?)<\/div>/g, (match, tex) => {
       try {
         const decoded = tex.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"');
-        return `<div class="smd-math smd-math-block">${katex.renderToString(decoded, { displayMode: true, throwOnError: false })}</div>`;
+        return `<div class="kp-math kp-math-block">${katex.renderToString(decoded, { displayMode: true, throwOnError: false })}</div>`;
       } catch { return match; }
     });
     // Inline math
-    html = html.replace(/<span class="smd-math">([\s\S]*?)<\/span>/g, (match, tex) => {
+    html = html.replace(/<span class="kp-math">([\s\S]*?)<\/span>/g, (match, tex) => {
       try {
         const decoded = tex.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"');
-        return `<span class="smd-math">${katex.renderToString(decoded, { displayMode: false, throwOnError: false })}</span>`;
+        return `<span class="kp-math">${katex.renderToString(decoded, { displayMode: false, throwOnError: false })}</span>`;
       } catch { return match; }
     });
 
@@ -332,11 +326,10 @@ ${animEnabled ? '<noscript><style>.smd-page-hidden,.smd-animate,.smd-animate-sta
       html = html.replace('</head>', '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.21/dist/katex.min.css">\n</head>');
     }
 
-    // Rewrite .md and .smd links to .html
+    // Rewrite .md links to .html
     html = html.replace(/href="([^"]*?)\.md(#[^"]*)?"/g, 'href="$1.html$2"');
-    html = html.replace(/href="([^"]*?)\.smd(#[^"]*)?"/g, 'href="$1.html$2"');
 
-    const outFile = join(outDir, file.replace(/\.(md|smd)$/, '.html'));
+    const outFile = join(outDir, file.replace(/\.md$/, '.html'));
     writeFileSync(outFile, html);
     console.log(`  ${file} → ${basename(outFile)}`);
   }
@@ -385,7 +378,7 @@ ${animEnabled ? '<noscript><style>.smd-page-hidden,.smd-animate,.smd-animate-sta
   // Generate sitemap.xml
   const compiledPages = pageFiles
     .filter(f => { const d = parse(readFileSync(join(siteDir, f), 'utf-8')); return !d.frontmatter.draft; })
-    .map(f => f.replace(/\.(md|smd)$/, '.html'));
+    .map(f => f.replace(/\.md$/, '.html'));
   const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${compiledPages.map(p => `  <url><loc>${p}</loc></url>`).join('\n')}

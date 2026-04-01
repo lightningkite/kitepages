@@ -1,11 +1,11 @@
 ---
-title: Examples — Supermarkdown
-description: See what you can build with Supermarkdown across different industries
+title: Examples — Kite Pages
+description: See what you can build with Kite Pages across different industries
 ---
 
 # Examples
 
-Real sites built with Supermarkdown, each from a single folder of text files.
+Real sites built with Kite Pages, each from a single folder of text files.
 
 ## Restaurant
 

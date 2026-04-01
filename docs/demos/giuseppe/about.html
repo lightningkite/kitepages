@@ -53,7 +53,7 @@ a { color: var(--primary); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
 /* ===== Navigation ===== */
-.smd-nav {
+.kp-nav {
   position: fixed;
   top: 0;
   left: 0;
@@ -66,25 +66,25 @@ a:hover { text-decoration: underline; }
   padding: 0 40px;
   transition: background 0.4s, box-shadow 0.4s, backdrop-filter 0.4s;
 }
-.smd-nav-brand {
+.kp-nav-brand {
   font-family: var(--font-heading);
   font-size: 1.2em;
   font-weight: 700;
   text-decoration: none !important;
   white-space: nowrap;
 }
-.smd-nav-brand img {
+.kp-nav-brand img {
   height: 32px;
   width: auto;
   vertical-align: middle;
   border-radius: 0;
 }
-.smd-nav-links {
+.kp-nav-links {
   display: flex;
   gap: 32px;
   list-style: none;
 }
-.smd-nav-links a {
+.kp-nav-links a {
   font-family: system-ui, -apple-system, sans-serif;
   font-size: 0.85em;
   font-weight: 500;
@@ -93,43 +93,43 @@ a:hover { text-decoration: underline; }
   transition: color 0.2s, opacity 0.2s;
   opacity: 0.85;
 }
-.smd-nav-links a:hover { opacity: 1; }
+.kp-nav-links a:hover { opacity: 1; }
 
 /* Nav: transparent (floats over hero, white text) */
-.smd-nav[data-style="transparent"] {
+.kp-nav[data-style="transparent"] {
   background: transparent;
   color: white;
 }
-.smd-nav[data-style="transparent"] .smd-nav-brand,
-.smd-nav[data-style="transparent"] .smd-nav-links a { color: white; }
-.smd-nav[data-style="transparent"].scrolled {
+.kp-nav[data-style="transparent"] .kp-nav-brand,
+.kp-nav[data-style="transparent"] .kp-nav-links a { color: white; }
+.kp-nav[data-style="transparent"].scrolled {
   background: var(--bg);
   color: var(--text);
   box-shadow: 0 1px 8px rgba(0,0,0,0.08);
 }
-.smd-nav[data-style="transparent"].scrolled .smd-nav-brand,
-.smd-nav[data-style="transparent"].scrolled .smd-nav-links a { color: var(--text); }
+.kp-nav[data-style="transparent"].scrolled .kp-nav-brand,
+.kp-nav[data-style="transparent"].scrolled .kp-nav-links a { color: var(--text); }
 
 /* Nav: solid (colored bar) */
-.smd-nav[data-style="solid"] {
+.kp-nav[data-style="solid"] {
   background: var(--primary);
   color: white;
 }
-.smd-nav[data-style="solid"] .smd-nav-brand,
-.smd-nav[data-style="solid"] .smd-nav-links a { color: white; }
-.smd-nav[data-style="solid"].scrolled { box-shadow: 0 2px 12px rgba(0,0,0,0.15); }
+.kp-nav[data-style="solid"] .kp-nav-brand,
+.kp-nav[data-style="solid"] .kp-nav-links a { color: white; }
+.kp-nav[data-style="solid"].scrolled { box-shadow: 0 2px 12px rgba(0,0,0,0.15); }
 
 /* Nav: minimal (clean line, bg-colored) */
-.smd-nav[data-style="minimal"] {
+.kp-nav[data-style="minimal"] {
   background: var(--bg);
   border-bottom: 1px solid var(--border);
 }
-.smd-nav[data-style="minimal"] .smd-nav-brand { color: var(--text); }
-.smd-nav[data-style="minimal"] .smd-nav-links a { color: var(--text-muted); }
-.smd-nav[data-style="minimal"] .smd-nav-links a:hover { color: var(--text); }
+.kp-nav[data-style="minimal"] .kp-nav-brand { color: var(--text); }
+.kp-nav[data-style="minimal"] .kp-nav-links a { color: var(--text-muted); }
+.kp-nav[data-style="minimal"] .kp-nav-links a:hover { color: var(--text); }
 
 /* Nav: centered (brand centered, links below or inline) */
-.smd-nav[data-style="centered"] {
+.kp-nav[data-style="centered"] {
   flex-direction: column;
   height: auto;
   padding: 20px 40px 12px;
@@ -137,27 +137,27 @@ a:hover { text-decoration: underline; }
   border-bottom: 1px solid var(--border);
   gap: 8px;
 }
-.smd-nav[data-style="centered"] .smd-nav-brand {
+.kp-nav[data-style="centered"] .kp-nav-brand {
   color: var(--text);
   font-size: 1.5em;
   font-weight: 400;
 }
-.smd-nav[data-style="centered"] .smd-nav-links a {
+.kp-nav[data-style="centered"] .kp-nav-links a {
   color: var(--text-muted);
   font-size: 0.8em;
   text-transform: uppercase;
   letter-spacing: 0.1em;
 }
-.smd-nav[data-style="centered"].scrolled {
+.kp-nav[data-style="centered"].scrolled {
   flex-direction: row;
   height: var(--nav-height);
   padding: 0 40px;
   box-shadow: 0 1px 8px rgba(0,0,0,0.08);
 }
-.smd-nav[data-style="centered"].scrolled .smd-nav-brand { font-size: 1.1em; }
+.kp-nav[data-style="centered"].scrolled .kp-nav-brand { font-size: 1.1em; }
 
 /* Mobile hamburger */
-.smd-nav-toggle {
+.kp-nav-toggle {
   display: none;
   background: none;
   border: none;
@@ -166,9 +166,9 @@ a:hover { text-decoration: underline; }
   height: 24px;
   position: relative;
 }
-.smd-nav-toggle span,
-.smd-nav-toggle span::before,
-.smd-nav-toggle span::after {
+.kp-nav-toggle span,
+.kp-nav-toggle span::before,
+.kp-nav-toggle span::after {
   display: block;
   width: 100%;
   height: 2px;
@@ -176,14 +176,14 @@ a:hover { text-decoration: underline; }
   position: absolute;
   transition: transform 0.3s, opacity 0.3s;
 }
-.smd-nav-toggle span { top: 50%; transform: translateY(-50%); }
-.smd-nav-toggle span::before { content: ''; top: -8px; }
-.smd-nav-toggle span::after { content: ''; top: 8px; }
-.smd-nav-toggle:focus-visible { outline: 2px solid var(--primary); outline-offset: 4px; border-radius: 4px; }
+.kp-nav-toggle span { top: 50%; transform: translateY(-50%); }
+.kp-nav-toggle span::before { content: ''; top: -8px; }
+.kp-nav-toggle span::after { content: ''; top: 8px; }
+.kp-nav-toggle:focus-visible { outline: 2px solid var(--primary); outline-offset: 4px; border-radius: 4px; }
 
 @media (max-width: 768px) {
-  .smd-nav-toggle { display: block; }
-  .smd-nav-links {
+  .kp-nav-toggle { display: block; }
+  .kp-nav-links {
     position: fixed;
     top: var(--nav-height);
     left: 0;
@@ -198,41 +198,41 @@ a:hover { text-decoration: underline; }
     pointer-events: none;
     transition: transform 0.3s, opacity 0.3s;
   }
-  .smd-nav-links.open {
+  .kp-nav-links.open {
     transform: translateY(0);
     opacity: 1;
     pointer-events: auto;
   }
-  .smd-nav-links a { font-size: 1em; opacity: 1; color: var(--text) !important; }
-  .smd-nav[data-style="transparent"] .smd-nav-toggle { color: white; }
-  .smd-nav[data-style="transparent"].scrolled .smd-nav-toggle { color: var(--text); }
-  .smd-nav[data-style="centered"] { flex-direction: row; height: var(--nav-height); padding: 0 24px; }
-  .smd-nav[data-style="centered"] .smd-nav-brand { font-size: 1.1em; }
+  .kp-nav-links a { font-size: 1em; opacity: 1; color: var(--text) !important; }
+  .kp-nav[data-style="transparent"] .kp-nav-toggle { color: white; }
+  .kp-nav[data-style="transparent"].scrolled .kp-nav-toggle { color: var(--text); }
+  .kp-nav[data-style="centered"] { flex-direction: row; height: var(--nav-height); padding: 0 24px; }
+  .kp-nav[data-style="centered"] .kp-nav-brand { font-size: 1.1em; }
 }
 
 /* ===== Page Structure ===== */
-.smd-page {
+.kp-page {
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 0 32px 64px;
 }
-body:has(.smd-nav) .smd-page { padding-top: 0; }
+body:has(.kp-nav) .kp-page { padding-top: 0; }
 /* Full-bleed hero carousel/bg-section so transparent nav has dark background behind it */
-.smd-page > .smd-carousel:first-child,
-.smd-page > .smd-bg-section:first-child {
+.kp-page > .kp-carousel:first-child,
+.kp-page > .kp-bg-section:first-child {
   margin-left: calc(-50vw + 50%);
   margin-right: calc(-50vw + 50%);
   border-radius: 0;
 }
-.smd-page > .smd-carousel:first-child { box-shadow: none; }
+.kp-page > .kp-carousel:first-child { box-shadow: none; }
 
 /* ===== Hero Section ===== */
-.smd-hero {
+.kp-hero {
   text-align: center;
   padding: 72px 20px 48px;
 }
-body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100px; }
-.smd-hero h1 {
+body:has(.kp-nav:not([data-style="transparent"])) .kp-hero { padding-top: 100px; }
+.kp-hero h1 {
   font-family: var(--font-heading);
   font-size: clamp(2em, 5vw, 3.5em);
   font-weight: 400;
@@ -240,7 +240,7 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   margin-bottom: 20px;
   line-height: 1.15;
 }
-.smd-hero .smd-subtitle {
+.kp-hero .kp-subtitle {
   font-size: 1.15em;
   color: var(--text-muted);
   max-width: 540px;
@@ -249,56 +249,56 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
 }
 
 /* ===== Scroll Animations ===== */
-.smd-animate {
+.kp-animate {
   opacity: 0;
   transform: translateY(24px);
   transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1), transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.smd-animate.smd-visible {
+.kp-animate.kp-visible {
   opacity: 1;
   transform: translateY(0);
 }
 /* Expressive: more dramatic slide + stagger */
-[data-animation="expressive"] .smd-animate {
+[data-animation="expressive"] .kp-animate {
   transform: translateY(48px);
   transition-duration: 0.9s;
 }
 /* When staggering children, parent snaps visible — children do the animated reveal */
-.smd-animate.smd-animate-stagger {
+.kp-animate.kp-animate-stagger {
   transform: none;
   transition: none;
 }
 /* Stagger children */
-.smd-animate-stagger > * {
+.kp-animate-stagger > * {
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
-.smd-animate-stagger.smd-visible > * {
+.kp-animate-stagger.kp-visible > * {
   opacity: 1;
   transform: translateY(0);
 }
-.smd-animate-stagger.smd-visible > *:nth-child(1) { transition-delay: 0s; }
-.smd-animate-stagger.smd-visible > *:nth-child(2) { transition-delay: 0.1s; }
-.smd-animate-stagger.smd-visible > *:nth-child(3) { transition-delay: 0.2s; }
-.smd-animate-stagger.smd-visible > *:nth-child(4) { transition-delay: 0.3s; }
-.smd-animate-stagger.smd-visible > *:nth-child(5) { transition-delay: 0.4s; }
-.smd-animate-stagger.smd-visible > *:nth-child(6) { transition-delay: 0.5s; }
-.smd-animate-stagger.smd-visible > *:nth-child(7) { transition-delay: 0.6s; }
-.smd-animate-stagger.smd-visible > *:nth-child(8) { transition-delay: 0.7s; }
-.smd-animate-stagger.smd-visible > *:nth-child(n+9) { transition-delay: 0.8s; }
-[data-animation="none"] .smd-animate,
-[data-animation="none"] .smd-animate-stagger > * {
+.kp-animate-stagger.kp-visible > *:nth-child(1) { transition-delay: 0s; }
+.kp-animate-stagger.kp-visible > *:nth-child(2) { transition-delay: 0.1s; }
+.kp-animate-stagger.kp-visible > *:nth-child(3) { transition-delay: 0.2s; }
+.kp-animate-stagger.kp-visible > *:nth-child(4) { transition-delay: 0.3s; }
+.kp-animate-stagger.kp-visible > *:nth-child(5) { transition-delay: 0.4s; }
+.kp-animate-stagger.kp-visible > *:nth-child(6) { transition-delay: 0.5s; }
+.kp-animate-stagger.kp-visible > *:nth-child(7) { transition-delay: 0.6s; }
+.kp-animate-stagger.kp-visible > *:nth-child(8) { transition-delay: 0.7s; }
+.kp-animate-stagger.kp-visible > *:nth-child(n+9) { transition-delay: 0.8s; }
+[data-animation="none"] .kp-animate,
+[data-animation="none"] .kp-animate-stagger > * {
   opacity: 1; transform: none; transition: none;
 }
 
 /* ===== Sections ===== */
-.smd-section {
+.kp-section {
   padding: var(--section-padding) 0;
   border-top: 1px solid var(--border);
 }
 /* Section styles: alternating */
-[data-sections="alternating"] .smd-section-alt {
+[data-sections="alternating"] .kp-section-alt {
   background: var(--surface-warm);
   margin-left: calc(-50vw + 50%);
   margin-right: calc(-50vw + 50%);
@@ -306,7 +306,7 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   padding-right: calc(50vw - 50% + 32px);
 }
 /* Section styles: bold (full-bleed primary-colored alternating) */
-[data-sections="bold"] .smd-section-alt {
+[data-sections="bold"] .kp-section-alt {
   background: var(--primary);
   color: white;
   margin-left: calc(-50vw + 50%);
@@ -315,24 +315,24 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   padding-right: calc(50vw - 50% + 32px);
   border-top-color: transparent;
 }
-[data-sections="bold"] .smd-section-alt h2,
-[data-sections="bold"] .smd-section-alt h3 { color: white; }
-[data-sections="bold"] .smd-section-alt .smd-section-rule { background: rgba(255,255,255,0.4); }
-[data-sections="bold"] .smd-section-alt p { color: rgba(255,255,255,0.9); }
-[data-sections="bold"] .smd-section-alt .smd-block {
+[data-sections="bold"] .kp-section-alt h2,
+[data-sections="bold"] .kp-section-alt h3 { color: white; }
+[data-sections="bold"] .kp-section-alt .kp-section-rule { background: rgba(255,255,255,0.4); }
+[data-sections="bold"] .kp-section-alt p { color: rgba(255,255,255,0.9); }
+[data-sections="bold"] .kp-section-alt .kp-block {
   background: rgba(255,255,255,0.12);
   border-color: rgba(255,255,255,0.2);
   color: white;
 }
-[data-sections="bold"] .smd-section-alt .smd-large { color: white; }
-[data-sections="bold"] .smd-section-alt .smd-large { color: white; }
-[data-sections="bold"] .smd-section-alt .smd-stat-label { color: rgba(255,255,255,0.8); }
-[data-sections="bold"] .smd-section-alt .smd-column h3 { color: rgba(255,255,255,0.9); }
-[data-sections="bold"] .smd-section-alt li { color: rgba(255,255,255,0.9); border-bottom-color: rgba(255,255,255,0.15); }
+[data-sections="bold"] .kp-section-alt .kp-large { color: white; }
+[data-sections="bold"] .kp-section-alt .kp-large { color: white; }
+[data-sections="bold"] .kp-section-alt .kp-stat-label { color: rgba(255,255,255,0.8); }
+[data-sections="bold"] .kp-section-alt .kp-column h3 { color: rgba(255,255,255,0.9); }
+[data-sections="bold"] .kp-section-alt li { color: rgba(255,255,255,0.9); border-bottom-color: rgba(255,255,255,0.15); }
 /* Section styles: clean (no alternation) */
-[data-sections="clean"] .smd-section-alt { background: transparent; }
+[data-sections="clean"] .kp-section-alt { background: transparent; }
 
-.smd-section > h2 {
+.kp-section > h2 {
   font-family: var(--font-heading);
   font-size: clamp(1.5em, 3vw, 2.2em);
   font-weight: 400;
@@ -340,7 +340,7 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   margin-bottom: 12px;
   letter-spacing: -0.01em;
 }
-.smd-section > .smd-section-rule {
+.kp-section > .kp-section-rule {
   width: 40px;
   height: 2px;
   background: var(--accent);
@@ -349,28 +349,28 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
 }
 
 /* ===== Columns ===== */
-.smd-columns {
+.kp-columns {
   display: grid;
   gap: 40px;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   align-items: stretch;
   margin-bottom: 2rem;
 }
-.smd-columns:last-child {
+.kp-columns:last-child {
   margin-bottom: 0;
 }
-.smd-column {
+.kp-column {
   display: flex;
   flex-direction: column;
 }
-.smd-column > .smd-block:first-child {
+.kp-column > .kp-block:first-child {
   margin-top: 0;
 }
-.smd-column > .smd-block:last-child {
+.kp-column > .kp-block:last-child {
   flex: 1;
   margin-bottom: 0;
 }
-.smd-column h3 {
+.kp-column h3 {
   font-weight: 700;
   margin-bottom: 16px;
   color: var(--primary-dark);
@@ -381,12 +381,12 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
 }
 
 /* ===== Compact ===== */
-.smd-compact {
+.kp-compact {
   display: grid;
   gap: 40px;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 }
-.smd-compact h3 {
+.kp-compact h3 {
   font-size: 0.85em;
   font-weight: 700;
   margin-bottom: 12px;
@@ -397,16 +397,16 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
 }
 
 /* ===== Image Gallery ===== */
-.smd-gallery {
+.kp-gallery {
   display: grid;
   gap: 16px;
   margin: 40px 0;
 }
-.smd-gallery.count-1 { grid-template-columns: 1fr; }
-.smd-gallery.count-2 { grid-template-columns: 1fr 1fr; }
-.smd-gallery.count-3 { grid-template-columns: 1fr 1fr 1fr; }
-.smd-gallery.count-4 { grid-template-columns: 1fr 1fr; }
-.smd-gallery img {
+.kp-gallery.count-1 { grid-template-columns: 1fr; }
+.kp-gallery.count-2 { grid-template-columns: 1fr 1fr; }
+.kp-gallery.count-3 { grid-template-columns: 1fr 1fr 1fr; }
+.kp-gallery.count-4 { grid-template-columns: 1fr 1fr; }
+.kp-gallery img {
   width: 100%;
   height: 280px;
   object-fit: cover;
@@ -414,58 +414,58 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   box-shadow: var(--shadow-md);
   transition: transform var(--transition), box-shadow var(--transition);
 }
-.smd-gallery img:hover {
+.kp-gallery img:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-lg);
 }
 
 /* ===== Lists ===== */
-.smd-column ul, .smd-section > ul {
+.kp-column ul, .kp-section > ul {
   list-style: none;
   padding: 0;
 }
-.smd-column li, .smd-section > ul > li {
+.kp-column li, .kp-section > ul > li {
   padding: 10px 0;
   border-bottom: 1px solid var(--border-light);
   display: flex;
   justify-content: space-between;
   gap: 12px;
 }
-.smd-column li:last-child, .smd-section > ul > li:last-child {
+.kp-column li:last-child, .kp-section > ul > li:last-child {
   border-bottom: none;
 }
 
-/* ===== Card Styles (applied to .smd-block-card via theme) ===== */
-[data-cards="elevated"] .smd-block-card {
+/* ===== Card Styles (applied to .kp-block-card via theme) ===== */
+[data-cards="elevated"] .kp-block-card {
   box-shadow: var(--shadow-md);
   border: none;
 }
-[data-cards="elevated"] .smd-block-card:hover {
+[data-cards="elevated"] .kp-block-card:hover {
   box-shadow: var(--shadow-lg);
   transform: translateY(-4px);
 }
-[data-cards="flat"] .smd-block-card {
+[data-cards="flat"] .kp-block-card {
   box-shadow: none;
   border: 1px solid var(--border);
 }
-[data-cards="bordered"] .smd-block-card {
+[data-cards="bordered"] .kp-block-card {
   box-shadow: none;
   border: 2px solid var(--text);
   border-radius: 0;
 }
-[data-cards="glass"] .smd-block-card {
+[data-cards="glass"] .kp-block-card {
   background: color-mix(in srgb, var(--surface) 60%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid color-mix(in srgb, var(--border) 40%, transparent);
   box-shadow: 0 4px 16px rgba(0,0,0,0.06);
 }
-[data-cards="glass"] .smd-block-card:hover {
+[data-cards="glass"] .kp-block-card:hover {
   background: color-mix(in srgb, var(--surface) 80%, transparent);
   box-shadow: 0 8px 24px rgba(0,0,0,0.1);
   transform: translateY(-2px);
 }
-[data-cards="glass"] .smd-form {
+[data-cards="glass"] .kp-form {
   background: color-mix(in srgb, var(--surface) 60%, transparent);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
@@ -478,7 +478,7 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
 }
 
 /* ===== Forms ===== */
-.smd-form {
+.kp-form {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -487,19 +487,19 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   margin: 0 auto;
   box-shadow: var(--shadow-sm);
 }
-[data-cards="bordered"] .smd-form { border: 2px solid var(--text); border-radius: 0; box-shadow: none; }
-[data-cards="glass"] .smd-form { background: rgba(255,255,255,0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3); }
-.smd-form-group {
+[data-cards="bordered"] .kp-form { border: 2px solid var(--text); border-radius: 0; box-shadow: none; }
+[data-cards="glass"] .kp-form { background: rgba(255,255,255,0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3); }
+.kp-form-group {
   display: flex;
   gap: 20px;
   margin-bottom: 20px;
   flex-wrap: wrap;
 }
-.smd-field {
+.kp-field {
   flex: 1;
   min-width: 180px;
 }
-.smd-field label {
+.kp-field label {
   display: block;
   font-family: system-ui, -apple-system, sans-serif;
   font-size: 0.82em;
@@ -509,9 +509,9 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   color: var(--text-muted);
   margin-bottom: 6px;
 }
-.smd-field input,
-.smd-field textarea,
-.smd-field select {
+.kp-field input,
+.kp-field textarea,
+.kp-field select {
   width: 100%;
   padding: 12px 14px;
   border: 1px solid var(--border);
@@ -522,21 +522,21 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   color: var(--text);
   transition: border-color var(--transition), box-shadow var(--transition);
 }
-[data-cards="bordered"] .smd-field input,
-[data-cards="bordered"] .smd-field textarea,
-[data-cards="bordered"] .smd-field select { border-radius: 0; border-width: 2px; }
-.smd-field input:focus,
-.smd-field textarea:focus,
-.smd-field select:focus {
+[data-cards="bordered"] .kp-field input,
+[data-cards="bordered"] .kp-field textarea,
+[data-cards="bordered"] .kp-field select { border-radius: 0; border-width: 2px; }
+.kp-field input:focus,
+.kp-field textarea:focus,
+.kp-field select:focus {
   outline: none;
   border-color: var(--primary);
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--primary) 12%, transparent);
 }
-.smd-field input::placeholder,
-.smd-field textarea::placeholder { color: var(--text-muted); opacity: 0.7; }
-.smd-field select { -webkit-appearance: none; appearance: none; }
-.smd-field textarea { min-height: 100px; resize: vertical; }
-.smd-form button {
+.kp-field input::placeholder,
+.kp-field textarea::placeholder { color: var(--text-muted); opacity: 0.7; }
+.kp-field select { -webkit-appearance: none; appearance: none; }
+.kp-field textarea { min-height: 100px; resize: vertical; }
+.kp-form button {
   background: var(--primary);
   color: white;
   border: none;
@@ -550,27 +550,27 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   margin-top: 8px;
   transition: background var(--transition), transform var(--transition);
 }
-[data-cards="bordered"] .smd-form button { border-radius: 0; }
-.smd-form button:hover {
+[data-cards="bordered"] .kp-form button { border-radius: 0; }
+.kp-form button:hover {
   background: var(--primary-dark);
   transform: translateY(-1px);
 }
-.smd-form button:active { transform: translateY(1px); }
-.smd-form button:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.kp-form button:active { transform: translateY(1px); }
+.kp-form button:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
 
 /* ===== Paragraphs ===== */
-.smd-section p, .smd-column p, .smd-compact p {
+.kp-section p, .kp-column p, .kp-compact p {
   margin-bottom: 8px;
   color: var(--text);
 }
-.smd-section > p {
+.kp-section > p {
   max-width: 680px;
   margin-left: auto;
   margin-right: auto;
 }
 
 /* ===== CTA Button Row ===== */
-.smd-cta-row {
+.kp-cta-row {
   display: flex;
   flex-wrap: wrap;
   gap: 12px;
@@ -578,7 +578,7 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   margin: 24px auto 32px;
   max-width: 680px;
 }
-.smd-cta-row a {
+.kp-cta-row a {
   display: inline-block;
   padding: 12px 28px;
   border-radius: 999px;
@@ -589,73 +589,73 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   text-decoration: none !important;
   transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
 }
-[data-cards="bordered"] .smd-cta-row a { border-radius: 0; }
-.smd-cta-row a:hover {
+[data-cards="bordered"] .kp-cta-row a { border-radius: 0; }
+.kp-cta-row a:hover {
   transform: translateY(-1px);
   box-shadow: var(--shadow-md);
 }
-.smd-cta-row a.smd-cta-primary {
+.kp-cta-row a.kp-cta-primary {
   background: var(--primary);
   color: white;
 }
-.smd-cta-row a.smd-cta-primary:hover { background: var(--primary-dark); }
-.smd-cta-row a.smd-cta-secondary {
+.kp-cta-row a.kp-cta-primary:hover { background: var(--primary-dark); }
+.kp-cta-row a.kp-cta-secondary {
   background: transparent;
   color: var(--primary);
   border: 2px solid var(--primary);
 }
-.smd-cta-row a.smd-cta-secondary:hover { background: var(--primary-light); }
-.smd-cta-row a:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
-.smd-cta-row a:active { transform: translateY(1px); box-shadow: none; }
+.kp-cta-row a.kp-cta-secondary:hover { background: var(--primary-light); }
+.kp-cta-row a:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
+.kp-cta-row a:active { transform: translateY(1px); box-shadow: none; }
 
 /* ===== Fenced Blocks (::: name) ===== */
-.smd-block {
+.kp-block {
   border-radius: var(--radius-lg);
   padding: 28px 32px;
   margin: 24px 0;
 }
 /* Match paragraph readable width when block is a direct section child */
-.smd-section > .smd-block {
+.kp-section > .kp-block {
   max-width: 680px;
   margin-left: auto;
   margin-right: auto;
 }
 /* Note / Info / Tip */
-.smd-block-note, .smd-block-info, .smd-block-tip {
+.kp-block-note, .kp-block-info, .kp-block-tip {
   background: rgba(33, 150, 243, 0.1);
   border-left: 4px solid #2196f3;
   color: var(--text);
 }
-.smd-block-note::before, .smd-block-info::before { content: 'Note'; }
-.smd-block-tip::before { content: 'Tip'; }
+.kp-block-note::before, .kp-block-info::before { content: 'Note'; }
+.kp-block-tip::before { content: 'Tip'; }
 /* Warning */
-.smd-block-warning, .smd-block-caution {
+.kp-block-warning, .kp-block-caution {
   background: rgba(245, 158, 11, 0.1);
   border-left: 4px solid #f59e0b;
   color: var(--text);
 }
-.smd-block-warning::before { content: 'Warning'; }
-.smd-block-caution::before { content: 'Caution'; }
+.kp-block-warning::before { content: 'Warning'; }
+.kp-block-caution::before { content: 'Caution'; }
 /* Error / Danger */
-.smd-block-error, .smd-block-danger {
+.kp-block-error, .kp-block-danger {
   background: rgba(229, 62, 62, 0.1);
   border-left: 4px solid #e53e3e;
   color: var(--text);
 }
-.smd-block-error::before { content: 'Error'; }
-.smd-block-danger::before { content: 'Danger'; }
+.kp-block-error::before { content: 'Error'; }
+.kp-block-danger::before { content: 'Danger'; }
 /* Success */
-.smd-block-success {
+.kp-block-success {
   background: rgba(56, 161, 105, 0.1);
   border-left: 4px solid #38a169;
   color: var(--text);
 }
-.smd-block-success::before { content: 'Success'; }
+.kp-block-success::before { content: 'Success'; }
 /* Shared label style for typed blocks */
-.smd-block-note::before, .smd-block-info::before, .smd-block-tip::before,
-.smd-block-warning::before, .smd-block-caution::before,
-.smd-block-error::before, .smd-block-danger::before,
-.smd-block-success::before {
+.kp-block-note::before, .kp-block-info::before, .kp-block-tip::before,
+.kp-block-warning::before, .kp-block-caution::before,
+.kp-block-error::before, .kp-block-danger::before,
+.kp-block-success::before {
   display: block;
   font-family: system-ui, -apple-system, sans-serif;
   font-size: 0.8em;
@@ -666,16 +666,16 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   opacity: 0.7;
 }
 /* Card - generic styled container */
-.smd-block-card {
+.kp-block-card {
   background: var(--surface);
   border: 1px solid var(--border);
   box-shadow: var(--shadow-sm);
 }
 /* Cards inside columns: center content for balanced grid layouts */
-.smd-column > .smd-block-card {
+.kp-column > .kp-block-card {
   text-align: center;
 }
-.smd-column > .smd-block-card img:not(.smd-img-avatar) {
+.kp-column > .kp-block-card img:not(.kp-img-avatar) {
   display: inline-block;
   max-width: 60%;
   height: auto;
@@ -683,14 +683,14 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   margin: 0 auto;
 }
 /* Quote / Testimonial */
-.smd-block-quote, .smd-block-testimonial {
+.kp-block-quote, .kp-block-testimonial {
   background: var(--surface);
   border-left: 3px solid var(--accent);
   box-shadow: var(--shadow-sm);
   font-style: italic;
   position: relative;
 }
-.smd-block-quote::before, .smd-block-testimonial::before {
+.kp-block-quote::before, .kp-block-testimonial::before {
   content: '\201C';
   position: absolute;
   top: 12px;
@@ -702,32 +702,32 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   font-style: normal;
 }
 /* Hero - large centered text block */
-.smd-block-hero {
+.kp-block-hero {
   text-align: center;
   padding: 64px 32px;
   background: var(--primary);
   color: white;
 }
-.smd-block-hero h1, .smd-block-hero h2, .smd-block-hero h3 {
+.kp-block-hero h1, .kp-block-hero h2, .kp-block-hero h3 {
   color: white;
   font-family: var(--font-heading);
 }
-.smd-block-hero p { color: rgba(255,255,255,0.9); }
+.kp-block-hero p { color: rgba(255,255,255,0.9); }
 /* Highlight - accent-colored callout */
-.smd-block-highlight {
+.kp-block-highlight {
   background: var(--primary-light);
   border: none;
   text-align: center;
   padding: 40px 32px;
 }
 /* Unstyled fallback - just a generic container with class */
-.smd-block:not([class*="smd-block-note"]):not([class*="smd-block-info"]):not([class*="smd-block-tip"]):not([class*="smd-block-warning"]):not([class*="smd-block-caution"]):not([class*="smd-block-error"]):not([class*="smd-block-danger"]):not([class*="smd-block-success"]):not([class*="smd-block-card"]):not([class*="smd-block-quote"]):not([class*="smd-block-testimonial"]):not([class*="smd-block-hero"]):not([class*="smd-block-highlight"]) {
+.kp-block:not([class*="kp-block-note"]):not([class*="kp-block-info"]):not([class*="kp-block-tip"]):not([class*="kp-block-warning"]):not([class*="kp-block-caution"]):not([class*="kp-block-error"]):not([class*="kp-block-danger"]):not([class*="kp-block-success"]):not([class*="kp-block-card"]):not([class*="kp-block-quote"]):not([class*="kp-block-testimonial"]):not([class*="kp-block-hero"]):not([class*="kp-block-highlight"]) {
   background: var(--surface);
   border: 1px solid var(--border);
 }
 
 /* ===== Large Text (__x__) ===== */
-.smd-large {
+.kp-large {
   display: block;
   font-size: 2.8em;
   font-weight: 700;
@@ -738,39 +738,39 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
 }
 
 /* ===== Star Ratings ===== */
-.smd-stars { color: var(--accent, #d4a017); font-size: 1.15em; letter-spacing: 0.05em; }
+.kp-stars { color: var(--accent, #d4a017); font-size: 1.15em; letter-spacing: 0.05em; }
 
 
 /* ===== Links in paragraphs ===== */
-.smd-section p a, .smd-column p a, .smd-compact p a {
+.kp-section p a, .kp-column p a, .kp-compact p a {
   text-decoration: underline;
   text-decoration-color: color-mix(in srgb, var(--primary) 30%, transparent);
   text-underline-offset: 2px;
   transition: text-decoration-color var(--transition);
 }
-.smd-section p a:hover, .smd-column p a:hover, .smd-compact p a:hover {
+.kp-section p a:hover, .kp-column p a:hover, .kp-compact p a:hover {
   text-decoration-color: var(--primary);
 }
 
 /* ===== Carousel ===== */
-.smd-carousel {
+.kp-carousel {
   position: relative;
   overflow: hidden;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lg);
   margin-bottom: 8px;
 }
-[data-cards="bordered"] .smd-carousel { border-radius: 0; }
-.smd-carousel-track {
+[data-cards="bordered"] .kp-carousel { border-radius: 0; }
+.kp-carousel-track {
   display: flex;
   width: 100%;
   transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
 }
-.smd-carousel-slide {
+.kp-carousel-slide {
   flex-shrink: 0;
   width: 100%;
 }
-.smd-carousel-btn {
+.kp-carousel-btn {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -792,10 +792,10 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   user-select: none;
   -webkit-user-select: none;
 }
-.smd-carousel-btn:hover { background: rgba(255,255,255,0.35); }
-.smd-carousel-prev { left: 16px; }
-.smd-carousel-next { right: 16px; }
-.smd-carousel-dots {
+.kp-carousel-btn:hover { background: rgba(255,255,255,0.35); }
+.kp-carousel-prev { left: 16px; }
+.kp-carousel-next { right: 16px; }
+.kp-carousel-dots {
   position: absolute;
   bottom: 20px;
   left: 50%;
@@ -804,7 +804,7 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   gap: 10px;
   z-index: 2;
 }
-.smd-carousel-dot {
+.kp-carousel-dot {
   width: 10px;
   height: 10px;
   border-radius: 50%;
@@ -816,12 +816,12 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   user-select: none;
   -webkit-user-select: none;
 }
-.smd-carousel-dot:hover { background: rgba(255,255,255,0.5); }
-.smd-carousel-dot.active { background: white; }
-.smd-carousel-btn:focus-visible { outline: 2px solid white; outline-offset: 2px; }
+.kp-carousel-dot:hover { background: rgba(255,255,255,0.5); }
+.kp-carousel-dot.active { background: white; }
+.kp-carousel-btn:focus-visible { outline: 2px solid white; outline-offset: 2px; }
 
 /* ===== Background Section ===== */
-.smd-bg-section {
+.kp-bg-section {
   min-height: 420px;
   background-size: cover;
   background-position: center;
@@ -830,21 +830,21 @@ body:has(.smd-nav:not([data-style="transparent"])) .smd-hero { padding-top: 100p
   justify-content: center;
   position: relative;
 }
-body:has(.smd-nav[data-style="transparent"]) .smd-page > .smd-carousel:first-child,
-body:has(.smd-nav[data-style="transparent"]) .smd-page > .smd-bg-section:first-child {
+body:has(.kp-nav[data-style="transparent"]) .kp-page > .kp-carousel:first-child,
+body:has(.kp-nav[data-style="transparent"]) .kp-page > .kp-bg-section:first-child {
   margin-top: calc(-1 * var(--nav-height));
 }
-body:has(.smd-nav[data-style="transparent"]) .smd-page > .smd-carousel:first-child .smd-bg-section {
+body:has(.kp-nav[data-style="transparent"]) .kp-page > .kp-carousel:first-child .kp-bg-section {
   min-height: calc(420px + var(--nav-height));
   padding-top: var(--nav-height);
 }
-.smd-bg-section::before {
+.kp-bg-section::before {
   content: '';
   position: absolute;
   inset: 0;
   background: linear-gradient(to bottom, rgba(0,0,0,0.45), rgba(0,0,0,0.6));
 }
-.smd-bg-overlay {
+.kp-bg-overlay {
   position: relative;
   z-index: 1;
   text-align: center;
@@ -852,7 +852,7 @@ body:has(.smd-nav[data-style="transparent"]) .smd-page > .smd-carousel:first-chi
   padding: 48px 32px;
   max-width: 700px;
 }
-.smd-bg-overlay h1 {
+.kp-bg-overlay h1 {
   font-family: var(--font-heading);
   font-size: clamp(1.8em, 4.5vw, 3em);
   font-weight: 400;
@@ -860,7 +860,7 @@ body:has(.smd-nav[data-style="transparent"]) .smd-page > .smd-carousel:first-chi
   margin-bottom: 16px;
   text-shadow: 0 2px 16px rgba(0,0,0,0.5), 0 1px 4px rgba(0,0,0,0.3);
 }
-.smd-bg-overlay p {
+.kp-bg-overlay p {
   font-size: 1.15em;
   color: rgba(255,255,255,0.9);
   line-height: 1.7;
@@ -868,131 +868,131 @@ body:has(.smd-nav[data-style="transparent"]) .smd-page > .smd-carousel:first-chi
 }
 
 /* ===== Footer ===== */
-.smd-footer {
+.kp-footer {
   border-top: 1px solid var(--border);
   color: var(--text-muted);
   font-size: 0.88em;
   margin-top: 32px;
 }
 /* Footer: minimal */
-.smd-footer[data-style="minimal"] {
+.kp-footer[data-style="minimal"] {
   text-align: center;
   padding: 32px 0 24px;
 }
-.smd-footer[data-style="minimal"] .smd-footer-title {
+.kp-footer[data-style="minimal"] .kp-footer-title {
   font-family: var(--font-heading);
   font-size: 1.1em;
   color: var(--text);
   margin-bottom: 8px;
 }
 /* Footer: centered (decorative) */
-.smd-footer[data-style="centered"] {
+.kp-footer[data-style="centered"] {
   text-align: center;
   padding: 48px 0 32px;
 }
-.smd-footer[data-style="centered"] .smd-footer-title {
+.kp-footer[data-style="centered"] .kp-footer-title {
   font-family: var(--font-heading);
   font-size: 1.6em;
   color: var(--text);
   margin-bottom: 16px;
   font-weight: 400;
 }
-.smd-footer[data-style="centered"] .smd-footer-links {
+.kp-footer[data-style="centered"] .kp-footer-links {
   display: flex;
   gap: 24px;
   justify-content: center;
   flex-wrap: wrap;
   margin-bottom: 20px;
 }
-.smd-footer[data-style="centered"] .smd-footer-links a {
+.kp-footer[data-style="centered"] .kp-footer-links a {
   color: var(--text-muted);
   font-family: system-ui, -apple-system, sans-serif;
   font-size: 0.9em;
   text-decoration: none;
   letter-spacing: 0.03em;
 }
-.smd-footer[data-style="centered"] .smd-footer-links a:hover { color: var(--text); }
-.smd-footer[data-style="centered"] .smd-footer-rule {
+.kp-footer[data-style="centered"] .kp-footer-links a:hover { color: var(--text); }
+.kp-footer[data-style="centered"] .kp-footer-rule {
   width: 40px;
   height: 2px;
   background: var(--accent);
   margin: 0 auto 20px;
 }
 /* Footer: columns (nav links in grid) */
-.smd-footer[data-style="columns"] {
+.kp-footer[data-style="columns"] {
   padding: 48px 0 24px;
   display: grid;
   grid-template-columns: 1fr 2fr;
   gap: 48px;
 }
-.smd-footer[data-style="columns"] .smd-footer-brand {
+.kp-footer[data-style="columns"] .kp-footer-brand {
   font-family: var(--font-heading);
   font-size: 1.3em;
   color: var(--text);
   margin-bottom: 8px;
 }
-.smd-footer[data-style="columns"] .smd-footer-links {
+.kp-footer[data-style="columns"] .kp-footer-links {
   display: flex;
   flex-wrap: wrap;
   gap: 16px 40px;
 }
-.smd-footer[data-style="columns"] .smd-footer-links a {
+.kp-footer[data-style="columns"] .kp-footer-links a {
   color: var(--text-muted);
   font-family: system-ui, -apple-system, sans-serif;
   font-size: 0.9em;
   text-decoration: none;
 }
-.smd-footer[data-style="columns"] .smd-footer-links a:hover { color: var(--text); }
-.smd-footer .smd-footer-copy {
+.kp-footer[data-style="columns"] .kp-footer-links a:hover { color: var(--text); }
+.kp-footer .kp-footer-copy {
   font-size: 0.85em;
   color: var(--text-light);
 }
 @media (max-width: 768px) {
-  .smd-footer[data-style="columns"] { grid-template-columns: 1fr; gap: 24px; }
+  .kp-footer[data-style="columns"] { grid-template-columns: 1fr; gap: 24px; }
 }
 
 /* ===== Page Transitions ===== */
 /* SPA mode transitions (browser.mjs) */
-.smd-page-old {
+.kp-page-old {
   overflow: hidden;
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
-.smd-page-old.push-out {
+.kp-page-old.push-out {
   opacity: 0;
   transform: translateX(-8%);
 }
-.smd-page-old.pop-out {
+.kp-page-old.pop-out {
   opacity: 0;
   transform: translateX(8%);
 }
-.smd-page {
+.kp-page {
   transition: opacity 0.4s ease, transform 0.4s ease;
 }
-.smd-page.push-in {
+.kp-page.push-in {
   opacity: 0;
   transform: translateX(4%);
 }
-.smd-page.pop-in {
+.kp-page.pop-in {
   opacity: 0;
   transform: translateX(-4%);
 }
 /* Static multi-page transitions (compiled sites) */
-.smd-page-hidden {
+.kp-page-hidden {
   opacity: 0;
   transform: translateY(16px);
 }
-.smd-page-exit {
+.kp-page-exit {
   opacity: 0 !important;
   transform: translateY(-8px) !important;
   transition: opacity 0.2s ease, transform 0.2s ease !important;
 }
-[data-animation="none"] .smd-page-hidden {
+[data-animation="none"] .kp-page-hidden {
   opacity: 1;
   transform: none;
 }
 
 /* ===== Live Editor ===== */
-.smd-editor-toggle {
+.kp-editor-toggle {
   position: fixed;
   bottom: 20px;
   right: 20px;
@@ -1012,8 +1012,8 @@ body:has(.smd-nav[data-style="transparent"]) .smd-page > .smd-carousel:first-chi
   transition: background 0.2s;
   box-shadow: 0 2px 8px rgba(0,0,0,0.2);
 }
-.smd-editor-toggle:hover { background: rgba(0,0,0,0.95); }
-.smd-editor-panel {
+.kp-editor-toggle:hover { background: rgba(0,0,0,0.95); }
+.kp-editor-panel {
   position: fixed;
   top: 0;
   left: 0;
@@ -1030,26 +1030,26 @@ body:has(.smd-nav[data-style="transparent"]) .smd-page > .smd-carousel:first-chi
   transition: transform 0.3s ease;
   box-shadow: 4px 0 24px rgba(0,0,0,0.3);
 }
-.smd-editor-panel.open {
+.kp-editor-panel.open {
   transform: translateX(0);
 }
-body:has(.smd-editor-panel.open) .smd-page {
+body:has(.kp-editor-panel.open) .kp-page {
   margin-left: auto;
   margin-right: 0;
   max-width: 55vw;
   transition: max-width 0.3s ease;
 }
-body:has(.smd-editor-panel.open) .smd-nav {
+body:has(.kp-editor-panel.open) .kp-nav {
   left: min(45%, 640px);
   transition: left 0.3s ease;
 }
-body:has(.smd-editor-panel.open) .smd-editor-toggle {
+body:has(.kp-editor-panel.open) .kp-editor-toggle {
   left: calc(min(45%, 640px) + 12px);
   right: auto;
 }
 
 /* Editor sidebar — file tree */
-.smd-editor-sidebar {
+.kp-editor-sidebar {
   width: 160px;
   flex-shrink: 0;
   background: #181818;
@@ -1058,7 +1058,7 @@ body:has(.smd-editor-panel.open) .smd-editor-toggle {
   flex-direction: column;
   overflow-y: auto;
 }
-.smd-editor-sidebar-header {
+.kp-editor-sidebar-header {
   padding: 10px 12px;
   font: 11px/1.4 system-ui, sans-serif;
   color: #888;
@@ -1066,32 +1066,32 @@ body:has(.smd-editor-panel.open) .smd-editor-toggle {
   letter-spacing: 0.1em;
   border-bottom: 1px solid #2a2a2a;
 }
-.smd-editor-files {
+.kp-editor-files {
   list-style: none;
   padding: 4px 0;
 }
-.smd-editor-files li {
+.kp-editor-files li {
   padding: 5px 12px;
   font: 13px/1.4 system-ui, sans-serif;
   color: #aaa;
   cursor: pointer;
   border-left: 2px solid transparent;
 }
-.smd-editor-files li:hover { background: #252525; color: #ddd; }
-.smd-editor-files li.active {
+.kp-editor-files li:hover { background: #252525; color: #ddd; }
+.kp-editor-files li.active {
   background: #1e1e1e;
   color: #fff;
   border-left-color: #569cd6;
 }
 
 /* Editor main area */
-.smd-editor-main {
+.kp-editor-main {
   flex: 1;
   display: flex;
   flex-direction: column;
   min-width: 0;
 }
-.smd-editor-header {
+.kp-editor-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1102,18 +1102,18 @@ body:has(.smd-editor-panel.open) .smd-editor-toggle {
   flex-shrink: 0;
   gap: 8px;
 }
-.smd-editor-header strong { color: #ccc; font-size: 13px; }
-.smd-editor-status { flex: 1; text-align: right; }
+.kp-editor-header strong { color: #ccc; font-size: 13px; }
+.kp-editor-status { flex: 1; text-align: right; }
 
 /* Editor toolbar */
-.smd-editor-toolbar {
+.kp-editor-toolbar {
   display: flex;
   flex-direction: column;
   background: #252525;
   border-bottom: 1px solid #333;
   flex-shrink: 0;
 }
-.smd-toolbar-row {
+.kp-toolbar-row {
   display: flex;
   align-items: center;
   gap: 2px;
@@ -1121,8 +1121,8 @@ body:has(.smd-editor-panel.open) .smd-editor-toggle {
   flex-wrap: wrap;
   border-bottom: 1px solid #2a2a2a;
 }
-.smd-toolbar-row:last-child { border-bottom: none; }
-.smd-toolbar-label {
+.kp-toolbar-row:last-child { border-bottom: none; }
+.kp-toolbar-label {
   font: 10px/1 system-ui, sans-serif;
   color: #555;
   text-transform: uppercase;
@@ -1130,7 +1130,7 @@ body:has(.smd-editor-panel.open) .smd-editor-toggle {
   width: 32px;
   flex-shrink: 0;
 }
-.smd-editor-toolbar button {
+.kp-editor-toolbar button {
   background: none;
   border: 1px solid transparent;
   color: #bbb;
@@ -1140,12 +1140,12 @@ body:has(.smd-editor-panel.open) .smd-editor-toggle {
   cursor: pointer;
   white-space: nowrap;
 }
-.smd-editor-toolbar button:hover {
+.kp-editor-toolbar button:hover {
   background: #333;
   color: #fff;
   border-color: #555;
 }
-.smd-toolbar-sep {
+.kp-toolbar-sep {
   width: 1px;
   height: 16px;
   background: #333;
@@ -1153,12 +1153,12 @@ body:has(.smd-editor-panel.open) .smd-editor-toggle {
 }
 
 /* Editor content — line numbers + syntax highlight overlay + textarea */
-.smd-editor-content {
+.kp-editor-content {
   flex: 1;
   display: flex;
   overflow: hidden;
 }
-.smd-editor-lines {
+.kp-editor-lines {
   width: 40px;
   flex-shrink: 0;
   background: #1a1a1a;
@@ -1167,18 +1167,18 @@ body:has(.smd-editor-panel.open) .smd-editor-toggle {
   text-align: right;
   user-select: none;
 }
-.smd-editor-lines div {
+.kp-editor-lines div {
   font: 14px/1.6 'SF Mono', 'Fira Code', 'Consolas', monospace;
   padding-right: 8px;
   color: #555;
 }
-.smd-editor-code-wrap {
+.kp-editor-code-wrap {
   flex: 1;
   position: relative;
   overflow: hidden;
   min-width: 0;
 }
-.smd-editor-highlight {
+.kp-editor-highlight {
   position: absolute;
   top: 0; left: 0; right: 0; bottom: 0;
   margin: 0;
@@ -1197,7 +1197,7 @@ body:has(.smd-editor-panel.open) .smd-editor-toggle {
   font-size: 14px;
   box-sizing: border-box;
 }
-.smd-editor-panel textarea {
+.kp-editor-panel textarea {
   position: relative;
   width: 100%;
   height: 100%;
@@ -1216,7 +1216,7 @@ body:has(.smd-editor-panel.open) .smd-editor-toggle {
   box-sizing: border-box;
   z-index: 1;
 }
-.smd-editor-panel textarea::selection {
+.kp-editor-panel textarea::selection {
   background: rgba(38, 79, 120, 0.7);
 }
 
@@ -1246,37 +1246,37 @@ body:has(.smd-editor-panel.open) .smd-editor-toggle {
 
 /* ===== Responsive ===== */
 @media (max-width: 700px) {
-  .smd-page { padding: 0 20px 48px; }
-  .smd-hero { padding: 48px 12px 32px; }
-  .smd-section { padding: 48px 0; }
-  [data-sections="alternating"] .smd-section-alt,
-  [data-sections="bold"] .smd-section-alt {
+  .kp-page { padding: 0 20px 48px; }
+  .kp-hero { padding: 48px 12px 32px; }
+  .kp-section { padding: 48px 0; }
+  [data-sections="alternating"] .kp-section-alt,
+  [data-sections="bold"] .kp-section-alt {
     margin-left: calc(-50vw + 50%);
     margin-right: calc(-50vw + 50%);
     padding-left: calc(50vw - 50% + 20px);
     padding-right: calc(50vw - 50% + 20px);
   }
-  .smd-columns { grid-template-columns: 1fr; gap: 28px; }
-  .smd-compact { grid-template-columns: 1fr; gap: 28px; }
-  .smd-gallery { gap: 10px; }
-  .smd-gallery.count-2,
-  .smd-gallery.count-3 { grid-template-columns: 1fr; }
-  .smd-gallery img { height: 220px; }
-  .smd-bg-section { min-height: 300px; }
-  .smd-bg-overlay { padding: 32px 20px; }
-  .smd-carousel-btn { width: 36px; height: 36px; font-size: 1.2em; }
-  .smd-carousel-prev { left: 8px; }
-  .smd-carousel-next { right: 8px; }
-  .smd-cta-row { gap: 16px; }
-  .smd-form { padding: 24px; }
-  .smd-form-group { flex-direction: column; gap: 16px; }
-  .smd-field { min-width: 100%; }
-  .smd-large { font-size: 2em; }
-  .smd-nav { padding: 0 20px; }
+  .kp-columns { grid-template-columns: 1fr; gap: 28px; }
+  .kp-compact { grid-template-columns: 1fr; gap: 28px; }
+  .kp-gallery { gap: 10px; }
+  .kp-gallery.count-2,
+  .kp-gallery.count-3 { grid-template-columns: 1fr; }
+  .kp-gallery img { height: 220px; }
+  .kp-bg-section { min-height: 300px; }
+  .kp-bg-overlay { padding: 32px 20px; }
+  .kp-carousel-btn { width: 36px; height: 36px; font-size: 1.2em; }
+  .kp-carousel-prev { left: 8px; }
+  .kp-carousel-next { right: 8px; }
+  .kp-cta-row { gap: 16px; }
+  .kp-form { padding: 24px; }
+  .kp-form-group { flex-direction: column; gap: 16px; }
+  .kp-field { min-width: 100%; }
+  .kp-large { font-size: 2em; }
+  .kp-nav { padding: 0 20px; }
 }
 @media (min-width: 701px) and (max-width: 900px) {
-  .smd-gallery.count-3 { grid-template-columns: 1fr 1fr; }
-  .smd-gallery.count-3 img:last-child { grid-column: span 2; }
+  .kp-gallery.count-3 { grid-template-columns: 1fr 1fr; }
+  .kp-gallery.count-3 img:last-child { grid-column: span 2; }
 }
 
 /* ===== Phase 2: Inline & Text Features ===== */
@@ -1287,23 +1287,23 @@ mark {
   padding: 0.1em 0.2em;
   border-radius: 2px;
 }
-[data-sections="bold"] .smd-section-alt mark { background: rgba(255, 255, 255, 0.2); }
+[data-sections="bold"] .kp-section-alt mark { background: rgba(255, 255, 255, 0.2); }
 
 /* Task lists */
-.smd-task-list { list-style: none; padding-left: 0; }
-.smd-task-item {
+.kp-task-list { list-style: none; padding-left: 0; }
+.kp-task-item {
   display: flex;
   align-items: baseline;
   gap: 8px;
   padding: 4px 0;
 }
-.smd-task-item input[type="checkbox"] {
+.kp-task-item input[type="checkbox"] {
   margin: 0;
   flex-shrink: 0;
   accent-color: var(--primary);
 }
-.smd-task-done { color: var(--text-muted); }
-.smd-task-partial input[type="checkbox"] { opacity: 0.5; }
+.kp-task-done { color: var(--text-muted); }
+.kp-task-partial input[type="checkbox"] { opacity: 0.5; }
 
 /* Inline code */
 code {
@@ -1343,41 +1343,41 @@ blockquote {
 blockquote p { margin: 8px 0; }
 
 /* Records */
-.smd-record {
+.kp-record {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 16px 20px;
   margin: 12px 0;
 }
-.smd-record-name {
+.kp-record-name {
   font-weight: 700;
   font-size: 1.1em;
   margin-bottom: 8px;
 }
-.smd-record-fields {
+.kp-record-fields {
   display: grid;
   grid-template-columns: auto 1fr;
   gap: 4px 16px;
 }
-.smd-record-fields dt { font-weight: 600; color: var(--text-muted); }
+.kp-record-fields dt { font-weight: 600; color: var(--text-muted); }
 
 /* Expandable sections */
-.smd-expandable {
+.kp-expandable {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   margin: 12px 0;
 }
-.smd-expandable summary {
+.kp-expandable summary {
   padding: 12px 16px;
   cursor: pointer;
   font-weight: 600;
 }
-.smd-expandable summary:hover { color: var(--primary); }
-.smd-expandable-content { padding: 0 16px 16px; }
+.kp-expandable summary:hover { color: var(--primary); }
+.kp-expandable-content { padding: 0 16px 16px; }
 
 /* Skip to content link (accessibility) */
-.smd-skip-nav {
+.kp-skip-nav {
   position: absolute;
   top: -100px;
   left: 16px;
@@ -1389,7 +1389,7 @@ blockquote p { margin: 8px 0; }
   font-size: 0.9em;
   text-decoration: none;
 }
-.smd-skip-nav:focus {
+.kp-skip-nav:focus {
   top: 8px;
 }
 
@@ -1417,7 +1417,7 @@ th {
 tr:hover td { background: var(--surface-warm); }
 
 /* Embeds (YouTube, Vimeo) */
-.smd-embed {
+.kp-embed {
   position: relative;
   padding-bottom: 56.25%; /* 16:9 */
   height: 0;
@@ -1426,7 +1426,7 @@ tr:hover td { background: var(--surface-warm); }
   margin: 24px 0;
   box-shadow: var(--shadow-md);
 }
-.smd-embed iframe {
+.kp-embed iframe {
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
@@ -1434,25 +1434,25 @@ tr:hover td { background: var(--surface-warm); }
 }
 
 /* Table of Contents */
-.smd-toc {
+.kp-toc {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 20px 24px;
   margin: 24px 0;
 }
-.smd-toc ul { list-style: none; padding: 0; }
-.smd-toc li { padding: 4px 0; }
-.smd-toc a {
+.kp-toc ul { list-style: none; padding: 0; }
+.kp-toc li { padding: 4px 0; }
+.kp-toc a {
   color: var(--text);
   text-decoration: none;
   font-size: 0.95em;
 }
-.smd-toc a:hover { color: var(--primary); text-decoration: underline; }
-.smd-toc-indent { padding-left: 20px; }
+.kp-toc a:hover { color: var(--primary); text-decoration: underline; }
+.kp-toc-indent { padding-left: 20px; }
 
 /* Nav: side (persistent sidebar) */
-.smd-nav[data-style="side"] {
+.kp-nav[data-style="side"] {
   position: fixed;
   top: 0;
   left: 0;
@@ -1468,21 +1468,21 @@ tr:hover td { background: var(--surface-warm); }
   overflow-y: auto;
   z-index: 100;
 }
-.smd-nav[data-style="side"] .smd-nav-brand {
+.kp-nav[data-style="side"] .kp-nav-brand {
   color: var(--text);
   font-size: 1.2em;
   margin-bottom: 24px;
   display: block;
 }
-.smd-nav[data-style="side"] .smd-nav-links {
+.kp-nav[data-style="side"] .kp-nav-links {
   flex-direction: column;
   gap: 4px;
   width: 100%;
 }
-.smd-nav[data-style="side"] .smd-nav-links li {
+.kp-nav[data-style="side"] .kp-nav-links li {
   width: 100%;
 }
-.smd-nav[data-style="side"] .smd-nav-links a {
+.kp-nav[data-style="side"] .kp-nav-links a {
   color: var(--text-muted);
   display: block;
   padding: 8px 12px;
@@ -1490,33 +1490,33 @@ tr:hover td { background: var(--surface-warm); }
   font-size: 0.9em;
   opacity: 1;
 }
-.smd-nav[data-style="side"] .smd-nav-links a:hover {
+.kp-nav[data-style="side"] .kp-nav-links a:hover {
   background: var(--surface-warm);
   color: var(--text);
 }
-.smd-nav[data-style="side"].scrolled {
+.kp-nav[data-style="side"].scrolled {
   box-shadow: none;
   background: var(--surface);
 }
-.smd-nav[data-style="side"] .smd-nav-toggle { display: none; }
+.kp-nav[data-style="side"] .kp-nav-toggle { display: none; }
 
 /* Side nav page offset */
-body:has(.smd-nav[data-style="side"]) .smd-page {
+body:has(.kp-nav[data-style="side"]) .kp-page {
   margin-left: 260px;
   padding-top: 32px;
 }
-body:has(.smd-nav[data-style="side"]) .smd-hero {
+body:has(.kp-nav[data-style="side"]) .kp-hero {
   padding-top: 32px;
 }
 /* Side nav: full-bleed sections stay within content area */
-body:has(.smd-nav[data-style="side"]) .smd-section-alt {
+body:has(.kp-nav[data-style="side"]) .kp-section-alt {
   margin-left: 0;
   margin-right: 0;
   padding-left: 32px;
   padding-right: 32px;
 }
 @media (max-width: 768px) {
-  .smd-nav[data-style="side"] {
+  .kp-nav[data-style="side"] {
     position: fixed;
     width: 100%;
     height: var(--nav-height);
@@ -1527,8 +1527,8 @@ body:has(.smd-nav[data-style="side"]) .smd-section-alt {
     padding: 0 20px;
     align-items: center;
   }
-  .smd-nav[data-style="side"] .smd-nav-brand { margin-bottom: 0; }
-  .smd-nav[data-style="side"] .smd-nav-links {
+  .kp-nav[data-style="side"] .kp-nav-brand { margin-bottom: 0; }
+  .kp-nav[data-style="side"] .kp-nav-links {
     position: fixed;
     top: var(--nav-height);
     left: 0;
@@ -1543,13 +1543,13 @@ body:has(.smd-nav[data-style="side"]) .smd-section-alt {
     pointer-events: none;
     transition: transform 0.3s, opacity 0.3s;
   }
-  .smd-nav[data-style="side"] .smd-nav-links.open {
+  .kp-nav[data-style="side"] .kp-nav-links.open {
     transform: translateY(0);
     opacity: 1;
     pointer-events: auto;
   }
-  .smd-nav[data-style="side"] .smd-nav-toggle { display: block; }
-  body:has(.smd-nav[data-style="side"]) .smd-page {
+  .kp-nav[data-style="side"] .kp-nav-toggle { display: block; }
+  body:has(.kp-nav[data-style="side"]) .kp-page {
     margin-left: 0;
     padding-top: calc(var(--nav-height) + 16px);
   }
@@ -1568,7 +1568,7 @@ body:has(.smd-nav[data-style="side"]) .smd-section-alt {
 .hljs-addition { color: #27ae60; background: rgba(39,174,96,0.1); }
 
 /* Math blocks */
-.smd-math-block {
+.kp-math-block {
   text-align: center;
   padding: 20px 0;
   margin: 16px 0;
@@ -1592,15 +1592,15 @@ kbd {
 }
 
 /* ===== Tabs ===== */
-.smd-tabs { margin: 1.5rem 0; }
-.smd-tabs-nav {
+.kp-tabs { margin: 1.5rem 0; }
+.kp-tabs-nav {
   display: flex;
   gap: 0;
   border-bottom: 2px solid var(--border);
   margin-bottom: 1.5rem;
   overflow-x: auto;
 }
-.smd-tab-btn {
+.kp-tab-btn {
   padding: 0.75rem 1.5rem;
   background: none;
   border: none;
@@ -1614,25 +1614,25 @@ kbd {
   transition: var(--transition);
   white-space: nowrap;
 }
-.smd-tab-btn:hover { color: var(--text); }
-.smd-tab-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
-.smd-tab-btn.active {
+.kp-tab-btn:hover { color: var(--text); }
+.kp-tab-btn:focus-visible { outline: 2px solid var(--primary); outline-offset: -2px; }
+.kp-tab-btn.active {
   color: var(--primary);
   border-bottom-color: var(--primary);
   font-weight: 600;
 }
-.smd-tab-panel { display: none; }
-.smd-tab-panel.active { display: block; }
+.kp-tab-panel { display: none; }
+.kp-tab-panel.active { display: block; }
 
 /* ===== Featured Column ===== */
-.smd-column-featured {
+.kp-column-featured {
   border: 2px solid var(--primary);
   border-radius: var(--radius-lg);
   padding: 2rem;
   position: relative;
   z-index: 1;
 }
-.smd-column-featured::before {
+.kp-column-featured::before {
   content: 'Recommended';
   position: absolute;
   top: -12px;
@@ -1649,23 +1649,23 @@ kbd {
   white-space: nowrap;
 }
 @media (min-width: 769px) {
-  .smd-columns:has(.smd-column-featured) {
+  .kp-columns:has(.kp-column-featured) {
     align-items: center;
   }
-  .smd-column-featured {
+  .kp-column-featured {
     transform: scale(1.04);
   }
 }
 
 /* ===== Stats Bar ===== */
-.smd-columns-stats {
+.kp-columns-stats {
   text-align: center;
   gap: 20px;
 }
-.smd-columns-stats .smd-column {
+.kp-columns-stats .kp-column {
   padding: 1.5rem 1rem;
 }
-.smd-columns-stats .smd-column h3 {
+.kp-columns-stats .kp-column h3 {
   font-family: var(--font-heading);
   font-size: 1rem;
   font-weight: 700;
@@ -1674,18 +1674,18 @@ kbd {
   letter-spacing: -0.02em;
   color: var(--text);
 }
-.smd-columns-stats .smd-column h3 .smd-large {
+.kp-columns-stats .kp-column h3 .kp-large {
   font-size: clamp(2rem, 6vw, 4rem);
   white-space: nowrap;
 }
-.smd-columns-stats .smd-column p {
+.kp-columns-stats .kp-column p {
   color: var(--text-muted);
   font-size: 0.9rem;
   margin-top: 0;
 }
 
 /* ===== Image Avatar ===== */
-.smd-img-avatar {
+.kp-img-avatar {
   display: inline-block;
   width: 64px;
   height: 64px;
@@ -1697,7 +1697,7 @@ kbd {
 }
 
 /* ===== Image Showcase ===== */
-.smd-img-showcase {
+.kp-img-showcase {
   display: block;
   margin: 2rem auto;
   border-radius: var(--radius-lg) !important;
@@ -1708,7 +1708,7 @@ kbd {
 }
 
 /* Browser Frame */
-.smd-browser-frame {
+.kp-browser-frame {
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
@@ -1716,30 +1716,30 @@ kbd {
   box-shadow: var(--shadow-lg);
   margin: 2rem 0;
 }
-.smd-browser-dots {
+.kp-browser-dots {
   display: flex;
   gap: 7px;
   padding: 14px 16px;
   border-bottom: 1px solid var(--border);
 }
-.smd-browser-dots span {
+.kp-browser-dots span {
   width: 12px;
   height: 12px;
   border-radius: 50%;
   background: var(--border);
 }
-.smd-browser-frame img {
+.kp-browser-frame img {
   display: block;
   width: 100%;
 }
 
 /* Phone Frame */
-.smd-phone-frame {
+.kp-phone-frame {
   display: block;
   text-align: center;
   margin: 2rem auto;
 }
-.smd-phone-frame img {
+.kp-phone-frame img {
   display: inline-block;
   border-radius: 32px;
   max-width: 320px;
@@ -1747,11 +1747,11 @@ kbd {
 }
 
 /* ===== Video Background ===== */
-.smd-bg-video {
+.kp-bg-video {
   position: relative;
   overflow: hidden;
 }
-.smd-bg-video-el {
+.kp-bg-video-el {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -1763,34 +1763,34 @@ kbd {
   object-fit: cover;
   z-index: 0;
 }
-.smd-bg-video .smd-bg-overlay {
+.kp-bg-video .kp-bg-overlay {
   position: relative;
   z-index: 1;
 }
 
 /* ===== Column Image Polish ===== */
-.smd-column > img {
+.kp-column > img {
   width: 100%;
   height: auto;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
   object-fit: cover;
 }
-.smd-column > .smd-img-showcase {
+.kp-column > .kp-img-showcase {
   margin: 0;
 }
-.smd-column > .smd-browser-frame {
+.kp-column > .kp-browser-frame {
   margin: 0;
 }
 
 /* ===== Footer Columns ===== */
-.smd-footer-columns {
+.kp-footer-columns {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 32px;
   margin: 20px 0;
 }
-.smd-footer-col-title {
+.kp-footer-col-title {
   font-family: system-ui, -apple-system, sans-serif;
   font-weight: 600;
   font-size: 0.9em;
@@ -1798,44 +1798,44 @@ kbd {
   margin-bottom: 12px;
   letter-spacing: 0.03em;
 }
-.smd-footer-col-links {
+.kp-footer-col-links {
   list-style: none;
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
-.smd-footer-col-links a {
+.kp-footer-col-links a {
   color: var(--text-muted);
   text-decoration: none;
   font-size: 0.9em;
 }
-.smd-footer-col-links a:hover {
+.kp-footer-col-links a:hover {
   color: var(--text);
 }
 
 /* ===== Print Stylesheet ===== */
 @media print {
-  .smd-nav, .smd-nav-toggle, .smd-skip-nav,
-  .smd-carousel-btn, .smd-carousel-dots,
-  .smd-editor-toggle, .smd-editor-panel { display: none !important; }
+  .kp-nav, .kp-nav-toggle, .kp-skip-nav,
+  .kp-carousel-btn, .kp-carousel-dots,
+  .kp-editor-toggle, .kp-editor-panel { display: none !important; }
   body { font-size: 12pt; line-height: 1.5; color: #000; background: #fff; }
-  .smd-page { max-width: 100%; padding: 0; }
-  .smd-hero { padding: 20px 0; }
-  .smd-section { padding: 24px 0; break-inside: avoid; }
-  .smd-section-alt { background: transparent !important; margin: 0 !important; padding-left: 0 !important; padding-right: 0 !important; }
-  .smd-bg-section { min-height: auto; background: none !important; color: #000; }
-  .smd-bg-overlay { background: none !important; padding: 16px 0; }
-  .smd-carousel-track { display: block; }
-  .smd-carousel-slide { display: none; }
-  .smd-carousel-slide:first-child { display: block; }
-  .smd-block { box-shadow: none; border: 1px solid #ccc; }
+  .kp-page { max-width: 100%; padding: 0; }
+  .kp-hero { padding: 20px 0; }
+  .kp-section { padding: 24px 0; break-inside: avoid; }
+  .kp-section-alt { background: transparent !important; margin: 0 !important; padding-left: 0 !important; padding-right: 0 !important; }
+  .kp-bg-section { min-height: auto; background: none !important; color: #000; }
+  .kp-bg-overlay { background: none !important; padding: 16px 0; }
+  .kp-carousel-track { display: block; }
+  .kp-carousel-slide { display: none; }
+  .kp-carousel-slide:first-child { display: block; }
+  .kp-block { box-shadow: none; border: 1px solid #ccc; }
   a { color: #000; text-decoration: underline; }
   a[href]::after { content: " (" attr(href) ")"; font-size: 0.8em; color: #666; }
   a[href^="#"]::after, a[href^="javascript"]::after { content: none; }
-  .smd-cta-row a::after { content: none; }
+  .kp-cta-row a::after { content: none; }
   img { max-width: 100% !important; }
-  .smd-gallery { gap: 8px; }
-  .smd-gallery img { height: auto !important; box-shadow: none; }
+  .kp-gallery { gap: 8px; }
+  .kp-gallery img { height: auto !important; box-shadow: none; }
 }
 
 :root {
@@ -1858,18 +1858,18 @@ kbd {
 </style>
 </head>
 <body>
-<div id="smd-nav-mount"><a href="#smd-content" class="smd-skip-nav">Skip to content</a><nav class="smd-nav" data-style="transparent" aria-label="Main navigation"><a class="smd-nav-brand" href="index.html">Giuseppe’s Italian Restaurant</a><ul class="smd-nav-links"><li><a href="menu.html">Menu</a></li><li><a href="about.html">About</a></li><li><a href="index.html#make-a-reservation">Reservations</a></li></ul><button class="smd-nav-toggle" aria-label="Menu"><span></span></button></nav></div>
-<main id="smd-content" class="smd-page smd-page-hidden">
-<div class="smd-bg-section" style="background-image:url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1200&amp;q=80')"><div class="smd-bg-overlay"><h1>Our Story</h1><p>A family tradition of Italian cooking, rooted in love and passed down through generations.</p></div></div><section class="smd-section smd-animate" id="our-history"><h2>Our History</h2><hr class="smd-section-rule"><p>Giuseppe Rossi arrived in Portland in 1982 with little more than a suitcase and his grandmother’s recipe book. After three years working in local kitchens, he opened a small trattoria on Main Street with twelve tables and a dream.</p><p>What started as a humble neighborhood spot quickly became a Portland institution. Word spread about Giuseppe’s hand-rolled pasta, slow-simmered sauces, and the warmth you felt the moment you walked through the door. Four decades later, that same spirit fills every corner of the restaurant.</p><p>Today, Giuseppe’s daughter Elena and son Marco carry the legacy forward, honoring the recipes and traditions their father brought from the hills of Tuscany.</p></section><section class="smd-section smd-section-alt smd-animate" id="chef-elena-rossi"><h2>Chef Elena Rossi</h2><hr class="smd-section-rule"><div class="smd-bg-section" style="background-image:url('https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=1200&amp;q=80')"><div class="smd-bg-overlay"><h1>Trained in Tuscany. Rooted in Portland.</h1><p>Elena spent five years apprenticing in Florence and Bologna before returning home to lead Giuseppe’s kitchen.</p></div></div></section><section class="smd-section smd-animate" id="our-philosophy"><h2>Our Philosophy</h2><hr class="smd-section-rule"><div class="smd-columns smd-animate smd-animate-stagger"><div class="smd-column"><h3 id="farm-to-table">Farm to Table</h3><p>We source produce from local Oregon farms within 50 miles of our kitchen. Every morning, our team selects the freshest seasonal ingredients at the Portland Farmers Market.</p></div><div class="smd-column"><h3 id="handmade-pasta">Handmade Pasta</h3><p>Our pasta is made fresh daily using traditional techniques. From tagliatelle to ravioli, every strand and shape is crafted by hand in our open kitchen.</p></div><div class="smd-column"><h3 id="slow-simmered-sauces">Slow-Simmered Sauces</h3><p>Our signature Bolognese simmers for eight hours. Our marinara uses San Marzano tomatoes imported directly from a family farm near Naples.</p></div></div></section><section class="smd-section smd-section-alt smd-animate" id="by-the-numbers"><h2>By the Numbers</h2><hr class="smd-section-rule"><div class="smd-columns smd-animate smd-animate-stagger"><div class="smd-column"><h3 id="tradition">Tradition</h3><p><span class="smd-large">40</span>+<br>years of family tradition</p></div><div class="smd-column"><h3 id="local-farms">Local Farms</h3><p><span class="smd-large">12</span><br>local farms we partner with</p></div><div class="smd-column"><h3 id="generations">Generations</h3><p><span class="smd-large">3</span><br>generations of Rossis in the kitchen</p></div><div class="smd-column"><h3 id="recipes">Recipes</h3><p><span class="smd-large">200</span>+<br>recipes in our collection</p></div></div></section><section class="smd-section smd-animate" id="gallery"><h2>Gallery</h2><hr class="smd-section-rule"><figure class="smd-gallery count-3"><img src="https://images.unsplash.com/photo-1550966871-3ed3cdb51f3a?w=600&q=80" alt="The dining room at sunset" loading="lazy"><img src="https://images.unsplash.com/photo-1556761223-4c4282c73f77?w=600&q=80" alt="Fresh handmade pasta" loading="lazy"><img src="https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=600&q=80" alt="Our garden herb selection" loading="lazy"></figure><div class="smd-cta-row"><a href="menu.html" class="smd-cta-primary">View Full Menu</a><a href="index.html" class="smd-cta-secondary">Back to Home</a></div></section>
-<footer class="smd-footer" data-style="centered"><div class="smd-footer-title">Giuseppe’s Italian Restaurant</div><div class="smd-footer-links"><a href="index.html">Home</a> <a href="menu.html">Menu</a> <a href="about.html">About</a> </div><div class="smd-footer-copy">123 Main Street, Portland, OR 97201<br>(503) 555-0142</div></footer>
+<div id="kp-nav-mount"><a href="#kp-content" class="kp-skip-nav">Skip to content</a><nav class="kp-nav" data-style="transparent" aria-label="Main navigation"><a class="kp-nav-brand" href="index.html">Giuseppe’s Italian Restaurant</a><ul class="kp-nav-links"><li><a href="menu.html">Menu</a></li><li><a href="about.html">About</a></li><li><a href="index.html#make-a-reservation">Reservations</a></li></ul><button class="kp-nav-toggle" aria-label="Menu"><span></span></button></nav></div>
+<main id="kp-content" class="kp-page kp-page-hidden">
+<div class="kp-bg-section" style="background-image:url('https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1200&amp;q=80')"><div class="kp-bg-overlay"><h1>Our Story</h1><p>A family tradition of Italian cooking, rooted in love and passed down through generations.</p></div></div><section class="kp-section kp-animate" id="our-history"><h2>Our History</h2><hr class="kp-section-rule"><p>Giuseppe Rossi arrived in Portland in 1982 with little more than a suitcase and his grandmother’s recipe book. After three years working in local kitchens, he opened a small trattoria on Main Street with twelve tables and a dream.</p><p>What started as a humble neighborhood spot quickly became a Portland institution. Word spread about Giuseppe’s hand-rolled pasta, slow-simmered sauces, and the warmth you felt the moment you walked through the door. Four decades later, that same spirit fills every corner of the restaurant.</p><p>Today, Giuseppe’s daughter Elena and son Marco carry the legacy forward, honoring the recipes and traditions their father brought from the hills of Tuscany.</p></section><section class="kp-section kp-section-alt kp-animate" id="chef-elena-rossi"><h2>Chef Elena Rossi</h2><hr class="kp-section-rule"><div class="kp-bg-section" style="background-image:url('https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=1200&amp;q=80')"><div class="kp-bg-overlay"><h1>Trained in Tuscany. Rooted in Portland.</h1><p>Elena spent five years apprenticing in Florence and Bologna before returning home to lead Giuseppe’s kitchen.</p></div></div></section><section class="kp-section kp-animate" id="our-philosophy"><h2>Our Philosophy</h2><hr class="kp-section-rule"><div class="kp-columns kp-animate kp-animate-stagger"><div class="kp-column"><h3 id="farm-to-table">Farm to Table</h3><p>We source produce from local Oregon farms within 50 miles of our kitchen. Every morning, our team selects the freshest seasonal ingredients at the Portland Farmers Market.</p></div><div class="kp-column"><h3 id="handmade-pasta">Handmade Pasta</h3><p>Our pasta is made fresh daily using traditional techniques. From tagliatelle to ravioli, every strand and shape is crafted by hand in our open kitchen.</p></div><div class="kp-column"><h3 id="slow-simmered-sauces">Slow-Simmered Sauces</h3><p>Our signature Bolognese simmers for eight hours. Our marinara uses San Marzano tomatoes imported directly from a family farm near Naples.</p></div></div></section><section class="kp-section kp-section-alt kp-animate" id="by-the-numbers"><h2>By the Numbers</h2><hr class="kp-section-rule"><div class="kp-columns kp-animate kp-animate-stagger"><div class="kp-column"><h3 id="tradition">Tradition</h3><p><span class="kp-large">40</span>+<br>years of family tradition</p></div><div class="kp-column"><h3 id="local-farms">Local Farms</h3><p><span class="kp-large">12</span><br>local farms we partner with</p></div><div class="kp-column"><h3 id="generations">Generations</h3><p><span class="kp-large">3</span><br>generations of Rossis in the kitchen</p></div><div class="kp-column"><h3 id="recipes">Recipes</h3><p><span class="kp-large">200</span>+<br>recipes in our collection</p></div></div></section><section class="kp-section kp-animate" id="gallery"><h2>Gallery</h2><hr class="kp-section-rule"><figure class="kp-gallery count-3"><img src="https://images.unsplash.com/photo-1550966871-3ed3cdb51f3a?w=600&q=80" alt="The dining room at sunset" loading="lazy"><img src="https://images.unsplash.com/photo-1556761223-4c4282c73f77?w=600&q=80" alt="Fresh handmade pasta" loading="lazy"><img src="https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=600&q=80" alt="Our garden herb selection" loading="lazy"></figure><div class="kp-cta-row"><a href="menu.html" class="kp-cta-primary">View Full Menu</a><a href="index.html" class="kp-cta-secondary">Back to Home</a></div></section>
+<footer class="kp-footer" data-style="centered"><div class="kp-footer-title">Giuseppe’s Italian Restaurant</div><div class="kp-footer-links"><a href="index.html">Home</a> <a href="menu.html">Menu</a> <a href="about.html">About</a> </div><div class="kp-footer-copy">123 Main Street, Portland, OR 97201<br>(503) 555-0142</div></footer>
 </main>
-<noscript><style>.smd-page-hidden,.smd-animate,.smd-animate-stagger>*{opacity:1!important;transform:none!important;transition:none!important}</style></noscript>
+<noscript><style>.kp-page-hidden,.kp-animate,.kp-animate-stagger>*{opacity:1!important;transform:none!important;transition:none!important}</style></noscript>
 <script>
 // Runtime: hamburger, carousel, nav scroll, animations, page transitions
 (function() {
   // Hamburger
-  var toggle = document.querySelector('.smd-nav-toggle');
-  var links = document.querySelector('.smd-nav-links');
+  var toggle = document.querySelector('.kp-nav-toggle');
+  var links = document.querySelector('.kp-nav-links');
   if (toggle && links) {
     toggle.setAttribute('aria-label', 'Toggle navigation');
     toggle.setAttribute('aria-expanded', 'false');
@@ -1880,7 +1880,7 @@ kbd {
   }
 
   // Nav scroll
-  var nav = document.querySelector('.smd-nav');
+  var nav = document.querySelector('.kp-nav');
   if (nav) {
     var scrolled = false;
     window.addEventListener('scroll', function() {
@@ -1896,13 +1896,13 @@ kbd {
     var el = document.getElementById(id);
     if (!el) return;
     state[id] = idx;
-    el.querySelector('.smd-carousel-track').style.transform = 'translateX(-' + idx * 100 + '%)';
-    el.querySelectorAll('.smd-carousel-dot').forEach(function(d, i) { d.classList.toggle('active', i === idx); });
+    el.querySelector('.kp-carousel-track').style.transform = 'translateX(-' + idx * 100 + '%)';
+    el.querySelectorAll('.kp-carousel-dot').forEach(function(d, i) { d.classList.toggle('active', i === idx); });
   }
   window.carouselNav = function(id, dir) {
     var el = document.getElementById(id);
     if (!el) return;
-    var count = el.querySelectorAll('.smd-carousel-slide').length;
+    var count = el.querySelectorAll('.kp-carousel-slide').length;
     goTo(id, ((state[id] || 0) + dir + count) % count);
     pauseUntil[id] = Date.now() + 10000;
   };
@@ -1911,8 +1911,8 @@ kbd {
     pauseUntil[id] = Date.now() + 10000;
   };
   setInterval(function() {
-    document.querySelectorAll('.smd-carousel').forEach(function(el) {
-      var count = el.querySelectorAll('.smd-carousel-slide').length;
+    document.querySelectorAll('.kp-carousel').forEach(function(el) {
+      var count = el.querySelectorAll('.kp-carousel-slide').length;
       if (count <= 1) return;
       if (pauseUntil[el.id] && Date.now() < pauseUntil[el.id]) return;
       goTo(el.id, ((state[el.id] || 0) + 1) % count);
@@ -1923,33 +1923,33 @@ kbd {
   window.tabSwitch = function(id, idx) {
     var el = document.getElementById(id);
     if (!el) return;
-    el.querySelectorAll('.smd-tab-btn').forEach(function(b, i) { b.classList.toggle('active', i === idx); });
-    el.querySelectorAll('.smd-tab-panel').forEach(function(p, i) { p.classList.toggle('active', i === idx); });
+    el.querySelectorAll('.kp-tab-btn').forEach(function(b, i) { b.classList.toggle('active', i === idx); });
+    el.querySelectorAll('.kp-tab-panel').forEach(function(p, i) { p.classList.toggle('active', i === idx); });
   };
 
   // Animations & SPA-like page transitions
-  var page = document.querySelector('.smd-page');
-  if (page && page.classList.contains('smd-page-hidden')) {
+  var page = document.querySelector('.kp-page');
+  if (page && page.classList.contains('kp-page-hidden')) {
     function initScrollAnims() {
-      document.querySelectorAll('.smd-hero.smd-animate').forEach(function(el) {
-        setTimeout(function() { el.classList.add('smd-visible'); }, 150);
+      document.querySelectorAll('.kp-hero.kp-animate').forEach(function(el) {
+        setTimeout(function() { el.classList.add('kp-visible'); }, 150);
       });
-      var first = document.querySelector('.smd-section.smd-animate');
-      if (first) setTimeout(function() { first.classList.add('smd-visible'); }, 300);
+      var first = document.querySelector('.kp-section.kp-animate');
+      if (first) setTimeout(function() { first.classList.add('kp-visible'); }, 300);
       if ('IntersectionObserver' in window) {
         var obs = new IntersectionObserver(function(entries) {
           entries.forEach(function(e) {
-            if (e.isIntersecting) { e.target.classList.add('smd-visible'); obs.unobserve(e.target); }
+            if (e.isIntersecting) { e.target.classList.add('kp-visible'); obs.unobserve(e.target); }
           });
         }, { threshold: 0.05, rootMargin: '0px 0px 50px 0px' });
-        document.querySelectorAll('.smd-animate:not(.smd-hero):not(.smd-visible)').forEach(function(el) { obs.observe(el); });
+        document.querySelectorAll('.kp-animate:not(.kp-hero):not(.kp-visible)').forEach(function(el) { obs.observe(el); });
       } else {
-        document.querySelectorAll('.smd-animate').forEach(function(el) { el.classList.add('smd-visible'); });
+        document.querySelectorAll('.kp-animate').forEach(function(el) { el.classList.add('kp-visible'); });
       }
     }
 
     // Initial page enter
-    requestAnimationFrame(function() { page.classList.remove('smd-page-hidden'); });
+    requestAnimationFrame(function() { page.classList.remove('kp-page-hidden'); });
     initScrollAnims();
 
     // SPA navigation: fetch + swap content, keep nav stable
@@ -1975,7 +1975,7 @@ kbd {
         if (ctrl.signal.aborted) return;
         currentNav = null;
         var parsed = new DOMParser().parseFromString(results[0], 'text/html');
-        var newMain = parsed.querySelector('.smd-page');
+        var newMain = parsed.querySelector('.kp-page');
         if (!newMain) { location.href = url; return; }
 
         page.innerHTML = newMain.innerHTML;
@@ -2029,8 +2029,8 @@ kbd {
   }
 })();
 </script>
-<script type="application/json" id="smd-sources">{"theme.yaml":"mode: light\nradius: 12\nradiusLg: 20\nnav: transparent\nsections: alternating\ncards: elevated\nanimation: expressive\nfooter: centered\nspacing: spacious\ncolors:\n  primary: \"#1a3a1a\"\n  primaryDark: \"#0d2b0d\"\n  primaryLight: \"#d4e8d4\"\n  accent: \"#c9a84c\"\n  background: \"#f7f5f0\"\n  surface: \"#ffffff\"\n  surfaceWarm: \"#efe9de\"\n  text: \"#2a2a25\"\n  textMuted: \"#6b6b60\"\n  border: \"#e0ddd4\"\n  borderLight: \"#edebe4\"\nfonts:\n  heading: Playfair Display\n  body: Source Sans 3\n","header.md":"# Giuseppe's Italian Restaurant\n\n- [Menu](menu.md)\n- [About](about.md)\n- [Reservations](index.md#make-a-reservation)\n","footer.md":"# Giuseppe's Italian Restaurant\n\n- [Home](index.md)\n- [Menu](menu.md)\n- [About](about.md)\n\n123 Main Street, Portland, OR 97201\n(503) 555-0142\n","about.md":"---\ntitle: About Giuseppe's\ndescription: Our story, our chef, and our passion for authentic Italian cuisine\n---\n\n::: bg https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1200&q=80\n# Our Story\nA family tradition of Italian cooking, rooted in love and passed down through generations.\n:::\n\n## Our History\n\nGiuseppe Rossi arrived in Portland in 1982 with little more than a suitcase and his grandmother's recipe book. After three years working in local kitchens, he opened a small trattoria on Main Street with twelve tables and a dream.\n\nWhat started as a humble neighborhood spot quickly became a Portland institution. Word spread about Giuseppe's hand-rolled pasta, slow-simmered sauces, and the warmth you felt the moment you walked through the door. Four decades later, that same spirit fills every corner of the restaurant.\n\nToday, Giuseppe's daughter Elena and son Marco carry the legacy forward, honoring the recipes and traditions their father brought from the hills of Tuscany.\n\n## Chef Elena Rossi\n\n::: bg https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=1200&q=80\n# Trained in Tuscany. Rooted in Portland.\nElena spent five years apprenticing in Florence and Bologna before returning home to lead Giuseppe's kitchen.\n:::\n\n## Our Philosophy\n\n|||\n\n### Farm to Table\n\nWe source produce from local Oregon farms within 50 miles of our kitchen. Every morning, our team selects the freshest seasonal ingredients at the Portland Farmers Market.\n\n---\n\n### Handmade Pasta\n\nOur pasta is made fresh daily using traditional techniques. From tagliatelle to ravioli, every strand and shape is crafted by hand in our open kitchen.\n\n---\n\n### Slow-Simmered Sauces\n\nOur signature Bolognese simmers for eight hours. Our marinara uses San Marzano tomatoes imported directly from a family farm near Naples.\n\n|||\n\n## By the Numbers\n\n|||\n\n### Tradition\n++40+++\nyears of family tradition\n\n---\n\n### Local Farms\n++12++\nlocal farms we partner with\n\n---\n\n### Generations\n++3++\ngenerations of Rossis in the kitchen\n\n---\n\n### Recipes\n++200+++\nrecipes in our collection\n\n|||\n\n## Gallery\n\n![The dining room at sunset](https://images.unsplash.com/photo-1550966871-3ed3cdb51f3a?w=600&q=80)\n![Fresh handmade pasta](https://images.unsplash.com/photo-1556761223-4c4282c73f77?w=600&q=80)\n![Our garden herb selection](https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=600&q=80)\n\n[View Full Menu](menu.md) — [Back to Home](index.md)\n","index.md":"---\ntitle: Giuseppe's Italian Restaurant\ndescription: Authentic Italian cuisine in downtown Portland since 1985\nimage: storefront.jpg\n---\n\n::: carousel\n::: bg https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&q=80\n# Giuseppe's Italian Restaurant\nAuthentic Italian cuisine in downtown Portland. Family owned since 1985.\n:::\n---\n::: bg https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&q=80\n# A Warm Welcome Awaits\nOur dining room seats 80 guests in an intimate, candlelit atmosphere.\n:::\n---\n::: bg https://images.unsplash.com/photo-1600891964092-4316c288032e?w=1200&q=80\n# The Garden Patio\nDine under the stars on our award-winning patio, open May through October.\n:::\n:::\n\n[About Us](about.md) — [View Full Menu](menu.md)\n\n## Our Menu\n\n|||\n\n### Appetizers\n\n- Bruschetta ... $8\n- Calamari Fritti ... $12\n- Caprese Salad ... $10\n- Arancini ... $9\n\n---\n\n### Entrees\n\n- Margherita Pizza ... $14\n- Linguine alle Vongole ... $18\n- Osso Buco ... $24\n- Eggplant Parmigiana ... $16\n\n---\n\n### Desserts\n\n- Tiramisu ... $9\n- Panna Cotta ... $8\n- Cannoli ... $7\n- Affogato ... $6\n\n|||\n\n[View Full Menu](menu.md)\n\n## What Our Guests Say\n\n::: quote\n★★★★★\nThe best Italian food outside of Italy. The osso buco melts in your mouth. We've been coming here for years and it never disappoints.\n— **Maria S.**\n:::\n\n::: quote\n★★★★☆\nGreat atmosphere and food. The wine list is exceptional. A bit pricey but absolutely worth it for special occasions.\n— **James R.**\n:::\n\n::: quote\n★★★★★\nWe come here every anniversary. The garden patio is magical in the summer. The staff always makes us feel like family.\n— **Linda K.**\n:::\n\n## Hours & Location\n\n|||\n\n### Hours\n\nMonday–Friday: 11am–10pm\nSaturday: 10am–11pm\nSunday: 10am–9pm\n\n---\n\n### Find Us\n\n123 Main Street\nPortland, OR 97201\n(503) 555-0142\n\n---\n\n### Reservations\n\nBook online or call us.\nWalk-ins welcome.\n\n|||\n\n## Make a Reservation\n\n::: form\nName*: {text}\nEmail*: {email}\nPhone: {text}\n\nDate*: {date}\nParty size*: {1 / 2 / 3-4 / 5-6 / 7+}\n\nSpecial requests: {paragraph}\n\n[Reserve a Table](POST /reservations)\n:::\n","menu.md":"---\ntitle: Menu — Giuseppe's Italian Restaurant\ndescription: Explore our full menu of authentic Italian dishes, handmade pastas, and curated wine list\n---\n\n::: bg https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&q=80\n# Our Menu\nSeasonal dishes crafted from the freshest local ingredients and time-honored Italian recipes.\n:::\n\n## Antipasti\n\n- Bruschetta Classica ... $8\n- Calamari Fritti with lemon aioli ... $12\n- Caprese Salad with burrata ... $10\n- Arancini with saffron risotto ... $9\n- Carpaccio di Manzo with arugula and parmesan ... $14\n- Polpo alla Griglia, grilled octopus with potatoes ... $15\n- Crostini Toscani with chicken liver pate ... $10\n- Burrata with roasted peppers and basil ... $13\n\n## Pasta\n\n- Linguine alle Vongole ... $18\n- Tagliatelle Bolognese ... $17\n- Cacio e Pepe ... $15\n- Pappardelle with wild boar ragu ... $19\n- Ravioli di Ricotta with brown butter and sage ... $16\n- Spaghetti alla Carbonara ... $16\n- Gnocchi with gorgonzola cream ... $15\n- Lasagna della Nonna ... $17\n- Orecchiette with broccoli rabe and sausage ... $16\n- Penne all'Arrabbiata ... $14\n\n## Pizza\n\n- Margherita ... $14\n- Quattro Formaggi ... $16\n- Diavola with spicy salami ... $15\n- Prosciutto e Rucola ... $17\n- Funghi Misti with truffle oil ... $18\n- Napoli with anchovies, capers, olives ... $15\n\n## Secondi\n\n- Osso Buco alla Milanese ... $28\n- Branzino al Forno with herbs and lemon ... $26\n- Pollo alla Parmigiana ... $22\n- Saltimbocca alla Romana ... $24\n- Bistecca alla Fiorentina (for two) ... $58\n- Eggplant Parmigiana ... $16\n- Lamb Shank Braised in Chianti ... $27\n- Seared Duck Breast with cherry reduction ... $25\n\n## Contorni\n\n- Roasted seasonal vegetables ... $8\n- Sauteed broccoli rabe ... $7\n- Truffle fries ... $9\n- Mixed green salad ... $7\n- Grilled asparagus with lemon ... $8\n\n## Dolci\n\n- Tiramisu ... $9\n- Panna Cotta with berry compote ... $8\n- Classic Cannoli ... $7\n- Affogato ... $6\n- Chocolate Torta with espresso cream ... $10\n- Semifreddo al Limone ... $9\n- Zeppole with Nutella ... $8\n\n## Wine List\n\n|||\n\n### Reds\n\n- Chianti Classico, Castello di Volpaia ... $12 / $48\n- Barolo, Marchesi di Barolo ... $18 / $72\n- Brunello di Montalcino, Banfi ... $16 / $64\n- Montepulciano d'Abruzzo, Masciarelli ... $10 / $40\n- Amarone della Valpolicella, Allegrini ... $20 / $80\n- Super Tuscan, Tignanello ... $22 / $88\n\n---\n\n### Whites\n\n- Pinot Grigio, Santa Margherita ... $11 / $44\n- Vermentino di Sardegna, Argiolas ... $10 / $40\n- Gavi di Gavi, La Scolca ... $12 / $48\n- Fiano di Avellino, Mastroberardino ... $11 / $44\n- Soave Classico, Pieropan ... $10 / $40\n\n---\n\n### Sparkling\n\n- Prosecco, La Marca ... $10 / $40\n- Franciacorta Brut, Bellavista ... $14 / $56\n- Lambrusco Rosato, Cleto Chiarli ... $9 / $36\n\n|||\n\n[About Us](about.md) — [Back to Home](index.md)\n"}</script>
-<script type="application/json" id="smd-theme">{"mode":"light","radius":12,"radiusLg":20,"nav":"transparent","sections":"alternating","cards":"elevated","animation":"expressive","footer":"centered","spacing":"spacious","colors":{"primary":"#1a3a1a","primaryDark":"#0d2b0d","primaryLight":"#d4e8d4","accent":"#c9a84c","background":"#f7f5f0","surface":"#ffffff","surfaceWarm":"#efe9de","text":"#2a2a25","textMuted":"#6b6b60","border":"#e0ddd4","borderLight":"#edebe4"},"fonts":{"heading":"Playfair Display","body":"Source Sans 3"}}</script>
-<script src="smd-editor.js" defer></script>
+<script type="application/json" id="kp-sources">{"theme.yaml":"mode: light\nradius: 12\nradiusLg: 20\nnav: transparent\nsections: alternating\ncards: elevated\nanimation: expressive\nfooter: centered\nspacing: spacious\ncolors:\n  primary: \"#1a3a1a\"\n  primaryDark: \"#0d2b0d\"\n  primaryLight: \"#d4e8d4\"\n  accent: \"#c9a84c\"\n  background: \"#f7f5f0\"\n  surface: \"#ffffff\"\n  surfaceWarm: \"#efe9de\"\n  text: \"#2a2a25\"\n  textMuted: \"#6b6b60\"\n  border: \"#e0ddd4\"\n  borderLight: \"#edebe4\"\nfonts:\n  heading: Playfair Display\n  body: Source Sans 3\n","header.md":"# Giuseppe's Italian Restaurant\n\n- [Menu](menu.md)\n- [About](about.md)\n- [Reservations](index.md#make-a-reservation)\n","footer.md":"# Giuseppe's Italian Restaurant\n\n- [Home](index.md)\n- [Menu](menu.md)\n- [About](about.md)\n\n123 Main Street, Portland, OR 97201\n(503) 555-0142\n","about.md":"---\ntitle: About Giuseppe's\ndescription: Our story, our chef, and our passion for authentic Italian cuisine\n---\n\n::: bg https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=1200&q=80\n# Our Story\nA family tradition of Italian cooking, rooted in love and passed down through generations.\n:::\n\n## Our History\n\nGiuseppe Rossi arrived in Portland in 1982 with little more than a suitcase and his grandmother's recipe book. After three years working in local kitchens, he opened a small trattoria on Main Street with twelve tables and a dream.\n\nWhat started as a humble neighborhood spot quickly became a Portland institution. Word spread about Giuseppe's hand-rolled pasta, slow-simmered sauces, and the warmth you felt the moment you walked through the door. Four decades later, that same spirit fills every corner of the restaurant.\n\nToday, Giuseppe's daughter Elena and son Marco carry the legacy forward, honoring the recipes and traditions their father brought from the hills of Tuscany.\n\n## Chef Elena Rossi\n\n::: bg https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=1200&q=80\n# Trained in Tuscany. Rooted in Portland.\nElena spent five years apprenticing in Florence and Bologna before returning home to lead Giuseppe's kitchen.\n:::\n\n## Our Philosophy\n\n|||\n\n### Farm to Table\n\nWe source produce from local Oregon farms within 50 miles of our kitchen. Every morning, our team selects the freshest seasonal ingredients at the Portland Farmers Market.\n\n---\n\n### Handmade Pasta\n\nOur pasta is made fresh daily using traditional techniques. From tagliatelle to ravioli, every strand and shape is crafted by hand in our open kitchen.\n\n---\n\n### Slow-Simmered Sauces\n\nOur signature Bolognese simmers for eight hours. Our marinara uses San Marzano tomatoes imported directly from a family farm near Naples.\n\n|||\n\n## By the Numbers\n\n|||\n\n### Tradition\n++40+++\nyears of family tradition\n\n---\n\n### Local Farms\n++12++\nlocal farms we partner with\n\n---\n\n### Generations\n++3++\ngenerations of Rossis in the kitchen\n\n---\n\n### Recipes\n++200+++\nrecipes in our collection\n\n|||\n\n## Gallery\n\n![The dining room at sunset](https://images.unsplash.com/photo-1550966871-3ed3cdb51f3a?w=600&q=80)\n![Fresh handmade pasta](https://images.unsplash.com/photo-1556761223-4c4282c73f77?w=600&q=80)\n![Our garden herb selection](https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=600&q=80)\n\n[View Full Menu](menu.md) — [Back to Home](index.md)\n","index.md":"---\ntitle: Giuseppe's Italian Restaurant\ndescription: Authentic Italian cuisine in downtown Portland since 1985\nimage: storefront.jpg\n---\n\n::: carousel\n::: bg https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&q=80\n# Giuseppe's Italian Restaurant\nAuthentic Italian cuisine in downtown Portland. Family owned since 1985.\n:::\n---\n::: bg https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&q=80\n# A Warm Welcome Awaits\nOur dining room seats 80 guests in an intimate, candlelit atmosphere.\n:::\n---\n::: bg https://images.unsplash.com/photo-1600891964092-4316c288032e?w=1200&q=80\n# The Garden Patio\nDine under the stars on our award-winning patio, open May through October.\n:::\n:::\n\n[About Us](about.md) — [View Full Menu](menu.md)\n\n## Our Menu\n\n|||\n\n### Appetizers\n\n- Bruschetta ... $8\n- Calamari Fritti ... $12\n- Caprese Salad ... $10\n- Arancini ... $9\n\n---\n\n### Entrees\n\n- Margherita Pizza ... $14\n- Linguine alle Vongole ... $18\n- Osso Buco ... $24\n- Eggplant Parmigiana ... $16\n\n---\n\n### Desserts\n\n- Tiramisu ... $9\n- Panna Cotta ... $8\n- Cannoli ... $7\n- Affogato ... $6\n\n|||\n\n[View Full Menu](menu.md)\n\n## What Our Guests Say\n\n::: quote\n★★★★★\nThe best Italian food outside of Italy. The osso buco melts in your mouth. We've been coming here for years and it never disappoints.\n— **Maria S.**\n:::\n\n::: quote\n★★★★☆\nGreat atmosphere and food. The wine list is exceptional. A bit pricey but absolutely worth it for special occasions.\n— **James R.**\n:::\n\n::: quote\n★★★★★\nWe come here every anniversary. The garden patio is magical in the summer. The staff always makes us feel like family.\n— **Linda K.**\n:::\n\n## Hours & Location\n\n|||\n\n### Hours\n\nMonday–Friday: 11am–10pm\nSaturday: 10am–11pm\nSunday: 10am–9pm\n\n---\n\n### Find Us\n\n123 Main Street\nPortland, OR 97201\n(503) 555-0142\n\n---\n\n### Reservations\n\nBook online or call us.\nWalk-ins welcome.\n\n|||\n\n## Make a Reservation\n\n::: form\nName*: {text}\nEmail*: {email}\nPhone: {text}\n\nDate*: {date}\nParty size*: {1 / 2 / 3-4 / 5-6 / 7+}\n\nSpecial requests: {paragraph}\n\n[Reserve a Table](POST /reservations)\n:::\n","menu.md":"---\ntitle: Menu — Giuseppe's Italian Restaurant\ndescription: Explore our full menu of authentic Italian dishes, handmade pastas, and curated wine list\n---\n\n::: bg https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&q=80\n# Our Menu\nSeasonal dishes crafted from the freshest local ingredients and time-honored Italian recipes.\n:::\n\n## Antipasti\n\n- Bruschetta Classica ... $8\n- Calamari Fritti with lemon aioli ... $12\n- Caprese Salad with burrata ... $10\n- Arancini with saffron risotto ... $9\n- Carpaccio di Manzo with arugula and parmesan ... $14\n- Polpo alla Griglia, grilled octopus with potatoes ... $15\n- Crostini Toscani with chicken liver pate ... $10\n- Burrata with roasted peppers and basil ... $13\n\n## Pasta\n\n- Linguine alle Vongole ... $18\n- Tagliatelle Bolognese ... $17\n- Cacio e Pepe ... $15\n- Pappardelle with wild boar ragu ... $19\n- Ravioli di Ricotta with brown butter and sage ... $16\n- Spaghetti alla Carbonara ... $16\n- Gnocchi with gorgonzola cream ... $15\n- Lasagna della Nonna ... $17\n- Orecchiette with broccoli rabe and sausage ... $16\n- Penne all'Arrabbiata ... $14\n\n## Pizza\n\n- Margherita ... $14\n- Quattro Formaggi ... $16\n- Diavola with spicy salami ... $15\n- Prosciutto e Rucola ... $17\n- Funghi Misti with truffle oil ... $18\n- Napoli with anchovies, capers, olives ... $15\n\n## Secondi\n\n- Osso Buco alla Milanese ... $28\n- Branzino al Forno with herbs and lemon ... $26\n- Pollo alla Parmigiana ... $22\n- Saltimbocca alla Romana ... $24\n- Bistecca alla Fiorentina (for two) ... $58\n- Eggplant Parmigiana ... $16\n- Lamb Shank Braised in Chianti ... $27\n- Seared Duck Breast with cherry reduction ... $25\n\n## Contorni\n\n- Roasted seasonal vegetables ... $8\n- Sauteed broccoli rabe ... $7\n- Truffle fries ... $9\n- Mixed green salad ... $7\n- Grilled asparagus with lemon ... $8\n\n## Dolci\n\n- Tiramisu ... $9\n- Panna Cotta with berry compote ... $8\n- Classic Cannoli ... $7\n- Affogato ... $6\n- Chocolate Torta with espresso cream ... $10\n- Semifreddo al Limone ... $9\n- Zeppole with Nutella ... $8\n\n## Wine List\n\n|||\n\n### Reds\n\n- Chianti Classico, Castello di Volpaia ... $12 / $48\n- Barolo, Marchesi di Barolo ... $18 / $72\n- Brunello di Montalcino, Banfi ... $16 / $64\n- Montepulciano d'Abruzzo, Masciarelli ... $10 / $40\n- Amarone della Valpolicella, Allegrini ... $20 / $80\n- Super Tuscan, Tignanello ... $22 / $88\n\n---\n\n### Whites\n\n- Pinot Grigio, Santa Margherita ... $11 / $44\n- Vermentino di Sardegna, Argiolas ... $10 / $40\n- Gavi di Gavi, La Scolca ... $12 / $48\n- Fiano di Avellino, Mastroberardino ... $11 / $44\n- Soave Classico, Pieropan ... $10 / $40\n\n---\n\n### Sparkling\n\n- Prosecco, La Marca ... $10 / $40\n- Franciacorta Brut, Bellavista ... $14 / $56\n- Lambrusco Rosato, Cleto Chiarli ... $9 / $36\n\n|||\n\n[About Us](about.md) — [Back to Home](index.md)\n"}</script>
+<script type="application/json" id="kp-theme">{"mode":"light","radius":12,"radiusLg":20,"nav":"transparent","sections":"alternating","cards":"elevated","animation":"expressive","footer":"centered","spacing":"spacious","colors":{"primary":"#1a3a1a","primaryDark":"#0d2b0d","primaryLight":"#d4e8d4","accent":"#c9a84c","background":"#f7f5f0","surface":"#ffffff","surfaceWarm":"#efe9de","text":"#2a2a25","textMuted":"#6b6b60","border":"#e0ddd4","borderLight":"#edebe4"},"fonts":{"heading":"Playfair Display","body":"Source Sans 3"}}</script>
+<script src="kp-editor.js" defer></script>
 </body>
 </html>

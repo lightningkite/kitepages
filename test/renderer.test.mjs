@@ -10,8 +10,6 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const sitesDir = join(__dirname, '..', 'sites');
 
 function readSiteSource(name, file) {
-  const mdPath = join(sitesDir, name, file.replace(/\.smd$/, '.md'));
-  if (existsSync(mdPath)) return readFileSync(mdPath, 'utf-8');
   return readFileSync(join(sitesDir, name, file), 'utf-8');
 }
 
@@ -37,7 +35,7 @@ describe('inl (inline formatting)', () => {
   });
 
   it('renders large text with ++syntax++', () => {
-    assert.ok(inl('++12,847++').includes('smd-large'));
+    assert.ok(inl('++12,847++').includes('kp-large'));
     assert.ok(inl('++12,847++').includes('12,847'));
   });
 
@@ -46,7 +44,7 @@ describe('inl (inline formatting)', () => {
   });
 
   it('renders star ratings', () => {
-    assert.ok(inl('★★★★★').includes('smd-stars'));
+    assert.ok(inl('★★★★★').includes('kp-stars'));
   });
 
   // Phase 2 inline features
@@ -143,13 +141,13 @@ describe('render', () => {
     const doc = parse('# Hello\nWorld');
     const html = render(doc);
     assert.ok(html.includes('<h1>Hello</h1>'));
-    assert.ok(html.includes('smd-hero'));
+    assert.ok(html.includes('kp-hero'));
   });
 
   it('renders sections with h2 using heading IDs', () => {
     const doc = parse('## About\nSome text\n## Contact\nMore text');
     const html = render(doc);
-    assert.ok(html.includes('smd-section'));
+    assert.ok(html.includes('kp-section'));
     assert.ok(html.includes('id="about"'));
     assert.ok(html.includes('id="contact"'));
   });
@@ -164,21 +162,21 @@ describe('render', () => {
   it('renders CTA buttons from link-only paragraphs', () => {
     const doc = parse('## Section\n[About](about.md) — [Menu](menu.md)');
     const html = render(doc);
-    assert.ok(html.includes('smd-cta-row'));
-    assert.ok(html.includes('smd-cta-primary'));
+    assert.ok(html.includes('kp-cta-row'));
+    assert.ok(html.includes('kp-cta-primary'));
   });
 
   it('skips animation classes when theme.animation is none', () => {
     const doc = parse('# Hello\nWorld');
     const html = render(doc, { animation: 'none' });
-    assert.ok(!html.includes('smd-animate'));
+    assert.ok(!html.includes('kp-animate'));
   });
 
   it('renders columns', () => {
     const doc = parse('## Test\n|||\n### Col 1\nA\n---\n### Col 2\nB\n|||');
     const html = render(doc);
-    assert.ok(html.includes('smd-columns'));
-    assert.ok(html.includes('smd-column'));
+    assert.ok(html.includes('kp-columns'));
+    assert.ok(html.includes('kp-column'));
     assert.ok(html.includes('Col 1'));
     assert.ok(html.includes('Col 2'));
   });
@@ -186,8 +184,8 @@ describe('render', () => {
   it('renders carousel', () => {
     const doc = parse('::: carousel\n::: bg a.jpg\n# Slide 1\n:::\n---\n::: bg b.jpg\n# Slide 2\n:::\n:::');
     const html = render(doc);
-    assert.ok(html.includes('smd-carousel'));
-    assert.ok(html.includes('smd-carousel-slide'));
+    assert.ok(html.includes('kp-carousel'));
+    assert.ok(html.includes('kp-carousel-slide'));
     assert.ok(html.includes('Slide 1'));
     assert.ok(html.includes('Slide 2'));
   });
@@ -195,7 +193,7 @@ describe('render', () => {
   it('renders forms', () => {
     const doc = parse('::: form\nName*: {text}\nEmail: {email}\n[Send](POST /api)\n:::');
     const html = render(doc);
-    assert.ok(html.includes('smd-form'));
+    assert.ok(html.includes('kp-form'));
     assert.ok(html.includes('type="text"'));
     assert.ok(html.includes('type="email"'));
     assert.ok(html.includes('Send'));
@@ -218,7 +216,7 @@ describe('render', () => {
   it('renders alerts', () => {
     const doc = parse('## Test\n::: warning\nBe careful!\n:::');
     const html = render(doc);
-    assert.ok(html.includes('smd-block-warning'));
+    assert.ok(html.includes('kp-block-warning'));
   });
 
   it('renders tables', () => {
@@ -233,30 +231,30 @@ describe('render', () => {
   it('renders GFM alerts', () => {
     const doc = parse('## Info\n> [!NOTE]\n> Important info here.');
     const html = render(doc);
-    assert.ok(html.includes('smd-block-note'));
+    assert.ok(html.includes('kp-block-note'));
   });
 
   it('renders task lists', () => {
     const doc = parse('## Tasks\n- [ ] Todo\n- [x] Done\n- [-] Partial');
     const html = render(doc);
-    assert.ok(html.includes('smd-task-list'));
-    assert.ok(html.includes('smd-task-item'));
-    assert.ok(html.includes('smd-task-done'));
-    assert.ok(html.includes('smd-task-partial'));
+    assert.ok(html.includes('kp-task-list'));
+    assert.ok(html.includes('kp-task-item'));
+    assert.ok(html.includes('kp-task-done'));
+    assert.ok(html.includes('kp-task-partial'));
     assert.ok(html.includes('type="checkbox"'));
   });
 
   it('renders YouTube embeds from standalone URLs', () => {
     const doc = parse('## Video\nhttps://www.youtube.com/watch?v=dQw4w9WgXcQ');
     const html = render(doc);
-    assert.ok(html.includes('smd-embed'));
+    assert.ok(html.includes('kp-embed'));
     assert.ok(html.includes('youtube.com/embed/dQw4w9WgXcQ'));
   });
 
   it('renders {:toc} directive', () => {
     const doc = parse('{:toc}\n## First\nText\n## Second\nMore text');
     const html = render(doc);
-    assert.ok(html.includes('smd-toc'));
+    assert.ok(html.includes('kp-toc'));
     assert.ok(html.includes('href="#first"'));
     assert.ok(html.includes('href="#second"'));
   });
@@ -264,14 +262,14 @@ describe('render', () => {
   it('renders inline math', () => {
     const doc = parse('## Math\nThe formula \\( E = mc^2 \\) is famous.');
     const html = render(doc);
-    assert.ok(html.includes('smd-math'));
+    assert.ok(html.includes('kp-math'));
     assert.ok(html.includes('E = mc^2') || html.includes('E = mc'));
   });
 
   it('renders block math', () => {
     const doc = parse('## Equations\n\\[\nx^2 + y^2 = z^2\n\\]');
     const html = render(doc);
-    assert.ok(html.includes('smd-math-block'));
+    assert.ok(html.includes('kp-math-block'));
   });
 
   it('renders images with sizing', () => {
@@ -283,7 +281,7 @@ describe('render', () => {
 
   it('renders each demo site without errors', () => {
     for (const site of ['giuseppe', 'nonprofit', 'portfolio', 'salon', 'wedding']) {
-      const src = readSiteSource(site, 'index.smd');
+      const src = readSiteSource(site, 'index.md');
       const doc = parse(src);
       const theme = loadTheme(site);
       const html = render(doc, theme);
@@ -294,12 +292,12 @@ describe('render', () => {
 
 describe('renderNav', () => {
   it('renders header into nav HTML', () => {
-    const headerSrc = readSiteSource('giuseppe', 'header.smd');
+    const headerSrc = readSiteSource('giuseppe', 'header.md');
     const doc = parse(headerSrc);
     const html = renderNav(doc, { nav: 'transparent' });
-    assert.ok(html.includes('smd-nav'));
+    assert.ok(html.includes('kp-nav'));
     assert.ok(html.includes('data-style="transparent"'));
-    assert.ok(html.includes('smd-nav-brand'));
+    assert.ok(html.includes('kp-nav-brand'));
     assert.ok(html.includes('Menu'));
   });
 
@@ -310,10 +308,10 @@ describe('renderNav', () => {
 
 describe('renderFooter', () => {
   it('renders footer into footer HTML', () => {
-    const footerSrc = readSiteSource('giuseppe', 'footer.smd');
+    const footerSrc = readSiteSource('giuseppe', 'footer.md');
     const doc = parse(footerSrc);
     const html = renderFooter(doc, { footer: 'centered' });
-    assert.ok(html.includes('smd-footer'));
+    assert.ok(html.includes('kp-footer'));
     assert.ok(html.includes('data-style="centered"'));
   });
 
@@ -387,11 +385,11 @@ describe('tabs rendering', () => {
   it('renders tabs with nav and panels', () => {
     const doc = parse('::: tabs\n::: tab Monthly\n### $12/mo\n:::\n---\n::: tab Annual\n### $8/mo\n:::\n:::');
     const html = render(doc);
-    assert.ok(html.includes('smd-tabs'));
-    assert.ok(html.includes('smd-tab-btn'));
+    assert.ok(html.includes('kp-tabs'));
+    assert.ok(html.includes('kp-tab-btn'));
     assert.ok(html.includes('Monthly'));
     assert.ok(html.includes('Annual'));
-    assert.ok(html.includes('smd-tab-panel'));
+    assert.ok(html.includes('kp-tab-panel'));
   });
 });
 
@@ -399,7 +397,7 @@ describe('featured columns', () => {
   it('renders featured column with special class', () => {
     const doc = parse('## Pricing\n|||\n### Free\nBasic\n---\n### Pro {featured}\nEverything\n---\n### Teams\nAll\n|||');
     const html = render(doc);
-    assert.ok(html.includes('smd-column-featured'));
+    assert.ok(html.includes('kp-column-featured'));
   });
 });
 
@@ -407,13 +405,13 @@ describe('stats bar', () => {
   it('detects stats columns', () => {
     const doc = parse('## Stats\n|||\n### ++25,000++\nTeams\n---\n### ++50ms++\nResponse time\n---\n### ++10M++\nIssues\n|||');
     const html = render(doc);
-    assert.ok(html.includes('smd-columns-stats'));
+    assert.ok(html.includes('kp-columns-stats'));
   });
 
   it('does not flag non-stats columns', () => {
     const doc = parse('## Features\n|||\n### Speed\nFast\n---\n### Scale\nBig\n|||');
     const html = render(doc);
-    assert.ok(!html.includes('smd-columns-stats'));
+    assert.ok(!html.includes('kp-columns-stats'));
   });
 });
 
@@ -433,20 +431,20 @@ describe('image showcase', () => {
   it('renders showcase class', () => {
     const doc = parse('![App](app.png){showcase}');
     const html = render(doc);
-    assert.ok(html.includes('smd-img-showcase'));
+    assert.ok(html.includes('kp-img-showcase'));
   });
 
   it('renders browser frame', () => {
     const doc = parse('![App](app.png){frame}');
     const html = render(doc);
-    assert.ok(html.includes('smd-browser-frame'));
-    assert.ok(html.includes('smd-browser-dots'));
+    assert.ok(html.includes('kp-browser-frame'));
+    assert.ok(html.includes('kp-browser-dots'));
   });
 
   it('renders phone frame', () => {
     const doc = parse('![App](app.png){phone}');
     const html = render(doc);
-    assert.ok(html.includes('smd-phone-frame'));
+    assert.ok(html.includes('kp-phone-frame'));
   });
 });
 
@@ -454,10 +452,10 @@ describe('footer columns', () => {
   it('renders columns in footer', () => {
     const footerDoc = parse('# Brand\n|||\n### Product\n- [Features](#f)\n---\n### Company\n- [About](#a)\n|||');
     const html = renderFooter(footerDoc);
-    assert.ok(html.includes('smd-footer-columns'));
-    assert.ok(html.includes('smd-footer-col'));
-    assert.ok(html.includes('smd-footer-col-title'));
-    assert.ok(html.includes('smd-footer-col-links'));
+    assert.ok(html.includes('kp-footer-columns'));
+    assert.ok(html.includes('kp-footer-col'));
+    assert.ok(html.includes('kp-footer-col-title'));
+    assert.ok(html.includes('kp-footer-col-links'));
   });
 });
 

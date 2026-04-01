@@ -1,5 +1,5 @@
 (function(){
-// SuperMarkdown Parser — pure functions, no DOM dependencies.
+// Kite Pages Parser — pure functions, no DOM dependencies.
 // parse(source) → { frontmatter, blocks }
 
 // ============================================================
@@ -712,7 +712,7 @@ function parseFormFields(lines) {
   return { groups: groups.filter(g => g.length > 0), action };
 }
 
-// SuperMarkdown Renderer — pure functions, no DOM dependencies.
+// Kite Pages Renderer — pure functions, no DOM dependencies.
 // render(doc, theme) → HTML string
 
 // ============================================================
@@ -735,7 +735,7 @@ function inl(text) {
   // Inline math \( ... \)
   const mathSpans = [];
   s = s.replace(/\\\((.+?)\\\)/g, (_, content) => {
-    mathSpans.push(`<span class="smd-math">${escapeHtml(content)}</span>`);
+    mathSpans.push(`<span class="kp-math">${escapeHtml(content)}</span>`);
     return `\x00M${mathSpans.length - 1}\x00`;
   });
 
@@ -753,7 +753,7 @@ function inl(text) {
   // Italic
   s = s.replace(/\*(.+?)\*/g, '<em>$1</em>');
   // Large text (++text++)
-  s = s.replace(/\+\+(.+?)\+\+/g, '<span class="smd-large">$1</span>');
+  s = s.replace(/\+\+(.+?)\+\+/g, '<span class="kp-large">$1</span>');
   // Superscript (Pandoc)
   s = s.replace(/\^([^\^]+)\^/g, '<sup>$1</sup>');
   // Subscript (Pandoc — single ~, after ~~ is already consumed)
@@ -763,13 +763,13 @@ function inl(text) {
   // Inline images with optional attrs: ![alt](url){avatar}
   s = s.replace(/!\[([^\]]*)\]\(([^)]+)\)(?:\{([^}]+)\})?/g, (_, alt, src, attrs) => {
     const eSrc = escapeHtml(src), eAlt = escapeHtml(alt);
-    if (attrs === 'avatar') return `<img src="${eSrc}" alt="${eAlt}" class="smd-img-avatar" loading="lazy">`;
+    if (attrs === 'avatar') return `<img src="${eSrc}" alt="${eAlt}" class="kp-img-avatar" loading="lazy">`;
     return `<img src="${eSrc}" alt="${eAlt}" loading="lazy" style="max-width:100%;vertical-align:middle;">`;
   });
   // Links
   s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, text, href) => `<a href="${escapeHtml(href)}">${text}</a>`);
   // Star ratings
-  s = s.replace(/([★☆⭐]{2,})/g, '<span class="smd-stars">$1</span>');
+  s = s.replace(/([★☆⭐]{2,})/g, '<span class="kp-stars">$1</span>');
   // Autolinks — bare URLs not already in HTML attributes
   s = s.replace(/(?<![="'>\/])(https?:\/\/[^\s<>)\]"']+)/g, '<a href="$1">$1</a>');
   // Icon / emoji shortcodes — :name: → emoji (falls back to literal if no match)
@@ -899,12 +899,12 @@ function render(doc, theme = {}) {
 
     // H1 → hero
     if (block.type === 'heading' && block.level === 1) {
-      const animClass = anim !== 'none' ? ' smd-animate' : '';
-      html += `<header class="smd-hero${animClass}">`;
+      const animClass = anim !== 'none' ? ' kp-animate' : '';
+      html += `<header class="kp-hero${animClass}">`;
       html += `<h1>${inl(block.text)}</h1>`;
       i++;
       if (i < blocks.length && blocks[i].type === 'paragraph') {
-        html += `<p class="smd-subtitle">${inl(blocks[i].text)}</p>`;
+        html += `<p class="kp-subtitle">${inl(blocks[i].text)}</p>`;
         i++;
       }
       html += '</header>';
@@ -913,12 +913,12 @@ function render(doc, theme = {}) {
 
     // H2 → section wrapper
     if (block.type === 'heading' && block.level === 2) {
-      const altClass = sectionIndex % 2 === 1 ? ' smd-section-alt' : '';
-      const animClass = anim !== 'none' ? ' smd-animate' : '';
+      const altClass = sectionIndex % 2 === 1 ? ' kp-section-alt' : '';
+      const animClass = anim !== 'none' ? ' kp-animate' : '';
       const sectionId = block.id || `section-${sectionIndex}`;
-      html += `<section class="smd-section${altClass}${animClass}" id="${sectionId}">`;
+      html += `<section class="kp-section${altClass}${animClass}" id="${sectionId}">`;
       html += `<h2>${inl(block.text)}</h2>`;
-      html += `<hr class="smd-section-rule">`;
+      html += `<hr class="kp-section-rule">`;
       i++;
       while (i < blocks.length && !(blocks[i].type === 'heading' && blocks[i].level <= 2)) {
         if (blocks[i].type === 'image' && !hasImageAttrs(blocks[i])) {
@@ -1004,19 +1004,19 @@ function renderBlock(block, context) {
       const h = block.height ? ` height="${block.height}"` : '';
       const a = block.attrs || {};
       if (a.frame) {
-        return `<div class="smd-browser-frame"><div class="smd-browser-dots"><span></span><span></span><span></span></div><img src="${eSrc}" alt="${eAlt}"${w}${h} loading="lazy"></div>`;
+        return `<div class="kp-browser-frame"><div class="kp-browser-dots"><span></span><span></span><span></span></div><img src="${eSrc}" alt="${eAlt}"${w}${h} loading="lazy"></div>`;
       }
       if (a.phone) {
-        return `<div class="smd-phone-frame"><img src="${eSrc}" alt="${eAlt}"${w}${h} loading="lazy"></div>`;
+        return `<div class="kp-phone-frame"><img src="${eSrc}" alt="${eAlt}"${w}${h} loading="lazy"></div>`;
       }
       if (a.avatar) {
-        return `<img src="${eSrc}" alt="${eAlt}" loading="lazy" class="smd-img-avatar">`;
+        return `<img src="${eSrc}" alt="${eAlt}" loading="lazy" class="kp-img-avatar">`;
       }
       // Build inline size constraints from =WIDTHxHEIGHT
       const styles = ['max-width:100%', 'border-radius:var(--radius)'];
       if (block.width) styles.push(`max-width:${block.width}px`);
       if (block.height) styles.push(`max-height:${block.height}px`);
-      const cls = a.showcase ? ' class="smd-img-showcase"' : '';
+      const cls = a.showcase ? ' class="kp-img-showcase"' : '';
       return `<img src="${eSrc}" alt="${eAlt}"${w}${h} loading="lazy"${cls} style="${styles.join(';')}">`;
     }
     case 'columns':
@@ -1042,7 +1042,7 @@ function renderBlock(block, context) {
     case 'expandable':
       return renderExpandable(block);
     case 'math':
-      return `<div class="smd-math smd-math-block">${escapeHtml(block.content)}</div>`;
+      return `<div class="kp-math kp-math-block">${escapeHtml(block.content)}</div>`;
     case 'directive':
       return renderDirective(block);
     case 'html':
@@ -1071,14 +1071,14 @@ function renderColumns(block) {
     return first && first.type === 'heading' && first.level === 3 && /^\+\+.+\+\+$/.test(first.text.trim());
   });
 
-  const staggerClass = _currentAnim !== 'none' ? ' smd-animate smd-animate-stagger' : '';
-  const wrapperClass = isStats ? 'smd-columns smd-columns-stats' : 'smd-columns';
+  const staggerClass = _currentAnim !== 'none' ? ' kp-animate kp-animate-stagger' : '';
+  const wrapperClass = isStats ? 'kp-columns kp-columns-stats' : 'kp-columns';
   let html = `<div class="${wrapperClass}${staggerClass}">`;
   for (const col of block.columns) {
     // Detect featured column: first heading has {featured} attr
     const firstHeading = col.find(b => b.type === 'heading');
     const isFeatured = firstHeading?.attrs?.featured;
-    const colClass = isFeatured ? 'smd-column smd-column-featured' : 'smd-column';
+    const colClass = isFeatured ? 'kp-column kp-column-featured' : 'kp-column';
     html += `<div class="${colClass}">`;
     for (const b of col) html += renderBlock(b, 'column');
     html += '</div>';
@@ -1089,10 +1089,10 @@ function renderColumns(block) {
 
 function renderCarousel(block) {
   const id = 'carousel-' + Math.random().toString(36).slice(2, 8);
-  let html = `<div class="smd-carousel" id="${id}" role="region" aria-roledescription="carousel" aria-label="Image carousel">`;
-  html += `<div class="smd-carousel-track" aria-live="polite">`;
+  let html = `<div class="kp-carousel" id="${id}" role="region" aria-roledescription="carousel" aria-label="Image carousel">`;
+  html += `<div class="kp-carousel-track" aria-live="polite">`;
   block.slides.forEach((slideBlocks) => {
-    html += '<div class="smd-carousel-slide">';
+    html += '<div class="kp-carousel-slide">';
     for (const b of slideBlocks) {
       if (b.type === 'bg-section') html += renderBgSection(b);
       else html += renderBlock(b);
@@ -1101,11 +1101,11 @@ function renderCarousel(block) {
   });
   html += '</div>';
   if (block.slides.length > 1) {
-    html += `<button class="smd-carousel-btn smd-carousel-prev" onclick="carouselNav('${id}',-1)" aria-label="Previous">&lsaquo;</button>`;
-    html += `<button class="smd-carousel-btn smd-carousel-next" onclick="carouselNav('${id}',1)" aria-label="Next">&rsaquo;</button>`;
-    html += '<div class="smd-carousel-dots">';
+    html += `<button class="kp-carousel-btn kp-carousel-prev" onclick="carouselNav('${id}',-1)" aria-label="Previous">&lsaquo;</button>`;
+    html += `<button class="kp-carousel-btn kp-carousel-next" onclick="carouselNav('${id}',1)" aria-label="Next">&rsaquo;</button>`;
+    html += '<div class="kp-carousel-dots">';
     block.slides.forEach((_, idx) => {
-      html += `<button class="smd-carousel-dot${idx === 0 ? ' active' : ''}" onclick="carouselGo('${id}',${idx})" aria-label="Slide ${idx+1}"></button>`;
+      html += `<button class="kp-carousel-dot${idx === 0 ? ' active' : ''}" onclick="carouselGo('${id}',${idx})" aria-label="Slide ${idx+1}"></button>`;
     });
     html += '</div>';
   }
@@ -1115,16 +1115,16 @@ function renderCarousel(block) {
 
 function renderTabs(block) {
   const id = 'tabs-' + Math.random().toString(36).slice(2, 8);
-  let html = `<div class="smd-tabs" id="${id}">`;
-  html += '<div class="smd-tabs-nav" role="tablist">';
+  let html = `<div class="kp-tabs" id="${id}">`;
+  html += '<div class="kp-tabs-nav" role="tablist">';
   block.tabs.forEach((tab, idx) => {
     const active = idx === 0 ? ' active' : '';
-    html += `<button class="smd-tab-btn${active}" role="tab" onclick="tabSwitch('${id}',${idx})">${tab.name}</button>`;
+    html += `<button class="kp-tab-btn${active}" role="tab" onclick="tabSwitch('${id}',${idx})">${tab.name}</button>`;
   });
   html += '</div>';
   block.tabs.forEach((tab, idx) => {
     const active = idx === 0 ? ' active' : '';
-    html += `<div class="smd-tab-panel${active}" role="tabpanel">`;
+    html += `<div class="kp-tab-panel${active}" role="tabpanel">`;
     for (const b of tab.blocks) html += renderBlock(b);
     html += '</div>';
   });
@@ -1135,9 +1135,9 @@ function renderTabs(block) {
 function renderBgSection(block) {
   const eBg = escapeHtml(block.bgImage);
   if (block.bgType === 'video') {
-    let html = '<div class="smd-bg-section smd-bg-video">';
-    html += `<video class="smd-bg-video-el" autoplay muted loop playsinline><source src="${eBg}"></video>`;
-    html += '<div class="smd-bg-overlay">';
+    let html = '<div class="kp-bg-section kp-bg-video">';
+    html += `<video class="kp-bg-video-el" autoplay muted loop playsinline><source src="${eBg}"></video>`;
+    html += '<div class="kp-bg-overlay">';
     for (const b of block.blocks) {
       if (b.type === 'heading' && b.level === 1) html += `<h1>${inl(b.text)}</h1>`;
       else if (b.type === 'heading') html += `<h${b.level}>${inl(b.text)}</h${b.level}>`;
@@ -1146,8 +1146,8 @@ function renderBgSection(block) {
     html += '</div></div>';
     return html;
   }
-  let html = `<div class="smd-bg-section" style="background-image:url('${eBg}')">`;
-  html += '<div class="smd-bg-overlay">';
+  let html = `<div class="kp-bg-section" style="background-image:url('${eBg}')">`;
+  html += '<div class="kp-bg-overlay">';
   for (const b of block.blocks) {
     if (b.type === 'heading' && b.level === 1) {
       html += `<h1>${inl(b.text)}</h1>`;
@@ -1168,7 +1168,7 @@ function hasImageAttrs(img) {
 
 function renderGallery(images) {
   const n = images.length;
-  let html = `<figure class="smd-gallery count-${Math.min(n, 4)}">`;
+  let html = `<figure class="kp-gallery count-${Math.min(n, 4)}">`;
   for (const img of images) {
     const w = img.width ? ` width="${img.width}"` : '';
     const h = img.height ? ` height="${img.height}"` : '';
@@ -1179,21 +1179,21 @@ function renderGallery(images) {
 }
 
 function renderCard(block) {
-  let html = '<div class="smd-block smd-block-card">';
+  let html = '<div class="kp-block kp-block-card">';
   for (const b of block.blocks) html += renderBlock(b);
   html += '</div>';
   return html;
 }
 
 function renderQuoteBlock(block) {
-  let html = '<div class="smd-block smd-block-quote">';
+  let html = '<div class="kp-block kp-block-quote">';
   for (const b of block.blocks) html += renderBlock(b);
   html += '</div>';
   return html;
 }
 
 function renderAlert(block) {
-  let html = `<div class="smd-block smd-block-${block.alertType}">`;
+  let html = `<div class="kp-block kp-block-${block.alertType}">`;
   for (const b of block.blocks) html += renderBlock(b);
   html += '</div>';
   return html;
@@ -1232,10 +1232,10 @@ function renderTable(block) {
 }
 
 function renderRecord(block) {
-  let html = '<div class="smd-record">';
-  html += `<div class="smd-record-name">${inl(block.name)}</div>`;
+  let html = '<div class="kp-record">';
+  html += `<div class="kp-record-name">${inl(block.name)}</div>`;
   if (block.fields.length > 0) {
-    html += '<dl class="smd-record-fields">';
+    html += '<dl class="kp-record-fields">';
     for (const f of block.fields) {
       html += `<dt>${inl(f.key)}</dt><dd>${inl(f.value)}</dd>`;
     }
@@ -1247,9 +1247,9 @@ function renderRecord(block) {
 }
 
 function renderExpandable(block) {
-  let html = '<details class="smd-expandable">';
+  let html = '<details class="kp-expandable">';
   html += `<summary>${inl(block.summary)}</summary>`;
-  html += '<div class="smd-expandable-content">';
+  html += '<div class="kp-expandable-content">';
   for (const b of block.blocks) html += renderBlock(b);
   html += '</div></details>';
   return html;
@@ -1258,7 +1258,7 @@ function renderExpandable(block) {
 function renderList(block) {
   const tag = block.ordered ? 'ol' : 'ul';
   const isTaskList = block.items.some(item => /^\[[ x\-]\]\s/.test(item));
-  const listClass = isTaskList ? ' class="smd-task-list"' : '';
+  const listClass = isTaskList ? ' class="kp-task-list"' : '';
 
   return `<${tag}${listClass}>` + block.items.map(item => {
     // Task list items: [ ] todo, [x] done, [-] partial
@@ -1267,11 +1267,11 @@ function renderList(block) {
       const state = taskMatch[1];
       const text = taskMatch[2];
       if (state === 'x') {
-        return `<li class="smd-task-item smd-task-done"><input type="checkbox" disabled checked>${inl(text)}</li>`;
+        return `<li class="kp-task-item kp-task-done"><input type="checkbox" disabled checked>${inl(text)}</li>`;
       } else if (state === '-') {
-        return `<li class="smd-task-item smd-task-partial"><input type="checkbox" disabled checked>${inl(text)}</li>`;
+        return `<li class="kp-task-item kp-task-partial"><input type="checkbox" disabled checked>${inl(text)}</li>`;
       }
-      return `<li class="smd-task-item"><input type="checkbox" disabled>${inl(text)}</li>`;
+      return `<li class="kp-task-item"><input type="checkbox" disabled>${inl(text)}</li>`;
     }
 
     // Dot-leader lists (pricing)
@@ -1310,9 +1310,9 @@ function renderDirective(block) {
 
 function renderToc() {
   if (_docHeadings.length === 0) return '';
-  let html = '<nav class="smd-toc" aria-label="Table of contents"><ul>';
+  let html = '<nav class="kp-toc" aria-label="Table of contents"><ul>';
   for (const h of _docHeadings) {
-    const indent = h.level > 2 ? ` class="smd-toc-indent"` : '';
+    const indent = h.level > 2 ? ` class="kp-toc-indent"` : '';
     html += `<li${indent}><a href="#${h.id}">${h.text}</a></li>`;
   }
   html += '</ul></nav>';
@@ -1335,7 +1335,7 @@ function getEmbed(url) {
 }
 
 function renderEmbed(embed) {
-  const wrapper = '<div class="smd-embed">';
+  const wrapper = '<div class="kp-embed">';
   if (embed.type === 'youtube') {
     return `${wrapper}<iframe src="https://www.youtube.com/embed/${embed.id}" frameborder="0" allowfullscreen loading="lazy" title="YouTube video"></iframe></div>`;
   }
@@ -1347,7 +1347,7 @@ function renderEmbed(embed) {
 
 function renderFencedGeneric(block) {
   const type = block.sectionType.toLowerCase().replace(/\s+/g, '-');
-  let html = `<div class="smd-block smd-block-${type}">`;
+  let html = `<div class="kp-block kp-block-${type}">`;
   for (const b of block.blocks) html += renderBlock(b);
   html += '</div>';
   return html;
@@ -1369,9 +1369,9 @@ function renderCtaRow(text) {
   while ((match = linkPattern.exec(text)) !== null) {
     links.push({ label: match[1], href: match[2] });
   }
-  let html = '<div class="smd-cta-row">';
+  let html = '<div class="kp-cta-row">';
   links.forEach((link, idx) => {
-    const cls = idx === 0 ? 'smd-cta-primary' : 'smd-cta-secondary';
+    const cls = idx === 0 ? 'kp-cta-primary' : 'kp-cta-secondary';
     html += `<a href="${escapeHtml(link.href)}" class="${cls}">${escapeHtml(link.label)}</a>`;
   });
   html += '</div>';
@@ -1385,14 +1385,14 @@ function renderCtaRow(text) {
 function renderForm(form) {
   const method = form.action?.method || 'POST';
   const url = form.action?.url || '#';
-  let html = `<form class="smd-form" method="${escapeHtml(method)}" action="${escapeHtml(url)}">`;
+  let html = `<form class="kp-form" method="${escapeHtml(method)}" action="${escapeHtml(url)}">`;
   for (const group of form.groups) {
-    html += '<div class="smd-form-group">';
+    html += '<div class="kp-form-group">';
     for (const field of group) {
       const id = escapeHtml(field.label.toLowerCase().replace(/\s+/g, '-'));
       const req = field.required ? ' required' : '';
       const ph = field.placeholder ? ` placeholder="${escapeHtml(field.placeholder)}"` : '';
-      html += '<div class="smd-field">';
+      html += '<div class="kp-field">';
       html += `<label for="${id}">${escapeHtml(field.label)}${field.required ? ' *' : ''}</label>`;
       if (field.fieldType === 'paragraph') {
         html += `<textarea id="${id}" name="${id}"${ph}${req}></textarea>`;
@@ -1424,19 +1424,19 @@ function renderNav(headerDoc, theme = {}) {
   const h1 = blocks.find(b => b.type === 'heading' && b.level === 1);
   const list = blocks.find(b => b.type === 'list');
 
-  let html = '<a href="#smd-content" class="smd-skip-nav">Skip to content</a>';
-  html += `<nav class="smd-nav" data-style="${navStyle}" aria-label="Main navigation">`;
+  let html = '<a href="#kp-content" class="kp-skip-nav">Skip to content</a>';
+  html += `<nav class="kp-nav" data-style="${navStyle}" aria-label="Main navigation">`;
   if (h1) {
-    html += `<a class="smd-nav-brand" href="index.md">${inl(h1.text)}</a>`;
+    html += `<a class="kp-nav-brand" href="index.md">${inl(h1.text)}</a>`;
   }
-  html += '<ul class="smd-nav-links">';
+  html += '<ul class="kp-nav-links">';
   if (list) {
     for (const item of list.items) {
       html += `<li>${inl(item)}</li>`;
     }
   }
   html += '</ul>';
-  html += '<button class="smd-nav-toggle" aria-label="Menu"><span></span></button>';
+  html += '<button class="kp-nav-toggle" aria-label="Menu"><span></span></button>';
   html += '</nav>';
   return html;
 }
@@ -1446,18 +1446,18 @@ function renderFooter(footerDoc, theme = {}) {
   const footerStyle = theme.footer || 'minimal';
   const blocks = footerDoc.blocks;
 
-  let html = `<footer class="smd-footer" data-style="${footerStyle}">`;
+  let html = `<footer class="kp-footer" data-style="${footerStyle}">`;
   for (const block of blocks) {
     if (block.type === 'heading' && block.level === 1) {
-      html += `<div class="smd-footer-title">${inl(block.text)}</div>`;
+      html += `<div class="kp-footer-title">${inl(block.text)}</div>`;
     } else if (block.type === 'columns') {
-      html += '<div class="smd-footer-columns">';
+      html += '<div class="kp-footer-columns">';
       for (const col of block.columns) {
-        html += '<div class="smd-footer-col">';
+        html += '<div class="kp-footer-col">';
         for (const b of col) {
-          if (b.type === 'heading') html += `<div class="smd-footer-col-title">${inl(b.text)}</div>`;
+          if (b.type === 'heading') html += `<div class="kp-footer-col-title">${inl(b.text)}</div>`;
           else if (b.type === 'list') {
-            html += '<ul class="smd-footer-col-links">';
+            html += '<ul class="kp-footer-col-links">';
             for (const item of b.items) html += `<li>${inl(item)}</li>`;
             html += '</ul>';
           } else if (b.type === 'paragraph') {
@@ -1468,11 +1468,11 @@ function renderFooter(footerDoc, theme = {}) {
       }
       html += '</div>';
     } else if (block.type === 'list') {
-      html += '<div class="smd-footer-links">';
+      html += '<div class="kp-footer-links">';
       for (const item of block.items) html += inl(item) + ' ';
       html += '</div>';
     } else if (block.type === 'paragraph') {
-      html += `<div class="smd-footer-copy">${inl(block.text)}</div>`;
+      html += `<div class="kp-footer-copy">${inl(block.text)}</div>`;
     }
   }
   html += '</footer>';
@@ -1545,11 +1545,11 @@ function getThemeDataAttrs(theme = {}) {
   };
 }
 
-// SuperMarkdown Compiled Editor — playground mode for static sites.
+// Kite Pages Compiled Editor — playground mode for static sites.
 // This file is concatenated inside an IIFE with parser.mjs and renderer.mjs by compile.mjs.
 // Expects parse(), parseYaml(), render(), renderNav(), renderFooter(),
 // getGoogleFontsUrl() in scope.
-// Sources from <script id="smd-sources">, theme from <script id="smd-theme">.
+// Sources from <script id="kp-sources">, theme from <script id="kp-theme">.
 
 var _editorOpen = false;
 var _sources = {};
@@ -1557,16 +1557,16 @@ var _activeFile = null;
 var _currentTheme = {};
 
 // Load embedded data
-var _srcEl = document.getElementById('smd-sources');
+var _srcEl = document.getElementById('kp-sources');
 if (_srcEl) try { _sources = JSON.parse(_srcEl.textContent); } catch(e) {}
-var _themeEl = document.getElementById('smd-theme');
+var _themeEl = document.getElementById('kp-theme');
 if (_themeEl) try { _currentTheme = JSON.parse(_themeEl.textContent); } catch(e) {}
 
 function _getSource(name) { return _sources[name] || ''; }
 
 // ===== Toggle =====
 function _toggleEditor() {
-  var panel = document.getElementById('smd-editor-panel');
+  var panel = document.getElementById('kp-editor-panel');
   _editorOpen = !_editorOpen;
   panel.classList.toggle('open', _editorOpen);
   if (_editorOpen) _populateFileList();
@@ -1574,7 +1574,7 @@ function _toggleEditor() {
 
 // ===== File list =====
 function _populateFileList() {
-  var fileList = document.getElementById('smd-editor-files');
+  var fileList = document.getElementById('kp-editor-files');
   fileList.innerHTML = '';
   var order = { 'theme.yaml': 0, 'header.md': 1, 'footer.md': 2 };
   var files = Object.keys(_sources).sort(function(a, b) {
@@ -1593,32 +1593,32 @@ function _populateFileList() {
 
 function _switchFile(name) {
   if (_activeFile) {
-    _sources[_activeFile] = document.getElementById('smd-editor-textarea').value;
+    _sources[_activeFile] = document.getElementById('kp-editor-textarea').value;
   }
   _activeFile = name;
-  var textarea = document.getElementById('smd-editor-textarea');
+  var textarea = document.getElementById('kp-editor-textarea');
   textarea.value = _sources[name] || '';
-  document.getElementById('smd-editor-filename').textContent = name;
+  document.getElementById('kp-editor-filename').textContent = name;
   _updateLineNumbers();
   _updateFileListHighlight();
 }
 
 function _updateFileListHighlight() {
-  document.querySelectorAll('#smd-editor-files li').forEach(function(li) {
+  document.querySelectorAll('#kp-editor-files li').forEach(function(li) {
     li.classList.toggle('active', li.textContent === _activeFile);
   });
 }
 
 // ===== Line numbers & syntax highlighting =====
 function _updateLineNumbers() {
-  var textarea = document.getElementById('smd-editor-textarea');
+  var textarea = document.getElementById('kp-editor-textarea');
   var lines = textarea.value.split('\n');
-  document.getElementById('smd-editor-lines').innerHTML = lines.map(function(_, i) { return '<div>' + (i + 1) + '</div>'; }).join('');
+  document.getElementById('kp-editor-lines').innerHTML = lines.map(function(_, i) { return '<div>' + (i + 1) + '</div>'; }).join('');
   _updateHighlight(textarea.value);
 }
 
 function _updateHighlight(source) {
-  var hl = document.getElementById('smd-editor-highlight');
+  var hl = document.getElementById('kp-editor-highlight');
   if (!hl) return;
   var html = source.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   html = html.split('\n').map(function(line) {
@@ -1710,12 +1710,12 @@ function _handleEditorChange(source) {
   if (_activeFile === 'header.md') {
     try {
       var headerDoc = parse(source);
-      var navMount = document.getElementById('smd-nav-mount');
+      var navMount = document.getElementById('kp-nav-mount');
       navMount.innerHTML = renderNav(headerDoc, _currentTheme);
-      var toggle = navMount.querySelector('.smd-nav-toggle');
-      var links = navMount.querySelector('.smd-nav-links');
+      var toggle = navMount.querySelector('.kp-nav-toggle');
+      var links = navMount.querySelector('.kp-nav-links');
       if (toggle && links) toggle.addEventListener('click', function() { links.classList.toggle('open'); });
-      var nav = navMount.querySelector('.smd-nav');
+      var nav = navMount.querySelector('.kp-nav');
       if (nav) nav.classList.toggle('scrolled', window.scrollY > 80);
     } catch(e) {}
     return;
@@ -1730,13 +1730,13 @@ function _handleEditorChange(source) {
   // Page file — live preview
   try {
     var parsed = parse(source);
-    var main = document.getElementById('smd-content');
+    var main = document.getElementById('kp-content');
     var bodyHtml = render(parsed, _currentTheme);
     var footerSrc = _getSource('footer.md');
     var footerHtml = '';
     if (footerSrc) try { footerHtml = renderFooter(parse(footerSrc), _currentTheme); } catch(e) {}
     main.innerHTML = bodyHtml + footerHtml;
-    main.querySelectorAll('.smd-animate').forEach(function(el) { el.classList.add('smd-visible'); });
+    main.querySelectorAll('.kp-animate').forEach(function(el) { el.classList.add('kp-visible'); });
   } catch(e) {}
 }
 
@@ -1746,13 +1746,13 @@ function _rerenderPage() {
   if (!pageSrc) return;
   try {
     var parsed = parse(pageSrc);
-    var main = document.getElementById('smd-content');
+    var main = document.getElementById('kp-content');
     var bodyHtml = render(parsed, _currentTheme);
     var footerSrc = _getSource('footer.md');
     var footerHtml = '';
     if (footerSrc) try { footerHtml = renderFooter(parse(footerSrc), _currentTheme); } catch(e) {}
     main.innerHTML = bodyHtml + footerHtml;
-    main.querySelectorAll('.smd-animate').forEach(function(el) { el.classList.add('smd-visible'); });
+    main.querySelectorAll('.kp-animate').forEach(function(el) { el.classList.add('kp-visible'); });
   } catch(e) {}
 }
 
@@ -1803,35 +1803,35 @@ function _applyThemeToPage(theme) {
 }
 
 function _showEditorStatus(msg) {
-  var el = document.getElementById('smd-editor-status');
+  var el = document.getElementById('kp-editor-status');
   el.textContent = msg;
   setTimeout(function() { el.textContent = 'Playground \u2014 edits preview live but are not saved'; }, 2000);
 }
 
 // ===== Init =====
 var _editorBtn = document.createElement('button');
-_editorBtn.className = 'smd-editor-toggle';
+_editorBtn.className = 'kp-editor-toggle';
 _editorBtn.innerHTML = '&lt;/&gt;';
 _editorBtn.title = 'Toggle editor (E)';
 _editorBtn.addEventListener('click', _toggleEditor);
 document.body.appendChild(_editorBtn);
 
 var _editorPanel = document.createElement('div');
-_editorPanel.className = 'smd-editor-panel';
-_editorPanel.id = 'smd-editor-panel';
+_editorPanel.className = 'kp-editor-panel';
+_editorPanel.id = 'kp-editor-panel';
 _editorPanel.innerHTML =
-  '<div class="smd-editor-sidebar" id="smd-editor-sidebar">' +
-    '<div class="smd-editor-sidebar-header">Files</div>' +
-    '<ul class="smd-editor-files" id="smd-editor-files"></ul>' +
+  '<div class="kp-editor-sidebar" id="kp-editor-sidebar">' +
+    '<div class="kp-editor-sidebar-header">Files</div>' +
+    '<ul class="kp-editor-files" id="kp-editor-files"></ul>' +
   '</div>' +
-  '<div class="smd-editor-main">' +
-    '<div class="smd-editor-header">' +
-      '<strong id="smd-editor-filename">editor</strong>' +
-      '<span class="smd-editor-status" id="smd-editor-status">Press E to toggle</span>' +
+  '<div class="kp-editor-main">' +
+    '<div class="kp-editor-header">' +
+      '<strong id="kp-editor-filename">editor</strong>' +
+      '<span class="kp-editor-status" id="kp-editor-status">Press E to toggle</span>' +
     '</div>' +
-    '<div class="smd-editor-toolbar" id="smd-editor-toolbar">' +
-      '<div class="smd-toolbar-row">' +
-        '<span class="smd-toolbar-label">Text</span>' +
+    '<div class="kp-editor-toolbar" id="kp-editor-toolbar">' +
+      '<div class="kp-toolbar-row">' +
+        '<span class="kp-toolbar-label">Text</span>' +
         '<button data-action="bold" title="Bold (Ctrl+B)"><b>B</b></button>' +
         '<button data-action="italic" title="Italic (Ctrl+I)"><i>I</i></button>' +
         '<button data-action="underline" title="Underline (Ctrl+U)"><u>U</u></button>' +
@@ -1840,22 +1840,22 @@ _editorPanel.innerHTML =
         '<button data-action="large" title="Large text ++">++</button>' +
         '<button data-action="superscript" title="Superscript ^">x\u207F</button>' +
         '<button data-action="subscript" title="Subscript ~">x\u2082</button>' +
-        '<span class="smd-toolbar-sep"></span>' +
+        '<span class="kp-toolbar-sep"></span>' +
         '<button data-action="code" title="Inline code">&lt;/&gt;</button>' +
         '<button data-action="link" title="Link (Ctrl+K)">\uD83D\uDD17</button>' +
         '<button data-action="image" title="Image">\uD83D\uDCF7</button>' +
         '<button data-action="math-inline" title="Inline math">\u2211</button>' +
       '</div>' +
-      '<div class="smd-toolbar-row">' +
-        '<span class="smd-toolbar-label">Block</span>' +
+      '<div class="kp-toolbar-row">' +
+        '<span class="kp-toolbar-label">Block</span>' +
         '<button data-action="h1" title="Heading 1">H1</button>' +
         '<button data-action="h2" title="Heading 2">H2</button>' +
         '<button data-action="h3" title="Heading 3">H3</button>' +
-        '<span class="smd-toolbar-sep"></span>' +
+        '<span class="kp-toolbar-sep"></span>' +
         '<button data-action="ul" title="Bullet list">\u2022 List</button>' +
         '<button data-action="ol" title="Numbered list">1. List</button>' +
         '<button data-action="task" title="Task list">\u2610 Task</button>' +
-        '<span class="smd-toolbar-sep"></span>' +
+        '<span class="kp-toolbar-sep"></span>' +
         '<button data-action="quote" title="Blockquote">&gt; Quote</button>' +
         '<button data-action="block-quote" title="Block quote">\u275D Block</button>' +
         '<button data-action="hr" title="Horizontal rule">\u2015 Rule</button>' +
@@ -1864,8 +1864,8 @@ _editorPanel.innerHTML =
         '<button data-action="math-block" title="Math block">\u2211 Math</button>' +
         '<button data-action="toc" title="Table of contents">{:toc}</button>' +
       '</div>' +
-      '<div class="smd-toolbar-row">' +
-        '<span class="smd-toolbar-label">Rich</span>' +
+      '<div class="kp-toolbar-row">' +
+        '<span class="kp-toolbar-label">Rich</span>' +
         '<button data-action="columns" title="Columns">\u25A6\u25A6 Columns</button>' +
         '<button data-action="card" title="Card">\u25AA Card</button>' +
         '<button data-action="testimonial" title="Testimonial">\u275D Testimonial</button>' +
@@ -1877,21 +1877,21 @@ _editorPanel.innerHTML =
         '<button data-action="record" title="Record">\uD83D\uDCCB Record</button>' +
       '</div>' +
     '</div>' +
-    '<div class="smd-editor-content">' +
-      '<div class="smd-editor-lines" id="smd-editor-lines"></div>' +
-      '<div class="smd-editor-code-wrap">' +
-        '<pre class="smd-editor-highlight" id="smd-editor-highlight"></pre>' +
-        '<textarea id="smd-editor-textarea" spellcheck="false" wrap="off"></textarea>' +
+    '<div class="kp-editor-content">' +
+      '<div class="kp-editor-lines" id="kp-editor-lines"></div>' +
+      '<div class="kp-editor-code-wrap">' +
+        '<pre class="kp-editor-highlight" id="kp-editor-highlight"></pre>' +
+        '<textarea id="kp-editor-textarea" spellcheck="false" wrap="off"></textarea>' +
       '</div>' +
     '</div>' +
   '</div>';
 
-var _navMount = document.getElementById('smd-nav-mount');
+var _navMount = document.getElementById('kp-nav-mount');
 if (_navMount) document.body.insertBefore(_editorPanel, _navMount);
 else document.body.insertBefore(_editorPanel, document.body.firstChild);
 
 // Textarea events
-var _editorTextarea = document.getElementById('smd-editor-textarea');
+var _editorTextarea = document.getElementById('kp-editor-textarea');
 var _debounceTimer = null;
 var _rendering = false;
 _editorTextarea.addEventListener('input', function() {
@@ -1909,9 +1909,9 @@ _editorTextarea.addEventListener('input', function() {
 });
 
 _editorTextarea.addEventListener('scroll', function() {
-  document.getElementById('smd-editor-lines').scrollTop = _editorTextarea.scrollTop;
-  document.getElementById('smd-editor-highlight').scrollTop = _editorTextarea.scrollTop;
-  document.getElementById('smd-editor-highlight').scrollLeft = _editorTextarea.scrollLeft;
+  document.getElementById('kp-editor-lines').scrollTop = _editorTextarea.scrollTop;
+  document.getElementById('kp-editor-highlight').scrollTop = _editorTextarea.scrollTop;
+  document.getElementById('kp-editor-highlight').scrollLeft = _editorTextarea.scrollLeft;
 });
 
 _editorTextarea.addEventListener('keydown', function(e) {
@@ -1945,7 +1945,7 @@ _editorTextarea.addEventListener('keydown', function(e) {
 });
 
 // Toolbar
-document.getElementById('smd-editor-toolbar').addEventListener('click', function(e) {
+document.getElementById('kp-editor-toolbar').addEventListener('click', function(e) {
   var btn = e.target.closest('button');
   if (!btn) return;
   var action = btn.dataset.action;

@@ -1,4 +1,4 @@
-# Supermarkdown Syntax Reference (Planned)
+# Kite Pages Syntax Reference (Planned)
 
 This documents the full planned syntax — current features and TODO items merged into one reference. Items marked **(new)** are not yet implemented.
 
@@ -9,8 +9,8 @@ This documents the full planned syntax — current features and TODO items merge
 | `**bold**` | **bold** | CommonMark |
 | `*italic*` | *italic* | CommonMark |
 | `***bold italic***` | ***bold italic*** | CommonMark |
-| `_underline_` | underline | Supermarkdown (diverges from CommonMark italic — see Conflicts) |
-| `++large text++` | large/stat callout | Supermarkdown **(new — replaces `__text__`)** |
+| `_underline_` | underline | Kite Pages (diverges from CommonMark italic — see Conflicts) |
+| `++large text++` | large/stat callout | Kite Pages **(new — replaces `__text__`)** |
 | `~~strikethrough~~` | ~~strikethrough~~ | GFM **(new)** |
 | `==highlighted==` | highlighted/marked text | markdown-it-mark **(new)** |
 | `^superscript^` | superscript | Pandoc **(new)** |
@@ -18,9 +18,9 @@ This documents the full planned syntax — current features and TODO items merge
 | `` `code` `` | inline code | CommonMark |
 | `[text](url)` | link | CommonMark |
 | `![alt](url)` | image | CommonMark |
-| `★★★★★` | star rating display | Supermarkdown |
+| `★★★★★` | star rating display | Kite Pages |
 | `\( math \)` | inline math (KaTeX) | LaTeX **(new)** |
-| `:name:` | icon (SVG) or emoji fallback | Supermarkdown **(new)** — Tabler Icons first, then emoji shortcodes, then literal. Theme controls filled vs outline. |
+| `:name:` | icon (SVG) or emoji fallback | Kite Pages **(new)** — Tabler Icons first, then emoji shortcodes, then literal. Theme controls filled vs outline. |
 | Bare URLs | autolinked | GFM **(new)** |
 | Smart typography | curly quotes, em dash (`--`), ellipsis (`...`), (c), (tm) | SmartyPants **(new)** |
 
@@ -364,7 +364,7 @@ mysite/
 └── images/               Static assets
 ```
 
-`.md` extension **(new — replaces `.smd`)**.
+`.md` extension.
 `theme.yaml` **(new — replaces `theme.json`)**.
 
 ## Raw HTML Passthrough (new)
@@ -443,13 +443,13 @@ First link becomes primary CTA, subsequent links become secondary.
 
 ### `_underline_` vs `_italic_`
 Standard Markdown: `_text_` = italic (same as `*text*`).
-Supermarkdown: `_text_` = underline.
+Kite Pages: `_text_` = underline.
 
 **Accepted divergence.** Both are emphasis — semantically near-equivalent. `*italic*` still works for italic. Files render slightly differently in other Markdown tools (italic instead of underline) but meaning is preserved.
 
 ### `>>>` block quote
 Standard Markdown: `>>>` = triple-nested blockquote (deeply nested `>`).
-Supermarkdown: `>>>` = block-level quote without prefix (Discord-style).
+Kite Pages: `>>>` = block-level quote without prefix (Discord-style).
 
 **Minor divergence.** Triple-nested blockquotes are extremely rare in practice. The Discord convention is more useful.
 
@@ -484,8 +484,8 @@ Rewrite tests and example sites alongside the parser rewrite. All example sites 
 
 ## Full Compatibility with Standard Markdown
 
-The following are fully compatible — a Supermarkdown file renders correctly (if less richly) in any CommonMark/GFM renderer:
+The following are fully compatible — a Kite Pages file renders correctly (if less richly) in any CommonMark/GFM renderer:
 
 - Headings, paragraphs, bold, italic, links, images, lists, code, blockquotes, horizontal rules, tables, fenced code blocks, raw HTML, autolinks, strikethrough, task lists
 
-Supermarkdown extensions degrade gracefully — column fences (`|||`), fenced sections (`:::`), record blocks (`::`), directives (`{:toc}`), and form fields (`{text}`) appear as plain text in a standard renderer.
+Kite Pages extensions degrade gracefully — column fences (`|||`), fenced sections (`:::`), record blocks (`::`), directives (`{:toc}`), and form fields (`{text}`) appear as plain text in a standard renderer.

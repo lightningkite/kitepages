@@ -1,4 +1,4 @@
-// SuperMarkdown Parser — pure functions, no DOM dependencies.
+// Kite Pages Parser — pure functions, no DOM dependencies.
 // parse(source) → { frontmatter, blocks }
 
 // ============================================================

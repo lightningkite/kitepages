@@ -6,7 +6,7 @@ How the renderer decides what to display and how to lay it out, based purely on 
 
 **Rule:** `## Heading` creates a section boundary. Everything between two `##` headings (or between `##` and end of document) is one section.
 
-**Alternation:** Sections alternate between default and alt styling (`smd-section-alt`). Theme controls the visual treatment:
+**Alternation:** Sections alternate between default and alt styling (`kp-section-alt`). Theme controls the visual treatment:
 - `alternating` — warm background on alt sections
 - `bold` — primary color background on alt sections
 - `clean` — no alternation

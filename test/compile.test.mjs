@@ -27,13 +27,13 @@ describe('compile', () => {
     assert.ok(html.includes('<title>'));
 
     // Has nav and footer
-    assert.ok(html.includes('smd-nav'));
-    assert.ok(html.includes('smd-footer'));
+    assert.ok(html.includes('kp-nav'));
+    assert.ok(html.includes('kp-footer'));
 
     // Has content
     assert.ok(html.includes("Giuseppe's Italian Restaurant"));
-    assert.ok(html.includes('smd-carousel'));
-    assert.ok(html.includes('smd-form'));
+    assert.ok(html.includes('kp-carousel'));
+    assert.ok(html.includes('kp-form'));
 
     // Links rewritten from .md to .html
     assert.ok(html.includes('href="menu.html"'));
@@ -41,7 +41,7 @@ describe('compile', () => {
 
     // Has minimal runtime JS
     assert.ok(html.includes('carouselNav'));
-    assert.ok(html.includes('smd-nav-toggle'));
+    assert.ok(html.includes('kp-nav-toggle'));
 
     rmSync(outDir, { recursive: true });
   });

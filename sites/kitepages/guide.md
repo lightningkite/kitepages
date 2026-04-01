@@ -1,6 +1,6 @@
 ---
-title: Guide — Supermarkdown
-description: Complete reference for every Supermarkdown feature with live examples
+title: Guide — Kite Pages
+description: Complete reference for every Kite Pages feature with live examples
 ---
 
 # Guide
@@ -9,7 +9,7 @@ description: Complete reference for every Supermarkdown feature with live exampl
 
 ## Text Formatting
 
-Supermarkdown supports all standard Markdown inline formatting plus several extensions.
+Kite Pages supports all standard Markdown inline formatting plus several extensions.
 
 | Syntax | Result | Type |
 |--------|--------|------|
@@ -17,13 +17,13 @@ Supermarkdown supports all standard Markdown inline formatting plus several exte
 |--------|--------|------|
 | `**bold**` | **bold** | CommonMark |
 | `*italic*` | *italic* | CommonMark |
-| `_underline_` | _underline_ | Supermarkdown |
+| `_underline_` | _underline_ | Kite Pages |
 | `~~strikethrough~~` | ~~strikethrough~~ | GFM |
 | `==highlight==` | ==highlight== | markdown-it-mark |
-| `++large text++` | ++large++ | Supermarkdown |
+| `++large text++` | ++large++ | Kite Pages |
 | `^superscript^` | x^2^ | Pandoc |
 | `~subscript~` | H~2~O | Pandoc |
-| `[[Key]]` | [[Ctrl]] | Supermarkdown |
+| `[[Key]]` | [[Ctrl]] | Kite Pages |
 
 Inline code: wrap in backticks. Links: `[text](url)`. Images: `![alt](url)`.
 
@@ -166,7 +166,7 @@ Always test your site on mobile before deploying.
 :::
 
 ::: info
-Supermarkdown files are standard Markdown. They render (less richly) in any Markdown viewer.
+Kite Pages files are standard Markdown. They render (less richly) in any Markdown viewer.
 :::
 
 ## Forms
@@ -187,7 +187,7 @@ Notes: {paragraph}
 Fenced code blocks with language annotation:
 
 ```javascript
-// Compile a Supermarkdown site
+// Compile a Kite Pages site
 import { parse } from './parser.mjs';
 import { render } from './renderer.mjs';
 
@@ -254,15 +254,15 @@ Group content into switchable tabs. Each tab is a `::: tab Name` block inside `:
 ::: tab Markdown
 ```
 ## Hello World
-This is **Supermarkdown**.
+This is **Kite Pages**.
 ```
 :::
 ---
 ::: tab HTML Output
 ```html
-<section class="smd-section">
+<section class="kp-section">
   <h2>Hello World</h2>
-  <p>This is <strong>Supermarkdown</strong>.</p>
+  <p>This is <strong>Kite Pages</strong>.</p>
 </section>
 ```
 :::

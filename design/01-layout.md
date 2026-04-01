@@ -117,12 +117,12 @@ probably closer to automatic with escape hatches.
 
 Some designs intentionally make one column wider than another, or
 position an image to bleed off-screen. Are those in scope? Or is
-SuperMarkdown explicitly for "clean, readable, content-first" sites
+Kite Pages explicitly for "clean, readable, content-first" sites
 where fancy asymmetry isn't the goal?
 
 ## Comparison: What This Replaces
 
-| Today (HTML/CSS)                        | SuperMarkdown                          |
+| Today (HTML/CSS)                        | Kite Pages                          |
 |-----------------------------------------|----------------------------------------|
 | `display: grid; grid-template-columns`  | Renderer infers columns from siblings  |
 | `@media (max-width: 768px) { ... }`    | Renderer adapts; no breakpoints needed |

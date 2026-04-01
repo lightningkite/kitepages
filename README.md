@@ -1,4 +1,4 @@
-# Supermarkdown
+# Kite Pages
 
 A content-driven web format where you describe *what* you want to show and the renderer figures out the layout. No HTML, no CSS, no breakpoints. Just content in, website out.
 
@@ -26,9 +26,9 @@ LLMs can generate websites. But what they produce is HTML/CSS — a pile of `<di
 
 The problem isn't generation — it's the **format**. HTML was designed for browsers to render, not for humans or AI to author and maintain.
 
-### Supermarkdown is a format designed for both humans and AI
+### Kite Pages is a format designed for both humans and AI
 
-Supermarkdown is a Markdown superset (`.md`) where:
+Kite Pages is a Markdown superset (`.md`) where:
 
 - **Content implies layout.** You write a heading, a paragraph, and three images. The renderer knows that's a hero section with a gallery. You write two matching lists under subheadings. The renderer puts them in columns. You never specify `display: grid` or `@media (max-width: 768px)`.
 
@@ -42,7 +42,7 @@ Supermarkdown is a Markdown superset (`.md`) where:
 
 ### The value proposition, concretely
 
-| Scenario | Without Supermarkdown | With Supermarkdown |
+| Scenario | Without Kite Pages | With Kite Pages |
 |---|---|---|
 | Small business needs a website | Pay a developer or wrestle with a builder | Describe your business in a text file |
 | AI generates a marketing site | 400+ lines of HTML/CSS that nobody can maintain | 60 lines of `.md` that anyone can read and edit |
@@ -108,11 +108,11 @@ That's the entire page. The renderer produces a responsive site with a hero caro
 ## Project structure
 
 ```
-supermarkdown/
+kitepages/
 ├── src/
 │   ├── parser.mjs       Parser (string → AST, works in Node + browser)
 │   ├── renderer.mjs     Renderer (AST + theme → HTML, works in Node + browser)
-│   ├── smd.css          All styles
+│   ├── kp.css           All styles
 │   ├── browser.mjs      Client-side runtime (SPA nav, animations, editor)
 │   └── compile.mjs      Node.js CLI — compiles .md sites to static HTML
 ├── sites/               Example sites
@@ -120,7 +120,7 @@ supermarkdown/
 │   ├── nonprofit/       Land trust
 │   ├── portfolio/       Designer portfolio
 │   ├── salon/           Hair salon
-│   ├── supermarkdown/   This project's own site (meta!)
+│   ├── kitepages/       This project's own site (meta!)
 │   └── wedding/         Wedding site
 ├── prototype/           Browser-based renderer shell
 ├── test/                Parser, renderer, and compiler tests
@@ -162,7 +162,7 @@ Six complete example sites across different verticals. 98 tests covering parser,
 Breaking changes to align with standard Markdown.
 
 - [x] Rewrite the parser — fenced-block stack (nested `:::`), context-aware `---`, `| ` prefix columns, pluggable fenced block handlers (`::: carousel`, `::: form`, `::: card`, `::: quote`, alerts). Also added: code blocks, ordered lists, record blocks (`:: name`), expandable sections (`>| summary`), `> ` prefix blockquotes.
-- [x] Switch from `.smd` to `.md` extension
+- [x] Use standard `.md` extension
 - [x] Replace custom YAML parser with a standard library — `js-yaml` for the compiler; built-in simple YAML parser for browser runtime (handles frontmatter and theme files)
 - [x] Switch `theme.json` to `theme.yaml`
 - [x] Allow raw HTML passthrough — block-level HTML tags pass through to output as-is
@@ -175,7 +175,7 @@ Breaking changes to align with standard Markdown.
 
 ### Phase 2 — Inline & Text Features ✅
 
-New inline syntax borrowed from GFM/extended Markdown, plus Supermarkdown originals.
+New inline syntax borrowed from GFM/extended Markdown, plus Kite Pages originals.
 
 - [x] `~~strikethrough~~` (GFM)
 - [x] Autolinks — bare URLs become clickable (GFM)
@@ -224,5 +224,5 @@ Developer and end-user experience.
 ### Ongoing
 
 - [x] Document layout heuristics in detail — see `design/10-layout-heuristics.md`
-- [x] Build the supermarkdown project site (`sites/supermarkdown/`) — index, guide, examples pages with updated syntax docs
+- [x] Build the Kite Pages project site (`sites/kitepages/`) — index, guide, examples pages with updated syntax docs
 - [ ] More site variety — continuously expand the range of styles, layouts, and industries supported

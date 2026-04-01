@@ -31,7 +31,7 @@ function findChrome() {
 async function main() {
   await mkdir(SCREENSHOTS_DIR, { recursive: true });
 
-  // Find all .smd files in sites/
+  // Find all site directories
   const entries = await readdir(SITES_DIR, { withFileTypes: true });
   const siteDirs = entries.filter(e => e.isDirectory()).map(e => e.name);
 
@@ -45,7 +45,7 @@ async function main() {
   const { readFile } = await import('fs/promises');
   const { extname } = await import('path');
 
-  const MIME = { '.html': 'text/html', '.smd': 'text/plain', '.json': 'application/json',
+  const MIME = { '.html': 'text/html', '.md': 'text/plain', '.json': 'application/json',
                  '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css',
                  '.jpg': 'image/jpeg', '.png': 'image/png', '.svg': 'image/svg+xml' };
 
@@ -77,7 +77,7 @@ async function main() {
   await new Promise(resolve => server.listen(0, resolve));
   const port = server.address().port;
 
-  const tmpProfile = await mkdtemp(join(tmpdir(), 'smd-chrome-'));
+  const tmpProfile = await mkdtemp(join(tmpdir(), 'kp-chrome-'));
   const browser = await puppeteer.launch({
     executablePath: findChrome(),
     headless: 'shell',
@@ -98,19 +98,19 @@ async function main() {
     const siteScreenDir = join(SCREENSHOTS_DIR, siteName);
     await mkdir(siteScreenDir, { recursive: true });
 
-    // Find the main .smd file
-    const smdFiles = (await readdir(siteDir)).filter(f => f.endsWith('.smd'));
-    if (smdFiles.length === 0) continue;
+    // Find the main .md file
+    const mdFiles = (await readdir(siteDir)).filter(f => f.endsWith('.md') && f !== 'header.md' && f !== 'footer.md');
+    if (mdFiles.length === 0) continue;
 
-    for (const smdFile of smdFiles) {
-      const pageName = basename(smdFile, '.smd');
+    for (const mdFile of mdFiles) {
+      const pageName = basename(mdFile, '.md');
 
       for (const vp of VIEWPORTS) {
         const page = await browser.newPage();
         await page.setViewport({ width: vp.width, height: vp.height });
 
-        // Load renderer with the .smd file
-        const url = `http://localhost:${port}/renderer.html?file=${smdFile}&theme=theme.json`;
+        // Load renderer with the .md file
+        const url = `http://localhost:${port}/renderer.html?file=${mdFile}&theme=theme.yaml`;
         await page.goto(url, { waitUntil: 'networkidle0', timeout: 15000 });
 
         // Wait for images and fonts to load

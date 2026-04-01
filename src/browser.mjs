@@ -1,19 +1,18 @@
-// SuperMarkdown Browser Runtime — DOM interactions, SPA navigation, animations, editor.
+// Kite Pages Browser Runtime — DOM interactions, SPA navigation, animations, editor.
 // This is the client-side entry point. Import via <script type="module">.
 
 import { parse, parseYaml } from './parser.mjs';
 import { render, renderNav, renderFooter, getGoogleFontsUrl } from './renderer.mjs';
 
 let currentTheme = {};
-let currentSmdFile = null;
+let currentFile = null;
 
-// File extension: .md (with .smd fallback for transition)
 const PAGE_EXT = '.md';
 
 // ===== Core: Load & Render =====
 
 async function loadAndRender(url) {
-  currentSmdFile = url;
+  currentFile = url;
   const resp = await fetch(url);
   const src = await resp.text();
   const parsed = parse(src);
@@ -28,48 +27,48 @@ async function loadAndRender(url) {
   await loadHeader();
   await loadFooter();
   initScrollAnimations();
-  interceptSmdLinks();
+  interceptPageLinks();
 }
 
 // ===== Page Transitions =====
 
-function isSmdLink(href) {
+function isPageLink(href) {
   if (!href) return false;
   if (href.startsWith('#')) return false;
   if (/^https?:\/\//i.test(href)) return false;
-  return href.endsWith('.md') || href.endsWith('.smd');
+  return href.endsWith('.md');
 }
 
-function interceptSmdLinks() {
+function interceptPageLinks() {
   const output = document.getElementById('output');
-  output.removeEventListener('click', handleSmdLinkClick);
-  output.addEventListener('click', handleSmdLinkClick);
+  output.removeEventListener('click', handlePageLinkClick);
+  output.addEventListener('click', handlePageLinkClick);
 }
 
-function handleSmdLinkClick(e) {
+function handlePageLinkClick(e) {
   const anchor = e.target.closest('a');
   if (!anchor) return;
   const href = anchor.getAttribute('href');
-  if (!isSmdLink(href)) return;
+  if (!isPageLink(href)) return;
   e.preventDefault();
-  navigateToSmd(href, true);
+  navigateToPage(href, true);
 }
 
-function resolveSmdPath(href) {
-  if (!currentSmdFile) return href;
-  const dir = currentSmdFile.substring(0, currentSmdFile.lastIndexOf('/') + 1);
+function resolvePagePath(href) {
+  if (!currentFile) return href;
+  const dir = currentFile.substring(0, currentFile.lastIndexOf('/') + 1);
   return dir + href;
 }
 
-async function navigateToSmd(smdFile, pushState, direction) {
-  const resolvedFile = smdFile.includes('/') ? smdFile : resolveSmdPath(smdFile);
+async function navigateToPage(pageFile, pushState, direction) {
+  const resolvedFile = pageFile.includes('/') ? pageFile : resolvePagePath(pageFile);
   const output = document.getElementById('output');
   const dir = direction || (pushState ? 'push' : 'pop');
 
   const scrollY = window.scrollY;
   const snapshot = output.cloneNode(true);
   snapshot.id = '';
-  snapshot.className = 'smd-page smd-page-old';
+  snapshot.className = 'kp-page kp-page-old';
   snapshot.style.position = 'fixed';
   snapshot.style.top = -scrollY + 'px';
   snapshot.style.left = '0';
@@ -81,13 +80,13 @@ async function navigateToSmd(smdFile, pushState, direction) {
 
   output.classList.add(dir === 'push' ? 'push-in' : 'pop-in');
   window.scrollTo({ top: 0, behavior: 'instant' });
-  document.getElementById('smd-nav-mount').innerHTML = '';
+  document.getElementById('kp-nav-mount').innerHTML = '';
   await loadAndRender(resolvedFile);
 
   if (pushState) {
     const url = new URL(location.href);
     url.searchParams.set('file', resolvedFile);
-    history.pushState({ smdFile: resolvedFile }, '', url.toString());
+    history.pushState({ pageFile: resolvedFile }, '', url.toString());
   }
 
   await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
@@ -99,8 +98,8 @@ async function navigateToSmd(smdFile, pushState, direction) {
 }
 
 window.addEventListener('popstate', (e) => {
-  const smdFile = e.state?.smdFile || (new URLSearchParams(location.search).get('file')) || 'example.smd';
-  navigateToSmd(smdFile, false, 'pop');
+  const pageFile = e.state?.pageFile || (new URLSearchParams(location.search).get('file')) || 'example.md';
+  navigateToPage(pageFile, false, 'pop');
 });
 
 // ===== Header =====
@@ -109,16 +108,14 @@ let _headerCache = null;
 let _headerFetched = false;
 
 async function loadHeader() {
-  const mount = document.getElementById('smd-nav-mount');
+  const mount = document.getElementById('kp-nav-mount');
   mount.innerHTML = '';
 
   if (!_headerFetched) {
     _headerFetched = true;
-    const dir = currentSmdFile ? currentSmdFile.substring(0, currentSmdFile.lastIndexOf('/') + 1) : '';
+    const dir = currentFile ? currentFile.substring(0, currentFile.lastIndexOf('/') + 1) : '';
     try {
-      // Try .md first, fall back to .smd
     let resp = await fetch(dir + 'header.md');
-    if (!resp.ok) resp = await fetch(dir + 'header.smd');
       if (resp.ok) _headerCache = parse(await resp.text());
     } catch {}
   }
@@ -129,48 +126,48 @@ async function loadHeader() {
   mount.innerHTML = navHtml;
 
   // Attach SPA link handlers to nav
-  const nav = mount.querySelector('.smd-nav');
+  const nav = mount.querySelector('.kp-nav');
   if (!nav) return;
 
   // Brand link
-  const brand = nav.querySelector('.smd-nav-brand');
+  const brand = nav.querySelector('.kp-nav-brand');
   if (brand) {
     brand.addEventListener('click', (e) => {
-      if (isSmdLink('index.md')) {
+      if (isPageLink('index.md')) {
         e.preventDefault();
-        navigateToSmd('index.md', true, 'pop');
+        navigateToPage('index.md', true, 'pop');
       }
     });
   }
 
   // Nav links
-  const ul = nav.querySelector('.smd-nav-links');
+  const ul = nav.querySelector('.kp-nav-links');
   if (ul) {
     ul.querySelectorAll('a').forEach(a => {
       a.addEventListener('click', (e) => {
         const href = a.getAttribute('href');
-        if (href && href.includes('#') && !href.endsWith('.smd')) {
+        if (href && href.includes('#') && !href.endsWith('.md')) {
           const parts = href.split('#');
           const file = parts[0];
           const anchor = parts[1];
-          if (!file || file === currentSmdFile?.split('/').pop()) {
+          if (!file || file === currentFile?.split('/').pop()) {
             e.preventDefault();
             document.getElementById(anchor)?.scrollIntoView({ behavior: 'smooth' });
             ul.classList.remove('open');
             return;
           }
         }
-        if (isSmdLink(href)) {
+        if (isPageLink(href)) {
           e.preventDefault();
           ul.classList.remove('open');
-          navigateToSmd(href, true, 'push');
+          navigateToPage(href, true, 'push');
         }
       });
     });
   }
 
   // Hamburger toggle
-  const toggle = nav.querySelector('.smd-nav-toggle');
+  const toggle = nav.querySelector('.kp-nav-toggle');
   if (toggle && ul) {
     toggle.addEventListener('click', () => ul.classList.toggle('open'));
   }
@@ -199,10 +196,9 @@ let _footerFetched = false;
 async function loadFooter() {
   if (!_footerFetched) {
     _footerFetched = true;
-    const dir = currentSmdFile ? currentSmdFile.substring(0, currentSmdFile.lastIndexOf('/') + 1) : '';
+    const dir = currentFile ? currentFile.substring(0, currentFile.lastIndexOf('/') + 1) : '';
     try {
       let resp = await fetch(dir + 'footer.md');
-    if (!resp.ok) resp = await fetch(dir + 'footer.smd');
       if (resp.ok) _footerCache = parse(await resp.text());
     } catch {}
   }
@@ -217,28 +213,28 @@ async function loadFooter() {
 
 function initScrollAnimations() {
   if (currentTheme.animation === 'none') {
-    document.querySelectorAll('.smd-animate').forEach(el => {
-      el.classList.remove('smd-animate');
-      el.classList.add('smd-visible');
+    document.querySelectorAll('.kp-animate').forEach(el => {
+      el.classList.remove('kp-animate');
+      el.classList.add('kp-visible');
     });
     return;
   }
-  document.querySelectorAll('.smd-hero.smd-animate').forEach(el => {
-    setTimeout(() => el.classList.add('smd-visible'), 100);
+  document.querySelectorAll('.kp-hero.kp-animate').forEach(el => {
+    setTimeout(() => el.classList.add('kp-visible'), 100);
   });
-  const firstSection = document.querySelector('.smd-section.smd-animate');
-  if (firstSection) setTimeout(() => firstSection.classList.add('smd-visible'), 200);
+  const firstSection = document.querySelector('.kp-section.kp-animate');
+  if (firstSection) setTimeout(() => firstSection.classList.add('kp-visible'), 200);
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        entry.target.classList.add('smd-visible');
+        entry.target.classList.add('kp-visible');
         observer.unobserve(entry.target);
       }
     });
   }, { threshold: 0.05, rootMargin: '0px 0px 50px 0px' });
 
-  document.querySelectorAll('.smd-animate:not(.smd-hero):not(.smd-visible)').forEach(el => observer.observe(el));
+  document.querySelectorAll('.kp-animate:not(.kp-hero):not(.kp-visible)').forEach(el => observer.observe(el));
 }
 
 // ===== Carousel =====
@@ -249,17 +245,17 @@ const _carouselTargetIdx = {};
 function _carouselGoTo(id, idx) {
   const el = document.getElementById(id);
   if (!el) return;
-  const track = el.querySelector('.smd-carousel-track');
+  const track = el.querySelector('.kp-carousel-track');
   _carouselTargetIdx[id] = idx;
   track.style.transform = `translateX(-${idx * 100}%)`;
-  el.querySelectorAll('.smd-carousel-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+  el.querySelectorAll('.kp-carousel-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
 }
 
 // Expose on window for onclick handlers in rendered HTML
 window.carouselNav = function(id, dir) {
   const el = document.getElementById(id);
   if (!el) return;
-  const count = el.querySelectorAll('.smd-carousel-slide').length;
+  const count = el.querySelectorAll('.kp-carousel-slide').length;
   const current = _carouselTargetIdx[id] || 0;
   const next = (current + dir + count) % count;
   _carouselGoTo(id, next);
@@ -272,8 +268,8 @@ window.carouselGo = function(id, idx) {
 };
 
 setInterval(() => {
-  document.querySelectorAll('.smd-carousel').forEach(el => {
-    const count = el.querySelectorAll('.smd-carousel-slide').length;
+  document.querySelectorAll('.kp-carousel').forEach(el => {
+    const count = el.querySelectorAll('.kp-carousel-slide').length;
     if (count <= 1) return;
     if (_carouselPauseUntil[el.id] && Date.now() < _carouselPauseUntil[el.id]) return;
     const current = _carouselTargetIdx[el.id] || 0;
@@ -286,8 +282,8 @@ setInterval(() => {
 window.tabSwitch = function(id, idx) {
   const el = document.getElementById(id);
   if (!el) return;
-  el.querySelectorAll('.smd-tab-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
-  el.querySelectorAll('.smd-tab-panel').forEach((p, i) => p.classList.toggle('active', i === idx));
+  el.querySelectorAll('.kp-tab-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+  el.querySelectorAll('.kp-tab-panel').forEach((p, i) => p.classList.toggle('active', i === idx));
 };
 
 // ===== Theme =====
@@ -345,7 +341,7 @@ function applyTheme(theme) {
 // ===== Boot =====
 
 const params = new URLSearchParams(location.search);
-const smdFile = params.get('file') || 'example.md';
+const pageFile = params.get('file') || 'example.md';
 const themeFile = params.get('theme');
 
 async function boot() {
@@ -360,8 +356,8 @@ async function boot() {
       applyTheme(theme);
     } catch (e) { console.warn('Theme not found, using defaults'); }
   }
-  await loadAndRender(smdFile);
-  history.replaceState({ smdFile }, '', location.href);
+  await loadAndRender(pageFile);
+  history.replaceState({ pageFile }, '', location.href);
 }
 
 boot();
@@ -382,7 +378,7 @@ const CANDIDATE_FILES = [
 function initEditor() {
   // Toggle button
   const btn = document.createElement('button');
-  btn.className = 'smd-editor-toggle';
+  btn.className = 'kp-editor-toggle';
   btn.innerHTML = '&lt;/&gt;';
   btn.title = 'Toggle editor (E)';
   btn.addEventListener('click', toggleEditor);
@@ -390,21 +386,21 @@ function initEditor() {
 
   // Editor panel
   const panel = document.createElement('div');
-  panel.className = 'smd-editor-panel';
-  panel.id = 'smd-editor-panel';
+  panel.className = 'kp-editor-panel';
+  panel.id = 'kp-editor-panel';
   panel.innerHTML = `
-    <div class="smd-editor-sidebar" id="smd-editor-sidebar">
-      <div class="smd-editor-sidebar-header">Files</div>
-      <ul class="smd-editor-files" id="smd-editor-files"></ul>
+    <div class="kp-editor-sidebar" id="kp-editor-sidebar">
+      <div class="kp-editor-sidebar-header">Files</div>
+      <ul class="kp-editor-files" id="kp-editor-files"></ul>
     </div>
-    <div class="smd-editor-main">
-      <div class="smd-editor-header">
-        <strong id="smd-editor-filename">editor</strong>
-        <span class="smd-editor-status" id="smd-editor-status">Press E to toggle</span>
+    <div class="kp-editor-main">
+      <div class="kp-editor-header">
+        <strong id="kp-editor-filename">editor</strong>
+        <span class="kp-editor-status" id="kp-editor-status">Press E to toggle</span>
       </div>
-      <div class="smd-editor-toolbar" id="smd-editor-toolbar">
-        <div class="smd-toolbar-row">
-          <span class="smd-toolbar-label">Text</span>
+      <div class="kp-editor-toolbar" id="kp-editor-toolbar">
+        <div class="kp-toolbar-row">
+          <span class="kp-toolbar-label">Text</span>
           <button data-action="bold" title="Bold (Ctrl+B)"><b>B</b></button>
           <button data-action="italic" title="Italic (Ctrl+I)"><i>I</i></button>
           <button data-action="underline" title="Underline (Ctrl+U)"><u>U</u></button>
@@ -413,22 +409,22 @@ function initEditor() {
           <button data-action="large" title="Large text ++">++</button>
           <button data-action="superscript" title="Superscript ^">x&#8319;</button>
           <button data-action="subscript" title="Subscript ~">x&#8322;</button>
-          <span class="smd-toolbar-sep"></span>
+          <span class="kp-toolbar-sep"></span>
           <button data-action="code" title="Inline code">&lt;/&gt;</button>
           <button data-action="link" title="Link (Ctrl+K)">&#128279;</button>
           <button data-action="image" title="Image">&#128247;</button>
           <button data-action="math-inline" title="Inline math \\(x\\)">&#8721;</button>
         </div>
-        <div class="smd-toolbar-row">
-          <span class="smd-toolbar-label">Block</span>
+        <div class="kp-toolbar-row">
+          <span class="kp-toolbar-label">Block</span>
           <button data-action="h1" title="Heading 1">H1</button>
           <button data-action="h2" title="Heading 2">H2</button>
           <button data-action="h3" title="Heading 3">H3</button>
-          <span class="smd-toolbar-sep"></span>
+          <span class="kp-toolbar-sep"></span>
           <button data-action="ul" title="Bullet list">&#8226; List</button>
           <button data-action="ol" title="Numbered list">1. List</button>
           <button data-action="task" title="Task list">&#9744; Task</button>
-          <span class="smd-toolbar-sep"></span>
+          <span class="kp-toolbar-sep"></span>
           <button data-action="quote" title="Blockquote &gt;">&gt; Quote</button>
           <button data-action="block-quote" title="Block quote &gt;&gt;&gt;">&#10077; Block</button>
           <button data-action="hr" title="Horizontal rule">&#8213; Rule</button>
@@ -437,8 +433,8 @@ function initEditor() {
           <button data-action="math-block" title="Math block">&#8721; Math</button>
           <button data-action="toc" title="Table of contents">&#123;:toc&#125;</button>
         </div>
-        <div class="smd-toolbar-row">
-          <span class="smd-toolbar-label">Rich</span>
+        <div class="kp-toolbar-row">
+          <span class="kp-toolbar-label">Rich</span>
           <button data-action="columns" title="Columns |||">&#9638;&#9638; Columns</button>
           <button data-action="card" title="Card ::: card">&#9642; Card</button>
           <button data-action="testimonial" title="Testimonial ::: quote">&#10077; Testimonial</button>
@@ -450,18 +446,18 @@ function initEditor() {
           <button data-action="record" title="Record :: name">&#128203; Record</button>
         </div>
       </div>
-      <div class="smd-editor-content">
-        <div class="smd-editor-lines" id="smd-editor-lines"></div>
-        <div class="smd-editor-code-wrap">
-          <pre class="smd-editor-highlight" id="smd-editor-highlight"></pre>
-          <textarea id="smd-editor-textarea" spellcheck="false" wrap="off"></textarea>
+      <div class="kp-editor-content">
+        <div class="kp-editor-lines" id="kp-editor-lines"></div>
+        <div class="kp-editor-code-wrap">
+          <pre class="kp-editor-highlight" id="kp-editor-highlight"></pre>
+          <textarea id="kp-editor-textarea" spellcheck="false" wrap="off"></textarea>
         </div>
       </div>
     </div>
   `;
-  document.body.insertBefore(panel, document.getElementById('smd-nav-mount'));
+  document.body.insertBefore(panel, document.getElementById('kp-nav-mount'));
 
-  const textarea = document.getElementById('smd-editor-textarea');
+  const textarea = document.getElementById('kp-editor-textarea');
   let debounceTimer = null;
   let rendering = false;
   textarea.addEventListener('input', () => {
@@ -481,9 +477,9 @@ function initEditor() {
   });
 
   textarea.addEventListener('scroll', () => {
-    document.getElementById('smd-editor-lines').scrollTop = textarea.scrollTop;
-    document.getElementById('smd-editor-highlight').scrollTop = textarea.scrollTop;
-    document.getElementById('smd-editor-highlight').scrollLeft = textarea.scrollLeft;
+    document.getElementById('kp-editor-lines').scrollTop = textarea.scrollTop;
+    document.getElementById('kp-editor-highlight').scrollTop = textarea.scrollTop;
+    document.getElementById('kp-editor-highlight').scrollLeft = textarea.scrollLeft;
   });
 
   textarea.addEventListener('keydown', (e) => {
@@ -520,7 +516,7 @@ function initEditor() {
   });
 
   // Toolbar button clicks
-  document.getElementById('smd-editor-toolbar').addEventListener('click', (e) => {
+  document.getElementById('kp-editor-toolbar').addEventListener('click', (e) => {
     const btn = e.target.closest('button');
     if (!btn) return;
     const action = btn.dataset.action;
@@ -624,15 +620,15 @@ function editorLinePrefix(ta, prefix) {
 }
 
 function toggleEditor() {
-  const panel = document.getElementById('smd-editor-panel');
+  const panel = document.getElementById('kp-editor-panel');
   _editorOpen = !_editorOpen;
   panel.classList.toggle('open', _editorOpen);
   if (_editorOpen) discoverAndLoadFiles();
 }
 
 async function discoverAndLoadFiles() {
-  _siteDir = currentSmdFile ? currentSmdFile.substring(0, currentSmdFile.lastIndexOf('/') + 1) : '';
-  const fileList = document.getElementById('smd-editor-files');
+  _siteDir = currentFile ? currentFile.substring(0, currentFile.lastIndexOf('/') + 1) : '';
+  const fileList = document.getElementById('kp-editor-files');
   fileList.innerHTML = '';
 
   const foundFiles = [];
@@ -657,7 +653,7 @@ async function discoverAndLoadFiles() {
   }
 
   // Load current page file
-  const currentName = currentSmdFile ? currentSmdFile.split('/').pop() : 'index.md';
+  const currentName = currentFile ? currentFile.split('/').pop() : 'index.md';
   if (foundFiles.includes(currentName)) {
     await switchFile(currentName);
   } else if (foundFiles.length > 0) {
@@ -669,7 +665,7 @@ async function switchFile(name) {
   // Save current content to cache
   if (_activeFile) {
     _fileCache[_activeFile] = {
-      content: document.getElementById('smd-editor-textarea').value,
+      content: document.getElementById('kp-editor-textarea').value,
       dirty: _fileCache[_activeFile]?.dirty || false,
     };
   }
@@ -686,30 +682,30 @@ async function switchFile(name) {
     }
   }
 
-  const textarea = document.getElementById('smd-editor-textarea');
+  const textarea = document.getElementById('kp-editor-textarea');
   textarea.value = _fileCache[name].content;
-  document.getElementById('smd-editor-filename').textContent = name;
+  document.getElementById('kp-editor-filename').textContent = name;
   updateLineNumbers();
   updateFileListHighlight();
 }
 
 function updateFileListHighlight() {
-  const items = document.querySelectorAll('#smd-editor-files li');
+  const items = document.querySelectorAll('#kp-editor-files li');
   items.forEach(li => {
     li.classList.toggle('active', li.textContent === _activeFile);
   });
 }
 
 function updateLineNumbers() {
-  const textarea = document.getElementById('smd-editor-textarea');
+  const textarea = document.getElementById('kp-editor-textarea');
   const lines = textarea.value.split('\n');
-  document.getElementById('smd-editor-lines').innerHTML = lines.map((_, i) => `<div>${i + 1}</div>`).join('');
+  document.getElementById('kp-editor-lines').innerHTML = lines.map((_, i) => `<div>${i + 1}</div>`).join('');
   updateHighlight(textarea.value);
 }
 
 // Syntax-aware highlighting — renders a styled version behind the transparent textarea
 function updateHighlight(source) {
-  const hl = document.getElementById('smd-editor-highlight');
+  const hl = document.getElementById('kp-editor-highlight');
   if (!hl) return;
   // Escape HTML, then apply syntax coloring
   let html = source
@@ -793,15 +789,15 @@ function handleEditorChange(source) {
     const output = document.getElementById('output');
     output.innerHTML = render(parsed, currentTheme);
     if (parsed.frontmatter.title) document.title = parsed.frontmatter.title;
-    output.querySelectorAll('.smd-animate').forEach(el => el.classList.add('smd-visible'));
-    interceptSmdLinks();
+    output.querySelectorAll('.kp-animate').forEach(el => el.classList.add('kp-visible'));
+    interceptPageLinks();
   } catch (e) {
     console.debug('SMD render error (expected during editing):', e.message);
   }
 }
 
 function showEditorStatus(msg) {
-  const el = document.getElementById('smd-editor-status');
+  const el = document.getElementById('kp-editor-status');
   el.textContent = msg;
   setTimeout(() => { el.textContent = 'Live preview · Press E to toggle'; }, 2000);
 }
@@ -850,10 +846,10 @@ function goToSite(index) {
 }
 
 function showSiteIndicator(siteName) {
-  let el = document.getElementById('smd-site-indicator');
+  let el = document.getElementById('kp-site-indicator');
   if (!el) {
     el = document.createElement('div');
-    el.id = 'smd-site-indicator';
+    el.id = 'kp-site-indicator';
     el.style.cssText = 'position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,0.8);color:white;padding:8px 20px;border-radius:8px;font:13px/1.5 system-ui,sans-serif;z-index:9999;transition:opacity 0.3s;pointer-events:none;';
     document.body.appendChild(el);
   }

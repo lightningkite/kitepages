@@ -1,8 +1,8 @@
-# Supermarkdown — Purpose & Principles
+# Kite Pages — Purpose & Principles
 
 ## Purpose
 
-Supermarkdown is a Markdown superset that turns plain text into polished, responsive websites. The renderer infers layout from content structure — no HTML, CSS, or breakpoints needed.
+Kite Pages is a Markdown superset that turns plain text into polished, responsive websites. The renderer infers layout from content structure — no HTML, CSS, or breakpoints needed.
 
 ## Goals
 
@@ -14,7 +14,7 @@ Supermarkdown is a Markdown superset that turns plain text into polished, respon
 
 4. **Responsive by default.** No breakpoints, no media queries, no "mobile version." The renderer adapts based on content intent, not explicit layout instructions.
 
-5. **Markdown compatible.** Standard `.md` files that degrade gracefully in GitHub, editors, and other Markdown tools. Supermarkdown extensions are additive — they enhance rendering but don't break the source for other consumers.
+5. **Markdown compatible.** Standard `.md` files that degrade gracefully in GitHub, editors, and other Markdown tools. Kite Pages extensions are additive — they enhance rendering but don't break the source for other consumers.
 
 6. **Rich enough for real sites.** Carousels, forms, columns, galleries, pricing, navigation, theming — all from simple syntax extensions. If a common site pattern requires HTML, we haven't extended the format enough.
 
