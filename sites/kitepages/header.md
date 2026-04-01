@@ -2,4 +2,4 @@
 
 - [Guide](guide.md)
 - [Examples](examples.md)
-- [GitHub](https://github.com/UnknownJoe796/kitepages)
+- [GitHub](https://github.com/lightningkite/kitepages)
