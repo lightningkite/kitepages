@@ -8,6 +8,8 @@ image: storefront.jpg
 ::: bg https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1200&q=80
 # Giuseppe's Italian Restaurant
 Authentic Italian cuisine in downtown Portland. Family owned since 1985.
+
+[About Us](about.md) — [View Full Menu](menu.md)
 :::
 ---
 ::: bg https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1200&q=80
@@ -20,8 +22,6 @@ Our dining room seats 80 guests in an intimate, candlelit atmosphere.
 Dine under the stars on our award-winning patio, open May through October.
 :::
 :::
-
-[About Us](about.md) — [View Full Menu](menu.md)
 
 ## Our Menu
 

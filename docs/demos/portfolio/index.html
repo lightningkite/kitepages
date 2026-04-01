@@ -359,6 +359,7 @@ body:has(.kp-nav:not([data-style="transparent"])) .kp-hero { padding-top: 100px;
 .kp-columns:last-child {
   margin-bottom: 0;
 }
+.kp-columns-centered .kp-column { text-align: center; }
 .kp-column {
   display: flex;
   flex-direction: column;
@@ -568,6 +569,8 @@ body:has(.kp-nav:not([data-style="transparent"])) .kp-hero { padding-top: 100px;
   margin-left: auto;
   margin-right: auto;
 }
+.kp-section > p.kp-centered { text-align: center; }
+.kp-section > p + .kp-columns { margin-top: 32px; }
 
 /* ===== CTA Button Row ===== */
 .kp-cta-row {
@@ -596,7 +599,7 @@ body:has(.kp-nav:not([data-style="transparent"])) .kp-hero { padding-top: 100px;
 }
 .kp-cta-row a.kp-cta-primary {
   background: var(--primary);
-  color: white;
+  color: var(--primary-text, white);
 }
 .kp-cta-row a.kp-cta-primary:hover { background: var(--primary-dark); }
 .kp-cta-row a.kp-cta-secondary {
@@ -1840,6 +1843,7 @@ kbd {
 
 :root {
   --primary: #111111;
+  --primary-text: #ffffff;
   --primary-dark: #000000;
   --primary-light: #e0e0e0;
   --accent: #e85d3a;
@@ -1860,7 +1864,7 @@ kbd {
 <body>
 
 <main id="kp-content" class="kp-page kp-page-hidden">
-<header class="kp-hero kp-animate"><h1>Sarah Chen</h1><p class="kp-subtitle">Product designer crafting thoughtful digital experiences.<br>Currently at Figma. Previously Stripe, Airbnb.</p></header><section class="kp-section kp-animate" id="selected-work"><h2>Selected Work</h2><hr class="kp-section-rule"><div class="kp-columns kp-animate kp-animate-stagger"><div class="kp-column"><div class="kp-block kp-block-card"><h3 id="figma-community-hub">Figma Community Hub</h3><p>2024<br>Redesigned the community browsing experience, increasing engagement by 34%. Led a team of 3 designers through research, prototyping, and launch.</p></div></div><div class="kp-column"><div class="kp-block kp-block-card"><h3 id="stripe-checkout-flow">Stripe Checkout Flow</h3><p>2023<br>Simplified the merchant onboarding experience from 12 steps to 4. Reduced drop-off by 28%.</p></div></div><div class="kp-column"><div class="kp-block kp-block-card"><h3 id="airbnb-experiences">Airbnb Experiences</h3><p>2022<br>Designed the booking flow for Airbnb’s Experiences platform. Handled complex scheduling across timezones.</p></div></div><div class="kp-column"><div class="kp-block kp-block-card"><h3 id="personal-readwise-concept">Personal — Readwise Concept</h3><p>2021<br>A concept redesign of Readwise’s highlight review system, focusing on spaced repetition and delight.</p></div></div></div></section><section class="kp-section kp-section-alt kp-animate" id="about"><h2>About</h2><hr class="kp-section-rule"><p>I’m a product designer who believes great software should feel obvious in hindsight. I focus on reducing complexity without reducing capability.</p><p>Before design, I studied cognitive science at UC Berkeley, which shapes how I think about information architecture and user mental models.</p><p>When I’m not designing, I’m probably hiking, reading sci-fi, or experimenting with ceramics.</p></section><section class="kp-section kp-animate" id="experience"><h2>Experience</h2><hr class="kp-section-rule"><div class="kp-columns kp-animate kp-animate-stagger"><div class="kp-column"><h3 id="figma">Figma</h3><p>Senior Product Designer<br>2023–Present</p></div><div class="kp-column"><h3 id="stripe">Stripe</h3><p>Product Designer<br>2021–2023</p></div><div class="kp-column"><h3 id="airbnb">Airbnb</h3><p>Junior Designer<br>2019–2021</p></div></div></section><section class="kp-section kp-section-alt kp-animate" id="get-in-touch"><h2>Get In Touch</h2><hr class="kp-section-rule"><p>I’m not currently looking for new opportunities, but I’m always happy to chat about design.</p><div class="kp-cta-row"><a href="mailto:sarah@example.com" class="kp-cta-primary">Email me</a><a href="https://linkedin.com" class="kp-cta-secondary">LinkedIn</a><a href="https://dribbble.com" class="kp-cta-secondary">Dribbble</a></div></section>
+<header class="kp-hero kp-animate"><h1>Sarah Chen</h1><p class="kp-subtitle">Product designer crafting thoughtful digital experiences.<br>Currently at Figma. Previously Stripe, Airbnb.</p></header><section class="kp-section kp-animate" id="selected-work"><h2>Selected Work</h2><hr class="kp-section-rule"><div class="kp-columns kp-columns-centered kp-animate kp-animate-stagger"><div class="kp-column"><div class="kp-block kp-block-card"><h3 id="figma-community-hub">Figma Community Hub</h3><p>2024<br>Redesigned the community browsing experience, increasing engagement by 34%. Led a team of 3 designers through research, prototyping, and launch.</p></div></div><div class="kp-column"><div class="kp-block kp-block-card"><h3 id="stripe-checkout-flow">Stripe Checkout Flow</h3><p>2023<br>Simplified the merchant onboarding experience from 12 steps to 4. Reduced drop-off by 28%.</p></div></div><div class="kp-column"><div class="kp-block kp-block-card"><h3 id="airbnb-experiences">Airbnb Experiences</h3><p>2022<br>Designed the booking flow for Airbnb’s Experiences platform. Handled complex scheduling across timezones.</p></div></div><div class="kp-column"><div class="kp-block kp-block-card"><h3 id="personal-readwise-concept">Personal — Readwise Concept</h3><p>2021<br>A concept redesign of Readwise’s highlight review system, focusing on spaced repetition and delight.</p></div></div></div></section><section class="kp-section kp-section-alt kp-animate" id="about"><h2>About</h2><hr class="kp-section-rule"><p>I’m a product designer who believes great software should feel obvious in hindsight. I focus on reducing complexity without reducing capability.</p><p>Before design, I studied cognitive science at UC Berkeley, which shapes how I think about information architecture and user mental models.</p><p class="kp-centered">When I’m not designing, I’m probably hiking, reading sci-fi, or experimenting with ceramics.</p></section><section class="kp-section kp-animate" id="experience"><h2>Experience</h2><hr class="kp-section-rule"><div class="kp-columns kp-columns-centered kp-animate kp-animate-stagger"><div class="kp-column"><h3 id="figma">Figma</h3><p>Senior Product Designer<br>2023–Present</p></div><div class="kp-column"><h3 id="stripe">Stripe</h3><p>Product Designer<br>2021–2023</p></div><div class="kp-column"><h3 id="airbnb">Airbnb</h3><p>Junior Designer<br>2019–2021</p></div></div></section><section class="kp-section kp-section-alt kp-animate" id="get-in-touch"><h2>Get In Touch</h2><hr class="kp-section-rule"><p class="kp-centered">I’m not currently looking for new opportunities, but I’m always happy to chat about design.</p><div class="kp-cta-row"><a href="mailto:sarah@example.com" class="kp-cta-primary">Email me</a><a href="https://linkedin.com" class="kp-cta-secondary">LinkedIn</a><a href="https://dribbble.com" class="kp-cta-secondary">Dribbble</a></div></section>
 
 </main>
 <noscript><style>.kp-page-hidden,.kp-animate,.kp-animate-stagger>*{opacity:1!important;transform:none!important;transition:none!important}</style></noscript>

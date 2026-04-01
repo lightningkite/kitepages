@@ -929,7 +929,16 @@ function render(doc, theme = {}) {
           }
           html += renderGallery(images);
         } else {
-          html += renderBlock(blocks[i]);
+          // Center short paragraphs that are direct section children
+          // (skip CTA rows and standalone embed URLs — those have their own rendering)
+          const bi = blocks[i];
+          const isStandaloneUrl = bi.type === 'paragraph' && /^https?:\/\//.test(bi.text.trim()) && !/\s/.test(bi.text.trim());
+          if (bi.type === 'paragraph' && !isLinkOnlyParagraph(bi.text) && !isStandaloneUrl &&
+              bi.text.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1').replace(/[*_~`]+/g, '').length < 120) {
+            html += `<p class="kp-centered">${inl(bi.text)}</p>`;
+          } else {
+            html += renderBlock(bi);
+          }
           i++;
         }
       }
@@ -1071,8 +1080,14 @@ function renderColumns(block) {
     return first && first.type === 'heading' && first.level === 3 && /^\+\+.+\+\+$/.test(first.text.trim());
   });
 
+  // Detect short columns: every column has brief content (centered text looks better)
+  const isShort = !isStats && block.columns.length >= 2 && block.columns.every(col => {
+    const textLen = col.reduce((len, b) => len + (b.text || '').replace(/[*_~`\[\]()]+/g, '').length, 0);
+    return textLen < 150;
+  });
+
   const staggerClass = _currentAnim !== 'none' ? ' kp-animate kp-animate-stagger' : '';
-  const wrapperClass = isStats ? 'kp-columns kp-columns-stats' : 'kp-columns';
+  const wrapperClass = isStats ? 'kp-columns kp-columns-stats' : isShort ? 'kp-columns kp-columns-centered' : 'kp-columns';
   let html = `<div class="${wrapperClass}${staggerClass}">`;
   for (const col of block.columns) {
     // Detect featured column: first heading has {featured} attr
@@ -1483,11 +1498,23 @@ function renderFooter(footerDoc, theme = {}) {
 // Theme utilities
 // ============================================================
 
+function luminance(hex) {
+  const r = parseInt(hex.slice(1, 3), 16) / 255;
+  const g = parseInt(hex.slice(3, 5), 16) / 255;
+  const b = parseInt(hex.slice(5, 7), 16) / 255;
+  const lin = c => c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+  return 0.2126 * lin(r) + 0.7152 * lin(g) + 0.0722 * lin(b);
+}
+
 function getThemeVars(theme = {}) {
   const lines = [];
   if (theme.colors) {
     const c = theme.colors;
-    if (c.primary) lines.push(`--primary: ${c.primary};`);
+    if (c.primary) {
+      lines.push(`--primary: ${c.primary};`);
+      const lum = luminance(c.primary);
+      lines.push(`--primary-text: ${lum > 0.35 ? '#1a1a1a' : '#ffffff'};`);
+    }
     if (c.primaryDark) lines.push(`--primary-dark: ${c.primaryDark};`);
     if (c.primaryLight) lines.push(`--primary-light: ${c.primaryLight};`);
     if (c.accent) lines.push(`--accent: ${c.accent};`);
